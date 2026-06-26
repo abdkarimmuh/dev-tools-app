@@ -9,8 +9,9 @@ Kumpulan tools berbasis web untuk membantu produktivitas pengembang sehari-hari 
 | Tool | Deskripsi |
 |---|---|
 | **JSON Formatter** | Format (pretty-print), minify, dan validasi JSON. Menampilkan pesan error yang jelas jika JSON tidak valid. |
-| **Beautify** | Format kode menggunakan Prettier. Mendukung JavaScript, JSON, HTML, CSS, dan SCSS/SASS. |
-| **Minify** | Kompres kode dengan menghapus komentar dan whitespace. Mendukung JavaScript, JSON, HTML, CSS, SCSS, dan SASS. Menampilkan ukuran sebelum/sesudah dan persentase penghematan. |
+| **JS / TS Formatter** | Format, minify, dan validasi kode JavaScript atau TypeScript menggunakan Prettier. Dilengkapi toggle untuk beralih antar sintaks. |
+| **HTML Formatter** | Format, minify, dan validasi kode HTML menggunakan Prettier. |
+| **CSS / SCSS / SASS Formatter** | Format, minify, dan validasi kode CSS, SCSS, atau SASS menggunakan Prettier. Dilengkapi toggle untuk beralih antar sintaks. |
 
 ### Encoding
 
@@ -98,6 +99,9 @@ dev-tools-app/
 │   ├── layout.tsx                # Root layout (sidebar + header)
 │   └── tools/
 │       ├── json-formatter/
+│       ├── js-formatter/
+│       ├── html-formatter/
+│       ├── css-formatter/
 │       ├── base64/
 │       ├── url-encode/
 │       ├── html-entities/
@@ -110,9 +114,7 @@ dev-tools-app/
 │       ├── lorem-ipsum/
 │       ├── password-generator/
 │       ├── color-converter/
-│       ├── px-rem/
-│       ├── beautify/
-│       └── minify/
+│       └── px-rem/
 ├── components/
 │   ├── layouts/
 │   │   ├── app-sidebar.tsx       # Sidebar navigasi

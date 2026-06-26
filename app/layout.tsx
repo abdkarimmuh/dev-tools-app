@@ -1,13 +1,14 @@
-import { Geist, Geist_Mono } from "next/font/google"
-import { Metadata } from "next"
-
 import "./globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
-import { cn } from "@/lib/utils"
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
+
+import { Metadata } from "next"
+import { Geist, Geist_Mono } from "next/font/google"
+
 import { AppSidebar } from "@/components/layouts/app-sidebar"
 import { SiteHeader } from "@/components/layouts/site-header"
+import { ThemeProvider } from "@/components/theme-provider"
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { TooltipProvider } from "@/components/ui/tooltip"
+import { cn } from "@/lib/utils"
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" })
 

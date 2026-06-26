@@ -1,8 +1,10 @@
 "use client"
 
+import { Moon, Sun } from "lucide-react"
 import { usePathname } from "next/navigation"
 import { useTheme } from "next-themes"
-import { Moon, Sun } from "lucide-react"
+
+import { ToolSearch } from "@/components/layouts/tool-search"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
@@ -19,7 +21,8 @@ export function SiteHeader() {
         <SidebarTrigger className="-ml-1" />
         <Separator orientation="vertical" className="mx-2 items-center" />
         <h1 className="text-base font-medium">{title}</h1>
-        <div className="ml-auto">
+        <div className="ml-auto flex items-center gap-2">
+          <ToolSearch />
           <Button
             variant="ghost"
             size="icon"

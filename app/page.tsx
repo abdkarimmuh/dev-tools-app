@@ -1,5 +1,6 @@
 import Link from "next/link"
-import { Card, CardHeader, CardTitle } from "@/components/ui/card"
+
+import { Card, CardTitle } from "@/components/ui/card"
 import { navMenus } from "@/config/nav"
 
 export default function HomePage() {
@@ -22,16 +23,14 @@ export default function HomePage() {
               {group.items.map((item) => (
                 <Link key={item.url} href={item.url} className="group">
                   <Card className="h-full transition-colors hover:bg-accent">
-                    <CardHeader className="pb-3">
-                      <div className="flex items-center gap-2">
-                        <div className="flex size-8 shrink-0 items-center justify-center rounded-md border bg-background">
-                          <item.icon className="size-4" />
-                        </div>
-                        <CardTitle className="text-sm font-medium">
-                          {item.title}
-                        </CardTitle>
+                    <div className="flex items-center gap-2 px-5">
+                      <div className="flex size-8 shrink-0 items-center justify-center rounded-md border bg-background">
+                        <item.icon className="size-4" />
                       </div>
-                    </CardHeader>
+                      <CardTitle className="text-sm font-medium">
+                        {item.title}
+                      </CardTitle>
+                    </div>
                   </Card>
                 </Link>
               ))}

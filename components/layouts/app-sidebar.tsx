@@ -1,11 +1,10 @@
 "use client"
 
-import * as React from "react"
+import { Wrench } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Wrench } from "lucide-react"
+import * as React from "react"
 
-import { navMenus } from "@/config/nav"
 import {
   Sidebar,
   SidebarContent,
@@ -16,6 +15,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { navMenus } from "@/config/nav"
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname()
