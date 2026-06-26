@@ -1,6 +1,5 @@
 import Link from "next/link"
-import { Badge } from "@/components/ui/badge"
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardHeader, CardTitle } from "@/components/ui/card"
 import { navMenus } from "@/config/nav"
 
 export default function HomePage() {
@@ -16,7 +15,7 @@ export default function HomePage() {
       <div className="flex flex-col gap-8">
         {navMenus.map((group) => (
           <section key={group.label}>
-            <h3 className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+            <h3 className="mb-3 text-xs font-semibold tracking-widest text-muted-foreground uppercase">
               {group.label}
             </h3>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -28,7 +27,9 @@ export default function HomePage() {
                         <div className="flex size-8 shrink-0 items-center justify-center rounded-md border bg-background">
                           <item.icon className="size-4" />
                         </div>
-                        <CardTitle className="text-sm font-medium">{item.title}</CardTitle>
+                        <CardTitle className="text-sm font-medium">
+                          {item.title}
+                        </CardTitle>
                       </div>
                     </CardHeader>
                   </Card>
