@@ -1,18 +1,42 @@
-import { Button } from "@/components/ui/button"
+import Link from "next/link"
+import { Badge } from "@/components/ui/badge"
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { navMenus } from "@/config/nav"
 
-export default function Page() {
+export default function HomePage() {
   return (
-    <div className="flex p-6">
-      <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
-        <div>
-          <h1 className="font-medium">Project ready!</h1>
-          <p>You may now add components and start building.</p>
-          <p>We&apos;ve already added the button component for you.</p>
-          <Button className="mt-2">Button</Button>
-        </div>
-        <div className="font-mono text-xs text-muted-foreground">
-          (Press <kbd>d</kbd> to toggle dark mode)
-        </div>
+    <div className="px-4 lg:px-6">
+      <div className="mb-8">
+        <h2 className="text-2xl font-semibold tracking-tight">Semua Tools</h2>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Kumpulan tools untuk membantu coding dan debugging sehari-hari.
+        </p>
+      </div>
+
+      <div className="flex flex-col gap-8">
+        {navMenus.map((group) => (
+          <section key={group.label}>
+            <h3 className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+              {group.label}
+            </h3>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {group.items.map((item) => (
+                <Link key={item.url} href={item.url} className="group">
+                  <Card className="h-full transition-colors hover:bg-accent">
+                    <CardHeader className="pb-3">
+                      <div className="flex items-center gap-2">
+                        <div className="flex size-8 shrink-0 items-center justify-center rounded-md border bg-background">
+                          <item.icon className="size-4" />
+                        </div>
+                        <CardTitle className="text-sm font-medium">{item.title}</CardTitle>
+                      </div>
+                    </CardHeader>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+          </section>
+        ))}
       </div>
     </div>
   )
