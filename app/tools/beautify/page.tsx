@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { IconCheck, IconCopy, IconBrush } from "@tabler/icons-react"
+import { Check, Copy, Paintbrush } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import {
@@ -122,7 +122,7 @@ export default function BeautifyPage() {
           </Select>
         </div>
         <Button onClick={run} disabled={!input.trim() || loading} className="gap-2">
-          <IconBrush className="size-4" />
+          <Paintbrush className="size-4" />
           {loading ? "Formatting..." : "Beautify"}
         </Button>
         <Button variant="ghost" onClick={clear}>
@@ -156,7 +156,7 @@ export default function BeautifyPage() {
               disabled={!output}
               className="h-7 gap-1 text-xs"
             >
-              {copied ? <IconCheck className="size-3" /> : <IconCopy className="size-3" />}
+              {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
               {copied ? "Copied!" : "Copy"}
             </Button>
           </div>

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { IconCheck, IconCopy, IconRefresh } from "@tabler/icons-react"
+import { Check, Copy, RefreshCw } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -108,7 +108,7 @@ export default function LoremIpsumPage() {
           </Select>
         </div>
         <Button onClick={generate} className="gap-2">
-          <IconRefresh className="size-4" />
+          <RefreshCw className="size-4" />
           Generate
         </Button>
       </div>
@@ -125,7 +125,7 @@ export default function LoremIpsumPage() {
               onClick={copy}
               className="h-7 gap-1 text-xs"
             >
-              {copied ? <IconCheck className="size-3" /> : <IconCopy className="size-3" />}
+              {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
               {copied ? "Copied!" : "Copy"}
             </Button>
           </div>

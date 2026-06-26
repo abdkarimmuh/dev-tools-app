@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { IconCheck, IconCopy } from "@tabler/icons-react"
+import { Check, Copy } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -90,7 +90,7 @@ function CopyButton({ text }: { text: string }) {
   }
   return (
     <Button size="sm" variant="ghost" onClick={copy} className="h-7 gap-1 px-2 text-xs">
-      {copied ? <IconCheck className="size-3" /> : <IconCopy className="size-3" />}
+      {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
     </Button>
   )
 }

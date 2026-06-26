@@ -3,7 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { IconTool } from "@tabler/icons-react"
+import { Wrench } from "lucide-react"
 
 import { navMenus } from "@/config/nav"
 import {
@@ -30,7 +30,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               className="data-[slot=sidebar-menu-button]:p-1.5!"
             >
               <Link href="/">
-                <IconTool className="size-5!" />
+                <Wrench className="size-5!" />
                 <span className="text-base font-semibold">DevTools</span>
               </Link>
             </SidebarMenuButton>

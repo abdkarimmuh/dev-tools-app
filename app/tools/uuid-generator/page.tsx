@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { IconCheck, IconCopy, IconRefresh } from "@tabler/icons-react"
+import { Check, Copy, RefreshCw } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -141,15 +141,15 @@ export default function UuidGeneratorPage() {
           />
         </div>
         <Button onClick={generate} className="gap-2">
-          <IconRefresh className="size-4" />
+          <RefreshCw className="size-4" />
           Generate
         </Button>
         {uuids.length > 0 && (
           <Button variant="outline" onClick={copyAll} className="gap-2">
             {copiedAll ? (
-              <IconCheck className="size-4" />
+              <Check className="size-4" />
             ) : (
-              <IconCopy className="size-4" />
+              <Copy className="size-4" />
             )}
             {copiedAll ? "Copied!" : "Copy All"}
           </Button>
@@ -174,9 +174,9 @@ export default function UuidGeneratorPage() {
                 className="ml-4 h-7 gap-1 text-xs"
               >
                 {copiedIndex === i ? (
-                  <IconCheck className="size-3" />
+                  <Check className="size-3" />
                 ) : (
-                  <IconCopy className="size-3" />
+                  <Copy className="size-3" />
                 )}
                 {copiedIndex === i ? "Copied!" : "Copy"}
               </Button>

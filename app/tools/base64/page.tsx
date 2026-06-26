@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { IconCheck, IconCopy } from "@tabler/icons-react"
+import { Check, Copy } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export default function Base64Page() {
@@ -88,7 +88,7 @@ export default function Base64Page() {
               disabled={!output}
               className="h-7 gap-1 text-xs"
             >
-              {copied ? <IconCheck className="size-3" /> : <IconCopy className="size-3" />}
+              {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
               {copied ? "Copied!" : "Copy"}
             </Button>
           </div>

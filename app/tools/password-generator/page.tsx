@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { IconCheck, IconCopy, IconRefresh } from "@tabler/icons-react"
+import { Check, Copy, RefreshCw } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
@@ -127,7 +127,7 @@ export default function PasswordGeneratorPage() {
         )}
 
         <Button onClick={generate} disabled={noneSelected} className="gap-2">
-          <IconRefresh className="size-4" />
+          <RefreshCw className="size-4" />
           Generate Password
         </Button>
       </div>
@@ -137,7 +137,7 @@ export default function PasswordGeneratorPage() {
           <div className="flex items-center gap-2 rounded-md border bg-muted px-3 py-3">
             <span className="flex-1 break-all font-mono text-sm">{password}</span>
             <Button size="sm" variant="ghost" onClick={copy} className="h-7 shrink-0 gap-1 text-xs">
-              {copied ? <IconCheck className="size-3" /> : <IconCopy className="size-3" />}
+              {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
               {copied ? "Copied!" : "Copy"}
             </Button>
           </div>
