@@ -4,6 +4,7 @@ import { Check, Copy } from "lucide-react"
 import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
+import { useLanguage } from "@/contexts/language-context"
 
 type Syntax = "css" | "scss" | "sass"
 
@@ -46,19 +47,20 @@ function minifyCode(code: string, syntax: Syntax): string {
     .trim()
 }
 
-const PLACEHOLDERS: Record<Syntax, string> = {
-  css: "/* Paste kode CSS di sini... */",
-  scss: "// Paste kode SCSS di sini...",
-  sass: "// Paste kode SASS di sini...",
-}
-
 export default function CssFormatterPage() {
+  const { t } = useLanguage()
   const [syntax, setSyntax] = useState<Syntax>("css")
   const [input, setInput] = useState("")
   const [output, setOutput] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [copied, setCopied] = useState(false)
+
+  const placeholders: Record<Syntax, string> = {
+    css: t.cssInputPlaceholder,
+    scss: t.scssInputPlaceholder,
+    sass: t.sassInputPlaceholder,
+  }
 
   const format = async () => {
     if (!input.trim()) return
@@ -138,41 +140,26 @@ export default function CssFormatterPage() {
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium">Input</span>
-            <Button
-              size="sm"
-              variant="ghost"
-              onClick={clear}
-              className="h-7 text-xs"
-            >
-              Clear
+            <Button size="sm" variant="ghost" onClick={clear} className="h-7 text-xs">
+              {t.clear}
             </Button>
           </div>
           <textarea
             className="h-[520px] w-full resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            placeholder={PLACEHOLDERS[syntax]}
+            placeholder={placeholders[syntax]}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             spellCheck={false}
           />
           <div className="flex gap-2">
             <Button size="sm" onClick={format} disabled={!input || loading}>
-              {loading ? "Formatting..." : "Format"}
+              {loading ? t.formatting : t.format}
             </Button>
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={minify}
-              disabled={!input || loading}
-            >
-              Minify
+            <Button size="sm" variant="outline" onClick={minify} disabled={!input || loading}>
+              {t.minify}
             </Button>
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={validate}
-              disabled={!input || loading}
-            >
-              Validate
+            <Button size="sm" variant="outline" onClick={validate} disabled={!input || loading}>
+              {t.validate}
             </Button>
           </div>
         </div>
@@ -187,12 +174,8 @@ export default function CssFormatterPage() {
               disabled={!output}
               className="h-7 gap-1 text-xs"
             >
-              {copied ? (
-                <Check className="size-3" />
-              ) : (
-                <Copy className="size-3" />
-              )}
-              {copied ? "Copied!" : "Copy"}
+              {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
+              {copied ? t.copied : t.copy}
             </Button>
           </div>
           {error ? (
@@ -204,7 +187,7 @@ export default function CssFormatterPage() {
               readOnly
               className="h-[520px] w-full resize-none rounded-md border bg-muted p-3 font-mono text-sm outline-none"
               value={output}
-              placeholder="Output akan muncul di sini..."
+              placeholder={t.outputPlaceholder}
               spellCheck={false}
             />
           )}

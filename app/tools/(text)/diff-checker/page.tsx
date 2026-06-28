@@ -3,6 +3,7 @@
 import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
+import { useLanguage } from "@/contexts/language-context"
 import { cn } from "@/lib/utils"
 
 type DiffLine = {
@@ -75,7 +76,6 @@ function toSideBySide(diff: DiffLine[]): SideBySideRow[] {
       })
       i++
     } else {
-      // Collect a contiguous block of removed + added lines
       const removed: DiffLine[] = []
       const added: DiffLine[] = []
       while (i < diff.length && diff[i].type !== "same") {
@@ -83,7 +83,6 @@ function toSideBySide(diff: DiffLine[]): SideBySideRow[] {
         else added.push(diff[i])
         i++
       }
-      // Pair removed[k] with added[k] on the same row
       const len = Math.max(removed.length, added.length)
       for (let k = 0; k < len; k++) {
         const rem = removed[k] ?? null
@@ -104,6 +103,7 @@ function toSideBySide(diff: DiffLine[]): SideBySideRow[] {
 }
 
 export default function DiffCheckerPage() {
+  const { t } = useLanguage()
   const [textA, setTextA] = useState("")
   const [textB, setTextB] = useState("")
   const [rows, setRows] = useState<SideBySideRow[] | null>(null)
@@ -129,7 +129,7 @@ export default function DiffCheckerPage() {
           <span className="text-sm font-medium">Original</span>
           <textarea
             className="h-52 w-full resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            placeholder="Teks pertama..."
+            placeholder={t.diffFirstPlaceholder}
             value={textA}
             onChange={(e) => { setTextA(e.target.value); setRows(null) }}
             spellCheck={false}
@@ -139,7 +139,7 @@ export default function DiffCheckerPage() {
           <span className="text-sm font-medium">Changed</span>
           <textarea
             className="h-52 w-full resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            placeholder="Teks kedua..."
+            placeholder={t.diffSecondPlaceholder}
             value={textB}
             onChange={(e) => { setTextB(e.target.value); setRows(null) }}
             spellCheck={false}
@@ -152,7 +152,7 @@ export default function DiffCheckerPage() {
           Compare
         </Button>
         <Button variant="ghost" onClick={clear}>
-          Clear
+          {t.clear}
         </Button>
         {rows && (
           <div className="ml-auto flex items-center gap-3 text-sm">
@@ -164,7 +164,6 @@ export default function DiffCheckerPage() {
 
       {rows && (
         <div className="overflow-hidden rounded-md border">
-          {/* Column headers */}
           <div className="grid grid-cols-2 border-b bg-muted/50 text-xs font-medium text-muted-foreground">
             <div className="border-r px-10 py-2">Original</div>
             <div className="px-10 py-2">Changed</div>
@@ -175,7 +174,6 @@ export default function DiffCheckerPage() {
               <tbody>
                 {rows.map((row, idx) => (
                   <tr key={idx} className="border-b last:border-b-0">
-                    {/* Left side */}
                     <td
                       className={cn(
                         "w-10 select-none border-r px-2 py-1 text-right text-xs text-muted-foreground",
@@ -194,8 +192,6 @@ export default function DiffCheckerPage() {
                     >
                       {row.leftContent ?? ""}
                     </td>
-
-                    {/* Right side */}
                     <td
                       className={cn(
                         "w-10 select-none border-r px-2 py-1 text-right text-xs text-muted-foreground",

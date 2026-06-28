@@ -5,8 +5,8 @@ import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { useLanguage } from "@/contexts/language-context"
 
 const CHARSETS = {
   upper: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
@@ -33,23 +33,8 @@ function generatePassword(
   return Array.from(array, (n) => charset[n % charset.length]).join("")
 }
 
-function getStrength(password: string): { label: string; color: string; width: string } {
-  if (!password) return { label: "", color: "", width: "0%" }
-  const has = {
-    upper: /[A-Z]/.test(password),
-    lower: /[a-z]/.test(password),
-    number: /[0-9]/.test(password),
-    symbol: /[^a-zA-Z0-9]/.test(password),
-  }
-  const score = Object.values(has).filter(Boolean).length + (password.length >= 16 ? 1 : 0)
-
-  if (score <= 2) return { label: "Lemah", color: "bg-red-500", width: "25%" }
-  if (score === 3) return { label: "Sedang", color: "bg-yellow-500", width: "50%" }
-  if (score === 4) return { label: "Kuat", color: "bg-blue-500", width: "75%" }
-  return { label: "Sangat Kuat", color: "bg-green-500", width: "100%" }
-}
-
 export default function PasswordGeneratorPage() {
+  const { t } = useLanguage()
   const [length, setLength] = useState(16)
   const [opts, setOpts] = useState({
     upper: true,
@@ -59,6 +44,21 @@ export default function PasswordGeneratorPage() {
   })
   const [password, setPassword] = useState("")
   const [copied, setCopied] = useState(false)
+
+  const getStrength = (pw: string): { label: string; color: string; width: string } => {
+    if (!pw) return { label: "", color: "", width: "0%" }
+    const has = {
+      upper: /[A-Z]/.test(pw),
+      lower: /[a-z]/.test(pw),
+      number: /[0-9]/.test(pw),
+      symbol: /[^a-zA-Z0-9]/.test(pw),
+    }
+    const score = Object.values(has).filter(Boolean).length + (pw.length >= 16 ? 1 : 0)
+    if (score <= 2) return { label: t.passwordWeak, color: "bg-red-500", width: "25%" }
+    if (score === 3) return { label: t.passwordMedium, color: "bg-yellow-500", width: "50%" }
+    if (score === 4) return { label: t.passwordStrong, color: "bg-blue-500", width: "75%" }
+    return { label: t.passwordVeryStrong, color: "bg-green-500", width: "100%" }
+  }
 
   const generate = () => {
     setPassword(generatePassword(length, opts))
@@ -70,20 +70,21 @@ export default function PasswordGeneratorPage() {
     setTimeout(() => setCopied(false), 1500)
   }
 
-  const handleLengthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = parseInt(e.target.value) || 8
-    setLength(Math.min(128, Math.max(4, val)))
-  }
-
   const strength = getStrength(password)
-
   const noneSelected = !opts.upper && !opts.lower && !opts.numbers && !opts.symbols
+
+  const charOptions = [
+    { key: "upper" as const, label: t.passwordUppercase },
+    { key: "lower" as const, label: t.passwordLowercase },
+    { key: "numbers" as const, label: t.passwordNumbers },
+    { key: "symbols" as const, label: t.passwordSymbols },
+  ]
 
   return (
     <div className="flex flex-col gap-6 px-4 lg:px-6 max-w-lg">
       <div className="flex flex-col gap-4 rounded-md border p-4">
         <div className="flex flex-col gap-1.5">
-          <Label htmlFor="length">Panjang Password: {length}</Label>
+          <Label htmlFor="length">{t.passwordLength}: {length}</Label>
           <input
             id="length"
             type="range"
@@ -100,14 +101,7 @@ export default function PasswordGeneratorPage() {
         </div>
 
         <div className="grid grid-cols-2 gap-3">
-          {(
-            [
-              { key: "upper", label: "Huruf Besar (A-Z)" },
-              { key: "lower", label: "Huruf Kecil (a-z)" },
-              { key: "numbers", label: "Angka (0-9)" },
-              { key: "symbols", label: "Simbol (!@#$...)" },
-            ] as const
-          ).map(({ key, label }) => (
+          {charOptions.map(({ key, label }) => (
             <div key={key} className="flex items-center gap-2">
               <Checkbox
                 id={key}
@@ -124,12 +118,12 @@ export default function PasswordGeneratorPage() {
         </div>
 
         {noneSelected && (
-          <p className="text-xs text-destructive">Pilih minimal satu jenis karakter.</p>
+          <p className="text-xs text-destructive">{t.passwordSelectMin}</p>
         )}
 
         <Button onClick={generate} disabled={noneSelected} className="gap-2">
           <RefreshCw className="size-4" />
-          Generate Password
+          {t.passwordGenerateBtn}
         </Button>
       </div>
 
@@ -139,13 +133,13 @@ export default function PasswordGeneratorPage() {
             <span className="flex-1 break-all font-mono text-sm">{password}</span>
             <Button size="sm" variant="ghost" onClick={copy} className="h-7 shrink-0 gap-1 text-xs">
               {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
-              {copied ? "Copied!" : "Copy"}
+              {copied ? t.copied : t.copy}
             </Button>
           </div>
 
           <div className="flex flex-col gap-1.5">
             <div className="flex items-center justify-between text-xs">
-              <span className="text-muted-foreground">Kekuatan</span>
+              <span className="text-muted-foreground">{t.passwordStrength}</span>
               <span className="font-medium">{strength.label}</span>
             </div>
             <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">

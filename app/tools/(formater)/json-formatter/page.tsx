@@ -4,8 +4,10 @@ import { Check, Copy } from "lucide-react"
 import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
+import { useLanguage } from "@/contexts/language-context"
 
 export default function JsonFormatterPage() {
+  const { t } = useLanguage()
   const [input, setInput] = useState("")
   const [output, setOutput] = useState("")
   const [error, setError] = useState<string | null>(null)
@@ -63,7 +65,7 @@ export default function JsonFormatterPage() {
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium">Input</span>
             <Button size="sm" variant="ghost" onClick={clear} className="h-7 text-xs">
-              Clear
+              {t.clear}
             </Button>
           </div>
           <textarea
@@ -97,7 +99,7 @@ export default function JsonFormatterPage() {
               className="h-7 gap-1 text-xs"
             >
               {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
-              {copied ? "Copied!" : "Copy"}
+              {copied ? t.copied : t.copy}
             </Button>
           </div>
           {error ? (
@@ -109,7 +111,7 @@ export default function JsonFormatterPage() {
               readOnly
               className="h-[520px] w-full resize-none rounded-md border bg-muted p-3 font-mono text-sm outline-none"
               value={output}
-              placeholder="Output akan muncul di sini..."
+              placeholder={t.outputPlaceholder}
               spellCheck={false}
             />
           )}

@@ -6,8 +6,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-
-// --- Conversion utils ---
+import { useLanguage } from "@/contexts/language-context"
 
 function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
   const clean = hex.replace("#", "")
@@ -31,7 +30,6 @@ function rgbToHsl(r: number, g: number, b: number): { h: number; s: number; l: n
   const max = Math.max(rn, gn, bn), min = Math.min(rn, gn, bn)
   const l = (max + min) / 2
   if (max === min) return { h: 0, s: 0, l: Math.round(l * 100) }
-
   const d = max - min
   const s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
   let h = 0
@@ -97,6 +95,7 @@ function CopyButton({ text }: { text: string }) {
 }
 
 export default function ColorConverterPage() {
+  const { t } = useLanguage()
   const [color, setColor] = useState<Color | null>(null)
   const [hexInput, setHexInput] = useState("")
   const [rgbInput, setRgbInput] = useState({ r: "", g: "", b: "" })
@@ -144,7 +143,6 @@ export default function ColorConverterPage() {
         />
       )}
 
-      {/* HEX */}
       <div className="flex flex-col gap-1.5">
         <Label>HEX</Label>
         <div className="flex gap-2">
@@ -159,7 +157,6 @@ export default function ColorConverterPage() {
         </div>
       </div>
 
-      {/* RGB */}
       <div className="flex flex-col gap-1.5">
         <Label>RGB</Label>
         <div className="flex items-center gap-2">
@@ -187,7 +184,6 @@ export default function ColorConverterPage() {
         )}
       </div>
 
-      {/* HSL */}
       <div className="flex flex-col gap-1.5">
         <Label>HSL</Label>
         <div className="flex items-center gap-2">
@@ -221,7 +217,6 @@ export default function ColorConverterPage() {
         )}
       </div>
 
-      {/* Native color picker */}
       <div className="flex items-center gap-3">
         <Label>Color Picker</Label>
         <input
@@ -238,7 +233,7 @@ export default function ColorConverterPage() {
           }}
           className="h-9 w-16 cursor-pointer rounded-md border bg-transparent p-1"
         />
-        <span className="text-xs text-muted-foreground">Klik untuk pilih warna</span>
+        <span className="text-xs text-muted-foreground">{t.colorPickerHint}</span>
       </div>
     </div>
   )

@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { useLanguage } from "@/contexts/language-context"
 import { cn } from "@/lib/utils"
 
 interface Match {
@@ -71,6 +72,7 @@ const FLAG_OPTIONS = [
 ]
 
 export default function RegexTesterPage() {
+  const { t } = useLanguage()
   const [pattern, setPattern] = useState("")
   const [flags, setFlags] = useState("g")
   const [testStr, setTestStr] = useState("")
@@ -113,7 +115,7 @@ export default function RegexTesterPage() {
           <span className="font-mono text-muted-foreground">{flags || " "}</span>
         </div>
         {isInvalidRegex && (
-          <p className="text-xs text-destructive">Regex tidak valid</p>
+          <p className="text-xs text-destructive">{t.regexInvalid}</p>
         )}
 
         <div className="flex items-center gap-2 mt-1">
@@ -137,7 +139,7 @@ export default function RegexTesterPage() {
         <Label>Test String</Label>
         <textarea
           className="h-40 w-full resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          placeholder="Masukkan teks untuk ditest..."
+          placeholder={t.regexTestPlaceholder}
           value={testStr}
           onChange={(e) => setTestStr(e.target.value)}
           spellCheck={false}

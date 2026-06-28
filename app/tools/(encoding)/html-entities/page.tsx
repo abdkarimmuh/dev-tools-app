@@ -4,6 +4,7 @@ import { Check, Copy } from "lucide-react"
 import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
+import { useLanguage } from "@/contexts/language-context"
 
 function encodeHtmlEntities(str: string): string {
   return str
@@ -21,6 +22,7 @@ function decodeHtmlEntities(str: string): string {
 }
 
 export default function HtmlEntitiesPage() {
+  const { t } = useLanguage()
   const [input, setInput] = useState("")
   const [output, setOutput] = useState("")
   const [error, setError] = useState<string | null>(null)
@@ -36,7 +38,7 @@ export default function HtmlEntitiesPage() {
       setOutput(decodeHtmlEntities(input))
       setError(null)
     } catch {
-      setError("Gagal mendecode HTML entities.")
+      setError(t.htmlEntitiesDecodeError)
     }
   }
 
@@ -65,26 +67,26 @@ export default function HtmlEntitiesPage() {
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium">Input</span>
             <Button size="sm" variant="ghost" onClick={clear} className="h-7 text-xs">
-              Clear
+              {t.clear}
             </Button>
           </div>
           <textarea
             className="h-[520px] w-full resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            placeholder={`Contoh encode: <div class="hello">\nContoh decode: &lt;div class=&quot;hello&quot;&gt;`}
+            placeholder={`${t.htmlEntitiesEncodeExample}: <div class="hello">\n${t.htmlEntitiesDecodeExample}: &lt;div class=&quot;hello&quot;&gt;`}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             spellCheck={false}
           />
           <div className="flex gap-2">
             <Button size="sm" onClick={encode} disabled={!input}>
-              Encode
+              {t.encode}
             </Button>
             <Button size="sm" variant="outline" onClick={decode} disabled={!input}>
-              Decode
+              {t.decode}
             </Button>
             {output && (
               <Button size="sm" variant="ghost" onClick={swap} className="ml-auto">
-                Swap ↕
+                {t.swap}
               </Button>
             )}
           </div>
@@ -101,7 +103,7 @@ export default function HtmlEntitiesPage() {
               className="h-7 gap-1 text-xs"
             >
               {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
-              {copied ? "Copied!" : "Copy"}
+              {copied ? t.copied : t.copy}
             </Button>
           </div>
           {error ? (
@@ -113,7 +115,7 @@ export default function HtmlEntitiesPage() {
               readOnly
               className="h-[520px] w-full resize-none rounded-md border bg-muted p-3 font-mono text-sm outline-none"
               value={output}
-              placeholder="Output akan muncul di sini..."
+              placeholder={t.outputPlaceholder}
               spellCheck={false}
             />
           )}

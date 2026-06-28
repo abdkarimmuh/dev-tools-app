@@ -13,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { useLanguage } from "@/contexts/language-context"
 
 const WORDS = [
   "lorem","ipsum","dolor","sit","amet","consectetur","adipiscing","elit",
@@ -53,6 +54,7 @@ function generateParagraph(): string {
 type Unit = "words" | "sentences" | "paragraphs"
 
 export default function LoremIpsumPage() {
+  const { t } = useLanguage()
   const [unit, setUnit] = useState<Unit>("paragraphs")
   const [count, setCount] = useState(3)
   const [output, setOutput] = useState("")
@@ -85,7 +87,7 @@ export default function LoremIpsumPage() {
     <div className="flex flex-col gap-6 px-4 lg:px-6">
       <div className="flex flex-wrap items-end gap-3">
         <div className="flex flex-col gap-1.5">
-          <Label>Jumlah</Label>
+          <Label>{t.loremCount}</Label>
           <Input
             type="number"
             min={1}
@@ -96,21 +98,21 @@ export default function LoremIpsumPage() {
           />
         </div>
         <div className="flex flex-col gap-1.5">
-          <Label>Satuan</Label>
+          <Label>{t.loremUnit}</Label>
           <Select value={unit} onValueChange={(v) => setUnit(v as Unit)}>
             <SelectTrigger className="w-36">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="words">Kata</SelectItem>
-              <SelectItem value="sentences">Kalimat</SelectItem>
-              <SelectItem value="paragraphs">Paragraf</SelectItem>
+              <SelectItem value="words">{t.loremWords}</SelectItem>
+              <SelectItem value="sentences">{t.loremSentences}</SelectItem>
+              <SelectItem value="paragraphs">{t.loremParagraphs}</SelectItem>
             </SelectContent>
           </Select>
         </div>
         <Button onClick={generate} className="gap-2">
           <RefreshCw className="size-4" />
-          Generate
+          {t.generate}
         </Button>
       </div>
 
@@ -118,16 +120,11 @@ export default function LoremIpsumPage() {
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
             <span className="text-sm text-muted-foreground">
-              {output.split(/\s+/).filter(Boolean).length} kata
+              {output.split(/\s+/).filter(Boolean).length} {t.loremWordCountUnit}
             </span>
-            <Button
-              size="sm"
-              variant="ghost"
-              onClick={copy}
-              className="h-7 gap-1 text-xs"
-            >
+            <Button size="sm" variant="ghost" onClick={copy} className="h-7 gap-1 text-xs">
               {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
-              {copied ? "Copied!" : "Copy"}
+              {copied ? t.copied : t.copy}
             </Button>
           </div>
           <div className="min-h-64 rounded-md border bg-muted p-4 text-sm leading-relaxed whitespace-pre-wrap">
@@ -136,7 +133,7 @@ export default function LoremIpsumPage() {
         </div>
       ) : (
         <div className="flex h-40 items-center justify-center rounded-md border border-dashed text-sm text-muted-foreground">
-          Klik Generate untuk membuat teks Lorem Ipsum
+          {t.loremEmptyState}
         </div>
       )}
     </div>

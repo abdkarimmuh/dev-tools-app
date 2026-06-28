@@ -13,47 +13,38 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { useLanguage } from "@/contexts/language-context"
 
 type UuidVersion = "v1" | "v4" | "v7"
 
-// UUID v1: time-based + random node
 function generateV1(): string {
   const bytes = new Uint8Array(16)
   crypto.getRandomValues(bytes)
-
   const EPOCH_OFFSET = 122192928000000000n
   const timestamp = BigInt(Date.now()) * 10000n + EPOCH_OFFSET
-
   const tLow = timestamp & 0xffffffffn
   const tMid = (timestamp >> 32n) & 0xffffn
   const tHi = (timestamp >> 48n) & 0x0fffn
-
   bytes[0] = Number((tLow >> 24n) & 0xffn)
   bytes[1] = Number((tLow >> 16n) & 0xffn)
   bytes[2] = Number((tLow >> 8n) & 0xffn)
   bytes[3] = Number(tLow & 0xffn)
   bytes[4] = Number((tMid >> 8n) & 0xffn)
   bytes[5] = Number(tMid & 0xffn)
-  bytes[6] = (Number(tHi >> 8n) & 0x0f) | 0x10 // version 1
+  bytes[6] = (Number(tHi >> 8n) & 0x0f) | 0x10
   bytes[7] = Number(tHi & 0xffn)
-  bytes[8] = (bytes[8] & 0x3f) | 0x80 // variant 10xx
-
-  const hex = Array.from(bytes)
-    .map((b) => b.toString(16).padStart(2, "0"))
-    .join("")
+  bytes[8] = (bytes[8] & 0x3f) | 0x80
+  const hex = Array.from(bytes).map((b) => b.toString(16).padStart(2, "0")).join("")
   return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`
 }
 
-// UUID v4: fully random
 function generateV4(): string {
   return crypto.randomUUID()
 }
 
-// UUID v7: time-ordered random
 function generateV7(): string {
   const bytes = new Uint8Array(16)
   crypto.getRandomValues(bytes)
-
   const ms = BigInt(Date.now())
   bytes[0] = Number((ms >> 40n) & 0xffn)
   bytes[1] = Number((ms >> 32n) & 0xffn)
@@ -61,12 +52,9 @@ function generateV7(): string {
   bytes[3] = Number((ms >> 16n) & 0xffn)
   bytes[4] = Number((ms >> 8n) & 0xffn)
   bytes[5] = Number(ms & 0xffn)
-  bytes[6] = (bytes[6] & 0x0f) | 0x70 // version 7
-  bytes[8] = (bytes[8] & 0x3f) | 0x80 // variant 10xx
-
-  const hex = Array.from(bytes)
-    .map((b) => b.toString(16).padStart(2, "0"))
-    .join("")
+  bytes[6] = (bytes[6] & 0x0f) | 0x70
+  bytes[8] = (bytes[8] & 0x3f) | 0x80
+  const hex = Array.from(bytes).map((b) => b.toString(16).padStart(2, "0")).join("")
   return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`
 }
 
@@ -83,6 +71,7 @@ const generators: Record<UuidVersion, () => string> = {
 }
 
 export default function UuidGeneratorPage() {
+  const { t } = useLanguage()
   const [version, setVersion] = useState<UuidVersion>("v4")
   const [count, setCount] = useState(1)
   const [uuids, setUuids] = useState<string[]>([])
@@ -114,11 +103,8 @@ export default function UuidGeneratorPage() {
     <div className="flex flex-col gap-6 px-4 lg:px-6">
       <div className="flex flex-wrap items-end gap-3">
         <div className="flex flex-col gap-1.5">
-          <Label>Versi</Label>
-          <Select
-            value={version}
-            onValueChange={(v) => setVersion(v as UuidVersion)}
-          >
+          <Label>{t.uuidVersion}</Label>
+          <Select value={version} onValueChange={(v) => setVersion(v as UuidVersion)}>
             <SelectTrigger className="w-44">
               <SelectValue />
             </SelectTrigger>
@@ -130,7 +116,7 @@ export default function UuidGeneratorPage() {
           </Select>
         </div>
         <div className="flex flex-col gap-1.5">
-          <Label htmlFor="count">Jumlah</Label>
+          <Label htmlFor="count">{t.uuidCount}</Label>
           <Input
             id="count"
             type="number"
@@ -143,25 +129,19 @@ export default function UuidGeneratorPage() {
         </div>
         <Button onClick={generate} className="gap-2">
           <RefreshCw className="size-4" />
-          Generate
+          {t.generate}
         </Button>
         {uuids.length > 0 && (
           <Button variant="outline" onClick={copyAll} className="gap-2">
-            {copiedAll ? (
-              <Check className="size-4" />
-            ) : (
-              <Copy className="size-4" />
-            )}
-            {copiedAll ? "Copied!" : "Copy All"}
+            {copiedAll ? <Check className="size-4" /> : <Copy className="size-4" />}
+            {copiedAll ? t.copied : t.copyAll}
           </Button>
         )}
       </div>
 
       {uuids.length > 0 && (
         <div className="flex flex-col gap-2">
-          <p className="text-xs text-muted-foreground">
-            {VERSION_LABELS[version]}
-          </p>
+          <p className="text-xs text-muted-foreground">{VERSION_LABELS[version]}</p>
           {uuids.map((uuid, i) => (
             <div
               key={i}
@@ -174,12 +154,8 @@ export default function UuidGeneratorPage() {
                 onClick={() => copyOne(uuid, i)}
                 className="ml-4 h-7 gap-1 text-xs"
               >
-                {copiedIndex === i ? (
-                  <Check className="size-3" />
-                ) : (
-                  <Copy className="size-3" />
-                )}
-                {copiedIndex === i ? "Copied!" : "Copy"}
+                {copiedIndex === i ? <Check className="size-3" /> : <Copy className="size-3" />}
+                {copiedIndex === i ? t.copied : t.copy}
               </Button>
             </div>
           ))}
@@ -188,7 +164,7 @@ export default function UuidGeneratorPage() {
 
       {uuids.length === 0 && (
         <div className="flex h-40 items-center justify-center rounded-md border border-dashed text-sm text-muted-foreground">
-          Klik Generate untuk membuat UUID
+          {t.uuidEmptyState}
         </div>
       )}
     </div>

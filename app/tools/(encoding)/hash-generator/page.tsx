@@ -12,6 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { useLanguage } from "@/contexts/language-context"
 
 type Algorithm = "SHA-1" | "SHA-256" | "SHA-384" | "SHA-512"
 
@@ -26,6 +27,7 @@ async function computeHash(algorithm: Algorithm, text: string): Promise<string> 
 }
 
 export default function HashGeneratorPage() {
+  const { t } = useLanguage()
   const [input, setInput] = useState("")
   const [algorithm, setAlgorithm] = useState<Algorithm>("SHA-256")
   const [output, setOutput] = useState("")
@@ -55,7 +57,7 @@ export default function HashGeneratorPage() {
         <Label>Input</Label>
         <textarea
           className="h-40 w-full resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          placeholder="Masukkan teks untuk di-hash..."
+          placeholder={t.hashInputPlaceholder}
           value={input}
           onChange={(e) => {
             setInput(e.target.value)
@@ -67,7 +69,7 @@ export default function HashGeneratorPage() {
 
       <div className="flex flex-wrap items-end gap-3">
         <div className="flex flex-col gap-1.5">
-          <Label>Algoritma</Label>
+          <Label>{t.hashAlgorithm}</Label>
           <Select
             value={algorithm}
             onValueChange={(v) => {
@@ -88,7 +90,7 @@ export default function HashGeneratorPage() {
           </Select>
         </div>
         <Button onClick={generate} disabled={!input || loading}>
-          {loading ? "Menghitung..." : "Generate Hash"}
+          {loading ? t.hashComputing : t.hashGenerateBtn}
         </Button>
       </div>
 
@@ -103,7 +105,7 @@ export default function HashGeneratorPage() {
               className="h-7 gap-1 text-xs"
             >
               {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
-              {copied ? "Copied!" : "Copy"}
+              {copied ? t.copied : t.copy}
             </Button>
           </div>
           <div className="rounded-md border bg-muted p-3 font-mono text-sm break-all">

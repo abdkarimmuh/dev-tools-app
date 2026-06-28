@@ -4,6 +4,7 @@ import { Check, Copy } from "lucide-react"
 import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
+import { useLanguage } from "@/contexts/language-context"
 
 function toWords(str: string): string[] {
   return str
@@ -61,7 +62,7 @@ const conversions = [
   },
 ]
 
-function CopyButton({ text }: { text: string }) {
+function CopyButton({ text, copyLabel, copiedLabel }: { text: string; copyLabel: string; copiedLabel: string }) {
   const [copied, setCopied] = useState(false)
   const copy = async () => {
     await navigator.clipboard.writeText(text)
@@ -71,12 +72,13 @@ function CopyButton({ text }: { text: string }) {
   return (
     <Button size="sm" variant="ghost" onClick={copy} className="h-7 shrink-0 gap-1 text-xs">
       {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
-      {copied ? "Copied!" : "Copy"}
+      {copied ? copiedLabel : copyLabel}
     </Button>
   )
 }
 
 export default function CaseConverterPage() {
+  const { t } = useLanguage()
   const [input, setInput] = useState("")
 
   return (
@@ -105,14 +107,14 @@ export default function CaseConverterPage() {
                   <span className="text-xs text-muted-foreground">{label}</span>
                   <span className="truncate font-mono text-sm">{result}</span>
                 </div>
-                <CopyButton text={result} />
+                <CopyButton text={result} copyLabel={t.copy} copiedLabel={t.copied} />
               </div>
             )
           })}
         </div>
       ) : (
         <div className="flex h-40 items-center justify-center rounded-md border border-dashed text-sm text-muted-foreground">
-          Masukkan teks untuk melihat konversi
+          {t.caseEmptyState}
         </div>
       )}
     </div>

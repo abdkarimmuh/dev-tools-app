@@ -8,6 +8,7 @@ import { SiteHeader } from "@/components/layouts/site-header"
 import { ThemeProvider } from "@/components/theme-provider"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { TooltipProvider } from "@/components/ui/tooltip"
+import { LanguageProvider } from "@/contexts/language-context"
 import { cn } from "@/lib/utils"
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" })
@@ -39,21 +40,23 @@ export default function RootLayout({
     >
       <body>
         <ThemeProvider>
-          <TooltipProvider>
-            <SidebarProvider>
-              <AppSidebar variant="inset" />
-              <SidebarInset>
-                <SiteHeader />
-                <div className="flex flex-1 flex-col">
-                  <div className="@container/main flex flex-1 flex-col gap-2">
-                    <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-                      {children}
+          <LanguageProvider>
+            <TooltipProvider>
+              <SidebarProvider>
+                <AppSidebar variant="inset" />
+                <SidebarInset>
+                  <SiteHeader />
+                  <div className="flex flex-1 flex-col">
+                    <div className="@container/main flex flex-1 flex-col gap-2">
+                      <div className="flex flex-1 flex-col gap-4 py-4 md:gap-6 md:py-6">
+                        {children}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </SidebarInset>
-            </SidebarProvider>
-          </TooltipProvider>
+                </SidebarInset>
+              </SidebarProvider>
+            </TooltipProvider>
+          </LanguageProvider>
         </ThemeProvider>
       </body>
     </html>

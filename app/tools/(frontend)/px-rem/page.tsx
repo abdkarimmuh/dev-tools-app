@@ -6,6 +6,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { useLanguage } from "@/contexts/language-context"
 
 const COMMON_PX = [8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 36, 40, 48, 56, 64, 72, 80, 96]
 
@@ -28,6 +29,7 @@ function CopyButton({ text }: { text: string }) {
 }
 
 export default function PxRemPage() {
+  const { t } = useLanguage()
   const [base, setBase] = useState(16)
   const [pxInput, setPxInput] = useState("")
   const [remInput, setRemInput] = useState("")
@@ -109,7 +111,7 @@ export default function PxRemPage() {
       </div>
 
       <div className="flex flex-col gap-2">
-        <h3 className="text-sm font-medium">Tabel Referensi (base {base}px)</h3>
+        <h3 className="text-sm font-medium">{t.pxRemReferenceTable} (base {base}px)</h3>
         <div className="overflow-hidden rounded-md border">
           <table className="w-full text-sm">
             <thead>

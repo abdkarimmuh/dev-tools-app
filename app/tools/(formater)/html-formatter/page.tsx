@@ -4,13 +4,14 @@ import { Check, Copy } from "lucide-react"
 import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
+import { useLanguage } from "@/contexts/language-context"
 
 async function formatHtml(code: string): Promise<string> {
   const [prettier, htmlPlugin] = await Promise.all([
     import("prettier/standalone"),
     import("prettier/plugins/html"),
   ])
-   
+
   return prettier.format(code, {
     parser: "html",
     plugins: [htmlPlugin] as any[],
@@ -31,6 +32,7 @@ function minifyHtml(code: string): string {
 }
 
 export default function HtmlFormatterPage() {
+  const { t } = useLanguage()
   const [input, setInput] = useState("")
   const [output, setOutput] = useState("")
   const [error, setError] = useState<string | null>(null)
@@ -96,25 +98,25 @@ export default function HtmlFormatterPage() {
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium">Input</span>
             <Button size="sm" variant="ghost" onClick={clear} className="h-7 text-xs">
-              Clear
+              {t.clear}
             </Button>
           </div>
           <textarea
             className="h-[520px] w-full resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            placeholder="<!-- Paste kode HTML di sini... -->"
+            placeholder={t.htmlInputPlaceholder}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             spellCheck={false}
           />
           <div className="flex gap-2">
             <Button size="sm" onClick={format} disabled={!input || loading}>
-              {loading ? "Formatting..." : "Format"}
+              {loading ? t.formatting : t.format}
             </Button>
             <Button size="sm" variant="outline" onClick={minify} disabled={!input || loading}>
-              Minify
+              {t.minify}
             </Button>
             <Button size="sm" variant="outline" onClick={validate} disabled={!input || loading}>
-              Validate
+              {t.validate}
             </Button>
           </div>
         </div>
@@ -130,7 +132,7 @@ export default function HtmlFormatterPage() {
               className="h-7 gap-1 text-xs"
             >
               {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
-              {copied ? "Copied!" : "Copy"}
+              {copied ? t.copied : t.copy}
             </Button>
           </div>
           {error ? (
@@ -142,7 +144,7 @@ export default function HtmlFormatterPage() {
               readOnly
               className="h-[520px] w-full resize-none rounded-md border bg-muted p-3 font-mono text-sm outline-none"
               value={output}
-              placeholder="Output akan muncul di sini..."
+              placeholder={t.outputPlaceholder}
               spellCheck={false}
             />
           )}

@@ -4,8 +4,10 @@ import { Check, Copy } from "lucide-react"
 import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
+import { useLanguage } from "@/contexts/language-context"
 
 export default function Base64Page() {
+  const { t } = useLanguage()
   const [input, setInput] = useState("")
   const [output, setOutput] = useState("")
   const [error, setError] = useState<string | null>(null)
@@ -16,7 +18,7 @@ export default function Base64Page() {
       setOutput(btoa(unescape(encodeURIComponent(input))))
       setError(null)
     } catch {
-      setError("Gagal mengencoding teks. Periksa input Anda.")
+      setError(t.base64EncodeError)
     }
   }
 
@@ -25,7 +27,7 @@ export default function Base64Page() {
       setOutput(decodeURIComponent(escape(atob(input))))
       setError(null)
     } catch {
-      setError("Input bukan Base64 yang valid.")
+      setError(t.base64DecodeError)
     }
   }
 
@@ -54,26 +56,26 @@ export default function Base64Page() {
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium">Input</span>
             <Button size="sm" variant="ghost" onClick={clear} className="h-7 text-xs">
-              Clear
+              {t.clear}
             </Button>
           </div>
           <textarea
             className="h-[520px] w-full resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            placeholder="Masukkan teks atau string Base64..."
+            placeholder={t.base64InputPlaceholder}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             spellCheck={false}
           />
           <div className="flex gap-2">
             <Button size="sm" onClick={encode} disabled={!input}>
-              Encode
+              {t.encode}
             </Button>
             <Button size="sm" variant="outline" onClick={decode} disabled={!input}>
-              Decode
+              {t.decode}
             </Button>
             {output && (
               <Button size="sm" variant="ghost" onClick={swap} className="ml-auto">
-                Swap ↕
+                {t.swap}
               </Button>
             )}
           </div>
@@ -90,7 +92,7 @@ export default function Base64Page() {
               className="h-7 gap-1 text-xs"
             >
               {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
-              {copied ? "Copied!" : "Copy"}
+              {copied ? t.copied : t.copy}
             </Button>
           </div>
           {error ? (
@@ -102,7 +104,7 @@ export default function Base64Page() {
               readOnly
               className="h-[520px] w-full resize-none rounded-md border bg-muted p-3 font-mono text-sm outline-none"
               value={output}
-              placeholder="Output akan muncul di sini..."
+              placeholder={t.outputPlaceholder}
               spellCheck={false}
             />
           )}

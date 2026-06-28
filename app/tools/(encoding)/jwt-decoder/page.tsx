@@ -5,6 +5,7 @@ import { useState } from "react"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { useLanguage } from "@/contexts/language-context"
 
 function base64UrlDecode(str: string): string {
   const base64 = str.replace(/-/g, "+").replace(/_/g, "/")
@@ -18,10 +19,10 @@ interface JwtParts {
   signature: string
 }
 
-function decodeJwt(token: string): JwtParts {
+function decodeJwt(token: string, invalidMsg: string): JwtParts {
   const parts = token.trim().split(".")
   if (parts.length !== 3) {
-    throw new Error("Token JWT tidak valid. Harus memiliki 3 bagian (header.payload.signature).")
+    throw new Error(invalidMsg)
   }
   const header = JSON.parse(base64UrlDecode(parts[0]))
   const payload = JSON.parse(base64UrlDecode(parts[1]))
@@ -40,24 +41,38 @@ function formatTimestamp(val: unknown): string {
 
 interface CopyButtonProps {
   text: string
+  copy: string
+  copied: string
 }
 
-function CopyButton({ text }: CopyButtonProps) {
-  const [copied, setCopied] = useState(false)
-  const copy = async () => {
+function CopyButton({ text, copy: copyLabel, copied: copiedLabel }: CopyButtonProps) {
+  const [isCopied, setIsCopied] = useState(false)
+  const handleCopy = async () => {
     await navigator.clipboard.writeText(text)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
+    setIsCopied(true)
+    setTimeout(() => setIsCopied(false), 1500)
   }
   return (
-    <Button size="sm" variant="ghost" onClick={copy} className="h-7 gap-1 text-xs">
-      {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
-      {copied ? "Copied!" : "Copy"}
+    <Button size="sm" variant="ghost" onClick={handleCopy} className="h-7 gap-1 text-xs">
+      {isCopied ? <Check className="size-3" /> : <Copy className="size-3" />}
+      {isCopied ? copiedLabel : copyLabel}
     </Button>
   )
 }
 
-function JsonBlock({ label, data, badge }: { label: string; data: unknown; badge?: React.ReactNode }) {
+function JsonBlock({
+  label,
+  data,
+  badge,
+  copyLabel,
+  copiedLabel,
+}: {
+  label: string
+  data: unknown
+  badge?: React.ReactNode
+  copyLabel: string
+  copiedLabel: string
+}) {
   const json = JSON.stringify(data, null, 2)
   return (
     <div className="flex flex-col gap-1.5">
@@ -66,7 +81,7 @@ function JsonBlock({ label, data, badge }: { label: string; data: unknown; badge
           <span className="text-sm font-medium">{label}</span>
           {badge}
         </div>
-        <CopyButton text={json} />
+        <CopyButton text={json} copy={copyLabel} copied={copiedLabel} />
       </div>
       <pre className="overflow-auto rounded-md border bg-muted p-3 font-mono text-sm">
         {json}
@@ -76,13 +91,14 @@ function JsonBlock({ label, data, badge }: { label: string; data: unknown; badge
 }
 
 export default function JwtDecoderPage() {
+  const { t } = useLanguage()
   const [token, setToken] = useState("")
   const [decoded, setDecoded] = useState<JwtParts | null>(null)
   const [error, setError] = useState<string | null>(null)
 
   const decode = () => {
     try {
-      setDecoded(decodeJwt(token))
+      setDecoded(decodeJwt(token, t.jwtInvalidError))
       setError(null)
     } catch (e) {
       setError((e as Error).message)
@@ -123,14 +139,14 @@ export default function JwtDecoderPage() {
         />
         <div className="flex gap-2">
           <Button onClick={decode} disabled={!token}>
-            Decode
+            {t.decode}
           </Button>
           <Button variant="ghost" onClick={clear}>
-            Clear
+            {t.clear}
           </Button>
           {decoded && (
             <Badge variant={expired ? "destructive" : "secondary"} className="ml-auto">
-              {expired ? "Expired" : "Valid (tidak diverifikasi)"}
+              {expired ? t.jwtExpired : t.jwtValid}
             </Badge>
           )}
         </div>
@@ -144,15 +160,12 @@ export default function JwtDecoderPage() {
 
       {decoded && (
         <div className="flex flex-col gap-4">
-          <JsonBlock label="Header" data={decoded.header} />
-          <JsonBlock
-            label="Payload"
-            data={displayPayload}
-          />
+          <JsonBlock label="Header" data={decoded.header} copyLabel={t.copy} copiedLabel={t.copied} />
+          <JsonBlock label="Payload" data={displayPayload} copyLabel={t.copy} copiedLabel={t.copied} />
           <div className="flex flex-col gap-1.5">
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium">Signature</span>
-              <CopyButton text={decoded.signature} />
+              <CopyButton text={decoded.signature} copy={t.copy} copied={t.copied} />
             </div>
             <div className="overflow-auto rounded-md border bg-muted p-3 font-mono text-sm break-all">
               {decoded.signature}

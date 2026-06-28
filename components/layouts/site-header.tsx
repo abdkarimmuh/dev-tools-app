@@ -1,19 +1,28 @@
 "use client"
 
-import { Moon, Sun } from "lucide-react"
+import { Globe, Moon, Sun } from "lucide-react"
 import { usePathname } from "next/navigation"
 import { useTheme } from "next-themes"
 
 import { ToolSearch } from "@/components/layouts/tool-search"
 import { Button } from "@/components/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import { navTitleMap } from "@/config/nav"
+import { useLanguage } from "@/contexts/language-context"
 
 export function SiteHeader() {
   const pathname = usePathname()
-  const title = pathname === "/" ? "Home" : (navTitleMap[pathname] ?? "Dev Tools")
   const { resolvedTheme, setTheme } = useTheme()
+  const { language, setLanguage, t } = useLanguage()
+
+  const title = pathname === "/" ? t.navHome : (navTitleMap[pathname] ?? "Dev Tools")
 
   return (
     <header className="flex h-(--header-height) shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
@@ -23,6 +32,28 @@ export function SiteHeader() {
         <h1 className="text-base font-medium">{title}</h1>
         <div className="ml-auto flex items-center gap-2">
           <ToolSearch />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="sm" className="gap-1.5 px-2 font-mono text-xs font-semibold">
+                <Globe className="size-3.5" />
+                {language.toUpperCase()}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem
+                onClick={() => setLanguage("id")}
+                className={language === "id" ? "font-semibold" : ""}
+              >
+                ID — Indonesia
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => setLanguage("en")}
+                className={language === "en" ? "font-semibold" : ""}
+              >
+                EN — English
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <Button
             variant="ghost"
             size="icon"
