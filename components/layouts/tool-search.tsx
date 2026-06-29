@@ -51,13 +51,21 @@ export function ToolSearch() {
         </kbd>
       </button>
 
-      <CommandDialog open={open} onOpenChange={setOpen} title={t.searchDialogTitle} description={t.searchDialogDesc}>
+      <CommandDialog
+        open={open}
+        onOpenChange={setOpen}
+        title={t.searchDialogTitle}
+        description={t.searchDialogDesc}
+      >
         <Command>
           <CommandInput placeholder={t.searchPlaceholder} />
           <CommandList>
             <CommandEmpty>{t.searchEmpty}</CommandEmpty>
             {navMenus.map((group) => (
-              <CommandGroup key={group.label} heading={navGroupLabels[language][group.label] ?? group.label}>
+              <CommandGroup
+                key={group.label}
+                heading={navGroupLabels[language][group.label] ?? group.label}
+              >
                 {group.items.map((item) => (
                   <CommandItem
                     key={item.url}

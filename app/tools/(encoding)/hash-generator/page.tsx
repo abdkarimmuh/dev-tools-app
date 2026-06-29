@@ -13,12 +13,16 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { useLanguage } from "@/contexts/language-context"
+import { useStorage } from "@/hooks/use-storage"
 
 type Algorithm = "SHA-1" | "SHA-256" | "SHA-384" | "SHA-512"
 
 const ALGORITHMS: Algorithm[] = ["SHA-1", "SHA-256", "SHA-384", "SHA-512"]
 
-async function computeHash(algorithm: Algorithm, text: string): Promise<string> {
+async function computeHash(
+  algorithm: Algorithm,
+  text: string
+): Promise<string> {
   const buffer = new TextEncoder().encode(text)
   const hashBuffer = await crypto.subtle.digest(algorithm, buffer)
   return Array.from(new Uint8Array(hashBuffer))
@@ -28,8 +32,11 @@ async function computeHash(algorithm: Algorithm, text: string): Promise<string> 
 
 export default function HashGeneratorPage() {
   const { t } = useLanguage()
-  const [input, setInput] = useState("")
-  const [algorithm, setAlgorithm] = useState<Algorithm>("SHA-256")
+  const [input, setInput] = useStorage("hash-generator:input", "")
+  const [algorithm, setAlgorithm] = useStorage<Algorithm>(
+    "hash-generator:algorithm",
+    "SHA-256"
+  )
   const [output, setOutput] = useState("")
   const [loading, setLoading] = useState(false)
   const [copied, setCopied] = useState(false)
@@ -52,7 +59,7 @@ export default function HashGeneratorPage() {
   }
 
   return (
-    <div className="flex flex-col gap-6 px-4 lg:px-6 max-w-3xl">
+    <div className="flex max-w-3xl flex-col gap-6 px-4 lg:px-6">
       <div className="flex flex-col gap-2">
         <Label>Input</Label>
         <textarea
@@ -104,7 +111,11 @@ export default function HashGeneratorPage() {
               onClick={copy}
               className="h-7 gap-1 text-xs"
             >
-              {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
+              {copied ? (
+                <Check className="size-3" />
+              ) : (
+                <Copy className="size-3" />
+              )}
               {copied ? t.copied : t.copy}
             </Button>
           </div>

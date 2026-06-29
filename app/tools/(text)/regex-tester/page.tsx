@@ -1,12 +1,13 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useMemo } from "react"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useLanguage } from "@/contexts/language-context"
+import { useStorage } from "@/hooks/use-storage"
 import { cn } from "@/lib/utils"
 
 interface Match {
@@ -16,7 +17,11 @@ interface Match {
   groups: string[]
 }
 
-function findMatches(pattern: string, flags: string, text: string): Match[] | null {
+function findMatches(
+  pattern: string,
+  flags: string,
+  text: string
+): Match[] | null {
   try {
     const regex = new RegExp(pattern, flags.includes("g") ? flags : flags + "g")
     const results: Match[] = []
@@ -36,7 +41,13 @@ function findMatches(pattern: string, flags: string, text: string): Match[] | nu
   }
 }
 
-function HighlightedText({ text, matches }: { text: string; matches: Match[] }) {
+function HighlightedText({
+  text,
+  matches,
+}: {
+  text: string
+  matches: Match[]
+}) {
   if (!matches.length) return <span>{text}</span>
 
   const parts: React.ReactNode[] = []
@@ -73,14 +84,12 @@ const FLAG_OPTIONS = [
 
 export default function RegexTesterPage() {
   const { t } = useLanguage()
-  const [pattern, setPattern] = useState("")
-  const [flags, setFlags] = useState("g")
-  const [testStr, setTestStr] = useState("")
+  const [pattern, setPattern] = useStorage("regex-tester:pattern", "")
+  const [flags, setFlags] = useStorage("regex-tester:flags", "g")
+  const [testStr, setTestStr] = useStorage("regex-tester:testStr", "")
 
   const toggleFlag = (flag: string) => {
-    setFlags((prev) =>
-      prev.includes(flag) ? prev.replace(flag, "") : prev + flag
-    )
+    setFlags(flags.includes(flag) ? flags.replace(flag, "") : flags + flag)
   }
 
   const matches = useMemo(
@@ -99,26 +108,32 @@ export default function RegexTesterPage() {
   }, [pattern, flags])
 
   return (
-    <div className="flex flex-col gap-6 px-4 lg:px-6 max-w-3xl">
+    <div className="flex max-w-3xl flex-col gap-6 px-4 lg:px-6">
       <div className="flex flex-col gap-2">
         <Label>Regex Pattern</Label>
         <div className="flex items-center gap-2">
           <span className="text-muted-foreground">/</span>
           <Input
-            className={cn("font-mono", isInvalidRegex && "border-destructive focus-visible:ring-destructive")}
+            className={cn(
+              "font-mono",
+              isInvalidRegex &&
+                "border-destructive focus-visible:ring-destructive"
+            )}
             placeholder="^hello\s+world$"
             value={pattern}
             onChange={(e) => setPattern(e.target.value)}
             spellCheck={false}
           />
           <span className="text-muted-foreground">/</span>
-          <span className="font-mono text-muted-foreground">{flags || " "}</span>
+          <span className="font-mono text-muted-foreground">
+            {flags || " "}
+          </span>
         </div>
         {isInvalidRegex && (
           <p className="text-xs text-destructive">{t.regexInvalid}</p>
         )}
 
-        <div className="flex items-center gap-2 mt-1">
+        <div className="mt-1 flex items-center gap-2">
           <span className="text-xs text-muted-foreground">Flags:</span>
           {FLAG_OPTIONS.map(({ flag, label, title }) => (
             <Button
@@ -156,7 +171,7 @@ export default function RegexTesterPage() {
 
           <div className="flex flex-col gap-2">
             <Label>Preview</Label>
-            <div className="min-h-12 rounded-md border bg-muted p-3 font-mono text-sm whitespace-pre-wrap break-all">
+            <div className="min-h-12 rounded-md border bg-muted p-3 font-mono text-sm break-all whitespace-pre-wrap">
               <HighlightedText text={testStr} matches={matches} />
             </div>
           </div>
@@ -166,16 +181,28 @@ export default function RegexTesterPage() {
               <Label>Matches</Label>
               <div className="flex flex-col gap-1.5">
                 {matches.map((m, i) => (
-                  <div key={i} className="rounded-md border bg-muted px-3 py-2 font-mono text-sm">
+                  <div
+                    key={i}
+                    className="rounded-md border bg-muted px-3 py-2 font-mono text-sm"
+                  >
                     <div className="flex items-center gap-3">
-                      <span className="text-xs text-muted-foreground">#{i + 1}</span>
-                      <span className="font-medium">{JSON.stringify(m.value)}</span>
-                      <span className="text-xs text-muted-foreground">index: {m.index}</span>
+                      <span className="text-xs text-muted-foreground">
+                        #{i + 1}
+                      </span>
+                      <span className="font-medium">
+                        {JSON.stringify(m.value)}
+                      </span>
+                      <span className="text-xs text-muted-foreground">
+                        index: {m.index}
+                      </span>
                     </div>
                     {m.groups.some((g) => g !== undefined) && (
                       <div className="mt-1 flex flex-wrap gap-1">
                         {m.groups.map((g, gi) => (
-                          <span key={gi} className="rounded bg-background px-1.5 py-0.5 text-xs">
+                          <span
+                            key={gi}
+                            className="rounded bg-background px-1.5 py-0.5 text-xs"
+                          >
                             group {gi + 1}: {JSON.stringify(g)}
                           </span>
                         ))}

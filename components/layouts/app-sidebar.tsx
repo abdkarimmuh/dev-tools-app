@@ -43,7 +43,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         {navMenus.map((group) => (
           <SidebarGroup key={group.label}>
-            <SidebarGroupLabel>{navGroupLabels[language][group.label] ?? group.label}</SidebarGroupLabel>
+            <SidebarGroupLabel>
+              {navGroupLabels[language][group.label] ?? group.label}
+            </SidebarGroupLabel>
             <SidebarMenu>
               {group.items.map((item) => (
                 <SidebarMenuItem key={item.title}>

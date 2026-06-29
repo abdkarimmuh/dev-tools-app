@@ -4,6 +4,7 @@ import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
+import { useStorage } from "@/hooks/use-storage"
 import { cn } from "@/lib/utils"
 
 type DiffLine = {
@@ -28,7 +29,9 @@ function computeDiff(a: string, b: string): DiffLine[] {
   const m = aLines.length
   const n = bLines.length
 
-  const dp: number[][] = Array.from({ length: m + 1 }, () => new Array(n + 1).fill(0))
+  const dp: number[][] = Array.from({ length: m + 1 }, () =>
+    new Array(n + 1).fill(0)
+  )
   for (let i = 1; i <= m; i++) {
     for (let j = 1; j <= n; j++) {
       dp[i][j] =
@@ -104,8 +107,8 @@ function toSideBySide(diff: DiffLine[]): SideBySideRow[] {
 
 export default function DiffCheckerPage() {
   const { t } = useLanguage()
-  const [textA, setTextA] = useState("")
-  const [textB, setTextB] = useState("")
+  const [textA, setTextA] = useStorage("diff-checker:textA", "")
+  const [textB, setTextB] = useStorage("diff-checker:textB", "")
   const [rows, setRows] = useState<SideBySideRow[] | null>(null)
 
   const compare = () => {
@@ -131,7 +134,10 @@ export default function DiffCheckerPage() {
             className="h-52 w-full resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
             placeholder={t.diffFirstPlaceholder}
             value={textA}
-            onChange={(e) => { setTextA(e.target.value); setRows(null) }}
+            onChange={(e) => {
+              setTextA(e.target.value)
+              setRows(null)
+            }}
             spellCheck={false}
           />
         </div>
@@ -141,7 +147,10 @@ export default function DiffCheckerPage() {
             className="h-52 w-full resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
             placeholder={t.diffSecondPlaceholder}
             value={textB}
-            onChange={(e) => { setTextB(e.target.value); setRows(null) }}
+            onChange={(e) => {
+              setTextB(e.target.value)
+              setRows(null)
+            }}
             spellCheck={false}
           />
         </div>
@@ -156,8 +165,12 @@ export default function DiffCheckerPage() {
         </Button>
         {rows && (
           <div className="ml-auto flex items-center gap-3 text-sm">
-            <span className="text-green-600 dark:text-green-400">+{added} added</span>
-            <span className="text-red-600 dark:text-red-400">-{removed} removed</span>
+            <span className="text-green-600 dark:text-green-400">
+              +{added} added
+            </span>
+            <span className="text-red-600 dark:text-red-400">
+              -{removed} removed
+            </span>
           </div>
         )}
       </div>
@@ -176,16 +189,18 @@ export default function DiffCheckerPage() {
                   <tr key={idx} className="border-b last:border-b-0">
                     <td
                       className={cn(
-                        "w-10 select-none border-r px-2 py-1 text-right text-xs text-muted-foreground",
-                        row.leftType === "removed" && "bg-red-50 dark:bg-red-950/30"
+                        "w-10 border-r px-2 py-1 text-right text-xs text-muted-foreground select-none",
+                        row.leftType === "removed" &&
+                          "bg-red-50 dark:bg-red-950/30"
                       )}
                     >
                       {row.leftNum ?? ""}
                     </td>
                     <td
                       className={cn(
-                        "w-[42%] border-r py-1 pl-2 pr-4 whitespace-pre",
-                        row.leftType === "removed" && "bg-red-50 text-red-700 dark:bg-red-950/30 dark:text-red-300",
+                        "w-[42%] border-r py-1 pr-4 pl-2 whitespace-pre",
+                        row.leftType === "removed" &&
+                          "bg-red-50 text-red-700 dark:bg-red-950/30 dark:text-red-300",
                         row.leftType === "same" && "text-foreground",
                         row.leftType === "empty" && "bg-muted/30"
                       )}
@@ -194,16 +209,18 @@ export default function DiffCheckerPage() {
                     </td>
                     <td
                       className={cn(
-                        "w-10 select-none border-r px-2 py-1 text-right text-xs text-muted-foreground",
-                        row.rightType === "added" && "bg-green-50 dark:bg-green-950/30"
+                        "w-10 border-r px-2 py-1 text-right text-xs text-muted-foreground select-none",
+                        row.rightType === "added" &&
+                          "bg-green-50 dark:bg-green-950/30"
                       )}
                     >
                       {row.rightNum ?? ""}
                     </td>
                     <td
                       className={cn(
-                        "w-[42%] py-1 pl-2 pr-4 whitespace-pre",
-                        row.rightType === "added" && "bg-green-50 text-green-700 dark:bg-green-950/30 dark:text-green-300",
+                        "w-[42%] py-1 pr-4 pl-2 whitespace-pre",
+                        row.rightType === "added" &&
+                          "bg-green-50 text-green-700 dark:bg-green-950/30 dark:text-green-300",
                         row.rightType === "same" && "text-foreground",
                         row.rightType === "empty" && "bg-muted/30"
                       )}

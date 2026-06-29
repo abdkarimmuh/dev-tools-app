@@ -5,6 +5,7 @@ import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
+import { useStorage } from "@/hooks/use-storage"
 
 function toWords(str: string): string[] {
   return str
@@ -22,7 +23,11 @@ const conversions = [
     convert: (str: string) => {
       const words = toWords(str)
       return words
-        .map((w, i) => (i === 0 ? w.toLowerCase() : w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()))
+        .map((w, i) =>
+          i === 0
+            ? w.toLowerCase()
+            : w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()
+        )
         .join("")
     },
   },
@@ -35,15 +40,24 @@ const conversions = [
   },
   {
     label: "snake_case",
-    convert: (str: string) => toWords(str).map((w) => w.toLowerCase()).join("_"),
+    convert: (str: string) =>
+      toWords(str)
+        .map((w) => w.toLowerCase())
+        .join("_"),
   },
   {
     label: "kebab-case",
-    convert: (str: string) => toWords(str).map((w) => w.toLowerCase()).join("-"),
+    convert: (str: string) =>
+      toWords(str)
+        .map((w) => w.toLowerCase())
+        .join("-"),
   },
   {
     label: "SCREAMING_SNAKE",
-    convert: (str: string) => toWords(str).map((w) => w.toUpperCase()).join("_"),
+    convert: (str: string) =>
+      toWords(str)
+        .map((w) => w.toUpperCase())
+        .join("_"),
   },
   {
     label: "Title Case",
@@ -62,7 +76,15 @@ const conversions = [
   },
 ]
 
-function CopyButton({ text, copyLabel, copiedLabel }: { text: string; copyLabel: string; copiedLabel: string }) {
+function CopyButton({
+  text,
+  copyLabel,
+  copiedLabel,
+}: {
+  text: string
+  copyLabel: string
+  copiedLabel: string
+}) {
   const [copied, setCopied] = useState(false)
   const copy = async () => {
     await navigator.clipboard.writeText(text)
@@ -70,7 +92,12 @@ function CopyButton({ text, copyLabel, copiedLabel }: { text: string; copyLabel:
     setTimeout(() => setCopied(false), 1500)
   }
   return (
-    <Button size="sm" variant="ghost" onClick={copy} className="h-7 shrink-0 gap-1 text-xs">
+    <Button
+      size="sm"
+      variant="ghost"
+      onClick={copy}
+      className="h-7 shrink-0 gap-1 text-xs"
+    >
       {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
       {copied ? copiedLabel : copyLabel}
     </Button>
@@ -79,10 +106,10 @@ function CopyButton({ text, copyLabel, copiedLabel }: { text: string; copyLabel:
 
 export default function CaseConverterPage() {
   const { t } = useLanguage()
-  const [input, setInput] = useState("")
+  const [input, setInput] = useStorage("case-converter:input", "")
 
   return (
-    <div className="flex flex-col gap-6 px-4 lg:px-6 max-w-3xl">
+    <div className="flex max-w-3xl flex-col gap-6 px-4 lg:px-6">
       <div className="flex flex-col gap-2">
         <span className="text-sm font-medium">Input</span>
         <textarea
@@ -107,7 +134,11 @@ export default function CaseConverterPage() {
                   <span className="text-xs text-muted-foreground">{label}</span>
                   <span className="truncate font-mono text-sm">{result}</span>
                 </div>
-                <CopyButton text={result} copyLabel={t.copy} copiedLabel={t.copied} />
+                <CopyButton
+                  text={result}
+                  copyLabel={t.copy}
+                  copiedLabel={t.copied}
+                />
               </div>
             )
           })}

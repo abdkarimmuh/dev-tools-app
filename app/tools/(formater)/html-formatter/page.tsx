@@ -1,10 +1,11 @@
 "use client"
 
 import { Check, Copy } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
+import { useStorage } from "@/hooks/use-storage"
 
 async function formatHtml(code: string): Promise<string> {
   const [prettier, htmlPlugin] = await Promise.all([
@@ -33,25 +34,36 @@ function minifyHtml(code: string): string {
 
 export default function HtmlFormatterPage() {
   const { t } = useLanguage()
-  const [input, setInput] = useState("")
+  const [input, setInput] = useStorage("html-formatter:input", "")
   const [output, setOutput] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [copied, setCopied] = useState(false)
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  const format = async () => {
-    if (!input.trim()) return
-    setLoading(true)
-    setError(null)
-    try {
-      setOutput(await formatHtml(input))
-    } catch (e) {
-      setError((e as Error).message)
-      setOutput("")
-    } finally {
-      setLoading(false)
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+    debounceRef.current = setTimeout(async () => {
+      if (!input.trim()) {
+        setOutput("")
+        setError(null)
+        return
+      }
+      setLoading(true)
+      setError(null)
+      try {
+        setOutput(await formatHtml(input))
+      } catch (e) {
+        setError((e as Error).message)
+        setOutput("")
+      } finally {
+        setLoading(false)
+      }
+    }, 500)
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current)
     }
-  }
+  }, [input])
 
   const minify = () => {
     if (!input.trim()) return
@@ -61,21 +73,6 @@ export default function HtmlFormatterPage() {
     } catch (e) {
       setError((e as Error).message)
       setOutput("")
-    }
-  }
-
-  const validate = async () => {
-    if (!input.trim()) return
-    setLoading(true)
-    setError(null)
-    try {
-      await formatHtml(input)
-      setOutput("Valid HTML")
-    } catch (e) {
-      setError((e as Error).message)
-      setOutput("")
-    } finally {
-      setLoading(false)
     }
   }
 
@@ -97,9 +94,25 @@ export default function HtmlFormatterPage() {
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium">Input</span>
-            <Button size="sm" variant="ghost" onClick={clear} className="h-7 text-xs">
-              {t.clear}
-            </Button>
+            <div className="flex items-center gap-1">
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={minify}
+                disabled={!input || loading}
+                className="h-7 text-xs"
+              >
+                {t.minify}
+              </Button>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={clear}
+                className="h-7 text-xs"
+              >
+                {t.clear}
+              </Button>
+            </div>
           </div>
           <textarea
             className="h-[520px] w-full resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
@@ -108,17 +121,6 @@ export default function HtmlFormatterPage() {
             onChange={(e) => setInput(e.target.value)}
             spellCheck={false}
           />
-          <div className="flex gap-2">
-            <Button size="sm" onClick={format} disabled={!input || loading}>
-              {loading ? t.formatting : t.format}
-            </Button>
-            <Button size="sm" variant="outline" onClick={minify} disabled={!input || loading}>
-              {t.minify}
-            </Button>
-            <Button size="sm" variant="outline" onClick={validate} disabled={!input || loading}>
-              {t.validate}
-            </Button>
-          </div>
         </div>
 
         <div className="flex flex-col gap-2">
@@ -131,12 +133,16 @@ export default function HtmlFormatterPage() {
               disabled={!output}
               className="h-7 gap-1 text-xs"
             >
-              {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
+              {copied ? (
+                <Check className="size-3" />
+              ) : (
+                <Copy className="size-3" />
+              )}
               {copied ? t.copied : t.copy}
             </Button>
           </div>
           {error ? (
-            <div className="flex h-[520px] items-start overflow-auto rounded-md border border-destructive bg-destructive/10 p-3 font-mono text-sm text-destructive whitespace-pre-wrap">
+            <div className="flex h-[520px] items-start overflow-auto rounded-md border border-destructive bg-destructive/10 p-3 font-mono text-sm whitespace-pre-wrap text-destructive">
               {error}
             </div>
           ) : (

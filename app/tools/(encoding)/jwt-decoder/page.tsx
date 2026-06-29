@@ -6,6 +6,7 @@ import { useState } from "react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
+import { useStorage } from "@/hooks/use-storage"
 
 function base64UrlDecode(str: string): string {
   const base64 = str.replace(/-/g, "+").replace(/_/g, "/")
@@ -45,7 +46,11 @@ interface CopyButtonProps {
   copied: string
 }
 
-function CopyButton({ text, copy: copyLabel, copied: copiedLabel }: CopyButtonProps) {
+function CopyButton({
+  text,
+  copy: copyLabel,
+  copied: copiedLabel,
+}: CopyButtonProps) {
   const [isCopied, setIsCopied] = useState(false)
   const handleCopy = async () => {
     await navigator.clipboard.writeText(text)
@@ -53,7 +58,12 @@ function CopyButton({ text, copy: copyLabel, copied: copiedLabel }: CopyButtonPr
     setTimeout(() => setIsCopied(false), 1500)
   }
   return (
-    <Button size="sm" variant="ghost" onClick={handleCopy} className="h-7 gap-1 text-xs">
+    <Button
+      size="sm"
+      variant="ghost"
+      onClick={handleCopy}
+      className="h-7 gap-1 text-xs"
+    >
       {isCopied ? <Check className="size-3" /> : <Copy className="size-3" />}
       {isCopied ? copiedLabel : copyLabel}
     </Button>
@@ -92,7 +102,7 @@ function JsonBlock({
 
 export default function JwtDecoderPage() {
   const { t } = useLanguage()
-  const [token, setToken] = useState("")
+  const [token, setToken] = useStorage("jwt-decoder:token", "")
   const [decoded, setDecoded] = useState<JwtParts | null>(null)
   const [error, setError] = useState<string | null>(null)
 
@@ -145,7 +155,10 @@ export default function JwtDecoderPage() {
             {t.clear}
           </Button>
           {decoded && (
-            <Badge variant={expired ? "destructive" : "secondary"} className="ml-auto">
+            <Badge
+              variant={expired ? "destructive" : "secondary"}
+              className="ml-auto"
+            >
               {expired ? t.jwtExpired : t.jwtValid}
             </Badge>
           )}
@@ -160,12 +173,26 @@ export default function JwtDecoderPage() {
 
       {decoded && (
         <div className="flex flex-col gap-4">
-          <JsonBlock label="Header" data={decoded.header} copyLabel={t.copy} copiedLabel={t.copied} />
-          <JsonBlock label="Payload" data={displayPayload} copyLabel={t.copy} copiedLabel={t.copied} />
+          <JsonBlock
+            label="Header"
+            data={decoded.header}
+            copyLabel={t.copy}
+            copiedLabel={t.copied}
+          />
+          <JsonBlock
+            label="Payload"
+            data={displayPayload}
+            copyLabel={t.copy}
+            copiedLabel={t.copied}
+          />
           <div className="flex flex-col gap-1.5">
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium">Signature</span>
-              <CopyButton text={decoded.signature} copy={t.copy} copied={t.copied} />
+              <CopyButton
+                text={decoded.signature}
+                copy={t.copy}
+                copied={t.copied}
+              />
             </div>
             <div className="overflow-auto rounded-md border bg-muted p-3 font-mono text-sm break-all">
               {decoded.signature}

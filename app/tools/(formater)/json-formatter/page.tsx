@@ -1,44 +1,46 @@
 "use client"
 
 import { Check, Copy } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
+import { useStorage } from "@/hooks/use-storage"
 
 export default function JsonFormatterPage() {
   const { t } = useLanguage()
-  const [input, setInput] = useState("")
+  const [input, setInput] = useStorage("json-formatter:input", "")
   const [output, setOutput] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  const format = () => {
-    try {
-      const parsed = JSON.parse(input)
-      setOutput(JSON.stringify(parsed, null, 2))
-      setError(null)
-    } catch (e) {
-      setError((e as Error).message)
-      setOutput("")
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+    debounceRef.current = setTimeout(() => {
+      if (!input) {
+        setOutput("")
+        setError(null)
+        return
+      }
+      try {
+        const parsed = JSON.parse(input)
+        setOutput(JSON.stringify(parsed, null, 2))
+        setError(null)
+      } catch (e) {
+        setError((e as Error).message)
+        setOutput("")
+      }
+    }, 500)
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current)
     }
-  }
+  }, [input])
 
   const minify = () => {
     try {
       const parsed = JSON.parse(input)
       setOutput(JSON.stringify(parsed))
-      setError(null)
-    } catch (e) {
-      setError((e as Error).message)
-      setOutput("")
-    }
-  }
-
-  const validate = () => {
-    try {
-      JSON.parse(input)
-      setOutput("Valid JSON")
       setError(null)
     } catch (e) {
       setError((e as Error).message)
@@ -64,9 +66,25 @@ export default function JsonFormatterPage() {
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium">Input</span>
-            <Button size="sm" variant="ghost" onClick={clear} className="h-7 text-xs">
-              {t.clear}
-            </Button>
+            <div className="flex items-center gap-1">
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={minify}
+                disabled={!input}
+                className="h-7 text-xs"
+              >
+                {t.minify}
+              </Button>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={clear}
+                className="h-7 text-xs"
+              >
+                {t.clear}
+              </Button>
+            </div>
           </div>
           <textarea
             className="h-[520px] w-full resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
@@ -75,17 +93,6 @@ export default function JsonFormatterPage() {
             onChange={(e) => setInput(e.target.value)}
             spellCheck={false}
           />
-          <div className="flex gap-2">
-            <Button size="sm" onClick={format} disabled={!input}>
-              Format
-            </Button>
-            <Button size="sm" variant="outline" onClick={minify} disabled={!input}>
-              Minify
-            </Button>
-            <Button size="sm" variant="outline" onClick={validate} disabled={!input}>
-              Validate
-            </Button>
-          </div>
         </div>
 
         <div className="flex flex-col gap-2">
@@ -98,12 +105,16 @@ export default function JsonFormatterPage() {
               disabled={!output}
               className="h-7 gap-1 text-xs"
             >
-              {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
+              {copied ? (
+                <Check className="size-3" />
+              ) : (
+                <Copy className="size-3" />
+              )}
               {copied ? t.copied : t.copy}
             </Button>
           </div>
           {error ? (
-            <div className="flex h-[520px] items-start rounded-md border border-destructive bg-destructive/10 p-3 font-mono text-sm text-destructive overflow-auto">
+            <div className="flex h-[520px] items-start overflow-auto rounded-md border border-destructive bg-destructive/10 p-3 font-mono text-sm text-destructive">
               <span>{error}</span>
             </div>
           ) : (

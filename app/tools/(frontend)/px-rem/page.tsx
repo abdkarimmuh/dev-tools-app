@@ -7,8 +7,11 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useLanguage } from "@/contexts/language-context"
+import { useStorage } from "@/hooks/use-storage"
 
-const COMMON_PX = [8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 36, 40, 48, 56, 64, 72, 80, 96]
+const COMMON_PX = [
+  8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 36, 40, 48, 56, 64, 72, 80, 96,
+]
 
 function round(n: number, decimals = 4): number {
   return Math.round(n * 10 ** decimals) / 10 ** decimals
@@ -30,9 +33,9 @@ function CopyButton({ text }: { text: string }) {
 
 export default function PxRemPage() {
   const { t } = useLanguage()
-  const [base, setBase] = useState(16)
-  const [pxInput, setPxInput] = useState("")
-  const [remInput, setRemInput] = useState("")
+  const [base, setBase] = useStorage("px-rem:base", 16)
+  const [pxInput, setPxInput] = useStorage("px-rem:px", "")
+  const [remInput, setRemInput] = useStorage("px-rem:rem", "")
 
   const pxToRem = (px: string) => {
     const val = parseFloat(px)
@@ -59,11 +62,12 @@ export default function PxRemPage() {
   const handleBaseChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = parseFloat(e.target.value) || 16
     setBase(Math.max(1, val))
-    if (pxInput) setRemInput(String(round(parseFloat(pxInput) / Math.max(1, val))))
+    if (pxInput)
+      setRemInput(String(round(parseFloat(pxInput) / Math.max(1, val))))
   }
 
   return (
-    <div className="flex flex-col gap-8 px-4 lg:px-6 max-w-2xl">
+    <div className="flex max-w-2xl flex-col gap-8 px-4 lg:px-6">
       <div className="flex items-end gap-3">
         <div className="flex flex-col gap-1.5">
           <Label htmlFor="base">Base Font Size (px)</Label>
@@ -76,9 +80,7 @@ export default function PxRemPage() {
             className="w-28"
           />
         </div>
-        <p className="mb-2 text-sm text-muted-foreground">
-          1rem = {base}px
-        </p>
+        <p className="mb-2 text-sm text-muted-foreground">1rem = {base}px</p>
       </div>
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -92,7 +94,9 @@ export default function PxRemPage() {
               onChange={(e) => handlePxChange(e.target.value)}
               className="font-mono"
             />
-            <span className="flex items-center text-sm text-muted-foreground">px</span>
+            <span className="flex items-center text-sm text-muted-foreground">
+              px
+            </span>
           </div>
         </div>
         <div className="flex flex-col gap-1.5">
@@ -105,20 +109,24 @@ export default function PxRemPage() {
               onChange={(e) => handleRemChange(e.target.value)}
               className="font-mono"
             />
-            <span className="flex items-center text-sm text-muted-foreground">rem</span>
+            <span className="flex items-center text-sm text-muted-foreground">
+              rem
+            </span>
           </div>
         </div>
       </div>
 
       <div className="flex flex-col gap-2">
-        <h3 className="text-sm font-medium">{t.pxRemReferenceTable} (base {base}px)</h3>
+        <h3 className="text-sm font-medium">
+          {t.pxRemReferenceTable} (base {base}px)
+        </h3>
         <div className="overflow-hidden rounded-md border">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b bg-muted/50 text-left text-xs text-muted-foreground">
                 <th className="px-4 py-2">PX</th>
                 <th className="px-4 py-2">REM</th>
-                <th className="px-4 py-2 w-10"></th>
+                <th className="w-10 px-4 py-2"></th>
               </tr>
             </thead>
             <tbody>
@@ -126,7 +134,10 @@ export default function PxRemPage() {
                 const rem = round(px / base)
                 const remStr = `${rem}rem`
                 return (
-                  <tr key={px} className="border-b last:border-b-0 hover:bg-muted/30">
+                  <tr
+                    key={px}
+                    className="border-b last:border-b-0 hover:bg-muted/30"
+                  >
                     <td className="px-4 py-2 font-mono">{px}px</td>
                     <td className="px-4 py-2 font-mono">{remStr}</td>
                     <td className="px-2 py-2">

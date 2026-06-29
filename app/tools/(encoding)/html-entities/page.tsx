@@ -5,6 +5,7 @@ import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
+import { useStorage } from "@/hooks/use-storage"
 
 function encodeHtmlEntities(str: string): string {
   return str
@@ -23,7 +24,7 @@ function decodeHtmlEntities(str: string): string {
 
 export default function HtmlEntitiesPage() {
   const { t } = useLanguage()
-  const [input, setInput] = useState("")
+  const [input, setInput] = useStorage("html-entities:input", "")
   const [output, setOutput] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
@@ -66,7 +67,12 @@ export default function HtmlEntitiesPage() {
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium">Input</span>
-            <Button size="sm" variant="ghost" onClick={clear} className="h-7 text-xs">
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={clear}
+              className="h-7 text-xs"
+            >
               {t.clear}
             </Button>
           </div>
@@ -81,11 +87,21 @@ export default function HtmlEntitiesPage() {
             <Button size="sm" onClick={encode} disabled={!input}>
               {t.encode}
             </Button>
-            <Button size="sm" variant="outline" onClick={decode} disabled={!input}>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={decode}
+              disabled={!input}
+            >
               {t.decode}
             </Button>
             {output && (
-              <Button size="sm" variant="ghost" onClick={swap} className="ml-auto">
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={swap}
+                className="ml-auto"
+              >
                 {t.swap}
               </Button>
             )}
@@ -102,7 +118,11 @@ export default function HtmlEntitiesPage() {
               disabled={!output}
               className="h-7 gap-1 text-xs"
             >
-              {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
+              {copied ? (
+                <Check className="size-3" />
+              ) : (
+                <Copy className="size-3" />
+              )}
               {copied ? t.copied : t.copy}
             </Button>
           </div>

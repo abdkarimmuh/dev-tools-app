@@ -7,7 +7,8 @@ export const translations = {
 
     // Home page
     homeTitle: "All Tools",
-    homeSubtitle: "A collection of tools to help with daily coding and debugging.",
+    homeSubtitle:
+      "A collection of tools to help with daily coding and debugging.",
 
     // Common
     clear: "Clear",
@@ -40,7 +41,8 @@ export const translations = {
     htmlEntitiesDecodeError: "Failed to decode HTML entities.",
 
     // JWT
-    jwtInvalidError: "Invalid JWT token. Must have 3 parts (header.payload.signature).",
+    jwtInvalidError:
+      "Invalid JWT token. Must have 3 parts (header.payload.signature).",
     jwtValid: "Valid (unverified)",
     jwtExpired: "Expired",
 
@@ -124,22 +126,23 @@ export const translations = {
 
     // Home page
     homeTitle: "Semua Tools",
-    homeSubtitle: "Kumpulan tools untuk membantu coding dan debugging sehari-hari.",
+    homeSubtitle:
+      "Kumpulan tools untuk membantu coding dan debugging sehari-hari.",
 
     // Common
-    clear: "Clear",
-    copy: "Copy",
-    copied: "Copied!",
+    clear: "Hapus",
+    copy: "Salin",
+    copied: "Disalin!",
     format: "Format",
     minify: "Minify",
-    validate: "Validate",
-    encode: "Encode",
-    decode: "Decode",
-    swap: "Swap ↕",
-    generate: "Generate",
-    formatting: "Formatting...",
+    validate: "Validasi",
+    encode: "Enkode",
+    decode: "Dekode",
+    swap: "Tukar ↕",
+    generate: "Buat",
+    formatting: "Memformat...",
     outputPlaceholder: "Output akan muncul di sini...",
-    copyAll: "Copy All",
+    copyAll: "Salin Semua",
 
     // Base64
     base64InputPlaceholder: "Masukkan teks atau string Base64...",
@@ -157,15 +160,16 @@ export const translations = {
     htmlEntitiesDecodeError: "Gagal mendecode HTML entities.",
 
     // JWT
-    jwtInvalidError: "Token JWT tidak valid. Harus memiliki 3 bagian (header.payload.signature).",
+    jwtInvalidError:
+      "Token JWT tidak valid. Harus memiliki 3 bagian (header.payload.signature).",
     jwtValid: "Valid (tidak diverifikasi)",
-    jwtExpired: "Expired",
+    jwtExpired: "Kedaluwarsa",
 
     // Hash Generator
     hashInputPlaceholder: "Masukkan teks untuk di-hash...",
     hashAlgorithm: "Algoritma",
     hashComputing: "Menghitung...",
-    hashGenerateBtn: "Generate Hash",
+    hashGenerateBtn: "Buat Hash",
 
     // Password Generator
     passwordLength: "Panjang Password",
@@ -179,7 +183,7 @@ export const translations = {
     passwordMedium: "Sedang",
     passwordStrong: "Kuat",
     passwordVeryStrong: "Sangat Kuat",
-    passwordGenerateBtn: "Generate Password",
+    passwordGenerateBtn: "Buat Password",
 
     // UUID Generator
     uuidVersion: "Versi",
@@ -237,7 +241,9 @@ export const translations = {
   },
 }
 
-export type Translations = { readonly [K in keyof typeof translations.en]: string }
+export type Translations = {
+  readonly [K in keyof typeof translations.en]: string
+}
 
 export const navGroupLabels: Record<Language, Record<string, string>> = {
   en: {

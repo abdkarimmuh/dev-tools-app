@@ -14,21 +14,118 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { useLanguage } from "@/contexts/language-context"
+import { useStorage } from "@/hooks/use-storage"
 
 const WORDS = [
-  "lorem","ipsum","dolor","sit","amet","consectetur","adipiscing","elit",
-  "sed","do","eiusmod","tempor","incididunt","ut","labore","et","dolore",
-  "magna","aliqua","enim","ad","minim","veniam","quis","nostrud","exercitation",
-  "ullamco","laboris","nisi","aliquip","ex","ea","commodo","consequat","duis",
-  "aute","irure","in","reprehenderit","voluptate","velit","esse","cillum",
-  "eu","fugiat","nulla","pariatur","excepteur","sint","occaecat","cupidatat",
-  "non","proident","sunt","culpa","qui","officia","deserunt","mollit","anim",
-  "id","est","laborum","pellentesque","habitant","morbi","tristique","senectus",
-  "netus","malesuada","fames","turpis","egestas","volutpat","lacus","laoreet",
-  "non","curabitur","gravida","arcu","ac","tortor","dignissim","convallis",
-  "aenean","et","tortor","at","risus","viverra","adipiscing","at","in",
-  "tellus","integer","feugiat","scelerisque","varius","morbi","enim","nunc",
-  "faucibus","a","pellentesque","sit","amet","porttitor","eget","dolor"
+  "lorem",
+  "ipsum",
+  "dolor",
+  "sit",
+  "amet",
+  "consectetur",
+  "adipiscing",
+  "elit",
+  "sed",
+  "do",
+  "eiusmod",
+  "tempor",
+  "incididunt",
+  "ut",
+  "labore",
+  "et",
+  "dolore",
+  "magna",
+  "aliqua",
+  "enim",
+  "ad",
+  "minim",
+  "veniam",
+  "quis",
+  "nostrud",
+  "exercitation",
+  "ullamco",
+  "laboris",
+  "nisi",
+  "aliquip",
+  "ex",
+  "ea",
+  "commodo",
+  "consequat",
+  "duis",
+  "aute",
+  "irure",
+  "in",
+  "reprehenderit",
+  "voluptate",
+  "velit",
+  "esse",
+  "cillum",
+  "eu",
+  "fugiat",
+  "nulla",
+  "pariatur",
+  "excepteur",
+  "sint",
+  "occaecat",
+  "cupidatat",
+  "non",
+  "proident",
+  "sunt",
+  "culpa",
+  "qui",
+  "officia",
+  "deserunt",
+  "mollit",
+  "anim",
+  "id",
+  "est",
+  "laborum",
+  "pellentesque",
+  "habitant",
+  "morbi",
+  "tristique",
+  "senectus",
+  "netus",
+  "malesuada",
+  "fames",
+  "turpis",
+  "egestas",
+  "volutpat",
+  "lacus",
+  "laoreet",
+  "non",
+  "curabitur",
+  "gravida",
+  "arcu",
+  "ac",
+  "tortor",
+  "dignissim",
+  "convallis",
+  "aenean",
+  "et",
+  "tortor",
+  "at",
+  "risus",
+  "viverra",
+  "adipiscing",
+  "at",
+  "in",
+  "tellus",
+  "integer",
+  "feugiat",
+  "scelerisque",
+  "varius",
+  "morbi",
+  "enim",
+  "nunc",
+  "faucibus",
+  "a",
+  "pellentesque",
+  "sit",
+  "amet",
+  "porttitor",
+  "eget",
+  "dolor",
 ]
 
 function randomWord(): string {
@@ -55,8 +152,8 @@ type Unit = "words" | "sentences" | "paragraphs"
 
 export default function LoremIpsumPage() {
   const { t } = useLanguage()
-  const [unit, setUnit] = useState<Unit>("paragraphs")
-  const [count, setCount] = useState(3)
+  const [unit, setUnit] = useStorage<Unit>("lorem-ipsum:unit", "paragraphs")
+  const [count, setCount] = useStorage("lorem-ipsum:count", 3)
   const [output, setOutput] = useState("")
   const [copied, setCopied] = useState(false)
 
@@ -120,10 +217,20 @@ export default function LoremIpsumPage() {
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
             <span className="text-sm text-muted-foreground">
-              {output.split(/\s+/).filter(Boolean).length} {t.loremWordCountUnit}
+              {output.split(/\s+/).filter(Boolean).length}{" "}
+              {t.loremWordCountUnit}
             </span>
-            <Button size="sm" variant="ghost" onClick={copy} className="h-7 gap-1 text-xs">
-              {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={copy}
+              className="h-7 gap-1 text-xs"
+            >
+              {copied ? (
+                <Check className="size-3" />
+              ) : (
+                <Copy className="size-3" />
+              )}
               {copied ? t.copied : t.copy}
             </Button>
           </div>

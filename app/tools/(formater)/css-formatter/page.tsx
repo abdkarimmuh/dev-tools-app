@@ -1,10 +1,11 @@
 "use client"
 
 import { Check, Copy } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
+import { useStorage } from "@/hooks/use-storage"
 
 type Syntax = "css" | "scss" | "sass"
 
@@ -49,31 +50,42 @@ function minifyCode(code: string, syntax: Syntax): string {
 
 export default function CssFormatterPage() {
   const { t } = useLanguage()
-  const [syntax, setSyntax] = useState<Syntax>("css")
-  const [input, setInput] = useState("")
+  const [syntax, setSyntax] = useStorage<Syntax>("css-formatter:syntax", "css")
+  const [input, setInput] = useStorage("css-formatter:input", "")
   const [output, setOutput] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [copied, setCopied] = useState(false)
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+    debounceRef.current = setTimeout(async () => {
+      if (!input.trim()) {
+        setOutput("")
+        setError(null)
+        return
+      }
+      setLoading(true)
+      setError(null)
+      try {
+        setOutput(await formatCode(input, syntax))
+      } catch (e) {
+        setError((e as Error).message)
+        setOutput("")
+      } finally {
+        setLoading(false)
+      }
+    }, 500)
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current)
+    }
+  }, [input, syntax])
 
   const placeholders: Record<Syntax, string> = {
     css: t.cssInputPlaceholder,
     scss: t.scssInputPlaceholder,
     sass: t.sassInputPlaceholder,
-  }
-
-  const format = async () => {
-    if (!input.trim()) return
-    setLoading(true)
-    setError(null)
-    try {
-      setOutput(await formatCode(input, syntax))
-    } catch (e) {
-      setError((e as Error).message)
-      setOutput("")
-    } finally {
-      setLoading(false)
-    }
   }
 
   const minify = () => {
@@ -84,21 +96,6 @@ export default function CssFormatterPage() {
     } catch (e) {
       setError((e as Error).message)
       setOutput("")
-    }
-  }
-
-  const validate = async () => {
-    if (!input.trim()) return
-    setLoading(true)
-    setError(null)
-    try {
-      await formatCode(input, syntax)
-      setOutput(`Valid ${syntax.toUpperCase()}`)
-    } catch (e) {
-      setError((e as Error).message)
-      setOutput("")
-    } finally {
-      setLoading(false)
     }
   }
 
@@ -140,9 +137,25 @@ export default function CssFormatterPage() {
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium">Input</span>
-            <Button size="sm" variant="ghost" onClick={clear} className="h-7 text-xs">
-              {t.clear}
-            </Button>
+            <div className="flex items-center gap-1">
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={minify}
+                disabled={!input || loading}
+                className="h-7 text-xs"
+              >
+                {t.minify}
+              </Button>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={clear}
+                className="h-7 text-xs"
+              >
+                {t.clear}
+              </Button>
+            </div>
           </div>
           <textarea
             className="h-[520px] w-full resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
@@ -151,17 +164,6 @@ export default function CssFormatterPage() {
             onChange={(e) => setInput(e.target.value)}
             spellCheck={false}
           />
-          <div className="flex gap-2">
-            <Button size="sm" onClick={format} disabled={!input || loading}>
-              {loading ? t.formatting : t.format}
-            </Button>
-            <Button size="sm" variant="outline" onClick={minify} disabled={!input || loading}>
-              {t.minify}
-            </Button>
-            <Button size="sm" variant="outline" onClick={validate} disabled={!input || loading}>
-              {t.validate}
-            </Button>
-          </div>
         </div>
 
         <div className="flex flex-col gap-2">
@@ -174,7 +176,11 @@ export default function CssFormatterPage() {
               disabled={!output}
               className="h-7 gap-1 text-xs"
             >
-              {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
+              {copied ? (
+                <Check className="size-3" />
+              ) : (
+                <Copy className="size-3" />
+              )}
               {copied ? t.copied : t.copy}
             </Button>
           </div>

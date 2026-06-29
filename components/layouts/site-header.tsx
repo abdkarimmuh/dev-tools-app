@@ -22,7 +22,8 @@ export function SiteHeader() {
   const { resolvedTheme, setTheme } = useTheme()
   const { language, setLanguage, t } = useLanguage()
 
-  const title = pathname === "/" ? t.navHome : (navTitleMap[pathname] ?? "Dev Tools")
+  const title =
+    pathname === "/" ? t.navHome : (navTitleMap[pathname] ?? "Dev Tools")
 
   return (
     <header className="flex h-(--header-height) shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
@@ -34,7 +35,11 @@ export function SiteHeader() {
           <ToolSearch />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="gap-1.5 px-2 font-mono text-xs font-semibold">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="gap-1.5 px-2 font-mono text-xs font-semibold"
+              >
                 <Globe className="size-3.5" />
                 {language.toUpperCase()}
               </Button>
@@ -57,10 +62,12 @@ export function SiteHeader() {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+            onClick={() =>
+              setTheme(resolvedTheme === "dark" ? "light" : "dark")
+            }
           >
-            <Sun className="size-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-            <Moon className="absolute size-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+            <Sun className="size-4 scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
+            <Moon className="absolute size-4 scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
             <span className="sr-only">Toggle theme</span>
           </Button>
         </div>
