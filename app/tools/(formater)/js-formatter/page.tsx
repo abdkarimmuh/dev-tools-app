@@ -137,25 +137,14 @@ export default function JsFormatterPage() {
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium">Input</span>
-            <div className="flex items-center gap-1">
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={minify}
-                disabled={!input || loading}
-                className="h-7 text-xs"
-              >
-                {t.minify}
-              </Button>
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={clear}
-                className="h-7 text-xs"
-              >
-                {t.clear}
-              </Button>
-            </div>
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={clear}
+              className="h-7 text-xs"
+            >
+              {t.clear}
+            </Button>
           </div>
           <textarea
             className="h-[520px] w-full resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
@@ -164,6 +153,11 @@ export default function JsFormatterPage() {
             onChange={(e) => setInput(e.target.value)}
             spellCheck={false}
           />
+          <div className="flex gap-2">
+            <Button size="sm" onClick={minify} disabled={!input || loading}>
+              {t.minify}
+            </Button>
+          </div>
         </div>
 
         <div className="flex flex-col gap-2">
