@@ -2,19 +2,26 @@ import {
   AlignLeft,
   ArrowLeftRight,
   Asterisk,
+  Barcode,
   Braces,
   CaseSensitive,
   Code,
+  Database,
+  FileCode,
   FileCode2,
+  Fingerprint,
   Hash,
+  Key,
   KeyRound,
   Link,
   Lock,
   type LucideIcon,
   Paintbrush,
   Palette,
+  QrCode,
   Ruler,
   Shield,
+  ShieldCheck,
 } from "lucide-react"
 
 export interface NavItem {
@@ -33,17 +40,11 @@ export const navMenus: NavGroup[] = [
     label: "Format & Validasi",
     items: [
       { title: "JSON Formatter", url: "/tools/json-formatter", icon: Braces },
-      {
-        title: "Javascript / Typescript Formatter",
-        url: "/tools/js-formatter",
-        icon: FileCode2,
-      },
+      { title: "JavaScript Formatter", url: "/tools/js-formatter", icon: FileCode2 },
+      { title: "TypeScript Formatter", url: "/tools/ts-formatter", icon: FileCode },
       { title: "HTML Formatter", url: "/tools/html-formatter", icon: Code },
-      {
-        title: "CSS / SCSS / SASS Formatter",
-        url: "/tools/css-formatter",
-        icon: Paintbrush,
-      },
+      { title: "CSS / SCSS / SASS Formatter", url: "/tools/css-formatter", icon: Paintbrush },
+      { title: "SQL Formatter", url: "/tools/sql-formatter", icon: Database },
     ],
   },
   {
@@ -82,6 +83,22 @@ export const navMenus: NavGroup[] = [
         url: "/tools/password-generator",
         icon: Shield,
       },
+      { title: "QR Generator", url: "/tools/qr-generator", icon: QrCode },
+      {
+        title: "Barcode Generator",
+        url: "/tools/barcode-generator",
+        icon: Barcode,
+      },
+    ],
+  },
+  {
+    label: "Cryptography",
+    items: [
+      { title: "AES Cipher", url: "/tools/aes-cipher", icon: Lock },
+      { title: "DES / 3DES Cipher", url: "/tools/des-cipher", icon: ShieldCheck },
+      { title: "RC4 Cipher", url: "/tools/rc4-cipher", icon: Shield },
+      { title: "RSA", url: "/tools/rsa", icon: Key },
+      { title: "ECDSA", url: "/tools/ecdsa", icon: Fingerprint },
     ],
   },
   {

@@ -2,8 +2,10 @@ import "./globals.css"
 
 import { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
+import React from "react"
 
 import { AppSidebar } from "@/components/layouts/app-sidebar"
+import { SiteFooter } from "@/components/layouts/site-footer"
 import { SiteHeader } from "@/components/layouts/site-header"
 import { ThemeProvider } from "@/components/theme-provider"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
@@ -42,7 +44,9 @@ export default function RootLayout({
         <ThemeProvider>
           <LanguageProvider>
             <TooltipProvider>
-              <SidebarProvider>
+              <SidebarProvider
+                style={{ "--sidebar-width": "18rem" } as React.CSSProperties}
+              >
                 <AppSidebar variant="inset" />
                 <SidebarInset>
                   <SiteHeader />
@@ -52,6 +56,7 @@ export default function RootLayout({
                         {children}
                       </div>
                     </div>
+                    <SiteFooter />
                   </div>
                 </SidebarInset>
               </SidebarProvider>

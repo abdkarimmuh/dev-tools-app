@@ -32,33 +32,37 @@ export function SiteHeader() {
         <Separator orientation="vertical" className="mx-2 items-center" />
         <h1 className="text-base font-medium">{title}</h1>
         <div className="ml-auto flex items-center gap-2">
-          <ToolSearch />
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="gap-1.5 px-2 font-mono text-xs font-semibold"
-              >
-                <Globe className="size-3.5" />
-                {language.toUpperCase()}
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem
-                onClick={() => setLanguage("id")}
-                className={language === "id" ? "font-semibold" : ""}
-              >
-                ID — Indonesia
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => setLanguage("en")}
-                className={language === "en" ? "font-semibold" : ""}
-              >
-                EN — English
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <div className="hidden md:block">
+            <ToolSearch />
+          </div>
+          <div className="hidden md:block">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="gap-1.5 px-2 font-mono text-xs font-semibold"
+                >
+                  <Globe className="size-3.5" />
+                  {language.toUpperCase()}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem
+                  onClick={() => setLanguage("id")}
+                  className={language === "id" ? "font-semibold" : ""}
+                >
+                  ID — Indonesia
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => setLanguage("en")}
+                  className={language === "en" ? "font-semibold" : ""}
+                >
+                  EN — English
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
           <Button
             variant="ghost"
             size="icon"

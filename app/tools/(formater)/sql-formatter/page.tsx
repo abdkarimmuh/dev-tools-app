@@ -1,75 +1,65 @@
 "use client"
 
 import { Check, Copy } from "lucide-react"
-import { useEffect, useRef, useState } from "react"
+import { useState } from "react"
+import { format } from "sql-formatter"
 
 import { Button } from "@/components/ui/button"
+import { Label } from "@/components/ui/label"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { useLanguage } from "@/contexts/language-context"
 import { useToolState } from "@/hooks/use-tool-state"
 
-async function formatCode(code: string): Promise<string> {
-  const [prettier, babelPlugin, estreePlugin] = await Promise.all([
-    import("prettier/standalone"),
-    import("prettier/plugins/babel"),
-    import("prettier/plugins/estree"),
-  ])
-  return prettier.format(code, {
-    parser: "babel",
-    plugins: [babelPlugin, estreePlugin] as any[],
-    printWidth: 80,
-    tabWidth: 2,
-    useTabs: false,
-    semi: true,
-    singleQuote: false,
-    trailingComma: "es5",
-  } as Parameters<typeof prettier.format>[1])
-}
+type Dialect = "sql" | "mysql" | "postgresql" | "transactsql" | "sqlite" | "plsql"
 
-function minifyCode(code: string): string {
-  return code
+const DIALECTS: { value: Dialect; label: string }[] = [
+  { value: "sql", label: "SQL" },
+  { value: "mysql", label: "MySQL" },
+  { value: "postgresql", label: "PostgreSQL" },
+  { value: "transactsql", label: "T-SQL" },
+  { value: "sqlite", label: "SQLite" },
+  { value: "plsql", label: "PL/SQL" },
+]
+
+function minifySql(sql: string): string {
+  return sql
+    .replace(/--[^\n]*/g, "")
     .replace(/\/\*[\s\S]*?\*\//g, "")
-    .replace(/\/\/[^\n]*/g, "")
-    .replace(/[ \t]+/g, " ")
-    .replace(/\n\s*\n/g, "\n")
-    .replace(/\n /g, "\n")
-    .replace(/ \n/g, "\n")
+    .replace(/\s+/g, " ")
     .trim()
 }
 
-export default function JsFormatterPage() {
+export default function SqlFormatterPage() {
   const { t } = useLanguage()
-  const [input, setInput] = useToolState("js-formatter", "input", "")
+  const [dialect, setDialect] = useToolState<Dialect>("sql-formatter", "dialect", "sql")
+  const [input, setInput] = useToolState("sql-formatter", "input", "")
   const [output, setOutput] = useState("")
   const [error, setError] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
   const [copied, setCopied] = useState(false)
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  useEffect(() => {
-    if (debounceRef.current) clearTimeout(debounceRef.current)
-    debounceRef.current = setTimeout(async () => {
-      if (!input.trim()) { setOutput(""); setError(null); return }
-      setLoading(true)
+  const formatSql = () => {
+    if (!input.trim()) return
+    try {
+      setOutput(format(input, { language: dialect, tabWidth: 2, keywordCase: "upper" }))
       setError(null)
-      try {
-        setOutput(await formatCode(input))
-      } catch (e) {
-        setError((e as Error).message)
-        setOutput("")
-      } finally {
-        setLoading(false)
-      }
-    }, 500)
-    return () => { if (debounceRef.current) clearTimeout(debounceRef.current) }
-  }, [input])
+    } catch (e) {
+      setError((e as Error).message)
+      setOutput("")
+    }
+  }
 
   const minify = () => {
     if (!input.trim()) return
-    try { setOutput(minifyCode(input)); setError(null) }
-    catch (e) { setError((e as Error).message); setOutput("") }
+    setOutput(minifySql(input))
+    setError(null)
   }
 
-  const format = () => { if (!output) return; setInput(output); setError(null) }
   const clear = () => { setInput(""); setOutput(""); setError(null) }
   const copy = async () => {
     await navigator.clipboard.writeText(output)
@@ -79,6 +69,23 @@ export default function JsFormatterPage() {
 
   return (
     <div className="px-4 lg:px-6">
+      <div className="mb-4 flex items-center gap-3">
+        <Label htmlFor="sql-dialect">Dialect</Label>
+        <Select
+          value={dialect}
+          onValueChange={(v) => { setDialect(v as Dialect); setOutput(""); setError(null) }}
+        >
+          <SelectTrigger id="sql-dialect" className="w-40">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {DIALECTS.map((d) => (
+              <SelectItem key={d.value} value={d.value}>{d.label}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
@@ -87,7 +94,7 @@ export default function JsFormatterPage() {
           </div>
           <textarea
             className="h-[520px] w-full resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            placeholder={t.jsInputPlaceholder}
+            placeholder={t.sqlInputPlaceholder}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             spellCheck={false}
@@ -102,15 +109,17 @@ export default function JsFormatterPage() {
             </Button>
           </div>
           {error ? (
-            <div className="flex h-[520px] items-start overflow-auto rounded-md border border-destructive bg-destructive/10 p-3 font-mono text-sm whitespace-pre-wrap text-destructive">{error}</div>
+            <div className="flex h-[520px] items-start overflow-auto rounded-md border border-destructive bg-destructive/10 p-3 font-mono text-sm text-destructive">
+              <span>{error}</span>
+            </div>
           ) : (
             <textarea readOnly className="h-[520px] w-full resize-none rounded-md border bg-muted p-3 font-mono text-sm outline-none" value={output} placeholder={t.outputPlaceholder} spellCheck={false} />
           )}
         </div>
       </div>
       <div className="mt-4 flex gap-4">
-        <Button size="lg" onClick={format} disabled={!input || loading}>{loading ? t.formatting : t.format}</Button>
-        <Button size="lg" onClick={minify} disabled={!output || loading} variant="secondary">{t.minify}</Button>
+        <Button size="lg" onClick={formatSql} disabled={!input}>{t.format}</Button>
+        <Button size="lg" onClick={minify} disabled={!input} variant="secondary">{t.minify}</Button>
       </div>
     </div>
   )

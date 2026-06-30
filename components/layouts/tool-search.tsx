@@ -13,6 +13,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command"
+import { useSidebar } from "@/components/ui/sidebar"
 import { navMenus } from "@/config/nav"
 import { useLanguage } from "@/contexts/language-context"
 import { navGroupLabels } from "@/lib/i18n"
@@ -20,7 +21,13 @@ import { navGroupLabels } from "@/lib/i18n"
 export function ToolSearch() {
   const { language, t } = useLanguage()
   const [open, setOpen] = useState(false)
+  const [isMac] = useState(
+    () =>
+      typeof navigator !== "undefined" &&
+      /mac|darwin/i.test(navigator.userAgent)
+  )
   const router = useRouter()
+  const { setOpenMobile } = useSidebar()
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -35,6 +42,7 @@ export function ToolSearch() {
 
   const handleSelect = (url: string) => {
     setOpen(false)
+    setOpenMobile(false)
     router.push(url)
   }
 
@@ -46,8 +54,14 @@ export function ToolSearch() {
       >
         <Search className="size-3.5" />
         <span className="hidden sm:inline">{t.searchPlaceholder}</span>
-        <kbd className="hidden items-center gap-0.5 rounded border bg-background px-1.5 py-0.5 font-mono text-[10px] sm:flex">
-          <span className="text-xs">⌘</span>K
+        <kbd
+          suppressHydrationWarning
+          className="hidden items-center gap-0.5 rounded border bg-background px-1.5 py-0.5 font-mono text-[10px] sm:flex"
+        >
+          <span suppressHydrationWarning className="text-xs">
+            {isMac ? "⌘ " : "Ctrl "}
+          </span>
+          K
         </kbd>
       </button>
 

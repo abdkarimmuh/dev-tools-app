@@ -1,6 +1,6 @@
 # DevTools
 
-Kumpulan tools berbasis web untuk membantu produktivitas pengembang sehari-hari — mulai dari formatting, encoding, generating, hingga debugging CSS. Semua tersedia dalam satu platform tanpa perlu berpindah-pindah tab atau aplikasi.
+Kumpulan tools berbasis web untuk membantu produktivitas pengembang sehari-hari — mulai dari formatting, encoding, kriptografi, generating, hingga debugging CSS. Semua tersedia dalam satu platform tanpa perlu berpindah-pindah tab atau aplikasi.
 
 ## Fitur
 
@@ -9,9 +9,11 @@ Kumpulan tools berbasis web untuk membantu produktivitas pengembang sehari-hari 
 | Tool | Deskripsi |
 |---|---|
 | **JSON Formatter** | Format (pretty-print), minify, dan validasi JSON. Menampilkan pesan error yang jelas jika JSON tidak valid. |
-| **JS / TS Formatter** | Format, minify, dan validasi kode JavaScript atau TypeScript menggunakan Prettier. Dilengkapi toggle untuk beralih antar sintaks. |
+| **JavaScript Formatter** | Format dan minify kode JavaScript menggunakan Prettier (parser: babel). |
+| **TypeScript Formatter** | Format dan minify kode TypeScript menggunakan Prettier (parser: typescript). |
 | **HTML Formatter** | Format, minify, dan validasi kode HTML menggunakan Prettier. |
-| **CSS / SCSS / SASS Formatter** | Format, minify, dan validasi kode CSS, SCSS, atau SASS menggunakan Prettier. Dilengkapi toggle untuk beralih antar sintaks. |
+| **CSS / SCSS / SASS Formatter** | Format dan minify kode CSS, SCSS, atau SASS menggunakan Prettier. Pilih sintaks via dropdown Select. |
+| **SQL Formatter** | Format dan minify query SQL. Pilih dialek (SQL, MySQL, PostgreSQL, T-SQL, SQLite, PL/SQL) via dropdown Select. |
 
 ### Encoding
 
@@ -38,6 +40,18 @@ Kumpulan tools berbasis web untuk membantu produktivitas pengembang sehari-hari 
 | **UUID Generator** | Generate UUID versi v1 (time-based), v4 (random), atau v7 (time-ordered) secara bulk hingga 100 UUID sekaligus. Salin satu per satu atau semua sekaligus. |
 | **Lorem Ipsum** | Generate placeholder text dalam satuan kata, kalimat, atau paragraf dengan jumlah yang bisa dikustomisasi. |
 | **Password Generator** | Generate password aman dengan opsi panjang (4–128 karakter), pilihan charset (huruf besar, huruf kecil, angka, simbol), dan indikator kekuatan password. |
+| **QR Generator** | Generate QR code dari teks atau URL. Mendukung pilihan level koreksi error (L/M/Q/H) dan ukuran output. Download sebagai PNG. |
+| **Barcode Generator** | Generate barcode dalam berbagai format (CODE128, EAN-13, EAN-8, UPC, CODE39, ITF-14, MSI, Pharmacode). Download sebagai SVG. |
+
+### Cryptography
+
+| Tool | Deskripsi |
+|---|---|
+| **AES Cipher** | Enkripsi dan dekripsi teks menggunakan AES-256 (CBC mode, passphrase-based via crypto-js). Output dalam format Base64. |
+| **DES / 3DES Cipher** | Enkripsi dan dekripsi menggunakan DES atau Triple DES (3DES). Toggle algoritma dalam satu halaman. |
+| **RC4 Cipher** | Enkripsi dan dekripsi menggunakan stream cipher RC4 berbasis passphrase. |
+| **RSA** | Generate key pair RSA (1024/2048/4096-bit) via Web Crypto API. Enkripsi dengan public key (RSA-OAEP + SHA-256), dekripsi dengan private key. PEM format. |
+| **ECDSA** | Generate key pair ECDSA (P-256/P-384) via Web Crypto API. Sign pesan dengan private key, verifikasi tanda tangan dengan public key. |
 
 ### Frontend / CSS
 
@@ -48,11 +62,16 @@ Kumpulan tools berbasis web untuk membantu produktivitas pengembang sehari-hari 
 
 ## Tech Stack
 
-- **Framework** — [Next.js 16](https://nextjs.org) (App Router)
+- **Framework** — [Next.js](https://nextjs.org) (App Router)
 - **UI Components** — [shadcn/ui](https://ui.shadcn.com)
 - **Styling** — [Tailwind CSS v4](https://tailwindcss.com)
-- **Icons** — [Tabler Icons](https://tabler.io/icons)
+- **Icons** — [Lucide React](https://lucide.dev)
+- **State Management** — [Zustand](https://zustand-demo.pmnd.rs) (in-memory, per-tool state)
 - **Code Formatter** — [Prettier](https://prettier.io) (dijalankan di browser via standalone build)
+- **SQL Formatter** — [sql-formatter](https://github.com/sql-formatter-org/sql-formatter)
+- **Cryptography** — [crypto-js](https://github.com/brix/crypto-js) (AES/DES/RC4) + Web Crypto API (RSA/ECDSA)
+- **QR Code** — [qrcode](https://github.com/soldair/node-qrcode)
+- **Barcode** — [JsBarcode](https://github.com/lindell/JsBarcode)
 - **Theme** — Dark/Light mode via [next-themes](https://github.com/pacocoursey/next-themes)
 - **Language** — TypeScript
 
@@ -96,34 +115,55 @@ npm run format     # Format kode dengan Prettier
 dev-tools-app/
 ├── app/
 │   ├── page.tsx                  # Halaman home (daftar semua tools)
-│   ├── layout.tsx                # Root layout (sidebar + header)
+│   ├── layout.tsx                # Root layout (sidebar + header + footer)
 │   └── tools/
-│       ├── json-formatter/
-│       ├── js-formatter/
-│       ├── html-formatter/
-│       ├── css-formatter/
-│       ├── base64/
-│       ├── url-encode/
-│       ├── html-entities/
-│       ├── jwt-decoder/
-│       ├── hash-generator/
-│       ├── diff-checker/
-│       ├── case-converter/
-│       ├── regex-tester/
-│       ├── uuid-generator/
-│       ├── lorem-ipsum/
-│       ├── password-generator/
-│       ├── color-converter/
-│       └── px-rem/
+│       ├── (formater)/
+│       │   ├── json-formatter/
+│       │   ├── js-formatter/
+│       │   ├── ts-formatter/
+│       │   ├── html-formatter/
+│       │   ├── css-formatter/    # CSS / SCSS / SASS (pilih via Select)
+│       │   └── sql-formatter/    # SQL dialek (pilih via Select)
+│       ├── (encoding)/
+│       │   ├── base64/
+│       │   ├── url-encode/
+│       │   ├── html-entities/
+│       │   ├── jwt-decoder/
+│       │   └── hash-generator/
+│       ├── (text)/
+│       │   ├── diff-checker/
+│       │   ├── case-converter/
+│       │   └── regex-tester/
+│       ├── (generator)/
+│       │   ├── uuid-generator/
+│       │   ├── lorem-ipsum/
+│       │   ├── password-generator/
+│       │   ├── qr-generator/
+│       │   └── barcode-generator/
+│       ├── (cryptography)/
+│       │   ├── aes-cipher/
+│       │   ├── des-cipher/
+│       │   ├── rc4-cipher/
+│       │   ├── rsa/
+│       │   └── ecdsa/
+│       └── (frontend)/
+│           ├── color-converter/
+│           └── px-rem/
 ├── components/
 │   ├── layouts/
 │   │   ├── app-sidebar.tsx       # Sidebar navigasi
 │   │   ├── site-header.tsx       # Header dengan judul halaman & toggle theme
-│   │   └── nav-*.tsx
+│   │   └── tool-search.tsx       # Command palette search (Cmd+K / Ctrl+K)
 │   └── ui/                       # shadcn/ui components
 ├── config/
 │   └── nav.ts                    # Sumber data navigasi (nav groups + title map)
+├── hooks/
+│   ├── use-tool-state.ts         # Hook state per-tool (wrapper Zustand)
+│   └── use-storage.ts            # Legacy storage hook
+├── stores/
+│   └── tool-states.ts            # Zustand store untuk semua tool state
 └── lib/
+    ├── i18n.ts                   # Teks UI (Bahasa Indonesia & English)
     └── utils.ts
 ```
 
@@ -144,6 +184,14 @@ Cukup dua langkah:
 }
 ```
 
+Gunakan hook `useToolState` untuk state input/output agar state tidak hilang saat navigasi:
+
+```ts
+import { useToolState } from "@/hooks/use-tool-state"
+
+const [input, setInput] = useToolState("nama-tool", "input", "")
+```
+
 ## Lisensi
 
-MIT
+MIT — © 2026 [Muhammad Abdul Karim](https://abdkarim.com)

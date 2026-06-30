@@ -8,14 +8,14 @@ import { useLanguage } from "@/contexts/language-context"
 import { useToolState } from "@/hooks/use-tool-state"
 
 async function formatCode(code: string): Promise<string> {
-  const [prettier, babelPlugin, estreePlugin] = await Promise.all([
+  const [prettier, estreePlugin, typescriptPlugin] = await Promise.all([
     import("prettier/standalone"),
-    import("prettier/plugins/babel"),
     import("prettier/plugins/estree"),
+    import("prettier/plugins/typescript"),
   ])
   return prettier.format(code, {
-    parser: "babel",
-    plugins: [babelPlugin, estreePlugin] as any[],
+    parser: "typescript",
+    plugins: [typescriptPlugin, estreePlugin] as any[],
     printWidth: 80,
     tabWidth: 2,
     useTabs: false,
@@ -36,9 +36,9 @@ function minifyCode(code: string): string {
     .trim()
 }
 
-export default function JsFormatterPage() {
+export default function TsFormatterPage() {
   const { t } = useLanguage()
-  const [input, setInput] = useToolState("js-formatter", "input", "")
+  const [input, setInput] = useToolState("ts-formatter", "input", "")
   const [output, setOutput] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
@@ -87,7 +87,7 @@ export default function JsFormatterPage() {
           </div>
           <textarea
             className="h-[520px] w-full resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            placeholder={t.jsInputPlaceholder}
+            placeholder={t.tsInputPlaceholder}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             spellCheck={false}

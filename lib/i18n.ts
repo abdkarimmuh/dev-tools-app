@@ -109,6 +109,60 @@ export const translations = {
     // HTML Formatter
     htmlInputPlaceholder: "<!-- Paste your HTML here... -->",
 
+    // SQL Formatter
+    sqlInputPlaceholder: "-- Paste your SQL query here...",
+
+    // Cryptography common
+    cryptoKey: "Key / Passphrase",
+    cryptoKeyPlaceholder: "Enter secret key...",
+    cryptoEncrypt: "Encrypt",
+    cryptoDecrypt: "Decrypt",
+    cryptoDecryptError: "Decryption failed. Wrong key or invalid ciphertext.",
+
+    // AES
+    aesInputPlaceholder: "Plaintext to encrypt, or Base64 ciphertext to decrypt...",
+
+    // DES
+    desInputPlaceholder: "Plaintext to encrypt, or Base64 ciphertext to decrypt...",
+
+    // RC4
+    rc4InputPlaceholder: "Plaintext to encrypt, or Base64 ciphertext to decrypt...",
+
+    // RSA
+    rsaKeys: "Keys",
+    rsaKeySize: "Key Size",
+    rsaGenerate: "Generate Key Pair",
+    rsaGenerating: "Generating...",
+    rsaPublicKey: "Public Key",
+    rsaPrivateKey: "Private Key",
+    rsaNoKey: "No key — generate one in Keys tab",
+    rsaPlaintextPlaceholder: "Enter plaintext to encrypt (max ~190 chars for 2048-bit)...",
+    rsaCiphertextPlaceholder: "Paste Base64 ciphertext to decrypt...",
+
+    // ECDSA
+    ecdsaCurve: "Curve",
+    ecdsaSign: "Sign",
+    ecdsaVerify: "Verify",
+    ecdsaMessage: "Message",
+    ecdsaSignature: "Signature (Base64)",
+    ecdsaValid: "✓ Signature is valid",
+    ecdsaInvalid: "✗ Signature is invalid",
+    ecdsaMessagePlaceholder: "Enter message to sign or verify...",
+    ecdsaSignaturePlaceholder: "Paste Base64 signature...",
+
+    // QR Generator
+    qrInputLabel: "Text / URL",
+    qrInputPlaceholder: "https://example.com",
+    qrErrorLevel: "Error Correction",
+    qrSize: "Size",
+    qrDownload: "Download PNG",
+
+    // Barcode Generator
+    barcodeFormat: "Format",
+    barcodeValue: "Value",
+    barcodeInputPlaceholder: "Enter value to encode...",
+    barcodeDownload: "Download SVG",
+
     // Tool Search
     searchPlaceholder: "Search tools...",
     searchDialogTitle: "Search Tools",
@@ -228,6 +282,60 @@ export const translations = {
     // HTML Formatter
     htmlInputPlaceholder: "<!-- Paste kode HTML di sini... -->",
 
+    // SQL Formatter
+    sqlInputPlaceholder: "-- Paste query SQL di sini...",
+
+    // Cryptography common
+    cryptoKey: "Kunci / Passphrase",
+    cryptoKeyPlaceholder: "Masukkan kunci rahasia...",
+    cryptoEncrypt: "Enkripsi",
+    cryptoDecrypt: "Dekripsi",
+    cryptoDecryptError: "Dekripsi gagal. Kunci salah atau ciphertext tidak valid.",
+
+    // AES
+    aesInputPlaceholder: "Teks biasa untuk dienkripsi, atau ciphertext Base64 untuk didekripsi...",
+
+    // DES
+    desInputPlaceholder: "Teks biasa untuk dienkripsi, atau ciphertext Base64 untuk didekripsi...",
+
+    // RC4
+    rc4InputPlaceholder: "Teks biasa untuk dienkripsi, atau ciphertext Base64 untuk didekripsi...",
+
+    // RSA
+    rsaKeys: "Kunci",
+    rsaKeySize: "Ukuran Kunci",
+    rsaGenerate: "Buat Pasangan Kunci",
+    rsaGenerating: "Membuat...",
+    rsaPublicKey: "Kunci Publik",
+    rsaPrivateKey: "Kunci Privat",
+    rsaNoKey: "Belum ada kunci — buat di tab Kunci",
+    rsaPlaintextPlaceholder: "Masukkan teks untuk dienkripsi (maks ~190 karakter untuk 2048-bit)...",
+    rsaCiphertextPlaceholder: "Tempel ciphertext Base64 untuk didekripsi...",
+
+    // ECDSA
+    ecdsaCurve: "Kurva",
+    ecdsaSign: "Tanda Tangani",
+    ecdsaVerify: "Verifikasi",
+    ecdsaMessage: "Pesan",
+    ecdsaSignature: "Tanda Tangan (Base64)",
+    ecdsaValid: "✓ Tanda tangan valid",
+    ecdsaInvalid: "✗ Tanda tangan tidak valid",
+    ecdsaMessagePlaceholder: "Masukkan pesan untuk ditandatangani atau diverifikasi...",
+    ecdsaSignaturePlaceholder: "Tempel tanda tangan Base64...",
+
+    // QR Generator
+    qrInputLabel: "Teks / URL",
+    qrInputPlaceholder: "https://contoh.com",
+    qrErrorLevel: "Koreksi Error",
+    qrSize: "Ukuran",
+    qrDownload: "Unduh PNG",
+
+    // Barcode Generator
+    barcodeFormat: "Format",
+    barcodeValue: "Nilai",
+    barcodeInputPlaceholder: "Masukkan nilai untuk di-encode...",
+    barcodeDownload: "Unduh SVG",
+
     // Tool Search
     searchPlaceholder: "Cari tool...",
     searchDialogTitle: "Cari Tool",
@@ -251,6 +359,7 @@ export const navGroupLabels: Record<Language, Record<string, string>> = {
     Encoding: "Encoding",
     Text: "Text",
     Generator: "Generator",
+    Cryptography: "Cryptography",
     "Frontend / CSS": "Frontend / CSS",
   },
   id: {
@@ -258,6 +367,7 @@ export const navGroupLabels: Record<Language, Record<string, string>> = {
     Encoding: "Encoding",
     Text: "Text",
     Generator: "Generator",
+    Cryptography: "Kriptografi",
     "Frontend / CSS": "Frontend / CSS",
   },
 }
