@@ -99,6 +99,12 @@ export default function CssFormatterPage() {
     }
   }
 
+  const format = () => {
+    if (!output) return
+    setInput(output)
+    setError(null)
+  }
+
   const clear = () => {
     setInput("")
     setOutput("")
@@ -154,7 +160,10 @@ export default function CssFormatterPage() {
             spellCheck={false}
           />
           <div className="flex gap-2">
-            <Button size="sm" onClick={minify} disabled={!input || loading}>
+            <Button size="sm" onClick={format} disabled={!input || loading}>
+              {t.format}
+            </Button>
+             <Button size="sm" onClick={minify} disabled={!output || loading} variant="secondary">
               {t.minify}
             </Button>
           </div>

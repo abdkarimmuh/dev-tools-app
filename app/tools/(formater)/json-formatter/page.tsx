@@ -48,6 +48,12 @@ export default function JsonFormatterPage() {
     }
   }
 
+  const format = () => {
+    if (!output) return
+    setInput(output)
+    setError(null)
+  }
+
   const clear = () => {
     setInput("")
     setOutput("")
@@ -83,7 +89,10 @@ export default function JsonFormatterPage() {
             spellCheck={false}
           />
           <div className="flex gap-2">
-            <Button size="sm" onClick={minify} disabled={!input}>
+            <Button size="sm" onClick={format} disabled={!input}>
+              {t.format || "Format"}
+            </Button>
+            <Button size="sm" onClick={minify} disabled={!output} variant="secondary">
               {t.minify}
             </Button>
           </div>
