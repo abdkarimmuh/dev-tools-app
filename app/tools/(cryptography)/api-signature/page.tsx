@@ -279,7 +279,9 @@ export default function ApiSignaturePage() {
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         {/* Message */}
         <div className="flex flex-col gap-1.5">
-          <Label>Message / Payload</Label>
+          <div className="py-2.5">
+            <Label>Message / Payload</Label>
+          </div>
           <textarea
             className="h-[300px] w-full resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
             placeholder={'{\n  "user_id": 123,\n  "timestamp": 1700000000\n}'}
