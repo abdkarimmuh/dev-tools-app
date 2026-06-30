@@ -76,7 +76,7 @@ export default function JsonFormatterPage() {
               size="sm"
               variant="ghost"
               onClick={clear}
-              className="h-7 text-xs"
+              className="text-xs"
             >
               {t.clear}
             </Button>
@@ -88,19 +88,6 @@ export default function JsonFormatterPage() {
             onChange={(e) => setInput(e.target.value)}
             spellCheck={false}
           />
-          <div className="flex gap-2">
-            <Button size="sm" onClick={format} disabled={!input}>
-              {t.format || "Format"}
-            </Button>
-            <Button
-              size="sm"
-              onClick={minify}
-              disabled={!output}
-              variant="secondary"
-            >
-              {t.minify}
-            </Button>
-          </div>
         </div>
 
         <div className="flex flex-col gap-2">
@@ -111,7 +98,7 @@ export default function JsonFormatterPage() {
               variant="ghost"
               onClick={copy}
               disabled={!output}
-              className="h-7 gap-1 text-xs"
+              className="gap-1 text-xs"
             >
               {copied ? (
                 <Check className="size-3" />
@@ -135,6 +122,20 @@ export default function JsonFormatterPage() {
             />
           )}
         </div>
+      </div>
+
+      <div className="mt-4 flex gap-4">
+        <Button size="lg" onClick={format} disabled={!input}>
+          {t.format || "Format"}
+        </Button>
+        <Button
+          size="lg"
+          onClick={minify}
+          disabled={!output}
+          variant="secondary"
+        >
+          {t.minify}
+        </Button>
       </div>
     </div>
   )

@@ -62,7 +62,7 @@ function CopyButton({
       size="sm"
       variant="ghost"
       onClick={handleCopy}
-      className="h-7 gap-1 text-xs"
+      className="gap-1 text-xs"
     >
       {isCopied ? <Check className="size-3" /> : <Copy className="size-3" />}
       {isCopied ? copiedLabel : copyLabel}
@@ -134,72 +134,73 @@ export default function JwtDecoderPage() {
 
   return (
     <div className="flex flex-col gap-4 px-4 lg:px-6">
-      <div className="flex flex-col gap-2">
-        <span className="text-sm font-medium">JWT Token</span>
-        <textarea
-          className="h-32 w-full resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-          value={token}
-          onChange={(e) => {
-            setToken(e.target.value)
-            setDecoded(null)
-            setError(null)
-          }}
-          spellCheck={false}
-        />
-        <div className="flex gap-2">
-          <Button onClick={decode} disabled={!token}>
-            {t.decode}
-          </Button>
-          <Button variant="ghost" onClick={clear}>
-            {t.clear}
-          </Button>
+      <span className="text-sm font-medium">JWT Token</span>
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <div className="flex flex-col gap-2">
+          <textarea
+            className="h-[520px] w-full resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+            value={token}
+            onChange={(e) => {
+              setToken(e.target.value)
+              setDecoded(null)
+              setError(null)
+            }}
+            spellCheck={false}
+          />
+        </div>
+
+        <div>
+          {error && (
+            <div className="rounded-md border border-destructive bg-destructive/10 p-3 font-mono text-sm text-destructive">
+              {error}
+            </div>
+          )}
+
           {decoded && (
-            <Badge
-              variant={expired ? "destructive" : "secondary"}
-              className="ml-auto"
-            >
-              {expired ? t.jwtExpired : t.jwtValid}
-            </Badge>
+            <div className="flex flex-col gap-4">
+              <JsonBlock
+                label="Header"
+                data={decoded.header}
+                copyLabel={t.copy}
+                copiedLabel={t.copied}
+              />
+              <JsonBlock
+                label="Payload"
+                data={displayPayload}
+                copyLabel={t.copy}
+                copiedLabel={t.copied}
+              />
+              <div className="flex flex-col gap-1.5">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">Signature</span>
+                  <CopyButton
+                    text={decoded.signature}
+                    copy={t.copy}
+                    copied={t.copied}
+                  />
+                </div>
+                <div className="overflow-auto rounded-md border bg-muted p-3 font-mono text-sm break-all">
+                  {decoded.signature}
+                </div>
+              </div>
+
+              <Badge variant={expired ? "destructive" : "secondary"}>
+                {expired ? t.jwtExpired : t.jwtValid}
+              </Badge>
+            </div>
           )}
         </div>
       </div>
 
-      {error && (
-        <div className="rounded-md border border-destructive bg-destructive/10 p-3 font-mono text-sm text-destructive">
-          {error}
-        </div>
-      )}
-
-      {decoded && (
-        <div className="flex flex-col gap-4">
-          <JsonBlock
-            label="Header"
-            data={decoded.header}
-            copyLabel={t.copy}
-            copiedLabel={t.copied}
-          />
-          <JsonBlock
-            label="Payload"
-            data={displayPayload}
-            copyLabel={t.copy}
-            copiedLabel={t.copied}
-          />
-          <div className="flex flex-col gap-1.5">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium">Signature</span>
-              <CopyButton
-                text={decoded.signature}
-                copy={t.copy}
-                copied={t.copied}
-              />
-            </div>
-            <div className="overflow-auto rounded-md border bg-muted p-3 font-mono text-sm break-all">
-              {decoded.signature}
-            </div>
-          </div>
-        </div>
-      )}
+      <div className="flex gap-2">
+        <Button onClick={decode} disabled={!token}>
+          {t.decode}
+        </Button>
+        <Button variant="ghost" onClick={clear}>
+          {t.clear}
+        </Button>
+      </div>
     </div>
   )
 }

@@ -33,7 +33,9 @@ async function computeHash(
 export default function HashGeneratorPage() {
   const { t } = useLanguage()
   const [input, setInput] = useToolState("hash-generator", "input", "")
-  const [algorithm, setAlgorithm] = useToolState<Algorithm>("hash-generator", "algorithm",
+  const [algorithm, setAlgorithm] = useToolState<Algorithm>(
+    "hash-generator",
+    "algorithm",
     "SHA-256"
   )
   const [output, setOutput] = useState("")
@@ -108,7 +110,7 @@ export default function HashGeneratorPage() {
               size="sm"
               variant="ghost"
               onClick={copy}
-              className="h-7 gap-1 text-xs"
+              className="gap-1 text-xs"
             >
               {copied ? (
                 <Check className="size-3" />

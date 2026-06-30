@@ -71,7 +71,7 @@ export default function HtmlEntitiesPage() {
               size="sm"
               variant="ghost"
               onClick={clear}
-              className="h-7 text-xs"
+              className="text-xs"
             >
               {t.clear}
             </Button>
@@ -83,29 +83,6 @@ export default function HtmlEntitiesPage() {
             onChange={(e) => setInput(e.target.value)}
             spellCheck={false}
           />
-          <div className="flex gap-2">
-            <Button size="sm" onClick={encode} disabled={!input}>
-              {t.encode}
-            </Button>
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={decode}
-              disabled={!input}
-            >
-              {t.decode}
-            </Button>
-            {output && (
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={swap}
-                className="ml-auto"
-              >
-                {t.swap}
-              </Button>
-            )}
-          </div>
         </div>
 
         <div className="flex flex-col gap-2">
@@ -116,7 +93,7 @@ export default function HtmlEntitiesPage() {
               variant="ghost"
               onClick={copy}
               disabled={!output}
-              className="h-7 gap-1 text-xs"
+              className="gap-1 text-xs"
             >
               {copied ? (
                 <Check className="size-3" />
@@ -140,6 +117,20 @@ export default function HtmlEntitiesPage() {
             />
           )}
         </div>
+      </div>
+
+      <div className="mt-4 flex gap-4">
+        <Button size="lg" onClick={encode} disabled={!input}>
+          {t.encode}
+        </Button>
+        <Button size="lg" variant="secondary" onClick={decode} disabled={!input}>
+          {t.decode}
+        </Button>
+        {output && (
+          <Button size="lg" variant="secondary" onClick={swap} className="ml-auto">
+            {t.swap}
+          </Button>
+        )}
       </div>
     </div>
   )
