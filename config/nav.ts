@@ -9,6 +9,7 @@ import {
   Database,
   FileCode,
   FileCode2,
+  FileText,
   Fingerprint,
   Hash,
   Key,
@@ -22,6 +23,7 @@ import {
   Ruler,
   Shield,
   ShieldCheck,
+  Webhook,
 } from "lucide-react"
 
 export interface NavItem {
@@ -71,6 +73,7 @@ export const navMenus: NavGroup[] = [
         icon: CaseSensitive,
       },
       { title: "Regex Tester", url: "/tools/regex-tester", icon: Asterisk },
+      { title: "Markdown Preview", url: "/tools/markdown-preview", icon: FileText },
     ],
   },
   {
@@ -99,6 +102,7 @@ export const navMenus: NavGroup[] = [
       { title: "RC4 Cipher", url: "/tools/rc4-cipher", icon: Shield },
       { title: "RSA", url: "/tools/rsa", icon: Key },
       { title: "ECDSA", url: "/tools/ecdsa", icon: Fingerprint },
+      { title: "API Signature (HMAC)", url: "/tools/api-signature", icon: Webhook },
     ],
   },
   {

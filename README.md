@@ -32,6 +32,7 @@ Kumpulan tools berbasis web untuk membantu produktivitas pengembang sehari-hari 
 | **Diff Checker** | Bandingkan dua teks baris per baris menggunakan algoritma LCS (Longest Common Subsequence). Menampilkan baris ditambah (hijau) dan dihapus (merah) beserta nomor baris. |
 | **Case Converter** | Konversi teks ke 8 format sekaligus: `camelCase`, `PascalCase`, `snake_case`, `kebab-case`, `SCREAMING_SNAKE`, `Title Case`, `lowercase`, `UPPERCASE`. |
 | **Regex Tester** | Uji regex secara live dengan highlight match pada teks. Mendukung toggle flag (`g`, `i`, `m`, `s`), menampilkan detail setiap match beserta capture groups. |
+| **Markdown Preview** | Editor markdown split-view dengan toolbar formatting (bold, italic, heading, list, blockquote, code block, link, dll.). Preview live via marked dengan styling `@tailwindcss/typography`. |
 
 ### Generator
 
@@ -52,6 +53,7 @@ Kumpulan tools berbasis web untuk membantu produktivitas pengembang sehari-hari 
 | **RC4 Cipher** | Enkripsi dan dekripsi menggunakan stream cipher RC4 berbasis passphrase. |
 | **RSA** | Generate key pair RSA (1024/2048/4096-bit) via Web Crypto API. Enkripsi dengan public key (RSA-OAEP + SHA-256), dekripsi dengan private key. PEM format. |
 | **ECDSA** | Generate key pair ECDSA (P-256/P-384) via Web Crypto API. Sign pesan dengan private key, verifikasi tanda tangan dengan public key. |
+| **API Signature (HMAC)** | Generate HMAC signature untuk kebutuhan API. Mendukung HMAC-SHA256/512/384/1, key encoding (UTF-8/Hex/Base64), dan output Hex atau Base64. Generate otomatis saat key dan payload diisi. |
 
 ### Frontend / CSS
 
@@ -69,7 +71,8 @@ Kumpulan tools berbasis web untuk membantu produktivitas pengembang sehari-hari 
 - **State Management** — [Zustand](https://zustand-demo.pmnd.rs) (in-memory, per-tool state)
 - **Code Formatter** — [Prettier](https://prettier.io) (dijalankan di browser via standalone build)
 - **SQL Formatter** — [sql-formatter](https://github.com/sql-formatter-org/sql-formatter)
-- **Cryptography** — [crypto-js](https://github.com/brix/crypto-js) (AES/DES/RC4) + Web Crypto API (RSA/ECDSA)
+- **Cryptography** — [crypto-js](https://github.com/brix/crypto-js) (AES/DES/RC4) + Web Crypto API (RSA/ECDSA/HMAC)
+- **Markdown** — [marked](https://marked.js.org) + [@tailwindcss/typography](https://tailwindcss.com/docs/typography-plugin)
 - **QR Code** — [qrcode](https://github.com/soldair/node-qrcode)
 - **Barcode** — [JsBarcode](https://github.com/lindell/JsBarcode)
 - **Theme** — Dark/Light mode via [next-themes](https://github.com/pacocoursey/next-themes)
@@ -133,7 +136,8 @@ dev-tools-app/
 │       ├── (text)/
 │       │   ├── diff-checker/
 │       │   ├── case-converter/
-│       │   └── regex-tester/
+│       │   ├── regex-tester/
+│       │   └── markdown-preview/
 │       ├── (generator)/
 │       │   ├── uuid-generator/
 │       │   ├── lorem-ipsum/
@@ -145,7 +149,8 @@ dev-tools-app/
 │       │   ├── des-cipher/
 │       │   ├── rc4-cipher/
 │       │   ├── rsa/
-│       │   └── ecdsa/
+│       │   ├── ecdsa/
+│       │   └── api-signature/    # HMAC signature generator
 │       └── (frontend)/
 │           ├── color-converter/
 │           └── px-rem/

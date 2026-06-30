@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@tabler/icons-react": "^3.44.0",
+    "@tailwindcss/typography": "^0.5.20",
     "@types/crypto-js": "^4.2.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -21,6 +22,7 @@
     "crypto-js": "^4.2.0",
     "jsbarcode": "^3.12.3",
     "lucide-react": "^1.21.0",
+    "marked": "^18.0.5",
     "next": "16.2.6",
     "next-themes": "1.0.0-beta.0",
     "qrcode": "^1.5.4",
