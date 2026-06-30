@@ -152,7 +152,11 @@ type Unit = "words" | "sentences" | "paragraphs"
 
 export default function LoremIpsumPage() {
   const { t } = useLanguage()
-  const [unit, setUnit] = useToolState<Unit>("lorem-ipsum", "unit", "paragraphs")
+  const [unit, setUnit] = useToolState<Unit>(
+    "lorem-ipsum",
+    "unit",
+    "paragraphs"
+  )
   const [count, setCount] = useToolState("lorem-ipsum", "count", 3)
   const [output, setOutput] = useState("")
   const [copied, setCopied] = useState(false)

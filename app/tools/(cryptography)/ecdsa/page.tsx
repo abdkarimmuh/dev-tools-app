@@ -13,12 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useLanguage } from "@/contexts/language-context"
 import { useToolState } from "@/hooks/use-tool-state"
 
@@ -50,7 +45,13 @@ function CopyBtn({ text }: { text: string }) {
     setTimeout(() => setCopied(false), 1500)
   }
   return (
-    <Button size="sm" variant="ghost" onClick={handle} disabled={!text} className="gap-1 text-xs">
+    <Button
+      size="sm"
+      variant="ghost"
+      onClick={handle}
+      disabled={!text}
+      className="gap-1 text-xs"
+    >
       {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
       {copied ? t.copied : t.copy}
     </Button>
@@ -61,7 +62,11 @@ export default function EcdsaPage() {
   const { t } = useLanguage()
   const [curve, setCurve] = useToolState<Curve>("ecdsa", "curve", "P-256")
   const [publicKeyPem, setPublicKeyPem] = useToolState("ecdsa", "publicKey", "")
-  const [privateKeyPem, setPrivateKeyPem] = useToolState("ecdsa", "privateKey", "")
+  const [privateKeyPem, setPrivateKeyPem] = useToolState(
+    "ecdsa",
+    "privateKey",
+    ""
+  )
   const [generating, setGenerating] = useState(false)
 
   const [signMessage, setSignMessage] = useState("")
@@ -164,7 +169,10 @@ export default function EcdsaPage() {
             <div className="flex flex-wrap items-end gap-3">
               <div className="flex flex-col gap-1.5">
                 <Label>{t.ecdsaCurve}</Label>
-                <Select value={curve} onValueChange={(v) => setCurve(v as Curve)}>
+                <Select
+                  value={curve}
+                  onValueChange={(v) => setCurve(v as Curve)}
+                >
                   <SelectTrigger className="w-32">
                     <SelectValue />
                   </SelectTrigger>
@@ -175,7 +183,9 @@ export default function EcdsaPage() {
                 </Select>
               </div>
               <Button onClick={generateKeys} disabled={generating}>
-                <RefreshCw className={`mr-2 size-4 ${generating ? "animate-spin" : ""}`} />
+                <RefreshCw
+                  className={`mr-2 size-4 ${generating ? "animate-spin" : ""}`}
+                />
                 {generating ? t.rsaGenerating : t.rsaGenerate}
               </Button>
             </div>
@@ -218,7 +228,9 @@ export default function EcdsaPage() {
               <div className="flex items-center justify-between">
                 <Label>{t.rsaPrivateKey}</Label>
                 {!privateKeyPem && (
-                  <Badge variant="destructive" className="text-xs">{t.rsaNoKey}</Badge>
+                  <Badge variant="destructive" className="text-xs">
+                    {t.rsaNoKey}
+                  </Badge>
                 )}
               </div>
               <textarea
@@ -243,7 +255,9 @@ export default function EcdsaPage() {
               </div>
               <div className="flex flex-col gap-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">{t.ecdsaSignature}</span>
+                  <span className="text-sm font-medium">
+                    {t.ecdsaSignature}
+                  </span>
                   <CopyBtn text={signature} />
                 </div>
                 {signError ? (
@@ -280,7 +294,9 @@ export default function EcdsaPage() {
               <div className="flex items-center justify-between">
                 <Label>{t.rsaPublicKey}</Label>
                 {!publicKeyPem && (
-                  <Badge variant="destructive" className="text-xs">{t.rsaNoKey}</Badge>
+                  <Badge variant="destructive" className="text-xs">
+                    {t.rsaNoKey}
+                  </Badge>
                 )}
               </div>
               <textarea
@@ -299,7 +315,10 @@ export default function EcdsaPage() {
                   className="h-36 w-full resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   placeholder={t.ecdsaMessagePlaceholder}
                   value={verifyMessage}
-                  onChange={(e) => { setVerifyMessage(e.target.value); setVerifyResult(null) }}
+                  onChange={(e) => {
+                    setVerifyMessage(e.target.value)
+                    setVerifyResult(null)
+                  }}
                   spellCheck={false}
                 />
               </div>
@@ -309,7 +328,10 @@ export default function EcdsaPage() {
                   className="h-36 w-full resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   placeholder={t.ecdsaSignaturePlaceholder}
                   value={verifySig}
-                  onChange={(e) => { setVerifySig(e.target.value); setVerifyResult(null) }}
+                  onChange={(e) => {
+                    setVerifySig(e.target.value)
+                    setVerifyResult(null)
+                  }}
                   spellCheck={false}
                 />
               </div>
@@ -324,7 +346,7 @@ export default function EcdsaPage() {
             {verifyResult !== null && !verifyError && (
               <Badge
                 variant={verifyResult ? "secondary" : "destructive"}
-                className="w-fit text-sm py-1 px-3"
+                className="w-fit px-3 py-1 text-sm"
               >
                 {verifyResult ? t.ecdsaValid : t.ecdsaInvalid}
               </Badge>
@@ -333,7 +355,9 @@ export default function EcdsaPage() {
             <Button
               size="lg"
               onClick={verify}
-              disabled={!verifyMessage || !verifySig || !publicKeyPem || verifyLoading}
+              disabled={
+                !verifyMessage || !verifySig || !publicKeyPem || verifyLoading
+              }
               className="w-fit"
             >
               {verifyLoading ? t.rsaGenerating : t.ecdsaVerify}

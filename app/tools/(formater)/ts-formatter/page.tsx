@@ -48,7 +48,11 @@ export default function TsFormatterPage() {
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current)
     debounceRef.current = setTimeout(async () => {
-      if (!input.trim()) { setOutput(""); setError(null); return }
+      if (!input.trim()) {
+        setOutput("")
+        setError(null)
+        return
+      }
       setLoading(true)
       setError(null)
       try {
@@ -60,17 +64,32 @@ export default function TsFormatterPage() {
         setLoading(false)
       }
     }, 500)
-    return () => { if (debounceRef.current) clearTimeout(debounceRef.current) }
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current)
+    }
   }, [input])
 
   const minify = () => {
     if (!input.trim()) return
-    try { setOutput(minifyCode(input)); setError(null) }
-    catch (e) { setError((e as Error).message); setOutput("") }
+    try {
+      setOutput(minifyCode(input))
+      setError(null)
+    } catch (e) {
+      setError((e as Error).message)
+      setOutput("")
+    }
   }
 
-  const format = () => { if (!output) return; setInput(output); setError(null) }
-  const clear = () => { setInput(""); setOutput(""); setError(null) }
+  const format = () => {
+    if (!output) return
+    setInput(output)
+    setError(null)
+  }
+  const clear = () => {
+    setInput("")
+    setOutput("")
+    setError(null)
+  }
   const copy = async () => {
     await navigator.clipboard.writeText(output)
     setCopied(true)
@@ -83,7 +102,14 @@ export default function TsFormatterPage() {
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium">Input</span>
-            <Button size="sm" variant="ghost" onClick={clear} className="text-xs">{t.clear}</Button>
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={clear}
+              className="text-xs"
+            >
+              {t.clear}
+            </Button>
           </div>
           <textarea
             className="h-[520px] w-full resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
@@ -96,21 +122,48 @@ export default function TsFormatterPage() {
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium">Output</span>
-            <Button size="sm" variant="ghost" onClick={copy} disabled={!output} className="gap-1 text-xs">
-              {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={copy}
+              disabled={!output}
+              className="gap-1 text-xs"
+            >
+              {copied ? (
+                <Check className="size-3" />
+              ) : (
+                <Copy className="size-3" />
+              )}
               {copied ? t.copied : t.copy}
             </Button>
           </div>
           {error ? (
-            <div className="flex h-[520px] items-start overflow-auto rounded-md border border-destructive bg-destructive/10 p-3 font-mono text-sm whitespace-pre-wrap text-destructive">{error}</div>
+            <div className="flex h-[520px] items-start overflow-auto rounded-md border border-destructive bg-destructive/10 p-3 font-mono text-sm whitespace-pre-wrap text-destructive">
+              {error}
+            </div>
           ) : (
-            <textarea readOnly className="h-[520px] w-full resize-none rounded-md border bg-muted p-3 font-mono text-sm outline-none" value={output} placeholder={t.outputPlaceholder} spellCheck={false} />
+            <textarea
+              readOnly
+              className="h-[520px] w-full resize-none rounded-md border bg-muted p-3 font-mono text-sm outline-none"
+              value={output}
+              placeholder={t.outputPlaceholder}
+              spellCheck={false}
+            />
           )}
         </div>
       </div>
       <div className="mt-4 flex gap-4">
-        <Button size="lg" onClick={format} disabled={!input || loading}>{loading ? t.formatting : t.format}</Button>
-        <Button size="lg" onClick={minify} disabled={!output || loading} variant="secondary">{t.minify}</Button>
+        <Button size="lg" onClick={format} disabled={!input || loading}>
+          {loading ? t.formatting : t.format}
+        </Button>
+        <Button
+          size="lg"
+          onClick={minify}
+          disabled={!output || loading}
+          variant="secondary"
+        >
+          {t.minify}
+        </Button>
       </div>
     </div>
   )

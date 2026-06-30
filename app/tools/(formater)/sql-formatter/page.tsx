@@ -16,7 +16,13 @@ import {
 import { useLanguage } from "@/contexts/language-context"
 import { useToolState } from "@/hooks/use-tool-state"
 
-type Dialect = "sql" | "mysql" | "postgresql" | "transactsql" | "sqlite" | "plsql"
+type Dialect =
+  | "sql"
+  | "mysql"
+  | "postgresql"
+  | "transactsql"
+  | "sqlite"
+  | "plsql"
 
 const DIALECTS: { value: Dialect; label: string }[] = [
   { value: "sql", label: "SQL" },
@@ -37,7 +43,11 @@ function minifySql(sql: string): string {
 
 export default function SqlFormatterPage() {
   const { t } = useLanguage()
-  const [dialect, setDialect] = useToolState<Dialect>("sql-formatter", "dialect", "sql")
+  const [dialect, setDialect] = useToolState<Dialect>(
+    "sql-formatter",
+    "dialect",
+    "sql"
+  )
   const [input, setInput] = useToolState("sql-formatter", "input", "")
   const [output, setOutput] = useState("")
   const [error, setError] = useState<string | null>(null)
@@ -46,7 +56,9 @@ export default function SqlFormatterPage() {
   const formatSql = () => {
     if (!input.trim()) return
     try {
-      setOutput(format(input, { language: dialect, tabWidth: 2, keywordCase: "upper" }))
+      setOutput(
+        format(input, { language: dialect, tabWidth: 2, keywordCase: "upper" })
+      )
       setError(null)
     } catch (e) {
       setError((e as Error).message)
@@ -60,7 +72,11 @@ export default function SqlFormatterPage() {
     setError(null)
   }
 
-  const clear = () => { setInput(""); setOutput(""); setError(null) }
+  const clear = () => {
+    setInput("")
+    setOutput("")
+    setError(null)
+  }
   const copy = async () => {
     await navigator.clipboard.writeText(output)
     setCopied(true)
@@ -73,14 +89,20 @@ export default function SqlFormatterPage() {
         <Label htmlFor="sql-dialect">Dialect</Label>
         <Select
           value={dialect}
-          onValueChange={(v) => { setDialect(v as Dialect); setOutput(""); setError(null) }}
+          onValueChange={(v) => {
+            setDialect(v as Dialect)
+            setOutput("")
+            setError(null)
+          }}
         >
           <SelectTrigger id="sql-dialect" className="w-40">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
             {DIALECTS.map((d) => (
-              <SelectItem key={d.value} value={d.value}>{d.label}</SelectItem>
+              <SelectItem key={d.value} value={d.value}>
+                {d.label}
+              </SelectItem>
             ))}
           </SelectContent>
         </Select>
@@ -90,7 +112,14 @@ export default function SqlFormatterPage() {
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium">Input</span>
-            <Button size="sm" variant="ghost" onClick={clear} className="text-xs">{t.clear}</Button>
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={clear}
+              className="text-xs"
+            >
+              {t.clear}
+            </Button>
           </div>
           <textarea
             className="h-[520px] w-full resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
@@ -103,8 +132,18 @@ export default function SqlFormatterPage() {
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium">Output</span>
-            <Button size="sm" variant="ghost" onClick={copy} disabled={!output} className="gap-1 text-xs">
-              {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={copy}
+              disabled={!output}
+              className="gap-1 text-xs"
+            >
+              {copied ? (
+                <Check className="size-3" />
+              ) : (
+                <Copy className="size-3" />
+              )}
               {copied ? t.copied : t.copy}
             </Button>
           </div>
@@ -113,13 +152,28 @@ export default function SqlFormatterPage() {
               <span>{error}</span>
             </div>
           ) : (
-            <textarea readOnly className="h-[520px] w-full resize-none rounded-md border bg-muted p-3 font-mono text-sm outline-none" value={output} placeholder={t.outputPlaceholder} spellCheck={false} />
+            <textarea
+              readOnly
+              className="h-[520px] w-full resize-none rounded-md border bg-muted p-3 font-mono text-sm outline-none"
+              value={output}
+              placeholder={t.outputPlaceholder}
+              spellCheck={false}
+            />
           )}
         </div>
       </div>
       <div className="mt-4 flex gap-4">
-        <Button size="lg" onClick={formatSql} disabled={!input}>{t.format}</Button>
-        <Button size="lg" onClick={minify} disabled={!input} variant="secondary">{t.minify}</Button>
+        <Button size="lg" onClick={formatSql} disabled={!input}>
+          {t.format}
+        </Button>
+        <Button
+          size="lg"
+          onClick={minify}
+          disabled={!input}
+          variant="secondary"
+        >
+          {t.minify}
+        </Button>
       </div>
     </div>
   )

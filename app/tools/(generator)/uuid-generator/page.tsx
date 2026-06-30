@@ -77,7 +77,9 @@ const generators: Record<UuidVersion, () => string> = {
 
 export default function UuidGeneratorPage() {
   const { t } = useLanguage()
-  const [version, setVersion] = useToolState<UuidVersion>("uuid-generator", "version",
+  const [version, setVersion] = useToolState<UuidVersion>(
+    "uuid-generator",
+    "version",
     "v4"
   )
   const [count, setCount] = useToolState("uuid-generator", "count", 1)

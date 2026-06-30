@@ -232,7 +232,7 @@ export default function MarkdownPreviewPage() {
           <div className="h-[540px] overflow-y-auto rounded-br-md border border-l-0 p-4 lg:rounded-br-md lg:rounded-bl-none">
             {html ? (
               <div
-                className="prose prose-neutral dark:prose-invert prose-sm max-w-none"
+                className="prose prose-sm max-w-none prose-neutral dark:prose-invert"
                 dangerouslySetInnerHTML={{ __html: html }}
               />
             ) : (

@@ -120,13 +120,16 @@ export const translations = {
     cryptoDecryptError: "Decryption failed. Wrong key or invalid ciphertext.",
 
     // AES
-    aesInputPlaceholder: "Plaintext to encrypt, or Base64 ciphertext to decrypt...",
+    aesInputPlaceholder:
+      "Plaintext to encrypt, or Base64 ciphertext to decrypt...",
 
     // DES
-    desInputPlaceholder: "Plaintext to encrypt, or Base64 ciphertext to decrypt...",
+    desInputPlaceholder:
+      "Plaintext to encrypt, or Base64 ciphertext to decrypt...",
 
     // RC4
-    rc4InputPlaceholder: "Plaintext to encrypt, or Base64 ciphertext to decrypt...",
+    rc4InputPlaceholder:
+      "Plaintext to encrypt, or Base64 ciphertext to decrypt...",
 
     // RSA
     rsaKeys: "Keys",
@@ -136,7 +139,8 @@ export const translations = {
     rsaPublicKey: "Public Key",
     rsaPrivateKey: "Private Key",
     rsaNoKey: "No key — generate one in Keys tab",
-    rsaPlaintextPlaceholder: "Enter plaintext to encrypt (max ~190 chars for 2048-bit)...",
+    rsaPlaintextPlaceholder:
+      "Enter plaintext to encrypt (max ~190 chars for 2048-bit)...",
     rsaCiphertextPlaceholder: "Paste Base64 ciphertext to decrypt...",
 
     // ECDSA
@@ -290,16 +294,20 @@ export const translations = {
     cryptoKeyPlaceholder: "Masukkan kunci rahasia...",
     cryptoEncrypt: "Enkripsi",
     cryptoDecrypt: "Dekripsi",
-    cryptoDecryptError: "Dekripsi gagal. Kunci salah atau ciphertext tidak valid.",
+    cryptoDecryptError:
+      "Dekripsi gagal. Kunci salah atau ciphertext tidak valid.",
 
     // AES
-    aesInputPlaceholder: "Teks biasa untuk dienkripsi, atau ciphertext Base64 untuk didekripsi...",
+    aesInputPlaceholder:
+      "Teks biasa untuk dienkripsi, atau ciphertext Base64 untuk didekripsi...",
 
     // DES
-    desInputPlaceholder: "Teks biasa untuk dienkripsi, atau ciphertext Base64 untuk didekripsi...",
+    desInputPlaceholder:
+      "Teks biasa untuk dienkripsi, atau ciphertext Base64 untuk didekripsi...",
 
     // RC4
-    rc4InputPlaceholder: "Teks biasa untuk dienkripsi, atau ciphertext Base64 untuk didekripsi...",
+    rc4InputPlaceholder:
+      "Teks biasa untuk dienkripsi, atau ciphertext Base64 untuk didekripsi...",
 
     // RSA
     rsaKeys: "Kunci",
@@ -309,7 +317,8 @@ export const translations = {
     rsaPublicKey: "Kunci Publik",
     rsaPrivateKey: "Kunci Privat",
     rsaNoKey: "Belum ada kunci — buat di tab Kunci",
-    rsaPlaintextPlaceholder: "Masukkan teks untuk dienkripsi (maks ~190 karakter untuk 2048-bit)...",
+    rsaPlaintextPlaceholder:
+      "Masukkan teks untuk dienkripsi (maks ~190 karakter untuk 2048-bit)...",
     rsaCiphertextPlaceholder: "Tempel ciphertext Base64 untuk didekripsi...",
 
     // ECDSA
@@ -320,7 +329,8 @@ export const translations = {
     ecdsaSignature: "Tanda Tangan (Base64)",
     ecdsaValid: "✓ Tanda tangan valid",
     ecdsaInvalid: "✗ Tanda tangan tidak valid",
-    ecdsaMessagePlaceholder: "Masukkan pesan untuk ditandatangani atau diverifikasi...",
+    ecdsaMessagePlaceholder:
+      "Masukkan pesan untuk ditandatangani atau diverifikasi...",
     ecdsaSignaturePlaceholder: "Tempel tanda tangan Base64...",
 
     // QR Generator

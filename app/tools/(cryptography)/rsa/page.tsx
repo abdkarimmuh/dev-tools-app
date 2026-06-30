@@ -13,12 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useLanguage } from "@/contexts/language-context"
 import { useToolState } from "@/hooks/use-tool-state"
 
@@ -48,7 +43,13 @@ function CopyBtn({ text }: { text: string }) {
     setTimeout(() => setCopied(false), 1500)
   }
   return (
-    <Button size="sm" variant="ghost" onClick={handle} disabled={!text} className="gap-1 text-xs">
+    <Button
+      size="sm"
+      variant="ghost"
+      onClick={handle}
+      disabled={!text}
+      className="gap-1 text-xs"
+    >
       {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
       {copied ? t.copied : t.copy}
     </Button>
@@ -58,7 +59,11 @@ function CopyBtn({ text }: { text: string }) {
 export default function RsaPage() {
   const { t } = useLanguage()
   const [publicKeyPem, setPublicKeyPem] = useToolState("rsa", "publicKey", "")
-  const [privateKeyPem, setPrivateKeyPem] = useToolState("rsa", "privateKey", "")
+  const [privateKeyPem, setPrivateKeyPem] = useToolState(
+    "rsa",
+    "privateKey",
+    ""
+  )
   const [keySize, setKeySize] = useState<"1024" | "2048" | "4096">("2048")
   const [generating, setGenerating] = useState(false)
 
@@ -163,7 +168,10 @@ export default function RsaPage() {
             <div className="flex flex-wrap items-end gap-3">
               <div className="flex flex-col gap-1.5">
                 <Label>{t.rsaKeySize}</Label>
-                <Select value={keySize} onValueChange={(v) => setKeySize(v as typeof keySize)}>
+                <Select
+                  value={keySize}
+                  onValueChange={(v) => setKeySize(v as typeof keySize)}
+                >
                   <SelectTrigger className="w-32">
                     <SelectValue />
                   </SelectTrigger>
@@ -175,7 +183,9 @@ export default function RsaPage() {
                 </Select>
               </div>
               <Button onClick={generateKeys} disabled={generating}>
-                <RefreshCw className={`mr-2 size-4 ${generating ? "animate-spin" : ""}`} />
+                <RefreshCw
+                  className={`mr-2 size-4 ${generating ? "animate-spin" : ""}`}
+                />
                 {generating ? t.rsaGenerating : t.rsaGenerate}
               </Button>
             </div>
@@ -218,7 +228,9 @@ export default function RsaPage() {
               <div className="flex items-center justify-between">
                 <Label>{t.rsaPublicKey}</Label>
                 {!publicKeyPem && (
-                  <Badge variant="destructive" className="text-xs">{t.rsaNoKey}</Badge>
+                  <Badge variant="destructive" className="text-xs">
+                    {t.rsaNoKey}
+                  </Badge>
                 )}
               </div>
               <textarea
@@ -243,7 +255,9 @@ export default function RsaPage() {
               </div>
               <div className="flex flex-col gap-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">Ciphertext (Base64)</span>
+                  <span className="text-sm font-medium">
+                    Ciphertext (Base64)
+                  </span>
                   <CopyBtn text={encOutput} />
                 </div>
                 {encError ? (
@@ -262,7 +276,12 @@ export default function RsaPage() {
               </div>
             </div>
 
-            <Button size="lg" onClick={encrypt} disabled={!encInput || !publicKeyPem || encLoading} className="w-fit">
+            <Button
+              size="lg"
+              onClick={encrypt}
+              disabled={!encInput || !publicKeyPem || encLoading}
+              className="w-fit"
+            >
               {encLoading ? t.rsaGenerating : t.cryptoEncrypt}
             </Button>
           </div>
@@ -275,7 +294,9 @@ export default function RsaPage() {
               <div className="flex items-center justify-between">
                 <Label>{t.rsaPrivateKey}</Label>
                 {!privateKeyPem && (
-                  <Badge variant="destructive" className="text-xs">{t.rsaNoKey}</Badge>
+                  <Badge variant="destructive" className="text-xs">
+                    {t.rsaNoKey}
+                  </Badge>
                 )}
               </div>
               <textarea
@@ -319,7 +340,12 @@ export default function RsaPage() {
               </div>
             </div>
 
-            <Button size="lg" onClick={decrypt} disabled={!decInput || !privateKeyPem || decLoading} className="w-fit">
+            <Button
+              size="lg"
+              onClick={decrypt}
+              disabled={!decInput || !privateKeyPem || decLoading}
+              className="w-fit"
+            >
               {decLoading ? t.rsaGenerating : t.cryptoDecrypt}
             </Button>
           </div>

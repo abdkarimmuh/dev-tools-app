@@ -79,9 +79,14 @@ async function generateHmac(
     keyBytes = new TextEncoder().encode(secretKey)
   }
 
+  const keyBuffer = keyBytes.buffer.slice(
+    keyBytes.byteOffset,
+    keyBytes.byteOffset + keyBytes.byteLength
+  ) as ArrayBuffer
+
   const cryptoKey = await crypto.subtle.importKey(
     "raw",
-    keyBytes,
+    keyBuffer,
     { name: "HMAC", hash: algorithm },
     false,
     ["sign"]
@@ -111,7 +116,11 @@ export default function ApiSignaturePage() {
     "outputFormat",
     "hex"
   )
-  const [secretKey, setSecretKey] = useToolState("api-signature", "secretKey", "")
+  const [secretKey, setSecretKey] = useToolState(
+    "api-signature",
+    "secretKey",
+    ""
+  )
   const [message, setMessage] = useToolState("api-signature", "message", "")
   const [signature, setSignature] = useState("")
   const [error, setError] = useState<string | null>(null)
@@ -253,11 +262,15 @@ export default function ApiSignaturePage() {
           <Button
             variant="ghost"
             size="icon"
-            className="absolute right-1 top-1/2 size-7 -translate-y-1/2 text-muted-foreground"
+            className="absolute top-1/2 right-1 size-7 -translate-y-1/2 text-muted-foreground"
             onClick={() => setShowKey(!showKey)}
             type="button"
           >
-            {showKey ? <EyeOff className="size-3.5" /> : <Eye className="size-3.5" />}
+            {showKey ? (
+              <EyeOff className="size-3.5" />
+            ) : (
+              <Eye className="size-3.5" />
+            )}
           </Button>
         </div>
       </div>
@@ -269,7 +282,7 @@ export default function ApiSignaturePage() {
           <Label>Message / Payload</Label>
           <textarea
             className="h-[300px] w-full resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            placeholder={"{\n  \"user_id\": 123,\n  \"timestamp\": 1700000000\n}"}
+            placeholder={'{\n  "user_id": 123,\n  "timestamp": 1700000000\n}'}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             spellCheck={false}
@@ -287,7 +300,11 @@ export default function ApiSignaturePage() {
               disabled={!signature}
               className="gap-1 text-xs"
             >
-              {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
+              {copied ? (
+                <Check className="size-3" />
+              ) : (
+                <Copy className="size-3" />
+              )}
               {copied ? t.copied : t.copy}
             </Button>
           </div>
@@ -312,9 +329,12 @@ export default function ApiSignaturePage() {
         <div className="rounded-md border bg-muted/40 p-3 text-xs text-muted-foreground">
           <span className="font-medium text-foreground">Header:</span>{" "}
           <code className="font-mono">
-            X-Signature: {algorithm.replace("-", "").toLowerCase()}={signature.substring(0, 20)}…
+            X-Signature: {algorithm.replace("-", "").toLowerCase()}=
+            {signature.substring(0, 20)}…
           </code>
-          <span className="ml-4 font-medium text-foreground">GitHub style:</span>{" "}
+          <span className="ml-4 font-medium text-foreground">
+            GitHub style:
+          </span>{" "}
           <code className="font-mono">
             sha256={signature.substring(0, 20)}…
           </code>

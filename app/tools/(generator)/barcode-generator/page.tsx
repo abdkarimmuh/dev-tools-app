@@ -146,7 +146,9 @@ export default function BarcodeGeneratorPage() {
       )}
 
       <div className="flex flex-col gap-3">
-        <div className={`w-fit rounded-md border p-4 ${hasOutput ? "" : "hidden"}`}>
+        <div
+          className={`w-fit rounded-md border p-4 ${hasOutput ? "" : "hidden"}`}
+        >
           <svg ref={svgRef} />
         </div>
         {hasOutput && (

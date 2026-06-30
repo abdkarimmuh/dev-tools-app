@@ -42,10 +42,22 @@ export const navMenus: NavGroup[] = [
     label: "Format & Validasi",
     items: [
       { title: "JSON Formatter", url: "/tools/json-formatter", icon: Braces },
-      { title: "JavaScript Formatter", url: "/tools/js-formatter", icon: FileCode2 },
-      { title: "TypeScript Formatter", url: "/tools/ts-formatter", icon: FileCode },
+      {
+        title: "JavaScript Formatter",
+        url: "/tools/js-formatter",
+        icon: FileCode2,
+      },
+      {
+        title: "TypeScript Formatter",
+        url: "/tools/ts-formatter",
+        icon: FileCode,
+      },
       { title: "HTML Formatter", url: "/tools/html-formatter", icon: Code },
-      { title: "CSS / SCSS / SASS Formatter", url: "/tools/css-formatter", icon: Paintbrush },
+      {
+        title: "CSS / SCSS / SASS Formatter",
+        url: "/tools/css-formatter",
+        icon: Paintbrush,
+      },
       { title: "SQL Formatter", url: "/tools/sql-formatter", icon: Database },
     ],
   },
@@ -73,7 +85,11 @@ export const navMenus: NavGroup[] = [
         icon: CaseSensitive,
       },
       { title: "Regex Tester", url: "/tools/regex-tester", icon: Asterisk },
-      { title: "Markdown Preview", url: "/tools/markdown-preview", icon: FileText },
+      {
+        title: "Markdown Preview",
+        url: "/tools/markdown-preview",
+        icon: FileText,
+      },
     ],
   },
   {
@@ -98,11 +114,19 @@ export const navMenus: NavGroup[] = [
     label: "Cryptography",
     items: [
       { title: "AES Cipher", url: "/tools/aes-cipher", icon: Lock },
-      { title: "DES / 3DES Cipher", url: "/tools/des-cipher", icon: ShieldCheck },
+      {
+        title: "DES / 3DES Cipher",
+        url: "/tools/des-cipher",
+        icon: ShieldCheck,
+      },
       { title: "RC4 Cipher", url: "/tools/rc4-cipher", icon: Shield },
       { title: "RSA", url: "/tools/rsa", icon: Key },
       { title: "ECDSA", url: "/tools/ecdsa", icon: Fingerprint },
-      { title: "API Signature (HMAC)", url: "/tools/api-signature", icon: Webhook },
+      {
+        title: "API Signature (HMAC)",
+        url: "/tools/api-signature",
+        icon: Webhook,
+      },
     ],
   },
   {

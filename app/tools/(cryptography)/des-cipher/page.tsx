@@ -19,7 +19,11 @@ const ALGORITHMS: { value: DesAlgorithm; label: string }[] = [
 
 export default function DesCipherPage() {
   const { t } = useLanguage()
-  const [algorithm, setAlgorithm] = useToolState<DesAlgorithm>("des-cipher", "algorithm", "DES")
+  const [algorithm, setAlgorithm] = useToolState<DesAlgorithm>(
+    "des-cipher",
+    "algorithm",
+    "DES"
+  )
   const [input, setInput] = useToolState("des-cipher", "input", "")
   const [secretKey, setSecretKey] = useToolState("des-cipher", "key", "")
   const [output, setOutput] = useState("")
@@ -102,9 +106,13 @@ export default function DesCipherPage() {
           <button
             type="button"
             onClick={() => setShowKey((v) => !v)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+            className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground hover:text-foreground"
           >
-            {showKey ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+            {showKey ? (
+              <EyeOff className="size-4" />
+            ) : (
+              <Eye className="size-4" />
+            )}
           </button>
         </div>
       </div>
@@ -113,7 +121,12 @@ export default function DesCipherPage() {
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium">Input</span>
-            <Button size="sm" variant="ghost" onClick={clear} className="text-xs">
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={clear}
+              className="text-xs"
+            >
               {t.clear}
             </Button>
           </div>
@@ -136,7 +149,11 @@ export default function DesCipherPage() {
               disabled={!output}
               className="gap-1 text-xs"
             >
-              {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
+              {copied ? (
+                <Check className="size-3" />
+              ) : (
+                <Copy className="size-3" />
+              )}
               {copied ? t.copied : t.copy}
             </Button>
           </div>

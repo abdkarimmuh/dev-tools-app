@@ -232,7 +232,9 @@ export default function DiffCheckerPage() {
   const [textA, setTextA] = useToolState("diff-checker", "textA", "")
   const [textB, setTextB] = useToolState("diff-checker", "textB", "")
   const [rows, setRows] = useState<SideBySideRow[] | null>(null)
-  const [ignoreWhitespace, setIgnoreWhitespace] = useToolState("diff-checker", "ignoreWS",
+  const [ignoreWhitespace, setIgnoreWhitespace] = useToolState(
+    "diff-checker",
+    "ignoreWS",
     false
   )
 

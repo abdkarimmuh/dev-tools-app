@@ -77,14 +77,18 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         ))}
       </SidebarContent>
 
-      <SidebarFooter className="md:hidden border-t">
+      <SidebarFooter className="border-t md:hidden">
         <div className="flex items-center gap-2 py-1">
-          <div className="flex-1 [&>button]:w-full [&>button>span]:inline! [&>button>kbd]:hidden">
+          <div className="flex-1 [&>button]:w-full [&>button>kbd]:hidden [&>button>span]:inline!">
             <ToolSearch />
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="shrink-0 gap-1.5 px-2 font-mono text-xs font-semibold">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="shrink-0 gap-1.5 px-2 font-mono text-xs font-semibold"
+              >
                 <Globe className="size-3.5" />
                 {language.toUpperCase()}
               </Button>

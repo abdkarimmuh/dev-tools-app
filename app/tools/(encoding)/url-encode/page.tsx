@@ -112,11 +112,21 @@ export default function UrlEncodePage() {
         <Button size="lg" onClick={encode} disabled={!input}>
           {t.encode}
         </Button>
-        <Button size="lg" variant="secondary" onClick={decode} disabled={!input}>
+        <Button
+          size="lg"
+          variant="secondary"
+          onClick={decode}
+          disabled={!input}
+        >
           {t.decode}
         </Button>
         {output && (
-          <Button size="lg" variant="secondary" onClick={swap} className="ml-auto">
+          <Button
+            size="lg"
+            variant="secondary"
+            onClick={swap}
+            className="ml-auto"
+          >
             {t.swap}
           </Button>
         )}
