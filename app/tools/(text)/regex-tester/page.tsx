@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useLanguage } from "@/contexts/language-context"
-import { useStorage } from "@/hooks/use-storage"
+import { useToolState } from "@/hooks/use-tool-state"
 import { cn } from "@/lib/utils"
 
 interface Match {
@@ -84,9 +84,9 @@ const FLAG_OPTIONS = [
 
 export default function RegexTesterPage() {
   const { t } = useLanguage()
-  const [pattern, setPattern] = useStorage("regex-tester:pattern", "")
-  const [flags, setFlags] = useStorage("regex-tester:flags", "g")
-  const [testStr, setTestStr] = useStorage("regex-tester:testStr", "")
+  const [pattern, setPattern] = useToolState("regex-tester", "pattern", "")
+  const [flags, setFlags] = useToolState("regex-tester", "flags", "g")
+  const [testStr, setTestStr] = useToolState("regex-tester", "testStr", "")
 
   const toggleFlag = (flag: string) => {
     setFlags(flags.includes(flag) ? flags.replace(flag, "") : flags + flag)

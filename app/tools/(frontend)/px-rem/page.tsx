@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useLanguage } from "@/contexts/language-context"
-import { useStorage } from "@/hooks/use-storage"
+import { useToolState } from "@/hooks/use-tool-state"
 
 const COMMON_PX = [
   8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 36, 40, 48, 56, 64, 72, 80, 96,
@@ -33,9 +33,9 @@ function CopyButton({ text }: { text: string }) {
 
 export default function PxRemPage() {
   const { t } = useLanguage()
-  const [base, setBase] = useStorage("px-rem:base", 16)
-  const [pxInput, setPxInput] = useStorage("px-rem:px", "")
-  const [remInput, setRemInput] = useStorage("px-rem:rem", "")
+  const [base, setBase] = useToolState("px-rem", "base", 16)
+  const [pxInput, setPxInput] = useToolState("px-rem", "px", "")
+  const [remInput, setRemInput] = useToolState("px-rem", "rem", "")
 
   const pxToRem = (px: string) => {
     const val = parseFloat(px)

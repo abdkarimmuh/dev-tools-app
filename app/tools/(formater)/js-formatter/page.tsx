@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
-import { useStorage } from "@/hooks/use-storage"
+import { useToolState } from "@/hooks/use-tool-state"
 
 type Syntax = "js" | "ts"
 
@@ -51,8 +51,8 @@ function minifyCode(code: string): string {
 
 export default function JsFormatterPage() {
   const { t } = useLanguage()
-  const [syntax, setSyntax] = useStorage<Syntax>("js-formatter:syntax", "js")
-  const [input, setInput] = useStorage("js-formatter:input", "")
+  const [syntax, setSyntax] = useToolState<Syntax>("js-formatter", "syntax", "js")
+  const [input, setInput] = useToolState("js-formatter", "input", "")
   const [output, setOutput] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)

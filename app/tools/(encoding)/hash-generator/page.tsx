@@ -13,7 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { useLanguage } from "@/contexts/language-context"
-import { useStorage } from "@/hooks/use-storage"
+import { useToolState } from "@/hooks/use-tool-state"
 
 type Algorithm = "SHA-1" | "SHA-256" | "SHA-384" | "SHA-512"
 
@@ -32,9 +32,8 @@ async function computeHash(
 
 export default function HashGeneratorPage() {
   const { t } = useLanguage()
-  const [input, setInput] = useStorage("hash-generator:input", "")
-  const [algorithm, setAlgorithm] = useStorage<Algorithm>(
-    "hash-generator:algorithm",
+  const [input, setInput] = useToolState("hash-generator", "input", "")
+  const [algorithm, setAlgorithm] = useToolState<Algorithm>("hash-generator", "algorithm",
     "SHA-256"
   )
   const [output, setOutput] = useState("")

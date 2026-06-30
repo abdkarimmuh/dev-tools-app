@@ -5,11 +5,11 @@ import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
-import { useStorage } from "@/hooks/use-storage"
+import { useToolState } from "@/hooks/use-tool-state"
 
 export default function UrlEncodePage() {
   const { t } = useLanguage()
-  const [input, setInput] = useStorage("url-encode:input", "")
+  const [input, setInput] = useToolState("url-encode", "input", "")
   const [output, setOutput] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)

@@ -14,7 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { useLanguage } from "@/contexts/language-context"
-import { useStorage } from "@/hooks/use-storage"
+import { useToolState } from "@/hooks/use-tool-state"
 
 type UuidVersion = "v1" | "v4" | "v7"
 
@@ -77,11 +77,10 @@ const generators: Record<UuidVersion, () => string> = {
 
 export default function UuidGeneratorPage() {
   const { t } = useLanguage()
-  const [version, setVersion] = useStorage<UuidVersion>(
-    "uuid-generator:version",
+  const [version, setVersion] = useToolState<UuidVersion>("uuid-generator", "version",
     "v4"
   )
-  const [count, setCount] = useStorage("uuid-generator:count", 1)
+  const [count, setCount] = useToolState("uuid-generator", "count", 1)
   const [uuids, setUuids] = useState<string[]>([])
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null)
   const [copiedAll, setCopiedAll] = useState(false)

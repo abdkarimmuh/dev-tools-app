@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useLanguage } from "@/contexts/language-context"
-import { useStorage } from "@/hooks/use-storage"
+import { useToolState } from "@/hooks/use-tool-state"
 
 function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
   const clean = hex.replace("#", "")
@@ -129,7 +129,7 @@ function CopyButton({ text }: { text: string }) {
 
 export default function ColorConverterPage() {
   const { t } = useLanguage()
-  const [hexInput, setHexInput] = useStorage("color-converter:hex", "")
+  const [hexInput, setHexInput] = useToolState("color-converter", "hex", "")
   const [color, setColor] = useState<Color | null>(() => fromHex(hexInput))
   const [rgbInput, setRgbInput] = useState(() => {
     const c = fromHex(hexInput)

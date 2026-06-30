@@ -4,7 +4,7 @@ import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
-import { useStorage } from "@/hooks/use-storage"
+import { useToolState } from "@/hooks/use-tool-state"
 import { cn } from "@/lib/utils"
 
 type DiffLine = {
@@ -229,11 +229,10 @@ function InlineDiff({
 
 export default function DiffCheckerPage() {
   const { t } = useLanguage()
-  const [textA, setTextA] = useStorage("diff-checker:textA", "")
-  const [textB, setTextB] = useStorage("diff-checker:textB", "")
+  const [textA, setTextA] = useToolState("diff-checker", "textA", "")
+  const [textB, setTextB] = useToolState("diff-checker", "textB", "")
   const [rows, setRows] = useState<SideBySideRow[] | null>(null)
-  const [ignoreWhitespace, setIgnoreWhitespace] = useStorage(
-    "diff-checker:ignoreWS",
+  const [ignoreWhitespace, setIgnoreWhitespace] = useToolState("diff-checker", "ignoreWS",
     false
   )
 

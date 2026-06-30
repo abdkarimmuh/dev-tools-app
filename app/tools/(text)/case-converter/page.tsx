@@ -5,7 +5,7 @@ import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
-import { useStorage } from "@/hooks/use-storage"
+import { useToolState } from "@/hooks/use-tool-state"
 
 function toWords(str: string): string[] {
   return str
@@ -106,7 +106,7 @@ function CopyButton({
 
 export default function CaseConverterPage() {
   const { t } = useLanguage()
-  const [input, setInput] = useStorage("case-converter:input", "")
+  const [input, setInput] = useToolState("case-converter", "input", "")
 
   return (
     <div className="flex max-w-3xl flex-col gap-6 px-4 lg:px-6">

@@ -14,7 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { useLanguage } from "@/contexts/language-context"
-import { useStorage } from "@/hooks/use-storage"
+import { useToolState } from "@/hooks/use-tool-state"
 
 const WORDS = [
   "lorem",
@@ -152,8 +152,8 @@ type Unit = "words" | "sentences" | "paragraphs"
 
 export default function LoremIpsumPage() {
   const { t } = useLanguage()
-  const [unit, setUnit] = useStorage<Unit>("lorem-ipsum:unit", "paragraphs")
-  const [count, setCount] = useStorage("lorem-ipsum:count", 3)
+  const [unit, setUnit] = useToolState<Unit>("lorem-ipsum", "unit", "paragraphs")
+  const [count, setCount] = useToolState("lorem-ipsum", "count", 3)
   const [output, setOutput] = useState("")
   const [copied, setCopied] = useState(false)
 

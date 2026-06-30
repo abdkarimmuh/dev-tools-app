@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { useLanguage } from "@/contexts/language-context"
-import { useStorage } from "@/hooks/use-storage"
+import { useToolState } from "@/hooks/use-tool-state"
 
 const CHARSETS = {
   upper: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
@@ -36,8 +36,8 @@ function generatePassword(
 
 export default function PasswordGeneratorPage() {
   const { t } = useLanguage()
-  const [length, setLength] = useStorage("password-generator:length", 16)
-  const [opts, setOpts] = useStorage("password-generator:opts", {
+  const [length, setLength] = useToolState("password-generator", "length", 16)
+  const [opts, setOpts] = useToolState("password-generator", "opts", {
     upper: true,
     lower: true,
     numbers: true,

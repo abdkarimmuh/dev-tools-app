@@ -5,7 +5,7 @@ import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
-import { useStorage } from "@/hooks/use-storage"
+import { useToolState } from "@/hooks/use-tool-state"
 
 function encodeHtmlEntities(str: string): string {
   return str
@@ -24,7 +24,7 @@ function decodeHtmlEntities(str: string): string {
 
 export default function HtmlEntitiesPage() {
   const { t } = useLanguage()
-  const [input, setInput] = useStorage("html-entities:input", "")
+  const [input, setInput] = useToolState("html-entities", "input", "")
   const [output, setOutput] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)

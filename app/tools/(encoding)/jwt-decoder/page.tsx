@@ -6,7 +6,7 @@ import { useState } from "react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
-import { useStorage } from "@/hooks/use-storage"
+import { useToolState } from "@/hooks/use-tool-state"
 
 function base64UrlDecode(str: string): string {
   const base64 = str.replace(/-/g, "+").replace(/_/g, "/")
@@ -102,7 +102,7 @@ function JsonBlock({
 
 export default function JwtDecoderPage() {
   const { t } = useLanguage()
-  const [token, setToken] = useStorage("jwt-decoder:token", "")
+  const [token, setToken] = useToolState("jwt-decoder", "token", "")
   const [decoded, setDecoded] = useState<JwtParts | null>(null)
   const [error, setError] = useState<string | null>(null)
 

@@ -5,11 +5,11 @@ import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
-import { useStorage } from "@/hooks/use-storage"
+import { useToolState } from "@/hooks/use-tool-state"
 
 export default function Base64Page() {
   const { t } = useLanguage()
-  const [input, setInput] = useStorage("base64:input", "")
+  const [input, setInput] = useToolState("base64", "input", "")
   const [output, setOutput] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)

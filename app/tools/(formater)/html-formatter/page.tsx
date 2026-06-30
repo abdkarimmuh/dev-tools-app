@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
-import { useStorage } from "@/hooks/use-storage"
+import { useToolState } from "@/hooks/use-tool-state"
 
 async function formatHtml(code: string): Promise<string> {
   const [prettier, htmlPlugin] = await Promise.all([
@@ -34,7 +34,7 @@ function minifyHtml(code: string): string {
 
 export default function HtmlFormatterPage() {
   const { t } = useLanguage()
-  const [input, setInput] = useStorage("html-formatter:input", "")
+  const [input, setInput] = useToolState("html-formatter", "input", "")
   const [output, setOutput] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)

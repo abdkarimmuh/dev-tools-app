@@ -5,11 +5,11 @@ import { useEffect, useRef, useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
-import { useStorage } from "@/hooks/use-storage"
+import { useToolState } from "@/hooks/use-tool-state"
 
 export default function JsonFormatterPage() {
   const { t } = useLanguage()
-  const [input, setInput] = useStorage("json-formatter:input", "")
+  const [input, setInput] = useToolState("json-formatter", "input", "")
   const [output, setOutput] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
@@ -92,7 +92,12 @@ export default function JsonFormatterPage() {
             <Button size="sm" onClick={format} disabled={!input}>
               {t.format || "Format"}
             </Button>
-            <Button size="sm" onClick={minify} disabled={!output} variant="secondary">
+            <Button
+              size="sm"
+              onClick={minify}
+              disabled={!output}
+              variant="secondary"
+            >
               {t.minify}
             </Button>
           </div>

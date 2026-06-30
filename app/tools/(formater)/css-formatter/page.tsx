@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
-import { useStorage } from "@/hooks/use-storage"
+import { useToolState } from "@/hooks/use-tool-state"
 
 type Syntax = "css" | "scss" | "sass"
 
@@ -50,8 +50,8 @@ function minifyCode(code: string, syntax: Syntax): string {
 
 export default function CssFormatterPage() {
   const { t } = useLanguage()
-  const [syntax, setSyntax] = useStorage<Syntax>("css-formatter:syntax", "css")
-  const [input, setInput] = useStorage("css-formatter:input", "")
+  const [syntax, setSyntax] = useToolState<Syntax>("css-formatter", "syntax", "css")
+  const [input, setInput] = useToolState("css-formatter", "input", "")
   const [output, setOutput] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
