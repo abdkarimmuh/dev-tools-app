@@ -37,11 +37,16 @@ const B32_ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567"
 
 function encodeBase32(str: string): string {
   const bytes = new TextEncoder().encode(str)
-  let bits = 0, value = 0, output = ""
+  let bits = 0,
+    value = 0,
+    output = ""
   for (const byte of bytes) {
     value = (value << 8) | byte
     bits += 8
-    while (bits >= 5) { output += B32_ALPHA[(value >>> (bits - 5)) & 31]; bits -= 5 }
+    while (bits >= 5) {
+      output += B32_ALPHA[(value >>> (bits - 5)) & 31]
+      bits -= 5
+    }
   }
   if (bits > 0) output += B32_ALPHA[(value << (5 - bits)) & 31]
   while (output.length % 8 !== 0) output += "="
@@ -50,14 +55,18 @@ function encodeBase32(str: string): string {
 
 function decodeBase32(str: string): string {
   const clean = str.toUpperCase().replace(/=+$/, "").replace(/\s/g, "")
-  let bits = 0, value = 0
+  let bits = 0,
+    value = 0
   const bytes: number[] = []
   for (const char of clean) {
     const idx = B32_ALPHA.indexOf(char)
     if (idx === -1) throw new Error(`Invalid Base32 character: "${char}"`)
     value = (value << 5) | idx
     bits += 5
-    if (bits >= 8) { bytes.push((value >>> (bits - 8)) & 255); bits -= 8 }
+    if (bits >= 8) {
+      bytes.push((value >>> (bits - 8)) & 255)
+      bits -= 8
+    }
   }
   return new TextDecoder().decode(new Uint8Array(bytes))
 }
@@ -68,18 +77,27 @@ const B58_ALPHA = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
 function encodeBase58(str: string): string {
   const bytes = Array.from(new TextEncoder().encode(str))
   let leading = 0
-  for (const b of bytes) { if (b !== 0) break; leading++ }
+  for (const b of bytes) {
+    if (b !== 0) break
+    leading++
+  }
   let num = BigInt(0)
   for (const b of bytes) num = num * 256n + BigInt(b)
   let result = ""
-  while (num > 0n) { result = B58_ALPHA[Number(num % 58n)] + result; num = num / 58n }
+  while (num > 0n) {
+    result = B58_ALPHA[Number(num % 58n)] + result
+    num = num / 58n
+  }
   return "1".repeat(leading) + result
 }
 
 function decodeBase58(str: string): string {
   const clean = str.trim()
   let leading = 0
-  for (const c of clean) { if (c !== "1") break; leading++ }
+  for (const c of clean) {
+    if (c !== "1") break
+    leading++
+  }
   let num = BigInt(0)
   for (const c of clean) {
     const idx = B58_ALPHA.indexOf(c)
@@ -87,8 +105,13 @@ function decodeBase58(str: string): string {
     num = num * 58n + BigInt(idx)
   }
   const bytes: number[] = []
-  while (num > 0n) { bytes.unshift(Number(num % 256n)); num = num / 256n }
-  return new TextDecoder().decode(new Uint8Array([...new Array(leading).fill(0), ...bytes]))
+  while (num > 0n) {
+    bytes.unshift(Number(num % 256n))
+    num = num / 256n
+  }
+  return new TextDecoder().decode(
+    new Uint8Array([...new Array(leading).fill(0), ...bytes])
+  )
 }
 
 // ── Base16 / Hex ─────────────────────────────────────────────────────────────
@@ -100,7 +123,8 @@ function encodeBase16(str: string): string {
 
 function decodeBase16(str: string): string {
   const clean = str.replace(/\s/g, "")
-  if (clean.length % 2 !== 0) throw new Error("Invalid hex: odd number of characters.")
+  if (clean.length % 2 !== 0)
+    throw new Error("Invalid hex: odd number of characters.")
   const bytes = clean.match(/.{2}/g)!.map((b) => {
     const n = parseInt(b, 16)
     if (isNaN(n)) throw new Error(`Invalid hex byte: ${b}`)
@@ -119,7 +143,11 @@ const PLACEHOLDERS: Record<Encoding, string> = {
 
 export default function BaseEncoderPage() {
   const { t } = useLanguage()
-  const [encoding, setEncoding] = useToolState<Encoding>("base-encoder", "encoding", "base64")
+  const [encoding, setEncoding] = useToolState<Encoding>(
+    "base-encoder",
+    "encoding",
+    "base64"
+  )
   const [input, setInput] = useToolState("base-encoder", "input", "")
   const [output, setOutput] = useState("")
   const [error, setError] = useState<string | null>(null)
@@ -151,9 +179,17 @@ export default function BaseEncoderPage() {
     }
   }
 
-  const clear = () => { setInput(""); setOutput(""); setError(null) }
+  const clear = () => {
+    setInput("")
+    setOutput("")
+    setError(null)
+  }
 
-  const swap = () => { setInput(output); setOutput(""); setError(null) }
+  const swap = () => {
+    setInput(output)
+    setOutput("")
+    setError(null)
+  }
 
   const copy = async () => {
     await navigator.clipboard.writeText(output)
@@ -191,7 +227,12 @@ export default function BaseEncoderPage() {
           <Button size="lg" onClick={runEncode} disabled={!input}>
             {t.encode}
           </Button>
-          <Button size="lg" variant="secondary" onClick={runDecode} disabled={!input}>
+          <Button
+            size="lg"
+            variant="secondary"
+            onClick={runDecode}
+            disabled={!input}
+          >
             {t.decode}
           </Button>
         </div>
@@ -201,7 +242,12 @@ export default function BaseEncoderPage() {
         <div className="flex min-h-0 flex-col gap-2">
           <div className="flex shrink-0 items-center justify-between">
             <span className="text-sm font-medium">Input</span>
-            <Button size="sm" variant="ghost" onClick={clear} className="text-xs">
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={clear}
+              className="text-xs"
+            >
               {t.clear}
             </Button>
           </div>
@@ -209,7 +255,11 @@ export default function BaseEncoderPage() {
             className="min-h-0 w-full flex-1 resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
             placeholder={PLACEHOLDERS[encoding]}
             value={input}
-            onChange={(e) => { setInput(e.target.value); setOutput(""); setError(null) }}
+            onChange={(e) => {
+              setInput(e.target.value)
+              setOutput("")
+              setError(null)
+            }}
             spellCheck={false}
           />
         </div>
@@ -219,12 +269,27 @@ export default function BaseEncoderPage() {
             <span className="text-sm font-medium">Output</span>
             <div className="flex items-center gap-1">
               {output && (
-                <Button size="sm" variant="ghost" onClick={swap} className="text-xs">
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={swap}
+                  className="text-xs"
+                >
                   {t.swap}
                 </Button>
               )}
-              <Button size="sm" variant="ghost" onClick={copy} disabled={!output} className="gap-1 text-xs">
-                {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={copy}
+                disabled={!output}
+                className="gap-1 text-xs"
+              >
+                {copied ? (
+                  <Check className="size-3" />
+                ) : (
+                  <Copy className="size-3" />
+                )}
                 {copied ? t.copied : t.copy}
               </Button>
             </div>

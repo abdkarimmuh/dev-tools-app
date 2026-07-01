@@ -1,8 +1,7 @@
 "use client"
 
-import { useCallback, useRef, useState } from "react"
-
 import { ArrowLeftRight } from "lucide-react"
+import { useCallback, useRef, useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
@@ -245,7 +244,12 @@ export default function DiffCheckerPage() {
   const isSyncingScroll = useRef(false)
 
   const handleLeftScroll = useCallback(() => {
-    if (isSyncingScroll.current || !rightPanelRef.current || !leftPanelRef.current) return
+    if (
+      isSyncingScroll.current ||
+      !rightPanelRef.current ||
+      !leftPanelRef.current
+    )
+      return
     isSyncingScroll.current = true
     rightPanelRef.current.scrollTop = leftPanelRef.current.scrollTop
     rightPanelRef.current.scrollLeft = leftPanelRef.current.scrollLeft
@@ -253,7 +257,12 @@ export default function DiffCheckerPage() {
   }, [])
 
   const handleRightScroll = useCallback(() => {
-    if (isSyncingScroll.current || !leftPanelRef.current || !rightPanelRef.current) return
+    if (
+      isSyncingScroll.current ||
+      !leftPanelRef.current ||
+      !rightPanelRef.current
+    )
+      return
     isSyncingScroll.current = true
     leftPanelRef.current.scrollTop = rightPanelRef.current.scrollTop
     leftPanelRef.current.scrollLeft = rightPanelRef.current.scrollLeft
@@ -283,88 +292,6 @@ export default function DiffCheckerPage() {
 
   return (
     <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
-      {/* Input panels */}
-      <div className="flex h-64 w-full overflow-hidden rounded-md border">
-        {/* Left pane */}
-        <div className="flex flex-1 flex-col">
-          <div className="border-b bg-muted/50 px-3 py-1.5 text-xs font-medium text-muted-foreground">
-            Original
-          </div>
-          <textarea
-            className="h-full w-full resize-none bg-background p-3 font-mono text-sm outline-none"
-            placeholder={t.diffFirstPlaceholder}
-            value={textA}
-            onChange={(e) => {
-              setTextA(e.target.value)
-              setRows(null)
-            }}
-            spellCheck={false}
-          />
-        </div>
-
-        {/* Fixed divider with swap button */}
-        <div className="relative flex w-px flex-shrink-0 items-center justify-center bg-border">
-          <button
-            className="absolute z-10 flex h-8 w-8 items-center justify-center rounded-full border bg-background shadow-md transition-all hover:scale-110 hover:bg-muted active:scale-95"
-            onClick={swapTexts}
-            title="Swap sides"
-          >
-            <ArrowLeftRight className="h-3.5 w-3.5" />
-          </button>
-        </div>
-
-        {/* Right pane */}
-        <div className="flex flex-1 flex-col">
-          <div className="border-b bg-muted/50 px-3 py-1.5 text-xs font-medium text-muted-foreground">
-            Changed
-          </div>
-          <textarea
-            className="h-full w-full resize-none bg-background p-3 font-mono text-sm outline-none"
-            placeholder={t.diffSecondPlaceholder}
-            value={textB}
-            onChange={(e) => {
-              setTextB(e.target.value)
-              setRows(null)
-            }}
-            spellCheck={false}
-          />
-        </div>
-      </div>
-
-      {/* Controls */}
-      <div className="flex flex-wrap items-center gap-3">
-        <Button onClick={compare} disabled={!textA && !textB}>
-          Compare
-        </Button>
-        <Button variant="ghost" onClick={clear}>
-          {t.clear}
-        </Button>
-
-        <label className="ml-1 flex cursor-pointer items-center gap-2 text-sm select-none">
-          <input
-            type="checkbox"
-            className="h-4 w-4 rounded accent-primary"
-            checked={ignoreWhitespace}
-            onChange={(e) => {
-              setIgnoreWhitespace(e.target.checked)
-              setRows(null)
-            }}
-          />
-          Hide whitespace
-        </label>
-
-        {rows && (
-          <div className="ml-auto flex items-center gap-3 text-sm">
-            <span className="text-green-600 dark:text-green-400">
-              +{added} added
-            </span>
-            <span className="text-red-600 dark:text-red-400">
-              -{removed} removed
-            </span>
-          </div>
-        )}
-      </div>
-
       {/* Diff result */}
       {rows && (
         <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-md border">
@@ -488,6 +415,86 @@ export default function DiffCheckerPage() {
           </div>
         </div>
       )}
+
+      {/* Controls */}
+      <div className="flex flex-wrap items-center gap-3">
+        <Button onClick={compare} disabled={!textA && !textB}>
+          Compare
+        </Button>
+        <Button variant="ghost" onClick={clear}>
+          {t.clear}
+        </Button>
+
+        <label className="ml-1 flex cursor-pointer items-center gap-2 text-sm select-none">
+          <input
+            type="checkbox"
+            className="h-4 w-4 rounded accent-primary"
+            checked={ignoreWhitespace}
+            onChange={(e) => {
+              setIgnoreWhitespace(e.target.checked)
+              setRows(null)
+            }}
+          />
+          Hide whitespace
+        </label>
+
+        {rows && (
+          <div className="ml-auto flex items-center gap-3 text-sm">
+            <span className="text-green-600 dark:text-green-400">
+              +{added} added
+            </span>
+            <span className="text-red-600 dark:text-red-400">
+              -{removed} removed
+            </span>
+          </div>
+        )}
+      </div>
+
+      {/* Input panels */}
+      <div className="flex h-64 w-full overflow-hidden rounded-md border">
+        {/* Left pane */}
+        <div className="flex flex-1 flex-col">
+          <div className="border-b bg-muted/50 px-3 py-1.5 text-xs font-medium text-muted-foreground">
+            Original
+          </div>
+          <textarea
+            className="h-full w-full resize-none bg-background p-3 font-mono text-sm outline-none"
+            placeholder={t.diffFirstPlaceholder}
+            value={textA}
+            onChange={(e) => {
+              setTextA(e.target.value)
+            }}
+            spellCheck={false}
+          />
+        </div>
+
+        {/* Fixed divider with swap button */}
+        <div className="relative flex w-px flex-shrink-0 items-center justify-center bg-border">
+          <button
+            className="absolute z-10 flex h-8 w-8 items-center justify-center rounded-full border bg-background shadow-md transition-all hover:scale-110 hover:bg-muted active:scale-95"
+            onClick={swapTexts}
+            title="Swap sides"
+          >
+            <ArrowLeftRight className="h-3.5 w-3.5" />
+          </button>
+        </div>
+
+        {/* Right pane */}
+        <div className="flex flex-1 flex-col">
+          <div className="border-b bg-muted/50 px-3 py-1.5 text-xs font-medium text-muted-foreground">
+            Changed
+          </div>
+          <textarea
+            className="h-full w-full resize-none bg-background p-3 font-mono text-sm outline-none"
+            placeholder={t.diffSecondPlaceholder}
+            value={textB}
+            onChange={(e) => {
+              setTextB(e.target.value)
+            }}
+            spellCheck={false}
+          />
+        </div>
+      </div>
     </div>
   )
 }
