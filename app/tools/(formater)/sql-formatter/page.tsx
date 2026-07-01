@@ -13,25 +13,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { type Dialect,DIALECTS } from "@/constants/formatters/sql-formatter"
 import { useLanguage } from "@/contexts/language-context"
 import { useToolState } from "@/hooks/use-tool-state"
-
-type Dialect =
-  | "sql"
-  | "mysql"
-  | "postgresql"
-  | "transactsql"
-  | "sqlite"
-  | "plsql"
-
-const DIALECTS: { value: Dialect; label: string }[] = [
-  { value: "sql", label: "SQL" },
-  { value: "mysql", label: "MySQL" },
-  { value: "postgresql", label: "PostgreSQL" },
-  { value: "transactsql", label: "T-SQL" },
-  { value: "sqlite", label: "SQLite" },
-  { value: "plsql", label: "PL/SQL" },
-]
 
 function minifySql(sql: string): string {
   return sql

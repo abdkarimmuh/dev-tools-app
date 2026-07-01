@@ -421,3 +421,36 @@ export const navGroupLabels: Record<Language, Record<string, string>> = {
     "Frontend / CSS": "Frontend / CSS",
   },
 }
+
+export const navGroupDescriptions: Record<Language, Record<string, string>> = {
+  en: {
+    "Format & Validasi":
+      "Format, pretty-print, minify, and validate structured data formats — JSON, SQL, HTML, CSS, XML, YAML, TOML, GraphQL.",
+    Converter:
+      "Bidirectional converters between formats and units — JSON↔YAML, JSON↔CSV, timestamps, number bases, and more.",
+    Encoding:
+      "Encode and decode data across common formats — Base64, URL encoding, HTML entities, JWT tokens, and cryptographic hashes.",
+    Text: "Text analysis and manipulation — diff checker, case converter, regex tester, word counter, Markdown preview, and JSON path query.",
+    Generator:
+      "Generate content and unique values — UUIDs, passwords, QR codes, barcodes, fake data, lorem ipsum, and cron expressions.",
+    Cryptography:
+      "Encryption, decryption, and digital signatures — AES, DES/3DES, RSA, RC4, ECDSA, and HMAC-based API signing.",
+    "Frontend / CSS":
+      "CSS generators and frontend utilities — gradients, box shadows, Tailwind cheatsheet, px↔rem conversion, and color converter.",
+  },
+  id: {
+    "Format & Validasi":
+      "Format, pretty-print, minify, dan validasi format data terstruktur — JSON, SQL, HTML, CSS, XML, YAML, TOML, GraphQL.",
+    Converter:
+      "Konverter dua arah antar format dan satuan — JSON↔YAML, JSON↔CSV, timestamp, basis angka, dan lainnya.",
+    Encoding:
+      "Encode dan decode data ke berbagai format — Base64, URL encoding, HTML entities, JWT token, dan hash kriptografi.",
+    Text: "Analisis dan manipulasi teks — diff checker, case converter, regex tester, word counter, Markdown preview, dan JSON path query.",
+    Generator:
+      "Generate konten dan nilai unik — UUID, password, QR code, barcode, data palsu, lorem ipsum, dan ekspresi cron.",
+    Cryptography:
+      "Enkripsi, dekripsi, dan tanda tangan digital — AES, DES/3DES, RSA, RC4, ECDSA, dan API signing berbasis HMAC.",
+    "Frontend / CSS":
+      "Generator CSS dan utilitas frontend — gradient, box shadow, Tailwind cheatsheet, konversi px↔rem, dan color converter.",
+  },
+}

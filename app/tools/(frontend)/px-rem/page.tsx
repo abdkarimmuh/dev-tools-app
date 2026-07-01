@@ -6,12 +6,9 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { COMMON_PX } from "@/constants/frontend/px-rem"
 import { useLanguage } from "@/contexts/language-context"
 import { useToolState } from "@/hooks/use-tool-state"
-
-const COMMON_PX = [
-  8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 36, 40, 48, 56, 64, 72, 80, 96,
-]
 
 function round(n: number, decimals = 4): number {
   return Math.round(n * 10 ** decimals) / 10 ** decimals
