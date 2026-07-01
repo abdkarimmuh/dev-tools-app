@@ -2,6 +2,8 @@
 
 import { useCallback, useRef, useState } from "react"
 
+import { ArrowLeftRight } from "lucide-react"
+
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
 import { useToolState } from "@/hooks/use-tool-state"
@@ -280,9 +282,9 @@ export default function DiffCheckerPage() {
   const removed = rows?.filter((r) => r.leftType === "removed").length ?? 0
 
   return (
-    <div className="flex flex-col gap-4 px-4 lg:px-6">
+    <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
       {/* Input panels */}
-      <div className="flex h-52 w-full overflow-hidden rounded-md border">
+      <div className="flex h-64 w-full overflow-hidden rounded-md border">
         {/* Left pane */}
         <div className="flex flex-1 flex-col">
           <div className="border-b bg-muted/50 px-3 py-1.5 text-xs font-medium text-muted-foreground">
@@ -307,22 +309,7 @@ export default function DiffCheckerPage() {
             onClick={swapTexts}
             title="Swap sides"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M8 3 4 7l4 4" />
-              <path d="M4 7h16" />
-              <path d="m16 21 4-4-4-4" />
-              <path d="M20 17H4" />
-            </svg>
+            <ArrowLeftRight className="h-3.5 w-3.5" />
           </button>
         </div>
 
@@ -380,7 +367,7 @@ export default function DiffCheckerPage() {
 
       {/* Diff result */}
       {rows && (
-        <div className="overflow-hidden rounded-md border">
+        <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-md border">
           {/* Headers */}
           <div className="grid grid-cols-2 border-b bg-muted/50 text-xs font-medium text-muted-foreground">
             <div className="border-r px-3 py-2">Original</div>
@@ -388,7 +375,7 @@ export default function DiffCheckerPage() {
           </div>
 
           {/* Side-by-side panels */}
-          <div className="flex max-h-[60vh]">
+          <div className="flex min-h-0 flex-1">
             {/* Left panel — Original */}
             <div
               ref={leftPanelRef}
