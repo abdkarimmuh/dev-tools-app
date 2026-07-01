@@ -19,7 +19,7 @@ Kumpulan tools berbasis web untuk membantu produktivitas pengembang sehari-hari 
 
 | Tool | Deskripsi |
 |---|---|
-| **Base64** | Encode dan decode teks ke/dari format Base64. Dilengkapi tombol Swap untuk membalik input dan output. |
+| **Base Encoder** | Encode dan decode teks dalam empat format sekaligus: Base64, Base32, Base58, dan Hex (Base16). Pilih format via dropdown Select. Dilengkapi tombol Swap untuk membalik output ke input. |
 | **URL Encode/Decode** | Encode dan decode string menggunakan `encodeURIComponent` / `decodeURIComponent`. |
 | **HTML Entities** | Encode karakter khusus HTML (`<`, `>`, `&`, dll.) dan decode kembali ke teks biasa. |
 | **JWT Decoder** | Decode token JWT menjadi Header dan Payload yang terbaca. Timestamp `exp`, `iat`, `nbf` otomatis dikonversi ke tanggal, serta badge status expired. |
@@ -29,7 +29,7 @@ Kumpulan tools berbasis web untuk membantu produktivitas pengembang sehari-hari 
 
 | Tool | Deskripsi |
 |---|---|
-| **Diff Checker** | Bandingkan dua teks baris per baris menggunakan algoritma LCS (Longest Common Subsequence). Menampilkan baris ditambah (hijau) dan dihapus (merah) beserta nomor baris. |
+| **Diff Checker** | Bandingkan dua teks baris per baris menggunakan algoritma LCS (Longest Common Subsequence). Menampilkan baris ditambah (hijau) dan dihapus (merah) beserta nomor baris. Panel input split-pane dengan divider yang bisa di-drag. |
 | **Case Converter** | Konversi teks ke 8 format sekaligus: `camelCase`, `PascalCase`, `snake_case`, `kebab-case`, `SCREAMING_SNAKE`, `Title Case`, `lowercase`, `UPPERCASE`. |
 | **Regex Tester** | Uji regex secara live dengan highlight match pada teks. Mendukung toggle flag (`g`, `i`, `m`, `s`), menampilkan detail setiap match beserta capture groups. |
 | **Markdown Preview** | Editor markdown split-view dengan toolbar formatting (bold, italic, heading, list, blockquote, code block, link, dll.). Preview live via marked dengan styling `@tailwindcss/typography`. |
@@ -49,10 +49,10 @@ Kumpulan tools berbasis web untuk membantu produktivitas pengembang sehari-hari 
 | Tool | Deskripsi |
 |---|---|
 | **AES Cipher** | Enkripsi dan dekripsi teks menggunakan AES-256 (CBC mode, passphrase-based via crypto-js). Output dalam format Base64. |
-| **DES / 3DES Cipher** | Enkripsi dan dekripsi menggunakan DES atau Triple DES (3DES). Toggle algoritma dalam satu halaman. |
+| **DES / 3DES Cipher** | Enkripsi dan dekripsi menggunakan DES atau Triple DES (3DES). Pilih algoritma via dropdown Select. |
 | **RC4 Cipher** | Enkripsi dan dekripsi menggunakan stream cipher RC4 berbasis passphrase. |
-| **RSA** | Generate key pair RSA (1024/2048/4096-bit) via Web Crypto API. Enkripsi dengan public key (RSA-OAEP + SHA-256), dekripsi dengan private key. PEM format. |
-| **ECDSA** | Generate key pair ECDSA (P-256/P-384) via Web Crypto API. Sign pesan dengan private key, verifikasi tanda tangan dengan public key. |
+| **RSA** | Generate key pair RSA (1024/2048/4096-bit) via Web Crypto API. Enkripsi dengan public key (RSA-OAEP + SHA-256), dekripsi dengan private key. PEM format. Mode (Keys/Encrypt/Decrypt) dipilih via Select. |
+| **ECDSA** | Generate key pair ECDSA (P-256/P-384) via Web Crypto API. Sign pesan dengan private key, verifikasi tanda tangan dengan public key. Mode (Keys/Sign/Verify) dipilih via Select. |
 | **API Signature (HMAC)** | Generate HMAC signature untuk kebutuhan API. Mendukung HMAC-SHA256/512/384/1, key encoding (UTF-8/Hex/Base64), dan output Hex atau Base64. Generate otomatis saat key dan payload diisi. |
 
 ### Frontend / CSS
@@ -128,7 +128,7 @@ dev-tools-app/
 │       │   ├── css-formatter/    # CSS / SCSS / SASS (pilih via Select)
 │       │   └── sql-formatter/    # SQL dialek (pilih via Select)
 │       ├── (encoding)/
-│       │   ├── base64/
+│       │   ├── base-encoder/     # Base64 / Base32 / Base58 / Hex (pilih via Select)
 │       │   ├── url-encode/
 │       │   ├── html-entities/
 │       │   ├── jwt-decoder/
@@ -146,10 +146,10 @@ dev-tools-app/
 │       │   └── barcode-generator/
 │       ├── (cryptography)/
 │       │   ├── aes-cipher/
-│       │   ├── des-cipher/
+│       │   ├── des-cipher/       # DES / 3DES (pilih via Select)
 │       │   ├── rc4-cipher/
-│       │   ├── rsa/
-│       │   ├── ecdsa/
+│       │   ├── rsa/              # Mode Keys/Encrypt/Decrypt via Select
+│       │   ├── ecdsa/            # Mode Keys/Sign/Verify via Select
 │       │   └── api-signature/    # HMAC signature generator
 │       └── (frontend)/
 │           ├── color-converter/
