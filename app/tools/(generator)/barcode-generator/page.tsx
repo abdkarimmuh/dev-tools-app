@@ -92,7 +92,7 @@ export default function BarcodeGeneratorPage() {
     <div className="flex flex-col gap-6 px-4 lg:px-6">
       <div className="flex max-w-xl flex-col gap-4">
         <div className="flex flex-col gap-1.5">
-          <Label>{t.barcodeFormat}</Label>
+          <Label className="mb-1">{t.barcodeFormat}</Label>
           <Select
             value={format}
             onValueChange={(v) => {
@@ -115,7 +115,7 @@ export default function BarcodeGeneratorPage() {
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <Label>
+          <Label className="mb-1">
             {t.barcodeValue}
             <span className="ml-2 text-xs text-muted-foreground">
               ({currentFormat.hint})

@@ -112,7 +112,7 @@ export default function UuidGeneratorPage() {
     <div className="flex flex-col gap-6 px-4 lg:px-6">
       <div className="flex flex-wrap items-end gap-3">
         <div className="flex flex-col gap-1.5">
-          <Label>{t.uuidVersion}</Label>
+          <Label className="mb-1">{t.uuidVersion}</Label>
           <Select
             value={version}
             onValueChange={(v) => setVersion(v as UuidVersion)}
@@ -128,7 +128,9 @@ export default function UuidGeneratorPage() {
           </Select>
         </div>
         <div className="flex flex-col gap-1.5">
-          <Label htmlFor="count">{t.uuidCount}</Label>
+          <Label className="mb-1" htmlFor="count">
+            {t.uuidCount}
+          </Label>
           <Input
             id="count"
             type="number"

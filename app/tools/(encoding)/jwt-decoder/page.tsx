@@ -5,6 +5,7 @@ import { useState } from "react"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { Label } from "@/components/ui/label"
 import { useLanguage } from "@/contexts/language-context"
 import { useToolState } from "@/hooks/use-tool-state"
 
@@ -130,19 +131,10 @@ export default function JwtDecoderPage() {
 
   return (
     <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
-      <div className="flex shrink-0 gap-4">
-        <Button onClick={decode} disabled={!token}>
-          {t.decode}
-        </Button>
-        <Button variant="ghost" onClick={clear}>
-          {t.clear}
-        </Button>
-      </div>
-
       <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 lg:grid-cols-2">
         {/* Input */}
         <div className="flex min-h-0 flex-col gap-2">
-          <span className="shrink-0 text-sm font-medium">JWT Token</span>
+          <Label className="mb-1">JWT Token</Label>
           <textarea
             className="min-h-0 w-full flex-1 resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
             placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
@@ -154,11 +146,20 @@ export default function JwtDecoderPage() {
             }}
             spellCheck={false}
           />
+
+          <div className="mt-2 flex shrink-0 gap-4">
+            <Button onClick={decode} disabled={!token}>
+              {t.decode}
+            </Button>
+            <Button variant="ghost" onClick={clear}>
+              {t.clear}
+            </Button>
+          </div>
         </div>
 
         {/* Output */}
         <div className="flex min-h-0 flex-col gap-2">
-          <span className="shrink-0 text-sm font-medium">Decoded</span>
+          <Label>Decoded</Label>
           <div className="min-h-0 flex-1 overflow-auto">
             {error && (
               <div className="rounded-md border border-destructive bg-destructive/10 p-3 font-mono text-sm text-destructive">

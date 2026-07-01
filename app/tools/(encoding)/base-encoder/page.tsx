@@ -201,7 +201,7 @@ export default function BaseEncoderPage() {
     <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
       <div className="flex shrink-0 items-end justify-between gap-4">
         <div className="flex flex-col gap-1.5">
-          <Label>Encoding</Label>
+          <Label className="mb-1">Encoding</Label>
           <Select
             value={encoding}
             onValueChange={(v) => {

@@ -35,13 +35,13 @@ export function SiteHeader() {
           <div className="hidden md:block">
             <ToolSearch />
           </div>
-          <div className="hidden md:block">
+          <div className="hidden pl-2 md:block">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="gap-1.5 px-2 font-mono text-xs font-semibold"
+                  className="gap-1.5 text-xs font-semibold"
                 >
                   <Globe className="size-3.5" />
                   {language.toUpperCase()}

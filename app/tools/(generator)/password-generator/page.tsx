@@ -90,9 +90,9 @@ export default function PasswordGeneratorPage() {
 
   return (
     <div className="flex max-w-lg flex-col gap-6 px-4 lg:px-6">
-      <div className="flex flex-col gap-4 rounded-md border p-4">
+      <div className="flex flex-col gap-4 rounded border p-4">
         <div className="flex flex-col gap-1.5">
-          <Label htmlFor="length">
+          <Label htmlFor="length" className="mb-1">
             {t.passwordLength}: {length}
           </Label>
           <input
@@ -161,7 +161,7 @@ export default function PasswordGeneratorPage() {
             </Button>
           </div>
 
-          <div className="flex flex-col gap-1.5">
+          <div className="flex flex-col gap-2">
             <div className="flex items-center justify-between text-xs">
               <span className="text-muted-foreground">
                 {t.passwordStrength}

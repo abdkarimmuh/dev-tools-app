@@ -1,8 +1,7 @@
 "use client"
 
-import { Search } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useSyncExternalStore } from "react"
 
 import {
   Command,
@@ -16,29 +15,49 @@ import {
 import { useSidebar } from "@/components/ui/sidebar"
 import { navMenus } from "@/config/nav"
 import { useLanguage } from "@/contexts/language-context"
+import { useSearch } from "@/contexts/search-context"
 import { navGroupLabels } from "@/lib/i18n"
 
 export function ToolSearch() {
-  const { language, t } = useLanguage()
-  const [open, setOpen] = useState(false)
-  const [isMac] = useState(
-    () =>
-      typeof navigator !== "undefined" &&
-      /mac|darwin/i.test(navigator.userAgent)
+  const { t } = useLanguage()
+  const { setOpen } = useSearch()
+  const isMac = useSyncExternalStore(
+    () => () => {},
+    () => /mac|darwin/i.test(navigator.userAgent),
+    () => false
   )
+
+  return (
+    <button
+      onClick={() => setOpen(true)}
+      className="flex w-54 items-center justify-between gap-2 rounded-md bg-muted px-3 py-1 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+    >
+      <span className="hidden sm:inline">{t.searchPlaceholder}</span>
+
+      {isMac ? (
+        <kbd
+          suppressHydrationWarning
+          className="hidden items-center gap-0.5 rounded bg-background px-1.5 py-0.5 font-mono text-xs sm:flex"
+        >
+          <span className="text-sm">⌘</span> K
+        </kbd>
+      ) : (
+        <kbd
+          suppressHydrationWarning
+          className="hidden items-center gap-0.5 rounded bg-background px-1.5 py-0.5 font-mono text-xs sm:flex"
+        >
+          Ctrl K
+        </kbd>
+      )}
+    </button>
+  )
+}
+
+export function ToolSearchDialog() {
+  const { language, t } = useLanguage()
+  const { open, setOpen } = useSearch()
   const router = useRouter()
   const { setOpenMobile } = useSidebar()
-
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault()
-        setOpen((prev) => !prev)
-      }
-    }
-    document.addEventListener("keydown", handler)
-    return () => document.removeEventListener("keydown", handler)
-  }, [])
 
   const handleSelect = (url: string) => {
     setOpen(false)
@@ -47,54 +66,35 @@ export function ToolSearch() {
   }
 
   return (
-    <>
-      <button
-        onClick={() => setOpen(true)}
-        className="flex h-8 items-center gap-2 rounded-md border bg-muted/50 px-3 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-      >
-        <Search className="size-3.5" />
-        <span className="hidden sm:inline">{t.searchPlaceholder}</span>
-        <kbd
-          suppressHydrationWarning
-          className="hidden items-center gap-0.5 rounded border bg-background px-1.5 py-0.5 font-mono text-[10px] sm:flex"
-        >
-          <span suppressHydrationWarning className="text-xs">
-            {isMac ? "⌘ " : "Ctrl "}
-          </span>
-          K
-        </kbd>
-      </button>
-
-      <CommandDialog
-        open={open}
-        onOpenChange={setOpen}
-        title={t.searchDialogTitle}
-        description={t.searchDialogDesc}
-      >
-        <Command>
-          <CommandInput placeholder={t.searchPlaceholder} />
-          <CommandList>
-            <CommandEmpty>{t.searchEmpty}</CommandEmpty>
-            {navMenus.map((group) => (
-              <CommandGroup
-                key={group.label}
-                heading={navGroupLabels[language][group.label] ?? group.label}
-              >
-                {group.items.map((item) => (
-                  <CommandItem
-                    key={item.url}
-                    value={item.title}
-                    onSelect={() => handleSelect(item.url)}
-                  >
-                    <item.icon />
-                    {item.title}
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            ))}
-          </CommandList>
-        </Command>
-      </CommandDialog>
-    </>
+    <CommandDialog
+      open={open}
+      onOpenChange={setOpen}
+      title={t.searchDialogTitle}
+      description={t.searchDialogDesc}
+    >
+      <Command>
+        <CommandInput placeholder={t.searchPlaceholder} />
+        <CommandList>
+          <CommandEmpty>{t.searchEmpty}</CommandEmpty>
+          {navMenus.map((group) => (
+            <CommandGroup
+              key={group.label}
+              heading={navGroupLabels[language][group.label] ?? group.label}
+            >
+              {group.items.map((item) => (
+                <CommandItem
+                  key={item.url}
+                  value={item.title}
+                  onSelect={() => handleSelect(item.url)}
+                >
+                  <item.icon />
+                  {item.title}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          ))}
+        </CommandList>
+      </Command>
+    </CommandDialog>
   )
 }

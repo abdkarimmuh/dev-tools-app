@@ -209,7 +209,7 @@ export default function ColorConverterPage() {
       )}
 
       <div className="flex flex-col gap-1.5">
-        <Label>HEX</Label>
+        <Label className="mb-1">HEX</Label>
         <div className="flex gap-2">
           <Input
             className="font-mono"
@@ -223,7 +223,7 @@ export default function ColorConverterPage() {
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <Label>RGB</Label>
+        <Label className="mb-1">RGB</Label>
         <div className="flex items-center gap-2">
           {(["r", "g", "b"] as const).map((ch) => (
             <div key={ch} className="flex flex-1 flex-col gap-1">
@@ -256,7 +256,7 @@ export default function ColorConverterPage() {
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <Label>HSL</Label>
+        <Label className="mb-1">HSL</Label>
         <div className="flex items-center gap-2">
           {(
             [

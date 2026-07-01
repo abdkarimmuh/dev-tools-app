@@ -70,7 +70,9 @@ export default function PxRemPage() {
     <div className="flex max-w-2xl flex-col gap-8 px-4 lg:px-6">
       <div className="flex items-end gap-3">
         <div className="flex flex-col gap-1.5">
-          <Label htmlFor="base">Base Font Size (px)</Label>
+          <Label className="mb-1" htmlFor="base">
+            Base Font Size (px)
+          </Label>
           <Input
             id="base"
             type="number"
@@ -85,7 +87,7 @@ export default function PxRemPage() {
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <div className="flex flex-col gap-1.5">
-          <Label>PX</Label>
+          <Label className="mb-1">PX</Label>
           <div className="flex gap-2">
             <Input
               type="number"
@@ -100,7 +102,7 @@ export default function PxRemPage() {
           </div>
         </div>
         <div className="flex flex-col gap-1.5">
-          <Label>REM</Label>
+          <Label className="mb-1">REM</Label>
           <div className="flex gap-2">
             <Input
               type="number"
@@ -117,7 +119,7 @@ export default function PxRemPage() {
       </div>
 
       <div className="flex flex-col gap-2">
-        <h3 className="text-sm font-medium">
+        <h3 className="mb-1 text-sm font-medium">
           {t.pxRemReferenceTable} (base {base}px)
         </h3>
         <div className="overflow-hidden rounded-md border">

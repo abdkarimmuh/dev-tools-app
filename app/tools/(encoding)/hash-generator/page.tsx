@@ -63,7 +63,7 @@ export default function HashGeneratorPage() {
       <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 lg:grid-cols-2">
         {/* Left: Input */}
         <div className="flex min-h-0 flex-col gap-2">
-          <span className="shrink-0 text-sm font-medium">Input</span>
+          <Label>Input</Label>
           <textarea
             className="min-h-0 w-full flex-1 resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
             placeholder={t.hashInputPlaceholder}
@@ -80,7 +80,7 @@ export default function HashGeneratorPage() {
         <div className="flex min-h-0 flex-col gap-4">
           <div className="flex shrink-0 items-end gap-3">
             <div className="flex flex-col gap-1.5">
-              <Label>{t.hashAlgorithm}</Label>
+              <Label className="mb-1">{t.hashAlgorithm}</Label>
               <Select
                 value={algorithm}
                 onValueChange={(v) => {

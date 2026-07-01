@@ -89,7 +89,7 @@ export default function QrGeneratorPage() {
     <div className="flex flex-col gap-6 px-4 lg:px-6">
       <div className="flex max-w-xl flex-col gap-4">
         <div className="flex flex-col gap-1.5">
-          <Label>{t.qrInputLabel}</Label>
+          <Label className="mb-1">{t.qrInputLabel}</Label>
           <Input
             placeholder={t.qrInputPlaceholder}
             value={text}
@@ -100,7 +100,7 @@ export default function QrGeneratorPage() {
 
         <div className="flex flex-wrap gap-4">
           <div className="flex flex-col gap-1.5">
-            <Label>{t.qrErrorLevel}</Label>
+            <Label className="mb-1">{t.qrErrorLevel}</Label>
             <Select
               value={errorLevel}
               onValueChange={(v) => setErrorLevel(v as ErrorLevel)}
@@ -119,7 +119,7 @@ export default function QrGeneratorPage() {
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <Label>{t.qrSize}</Label>
+            <Label className="mb-1">{t.qrSize}</Label>
             <Select value={size} onValueChange={(v) => setSize(v as QrSize)}>
               <SelectTrigger className="w-36">
                 <SelectValue />

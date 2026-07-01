@@ -1,6 +1,6 @@
 "use client"
 
-import { Check, Copy, RefreshCw } from "lucide-react"
+import { Check, Copy, Download, RefreshCw } from "lucide-react"
 import { useState } from "react"
 
 import { Badge } from "@/components/ui/badge"
@@ -34,6 +34,30 @@ function b642ab(b64: string): ArrayBuffer {
 function toPem(b64: string, type: "PUBLIC KEY" | "PRIVATE KEY"): string {
   const chunks = b64.match(/.{1,64}/g)?.join("\n") ?? b64
   return `-----BEGIN ${type}-----\n${chunks}\n-----END ${type}-----`
+}
+
+function DownloadBtn({ text, filename }: { text: string; filename: string }) {
+  const handle = () => {
+    const blob = new Blob([text], { type: "text/plain" })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement("a")
+    a.href = url
+    a.download = filename
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+  return (
+    <Button
+      size="sm"
+      variant="ghost"
+      onClick={handle}
+      disabled={!text}
+      className="gap-1 text-xs"
+    >
+      <Download className="size-3" />
+      Download
+    </Button>
+  )
 }
 
 function CopyBtn({ text }: { text: string }) {
@@ -159,7 +183,7 @@ export default function EcdsaPage() {
       <div className="flex shrink-0 items-end justify-between gap-4">
         <div className="flex flex-wrap items-end gap-3">
           <div className="flex flex-col gap-1.5">
-            <Label>Mode</Label>
+            <Label className="mb-1">Mode</Label>
             <Select value={mode} onValueChange={(v) => setMode(v as Mode)}>
               <SelectTrigger className="w-36">
                 <SelectValue />
@@ -174,7 +198,7 @@ export default function EcdsaPage() {
 
           {mode === "keys" && (
             <div className="flex flex-col gap-1.5">
-              <Label>{t.ecdsaCurve}</Label>
+              <Label className="mb-1">{t.ecdsaCurve}</Label>
               <Select value={curve} onValueChange={(v) => setCurve(v as Curve)}>
                 <SelectTrigger className="w-28">
                   <SelectValue />
@@ -224,7 +248,10 @@ export default function EcdsaPage() {
           <div className="flex min-h-0 flex-col gap-1.5">
             <div className="flex shrink-0 items-center justify-between">
               <Label>{t.rsaPublicKey}</Label>
-              <CopyBtn text={publicKeyPem} />
+              <div className="flex items-center gap-1">
+                <DownloadBtn text={publicKeyPem} filename="public_key.pem" />
+                <CopyBtn text={publicKeyPem} />
+              </div>
             </div>
             <textarea
               className="min-h-0 w-full flex-1 resize-none rounded-md border bg-muted p-3 font-mono text-xs outline-none"
@@ -237,7 +264,10 @@ export default function EcdsaPage() {
           <div className="flex min-h-0 flex-col gap-1.5">
             <div className="flex shrink-0 items-center justify-between">
               <Label>{t.rsaPrivateKey}</Label>
-              <CopyBtn text={privateKeyPem} />
+              <div className="flex items-center gap-1">
+                <DownloadBtn text={privateKeyPem} filename="private_key.pem" />
+                <CopyBtn text={privateKeyPem} />
+              </div>
             </div>
             <textarea
               className="min-h-0 w-full flex-1 resize-none rounded-md border bg-muted p-3 font-mono text-xs outline-none"
@@ -255,7 +285,7 @@ export default function EcdsaPage() {
         <div className="flex min-h-0 flex-1 flex-col gap-4">
           <div className="flex shrink-0 flex-col gap-1.5">
             <div className="flex items-center justify-between">
-              <Label>{t.rsaPrivateKey}</Label>
+              <Label className="mb-1">{t.rsaPrivateKey}</Label>
               {!privateKeyPem && (
                 <Badge variant="destructive" className="text-xs">
                   {t.rsaNoKey}
@@ -311,7 +341,7 @@ export default function EcdsaPage() {
         <div className="flex min-h-0 flex-1 flex-col gap-4">
           <div className="flex shrink-0 flex-col gap-1.5">
             <div className="flex items-center justify-between">
-              <Label>{t.rsaPublicKey}</Label>
+              <Label className="mb-1">{t.rsaPublicKey}</Label>
               {!publicKeyPem && (
                 <Badge variant="destructive" className="text-xs">
                   {t.rsaNoKey}
@@ -343,9 +373,7 @@ export default function EcdsaPage() {
 
           <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 lg:grid-cols-2">
             <div className="flex min-h-0 flex-col gap-2">
-              <span className="shrink-0 text-sm font-medium">
-                {t.ecdsaMessage}
-              </span>
+              <Label>{t.ecdsaMessage}</Label>
               <textarea
                 className="min-h-0 w-full flex-1 resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 placeholder={t.ecdsaMessagePlaceholder}
@@ -358,9 +386,7 @@ export default function EcdsaPage() {
               />
             </div>
             <div className="flex min-h-0 flex-col gap-2">
-              <span className="shrink-0 text-sm font-medium">
-                {t.ecdsaSignature}
-              </span>
+              <Label>{t.ecdsaSignature}</Label>
               <textarea
                 className="min-h-0 w-full flex-1 resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 placeholder={t.ecdsaSignaturePlaceholder}

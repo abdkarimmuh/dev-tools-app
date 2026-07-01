@@ -170,9 +170,9 @@ export default function MarkdownPreviewPage() {
   const clear = () => setInput("")
 
   return (
-    <div className="px-4 lg:px-6">
+    <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
       {/* Toolbar */}
-      <div className="flex flex-wrap items-center gap-0.5 rounded-t-md border border-b-0 bg-muted/40 px-2 py-1.5">
+      <div className="flex shrink-0 flex-wrap items-center gap-0.5">
         {TOOLBAR.map((item, i) =>
           item === "separator" ? (
             <Separator key={i} orientation="vertical" className="mx-1 h-5" />
@@ -194,25 +194,26 @@ export default function MarkdownPreviewPage() {
             </Tooltip>
           )
         )}
-        <div className="ml-auto">
-          <Button size="sm" variant="ghost" onClick={clear} className="text-xs">
-            {t.clear}
-          </Button>
-        </div>
       </div>
 
       {/* Editor + Preview */}
-      <div className="grid grid-cols-1 lg:grid-cols-2">
-        {/* Editor */}
-        <div className="flex flex-col">
-          <div className="border-b bg-muted/20 px-3 py-1.5">
-            <span className="text-xs font-medium text-muted-foreground">
-              Write
-            </span>
+      <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 lg:grid-cols-2">
+        {/* Write */}
+        <div className="flex min-h-0 flex-col gap-2">
+          <div className="flex shrink-0 items-center justify-between">
+            <span className="text-sm font-medium">Write</span>
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={clear}
+              className="text-xs"
+            >
+              {t.clear}
+            </Button>
           </div>
           <textarea
             ref={textareaRef}
-            className="h-[540px] w-full resize-none rounded-bl-md border border-r-0 bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring lg:rounded-br-none lg:rounded-bl-md"
+            className="min-h-0 w-full flex-1 resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
             placeholder={
               "# Hello\n\nStart writing **markdown** here...\n\n- Item 1\n- Item 2\n\n> Blockquote\n\n```js\nconsole.log('hello')\n```"
             }
@@ -223,13 +224,11 @@ export default function MarkdownPreviewPage() {
         </div>
 
         {/* Preview */}
-        <div className="flex flex-col">
-          <div className="border-b bg-muted/20 px-3 py-1.5">
-            <span className="text-xs font-medium text-muted-foreground">
-              Preview
-            </span>
+        <div className="flex min-h-0 flex-col gap-2">
+          <div className="flex shrink-0 items-center justify-between">
+            <span className="py-1.5 text-sm font-medium">Preview</span>
           </div>
-          <div className="h-[540px] overflow-y-auto rounded-br-md border border-l-0 p-4 lg:rounded-br-md lg:rounded-bl-none">
+          <div className="min-h-0 flex-1 overflow-y-auto rounded-md border bg-muted p-4">
             {html ? (
               <div
                 className="prose prose-sm max-w-none prose-neutral dark:prose-invert"

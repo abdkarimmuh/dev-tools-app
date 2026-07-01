@@ -87,7 +87,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               <Button
                 variant="ghost"
                 size="sm"
-                className="shrink-0 gap-1.5 px-2 font-mono text-xs font-semibold"
+                className="shrink-0 gap-1.5 px-2 text-xs font-semibold"
               >
                 <Globe className="size-3.5" />
                 {language.toUpperCase()}

@@ -188,7 +188,7 @@ export default function LoremIpsumPage() {
     <div className="flex flex-col gap-6 px-4 lg:px-6">
       <div className="flex flex-wrap items-end gap-3">
         <div className="flex flex-col gap-1.5">
-          <Label>{t.loremCount}</Label>
+          <Label className="mb-1">{t.loremCount}</Label>
           <Input
             type="number"
             min={1}
@@ -199,7 +199,7 @@ export default function LoremIpsumPage() {
           />
         </div>
         <div className="flex flex-col gap-1.5">
-          <Label>{t.loremUnit}</Label>
+          <Label className="mb-1">{t.loremUnit}</Label>
           <Select value={unit} onValueChange={(v) => setUnit(v as Unit)}>
             <SelectTrigger className="w-36">
               <SelectValue />

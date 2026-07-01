@@ -172,7 +172,7 @@ export default function ApiSignaturePage() {
       <div className="flex shrink-0 items-end justify-between gap-4">
         <div className="flex flex-wrap items-end gap-3">
           <div className="flex flex-col gap-1.5">
-            <Label>Algorithm</Label>
+            <Label className="mb-1">Algorithm</Label>
             <Select
               value={algorithm}
               onValueChange={(v) => setAlgorithm(v as Algorithm)}
@@ -190,7 +190,7 @@ export default function ApiSignaturePage() {
             </Select>
           </div>
           <div className="flex flex-col gap-1.5">
-            <Label>Key Encoding</Label>
+            <Label className="mb-1">Key Encoding</Label>
             <Select
               value={keyEncoding}
               onValueChange={(v) => setKeyEncoding(v as KeyEncoding)}
@@ -208,7 +208,7 @@ export default function ApiSignaturePage() {
             </Select>
           </div>
           <div className="flex flex-col gap-1.5">
-            <Label>Output Format</Label>
+            <Label className="mb-1">Output Format</Label>
             <Select
               value={outputFormat}
               onValueChange={(v) => setOutputFormat(v as OutputFormat)}
@@ -233,7 +233,9 @@ export default function ApiSignaturePage() {
 
       {/* Secret Key */}
       <div className="flex shrink-0 flex-col gap-1.5">
-        <Label htmlFor="secret-key">Secret Key</Label>
+        <Label className="mb-1" htmlFor="secret-key">
+          Secret Key
+        </Label>
         <div className="relative">
           <Input
             id="secret-key"

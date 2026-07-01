@@ -60,7 +60,9 @@ export default function Rc4CipherPage() {
     <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
       <div className="flex shrink-0 items-end justify-between gap-4">
         <div className="flex min-w-0 flex-1 flex-col gap-1.5">
-          <Label htmlFor="rc4-key">{t.cryptoKey}</Label>
+          <Label className="mb-1" htmlFor="rc4-key">
+            {t.cryptoKey}
+          </Label>
           <div className="relative">
             <Input
               id="rc4-key"

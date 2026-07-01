@@ -82,7 +82,7 @@ export default function DesCipherPage() {
       <div className="flex shrink-0 items-end justify-between gap-4">
         <div className="flex flex-wrap items-end gap-3">
           <div className="flex flex-col gap-1.5">
-            <Label>Algorithm</Label>
+            <Label className="mb-1">Algorithm</Label>
             <Select
               value={algorithm}
               onValueChange={(v) => {
@@ -104,7 +104,9 @@ export default function DesCipherPage() {
             </Select>
           </div>
           <div className="flex min-w-48 flex-1 flex-col gap-1.5">
-            <Label htmlFor="des-key">{t.cryptoKey}</Label>
+            <Label className="mb-1" htmlFor="des-key">
+              {t.cryptoKey}
+            </Label>
             <div className="relative">
               <Input
                 id="des-key"

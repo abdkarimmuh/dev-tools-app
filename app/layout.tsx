@@ -7,10 +7,12 @@ import React from "react"
 import { AppSidebar } from "@/components/layouts/app-sidebar"
 import { SiteFooter } from "@/components/layouts/site-footer"
 import { SiteHeader } from "@/components/layouts/site-header"
+import { ToolSearchDialog } from "@/components/layouts/tool-search"
 import { ThemeProvider } from "@/components/theme-provider"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { LanguageProvider } from "@/contexts/language-context"
+import { SearchProvider } from "@/contexts/search-context"
 import { cn } from "@/lib/utils"
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" })
@@ -43,24 +45,27 @@ export default function RootLayout({
       <body>
         <ThemeProvider>
           <LanguageProvider>
-            <TooltipProvider>
-              <SidebarProvider
-                style={{ "--sidebar-width": "18rem" } as React.CSSProperties}
-              >
-                <AppSidebar variant="inset" />
-                <SidebarInset>
-                  <SiteHeader />
-                  <div className="flex flex-1 flex-col">
-                    <div className="@container/main flex flex-1 flex-col gap-2">
-                      <div className="flex flex-1 flex-col gap-4 py-4 md:gap-6 md:py-6">
-                        {children}
+            <SearchProvider>
+              <TooltipProvider>
+                <SidebarProvider
+                  style={{ "--sidebar-width": "18rem" } as React.CSSProperties}
+                >
+                  <ToolSearchDialog />
+                  <AppSidebar variant="inset" />
+                  <SidebarInset>
+                    <SiteHeader />
+                    <div className="flex flex-1 flex-col">
+                      <div className="@container/main flex flex-1 flex-col gap-2">
+                        <div className="flex flex-1 flex-col gap-4 py-4 md:gap-6 md:py-6">
+                          {children}
+                        </div>
                       </div>
+                      <SiteFooter />
                     </div>
-                    <SiteFooter />
-                  </div>
-                </SidebarInset>
-              </SidebarProvider>
-            </TooltipProvider>
+                  </SidebarInset>
+                </SidebarProvider>
+              </TooltipProvider>
+            </SearchProvider>
           </LanguageProvider>
         </ThemeProvider>
       </body>
