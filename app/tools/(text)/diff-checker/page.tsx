@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useRef, useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
@@ -238,46 +238,31 @@ export default function DiffCheckerPage() {
     false
   )
 
-  const [splitPercent, setSplitPercent] = useState(50)
-  const containerRef = useRef<HTMLDivElement>(null)
-  const isDragging = useRef(false)
+  const leftPanelRef = useRef<HTMLDivElement>(null)
+  const rightPanelRef = useRef<HTMLDivElement>(null)
+  const isSyncingScroll = useRef(false)
 
-  const handleDividerMouseDown = useCallback((e: React.MouseEvent) => {
-    e.preventDefault()
-    isDragging.current = true
-    document.body.style.cursor = "col-resize"
-    document.body.style.userSelect = "none"
+  const handleLeftScroll = useCallback(() => {
+    if (isSyncingScroll.current || !rightPanelRef.current || !leftPanelRef.current) return
+    isSyncingScroll.current = true
+    rightPanelRef.current.scrollTop = leftPanelRef.current.scrollTop
+    rightPanelRef.current.scrollLeft = leftPanelRef.current.scrollLeft
+    isSyncingScroll.current = false
   }, [])
 
-  const handleMouseMove = useCallback((e: MouseEvent) => {
-    if (!isDragging.current || !containerRef.current) return
-    const rect = containerRef.current.getBoundingClientRect()
-    const x = e.clientX - rect.left
-    const percent = Math.min(Math.max((x / rect.width) * 100, 20), 80)
-    setSplitPercent(percent)
+  const handleRightScroll = useCallback(() => {
+    if (isSyncingScroll.current || !leftPanelRef.current || !rightPanelRef.current) return
+    isSyncingScroll.current = true
+    leftPanelRef.current.scrollTop = rightPanelRef.current.scrollTop
+    leftPanelRef.current.scrollLeft = rightPanelRef.current.scrollLeft
+    isSyncingScroll.current = false
   }, [])
-
-  const handleMouseUp = useCallback(() => {
-    if (!isDragging.current) return
-    isDragging.current = false
-    document.body.style.cursor = ""
-    document.body.style.userSelect = ""
-  }, [])
-
-  useEffect(() => {
-    window.addEventListener("mousemove", handleMouseMove)
-    window.addEventListener("mouseup", handleMouseUp)
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove)
-      window.removeEventListener("mouseup", handleMouseUp)
-    }
-  }, [handleMouseMove, handleMouseUp])
 
   const swapTexts = () => {
-    const tmp = textA
     setTextA(textB)
-    setTextB(tmp)
-    setRows(null)
+    setTextB(textA)
+    const diff = computeDiff(textB, textA, ignoreWhitespace)
+    setRows(toSideBySide(diff))
   }
 
   const compare = () => {
@@ -296,13 +281,10 @@ export default function DiffCheckerPage() {
 
   return (
     <div className="flex flex-col gap-4 px-4 lg:px-6">
-      {/* Split pane input */}
-      <div
-        ref={containerRef}
-        className="relative flex h-52 w-full overflow-hidden rounded-md border select-none"
-      >
+      {/* Input panels */}
+      <div className="flex h-52 w-full overflow-hidden rounded-md border">
         {/* Left pane */}
-        <div className="flex flex-col" style={{ width: `${splitPercent}%` }}>
+        <div className="flex flex-1 flex-col">
           <div className="border-b bg-muted/50 px-3 py-1.5 text-xs font-medium text-muted-foreground">
             Original
           </div>
@@ -318,15 +300,10 @@ export default function DiffCheckerPage() {
           />
         </div>
 
-        {/* Divider */}
-        <div
-          className="group relative z-10 flex w-3 flex-shrink-0 cursor-col-resize items-center justify-center bg-border transition-colors hover:bg-primary/20 active:bg-primary/30"
-          onMouseDown={handleDividerMouseDown}
-        >
-          {/* Swap button */}
+        {/* Fixed divider with swap button */}
+        <div className="relative flex w-px flex-shrink-0 items-center justify-center bg-border">
           <button
-            className="absolute z-20 flex h-8 w-8 items-center justify-center rounded-full border bg-background shadow-md transition-all hover:scale-110 hover:bg-muted active:scale-95"
-            onMouseDown={(e) => e.stopPropagation()}
+            className="absolute z-10 flex h-8 w-8 items-center justify-center rounded-full border bg-background shadow-md transition-all hover:scale-110 hover:bg-muted active:scale-95"
             onClick={swapTexts}
             title="Swap sides"
           >
@@ -347,13 +324,6 @@ export default function DiffCheckerPage() {
               <path d="M20 17H4" />
             </svg>
           </button>
-
-          {/* Drag handle dots */}
-          <div className="flex flex-col gap-1 opacity-40 transition-opacity group-hover:opacity-80">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="h-1 w-1 rounded-full bg-foreground" />
-            ))}
-          </div>
         </div>
 
         {/* Right pane */}
@@ -411,68 +381,123 @@ export default function DiffCheckerPage() {
       {/* Diff result */}
       {rows && (
         <div className="overflow-hidden rounded-md border">
+          {/* Headers */}
           <div className="grid grid-cols-2 border-b bg-muted/50 text-xs font-medium text-muted-foreground">
-            <div className="border-r px-10 py-2">Original</div>
-            <div className="px-10 py-2">Changed</div>
+            <div className="border-r px-3 py-2">Original</div>
+            <div className="px-3 py-2">Changed</div>
           </div>
 
-          <div className="overflow-auto">
-            <table className="w-full font-mono text-sm">
-              <tbody>
-                {rows.map((row, idx) => (
-                  <tr key={idx} className="border-b last:border-b-0">
-                    <td
-                      className={cn(
-                        "w-10 border-r px-2 py-1 text-right text-xs text-muted-foreground select-none",
-                        row.leftType === "removed" &&
-                          "bg-red-50 dark:bg-red-950/30"
-                      )}
-                    >
-                      {row.leftNum ?? ""}
-                    </td>
-                    <td
-                      className={cn(
-                        "w-[42%] border-r py-1 pr-4 pl-2 whitespace-pre",
-                        row.leftType === "removed" &&
-                          "bg-red-50 text-red-700 dark:bg-red-950/30 dark:text-red-300",
-                        row.leftType === "same" && "text-foreground",
-                        row.leftType === "empty" && "bg-muted/30"
-                      )}
-                    >
-                      {row.leftParts ? (
-                        <InlineDiff parts={row.leftParts} side="left" />
-                      ) : (
-                        (row.leftContent ?? "")
-                      )}
-                    </td>
-                    <td
-                      className={cn(
-                        "w-10 border-r px-2 py-1 text-right text-xs text-muted-foreground select-none",
-                        row.rightType === "added" &&
-                          "bg-green-50 dark:bg-green-950/30"
-                      )}
-                    >
-                      {row.rightNum ?? ""}
-                    </td>
-                    <td
-                      className={cn(
-                        "w-[42%] py-1 pr-4 pl-2 whitespace-pre",
-                        row.rightType === "added" &&
-                          "bg-green-50 text-green-700 dark:bg-green-950/30 dark:text-green-300",
-                        row.rightType === "same" && "text-foreground",
-                        row.rightType === "empty" && "bg-muted/30"
-                      )}
-                    >
-                      {row.rightParts ? (
-                        <InlineDiff parts={row.rightParts} side="right" />
-                      ) : (
-                        (row.rightContent ?? "")
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          {/* Side-by-side panels */}
+          <div className="flex max-h-[60vh]">
+            {/* Left panel — Original */}
+            <div
+              ref={leftPanelRef}
+              className="flex-1 overflow-auto border-r"
+              onScroll={handleLeftScroll}
+            >
+              <table className="w-full font-mono text-sm">
+                <tbody>
+                  {rows.map((row, idx) => (
+                    <tr key={idx} className="border-b last:border-b-0">
+                      <td
+                        className={cn(
+                          "w-10 border-r px-2 py-1 text-right text-xs select-none",
+                          row.leftType === "removed"
+                            ? "bg-red-50 text-red-400 dark:bg-red-950/30 dark:text-red-500"
+                            : row.leftType === "empty"
+                              ? "bg-muted/20 text-muted-foreground"
+                              : "text-muted-foreground"
+                        )}
+                      >
+                        {row.leftNum ?? ""}
+                      </td>
+                      <td
+                        className={cn(
+                          "w-6 border-r px-1 py-1 text-center text-xs select-none",
+                          row.leftType === "removed"
+                            ? "bg-red-50 text-red-500 dark:bg-red-950/30"
+                            : row.leftType === "empty"
+                              ? "bg-muted/20"
+                              : ""
+                        )}
+                      >
+                        {row.leftType === "removed" ? "-" : ""}
+                      </td>
+                      <td
+                        className={cn(
+                          "py-1 pr-4 pl-2 whitespace-pre",
+                          row.leftType === "removed" &&
+                            "bg-red-50 text-red-700 dark:bg-red-950/30 dark:text-red-300",
+                          row.leftType === "same" && "text-foreground",
+                          row.leftType === "empty" && "bg-muted/20"
+                        )}
+                      >
+                        {row.leftParts ? (
+                          <InlineDiff parts={row.leftParts} side="left" />
+                        ) : (
+                          (row.leftContent ?? "")
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Right panel — Changed */}
+            <div
+              ref={rightPanelRef}
+              className="flex-1 overflow-auto"
+              onScroll={handleRightScroll}
+            >
+              <table className="w-full font-mono text-sm">
+                <tbody>
+                  {rows.map((row, idx) => (
+                    <tr key={idx} className="border-b last:border-b-0">
+                      <td
+                        className={cn(
+                          "w-10 border-r px-2 py-1 text-right text-xs select-none",
+                          row.rightType === "added"
+                            ? "bg-green-50 text-green-500 dark:bg-green-950/30 dark:text-green-500"
+                            : row.rightType === "empty"
+                              ? "bg-muted/20 text-muted-foreground"
+                              : "text-muted-foreground"
+                        )}
+                      >
+                        {row.rightNum ?? ""}
+                      </td>
+                      <td
+                        className={cn(
+                          "w-6 border-r px-1 py-1 text-center text-xs select-none",
+                          row.rightType === "added"
+                            ? "bg-green-50 text-green-500 dark:bg-green-950/30"
+                            : row.rightType === "empty"
+                              ? "bg-muted/20"
+                              : ""
+                        )}
+                      >
+                        {row.rightType === "added" ? "+" : ""}
+                      </td>
+                      <td
+                        className={cn(
+                          "py-1 pr-4 pl-2 whitespace-pre",
+                          row.rightType === "added" &&
+                            "bg-green-50 text-green-700 dark:bg-green-950/30 dark:text-green-300",
+                          row.rightType === "same" && "text-foreground",
+                          row.rightType === "empty" && "bg-muted/20"
+                        )}
+                      >
+                        {row.rightParts ? (
+                          <InlineDiff parts={row.rightParts} side="right" />
+                        ) : (
+                          (row.rightContent ?? "")
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       )}
