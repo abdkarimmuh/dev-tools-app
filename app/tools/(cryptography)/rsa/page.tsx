@@ -13,9 +13,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useLanguage } from "@/contexts/language-context"
 import { useToolState } from "@/hooks/use-tool-state"
+
+type Mode = "keys" | "encrypt" | "decrypt"
 
 function ab2b64(buf: ArrayBuffer): string {
   return btoa(String.fromCharCode(...new Uint8Array(buf)))
@@ -58,6 +59,7 @@ function CopyBtn({ text }: { text: string }) {
 
 export default function RsaPage() {
   const { t } = useLanguage()
+  const [mode, setMode] = useState<Mode>("keys")
   const [publicKeyPem, setPublicKeyPem] = useToolState("rsa", "publicKey", "")
   const [privateKeyPem, setPrivateKeyPem] = useToolState(
     "rsa",
@@ -154,203 +156,215 @@ export default function RsaPage() {
   }
 
   return (
-    <div className="px-4 lg:px-6">
-      <Tabs defaultValue="keys">
-        <TabsList>
-          <TabsTrigger value="keys">{t.rsaKeys}</TabsTrigger>
-          <TabsTrigger value="encrypt">{t.cryptoEncrypt}</TabsTrigger>
-          <TabsTrigger value="decrypt">{t.cryptoDecrypt}</TabsTrigger>
-        </TabsList>
-
-        {/* ── Keys ── */}
-        <TabsContent value="keys">
-          <div className="flex flex-col gap-4 pt-4">
-            <div className="flex flex-wrap items-end gap-3">
-              <div className="flex flex-col gap-1.5">
-                <Label>{t.rsaKeySize}</Label>
-                <Select
-                  value={keySize}
-                  onValueChange={(v) => setKeySize(v as typeof keySize)}
-                >
-                  <SelectTrigger className="w-32">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="1024">1024-bit</SelectItem>
-                    <SelectItem value="2048">2048-bit</SelectItem>
-                    <SelectItem value="4096">4096-bit</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <Button onClick={generateKeys} disabled={generating}>
-                <RefreshCw
-                  className={`mr-2 size-4 ${generating ? "animate-spin" : ""}`}
-                />
-                {generating ? t.rsaGenerating : t.rsaGenerate}
-              </Button>
-            </div>
-
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-              <div className="flex flex-col gap-1.5">
-                <div className="flex items-center justify-between">
-                  <Label>{t.rsaPublicKey}</Label>
-                  <CopyBtn text={publicKeyPem} />
-                </div>
-                <textarea
-                  className="h-64 w-full resize-none rounded-md border bg-muted p-3 font-mono text-xs outline-none"
-                  value={publicKeyPem}
-                  onChange={(e) => setPublicKeyPem(e.target.value)}
-                  placeholder="-----BEGIN PUBLIC KEY-----"
-                  spellCheck={false}
-                />
-              </div>
-              <div className="flex flex-col gap-1.5">
-                <div className="flex items-center justify-between">
-                  <Label>{t.rsaPrivateKey}</Label>
-                  <CopyBtn text={privateKeyPem} />
-                </div>
-                <textarea
-                  className="h-64 w-full resize-none rounded-md border bg-muted p-3 font-mono text-xs outline-none"
-                  value={privateKeyPem}
-                  onChange={(e) => setPrivateKeyPem(e.target.value)}
-                  placeholder="-----BEGIN PRIVATE KEY-----"
-                  spellCheck={false}
-                />
-              </div>
-            </div>
+    <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
+      {/* Top bar */}
+      <div className="flex shrink-0 items-end justify-between gap-4">
+        <div className="flex flex-wrap items-end gap-3">
+          <div className="flex flex-col gap-1.5">
+            <Label>Mode</Label>
+            <Select value={mode} onValueChange={(v) => setMode(v as Mode)}>
+              <SelectTrigger className="w-36">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="keys">{t.rsaKeys}</SelectItem>
+                <SelectItem value="encrypt">{t.cryptoEncrypt}</SelectItem>
+                <SelectItem value="decrypt">{t.cryptoDecrypt}</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
-        </TabsContent>
 
-        {/* ── Encrypt ── */}
-        <TabsContent value="encrypt">
-          <div className="flex flex-col gap-4 pt-4">
+          {mode === "keys" && (
             <div className="flex flex-col gap-1.5">
-              <div className="flex items-center justify-between">
-                <Label>{t.rsaPublicKey}</Label>
-                {!publicKeyPem && (
-                  <Badge variant="destructive" className="text-xs">
-                    {t.rsaNoKey}
-                  </Badge>
-                )}
-              </div>
+              <Label>{t.rsaKeySize}</Label>
+              <Select
+                value={keySize}
+                onValueChange={(v) => setKeySize(v as typeof keySize)}
+              >
+                <SelectTrigger className="w-32">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="1024">1024-bit</SelectItem>
+                  <SelectItem value="2048">2048-bit</SelectItem>
+                  <SelectItem value="4096">4096-bit</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+        </div>
+
+        {mode === "keys" && (
+          <Button onClick={generateKeys} disabled={generating}>
+            <RefreshCw
+              className={`mr-2 size-4 ${generating ? "animate-spin" : ""}`}
+            />
+            {generating ? t.rsaGenerating : t.rsaGenerate}
+          </Button>
+        )}
+        {mode === "encrypt" && (
+          <Button
+            size="lg"
+            onClick={encrypt}
+            disabled={!encInput || !publicKeyPem || encLoading}
+          >
+            {encLoading ? t.rsaGenerating : t.cryptoEncrypt}
+          </Button>
+        )}
+        {mode === "decrypt" && (
+          <Button
+            size="lg"
+            onClick={decrypt}
+            disabled={!decInput || !privateKeyPem || decLoading}
+          >
+            {decLoading ? t.rsaGenerating : t.cryptoDecrypt}
+          </Button>
+        )}
+      </div>
+
+      {/* Keys mode */}
+      {mode === "keys" && (
+        <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 lg:grid-cols-2">
+          <div className="flex min-h-0 flex-col gap-1.5">
+            <div className="flex shrink-0 items-center justify-between">
+              <Label>{t.rsaPublicKey}</Label>
+              <CopyBtn text={publicKeyPem} />
+            </div>
+            <textarea
+              className="min-h-0 w-full flex-1 resize-none rounded-md border bg-muted p-3 font-mono text-xs outline-none"
+              value={publicKeyPem}
+              onChange={(e) => setPublicKeyPem(e.target.value)}
+              placeholder="-----BEGIN PUBLIC KEY-----"
+              spellCheck={false}
+            />
+          </div>
+          <div className="flex min-h-0 flex-col gap-1.5">
+            <div className="flex shrink-0 items-center justify-between">
+              <Label>{t.rsaPrivateKey}</Label>
+              <CopyBtn text={privateKeyPem} />
+            </div>
+            <textarea
+              className="min-h-0 w-full flex-1 resize-none rounded-md border bg-muted p-3 font-mono text-xs outline-none"
+              value={privateKeyPem}
+              onChange={(e) => setPrivateKeyPem(e.target.value)}
+              placeholder="-----BEGIN PRIVATE KEY-----"
+              spellCheck={false}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Encrypt mode */}
+      {mode === "encrypt" && (
+        <div className="flex min-h-0 flex-1 flex-col gap-4">
+          <div className="flex shrink-0 flex-col gap-1.5">
+            <div className="flex items-center justify-between">
+              <Label>{t.rsaPublicKey}</Label>
+              {!publicKeyPem && (
+                <Badge variant="destructive" className="text-xs">
+                  {t.rsaNoKey}
+                </Badge>
+              )}
+            </div>
+            <textarea
+              className="h-24 w-full resize-none rounded-md border bg-muted p-3 font-mono text-xs outline-none"
+              value={publicKeyPem}
+              onChange={(e) => setPublicKeyPem(e.target.value)}
+              placeholder="-----BEGIN PUBLIC KEY-----"
+              spellCheck={false}
+            />
+          </div>
+          <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 lg:grid-cols-2">
+            <div className="flex min-h-0 flex-col gap-2">
+              <span className="shrink-0 py-1.5 text-sm font-medium">
+                Plaintext
+              </span>
               <textarea
-                className="h-28 w-full resize-none rounded-md border bg-muted p-3 font-mono text-xs outline-none"
-                value={publicKeyPem}
-                onChange={(e) => setPublicKeyPem(e.target.value)}
-                placeholder="-----BEGIN PUBLIC KEY-----"
+                className="min-h-0 w-full flex-1 resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                placeholder={t.rsaPlaintextPlaceholder}
+                value={encInput}
+                onChange={(e) => setEncInput(e.target.value)}
                 spellCheck={false}
               />
             </div>
-
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-              <div className="flex flex-col gap-2">
-                <span className="text-sm font-medium">Plaintext</span>
-                <textarea
-                  className="h-52 w-full resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                  placeholder={t.rsaPlaintextPlaceholder}
-                  value={encInput}
-                  onChange={(e) => setEncInput(e.target.value)}
-                  spellCheck={false}
-                />
-              </div>
-              <div className="flex flex-col gap-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">
-                    Ciphertext (Base64)
-                  </span>
-                  <CopyBtn text={encOutput} />
-                </div>
-                {encError ? (
-                  <div className="flex h-52 items-start overflow-auto rounded-md border border-destructive bg-destructive/10 p-3 font-mono text-sm text-destructive">
-                    {encError}
-                  </div>
-                ) : (
-                  <textarea
-                    readOnly
-                    className="h-52 w-full resize-none rounded-md border bg-muted p-3 font-mono text-sm outline-none"
-                    value={encOutput}
-                    placeholder={t.outputPlaceholder}
-                    spellCheck={false}
-                  />
-                )}
-              </div>
-            </div>
-
-            <Button
-              size="lg"
-              onClick={encrypt}
-              disabled={!encInput || !publicKeyPem || encLoading}
-              className="w-fit"
-            >
-              {encLoading ? t.rsaGenerating : t.cryptoEncrypt}
-            </Button>
-          </div>
-        </TabsContent>
-
-        {/* ── Decrypt ── */}
-        <TabsContent value="decrypt">
-          <div className="flex flex-col gap-4 pt-4">
-            <div className="flex flex-col gap-1.5">
-              <div className="flex items-center justify-between">
-                <Label>{t.rsaPrivateKey}</Label>
-                {!privateKeyPem && (
-                  <Badge variant="destructive" className="text-xs">
-                    {t.rsaNoKey}
-                  </Badge>
-                )}
-              </div>
-              <textarea
-                className="h-28 w-full resize-none rounded-md border bg-muted p-3 font-mono text-xs outline-none"
-                value={privateKeyPem}
-                onChange={(e) => setPrivateKeyPem(e.target.value)}
-                placeholder="-----BEGIN PRIVATE KEY-----"
-                spellCheck={false}
-              />
-            </div>
-
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-              <div className="flex flex-col gap-2">
+            <div className="flex min-h-0 flex-col gap-2">
+              <div className="flex shrink-0 items-center justify-between">
                 <span className="text-sm font-medium">Ciphertext (Base64)</span>
+                <CopyBtn text={encOutput} />
+              </div>
+              {encError ? (
+                <div className="min-h-0 flex-1 overflow-auto rounded-md border border-destructive bg-destructive/10 p-3 font-mono text-sm text-destructive">
+                  {encError}
+                </div>
+              ) : (
                 <textarea
-                  className="h-52 w-full resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                  placeholder={t.rsaCiphertextPlaceholder}
-                  value={decInput}
-                  onChange={(e) => setDecInput(e.target.value)}
+                  readOnly
+                  className="min-h-0 w-full flex-1 resize-none rounded-md border bg-muted p-3 font-mono text-sm outline-none"
+                  value={encOutput}
+                  placeholder={t.outputPlaceholder}
                   spellCheck={false}
                 />
-              </div>
-              <div className="flex flex-col gap-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">Plaintext</span>
-                  <CopyBtn text={decOutput} />
-                </div>
-                {decError ? (
-                  <div className="flex h-52 items-start overflow-auto rounded-md border border-destructive bg-destructive/10 p-3 font-mono text-sm text-destructive">
-                    {decError}
-                  </div>
-                ) : (
-                  <textarea
-                    readOnly
-                    className="h-52 w-full resize-none rounded-md border bg-muted p-3 font-mono text-sm outline-none"
-                    value={decOutput}
-                    placeholder={t.outputPlaceholder}
-                    spellCheck={false}
-                  />
-                )}
-              </div>
+              )}
             </div>
-
-            <Button
-              size="lg"
-              onClick={decrypt}
-              disabled={!decInput || !privateKeyPem || decLoading}
-              className="w-fit"
-            >
-              {decLoading ? t.rsaGenerating : t.cryptoDecrypt}
-            </Button>
           </div>
-        </TabsContent>
-      </Tabs>
+        </div>
+      )}
+
+      {/* Decrypt mode */}
+      {mode === "decrypt" && (
+        <div className="flex min-h-0 flex-1 flex-col gap-4">
+          <div className="flex shrink-0 flex-col gap-1.5">
+            <div className="flex items-center justify-between">
+              <Label>{t.rsaPrivateKey}</Label>
+              {!privateKeyPem && (
+                <Badge variant="destructive" className="text-xs">
+                  {t.rsaNoKey}
+                </Badge>
+              )}
+            </div>
+            <textarea
+              className="h-24 w-full resize-none rounded-md border bg-muted p-3 font-mono text-xs outline-none"
+              value={privateKeyPem}
+              onChange={(e) => setPrivateKeyPem(e.target.value)}
+              placeholder="-----BEGIN PRIVATE KEY-----"
+              spellCheck={false}
+            />
+          </div>
+          <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 lg:grid-cols-2">
+            <div className="flex min-h-0 flex-col gap-2">
+              <span className="shrink-0 py-1.5 text-sm font-medium">
+                Ciphertext (Base64)
+              </span>
+              <textarea
+                className="min-h-0 w-full flex-1 resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                placeholder={t.rsaCiphertextPlaceholder}
+                value={decInput}
+                onChange={(e) => setDecInput(e.target.value)}
+                spellCheck={false}
+              />
+            </div>
+            <div className="flex min-h-0 flex-col gap-2">
+              <div className="flex shrink-0 items-center justify-between">
+                <span className="text-sm font-medium">Plaintext</span>
+                <CopyBtn text={decOutput} />
+              </div>
+              {decError ? (
+                <div className="min-h-0 flex-1 overflow-auto rounded-md border border-destructive bg-destructive/10 p-3 font-mono text-sm text-destructive">
+                  {decError}
+                </div>
+              ) : (
+                <textarea
+                  readOnly
+                  className="min-h-0 w-full flex-1 resize-none rounded-md border bg-muted p-3 font-mono text-sm outline-none"
+                  value={decOutput}
+                  placeholder={t.outputPlaceholder}
+                  spellCheck={false}
+                />
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

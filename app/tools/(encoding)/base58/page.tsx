@@ -7,39 +7,69 @@ import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
 import { useToolState } from "@/hooks/use-tool-state"
 
-function encodeHtmlEntities(str: string): string {
-  return str
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;")
+const ALPHABET = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
+
+function encodeBase58(str: string): string {
+  const bytes = Array.from(new TextEncoder().encode(str))
+  let leadingZeros = 0
+  for (const b of bytes) {
+    if (b !== 0) break
+    leadingZeros++
+  }
+  let num = BigInt(0)
+  for (const b of bytes) num = num * 256n + BigInt(b)
+  let result = ""
+  while (num > 0n) {
+    result = ALPHABET[Number(num % 58n)] + result
+    num = num / 58n
+  }
+  return "1".repeat(leadingZeros) + result
 }
 
-function decodeHtmlEntities(str: string): string {
-  const txt = document.createElement("textarea")
-  txt.innerHTML = str
-  return txt.value
+function decodeBase58(str: string): string {
+  const clean = str.trim()
+  let leadingZeros = 0
+  for (const char of clean) {
+    if (char !== "1") break
+    leadingZeros++
+  }
+  let num = BigInt(0)
+  for (const char of clean) {
+    const idx = ALPHABET.indexOf(char)
+    if (idx === -1) throw new Error(`Invalid Base58 character: "${char}"`)
+    num = num * 58n + BigInt(idx)
+  }
+  const bytes: number[] = []
+  while (num > 0n) {
+    bytes.unshift(Number(num % 256n))
+    num = num / 256n
+  }
+  const result = new Uint8Array([...new Array(leadingZeros).fill(0), ...bytes])
+  return new TextDecoder().decode(result)
 }
 
-export default function HtmlEntitiesPage() {
+export default function Base58Page() {
   const { t } = useLanguage()
-  const [input, setInput] = useToolState("html-entities", "input", "")
+  const [input, setInput] = useToolState("base58", "input", "")
   const [output, setOutput] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
 
   const encode = () => {
-    setOutput(encodeHtmlEntities(input))
-    setError(null)
+    try {
+      setOutput(encodeBase58(input))
+      setError(null)
+    } catch {
+      setError(t.base58EncodeError)
+    }
   }
 
   const decode = () => {
     try {
-      setOutput(decodeHtmlEntities(input))
+      setOutput(decodeBase58(input))
       setError(null)
-    } catch {
-      setError(t.htmlEntitiesDecodeError)
+    } catch (e) {
+      setError((e as Error).message || t.base58DecodeError)
     }
   }
 
@@ -92,7 +122,7 @@ export default function HtmlEntitiesPage() {
           </div>
           <textarea
             className="min-h-0 w-full flex-1 resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            placeholder={`${t.htmlEntitiesEncodeExample}: <div class="hello">\n${t.htmlEntitiesDecodeExample}: &lt;div class=&quot;hello&quot;&gt;`}
+            placeholder={t.base58InputPlaceholder}
             value={input}
             onChange={(e) => {
               setInput(e.target.value)

@@ -7,6 +7,13 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { useLanguage } from "@/contexts/language-context"
 import { useToolState } from "@/hooks/use-tool-state"
 
@@ -71,55 +78,74 @@ export default function DesCipherPage() {
   }
 
   return (
-    <div className="flex flex-col gap-4 px-4 lg:px-6">
-      <div className="flex w-fit items-center gap-1 rounded-md border">
-        {ALGORITHMS.map((a) => (
-          <button
-            key={a.value}
-            onClick={() => {
-              setAlgorithm(a.value)
-              setOutput("")
-              setError(null)
-            }}
-            className={`rounded px-3 py-1 text-sm font-medium transition-colors ${
-              algorithm === a.value
-                ? "bg-primary text-primary-foreground"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
+    <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
+      <div className="flex shrink-0 items-end justify-between gap-4">
+        <div className="flex flex-wrap items-end gap-3">
+          <div className="flex flex-col gap-1.5">
+            <Label>Algorithm</Label>
+            <Select
+              value={algorithm}
+              onValueChange={(v) => {
+                setAlgorithm(v as DesAlgorithm)
+                setOutput("")
+                setError(null)
+              }}
+            >
+              <SelectTrigger className="w-44">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {ALGORITHMS.map((a) => (
+                  <SelectItem key={a.value} value={a.value}>
+                    {a.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex min-w-48 flex-1 flex-col gap-1.5">
+            <Label htmlFor="des-key">{t.cryptoKey}</Label>
+            <div className="relative">
+              <Input
+                id="des-key"
+                type={showKey ? "text" : "password"}
+                placeholder={t.cryptoKeyPlaceholder}
+                value={secretKey}
+                onChange={(e) => setSecretKey(e.target.value)}
+                className="pr-10 font-mono"
+              />
+              <button
+                type="button"
+                onClick={() => setShowKey((v) => !v)}
+                className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              >
+                {showKey ? (
+                  <EyeOff className="size-4" />
+                ) : (
+                  <Eye className="size-4" />
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className="flex shrink-0 gap-3">
+          <Button size="lg" onClick={encrypt} disabled={!input || !secretKey}>
+            {t.cryptoEncrypt}
+          </Button>
+          <Button
+            size="lg"
+            variant="secondary"
+            onClick={decrypt}
+            disabled={!input || !secretKey}
           >
-            {a.label}
-          </button>
-        ))}
-      </div>
-
-      <div className="flex max-w-xl flex-col gap-1.5">
-        <Label htmlFor="des-key">{t.cryptoKey}</Label>
-        <div className="relative">
-          <Input
-            id="des-key"
-            type={showKey ? "text" : "password"}
-            placeholder={t.cryptoKeyPlaceholder}
-            value={secretKey}
-            onChange={(e) => setSecretKey(e.target.value)}
-            className="pr-10 font-mono"
-          />
-          <button
-            type="button"
-            onClick={() => setShowKey((v) => !v)}
-            className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-          >
-            {showKey ? (
-              <EyeOff className="size-4" />
-            ) : (
-              <Eye className="size-4" />
-            )}
-          </button>
+            {t.cryptoDecrypt}
+          </Button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <div className="flex flex-col gap-2">
-          <div className="flex items-center justify-between">
+      <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 lg:grid-cols-2">
+        <div className="flex min-h-0 flex-col gap-2">
+          <div className="flex shrink-0 items-center justify-between">
             <span className="text-sm font-medium">Input</span>
             <Button
               size="sm"
@@ -131,7 +157,7 @@ export default function DesCipherPage() {
             </Button>
           </div>
           <textarea
-            className="h-[420px] w-full resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="min-h-0 w-full flex-1 resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
             placeholder={t.desInputPlaceholder}
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -139,8 +165,8 @@ export default function DesCipherPage() {
           />
         </div>
 
-        <div className="flex flex-col gap-2">
-          <div className="flex items-center justify-between">
+        <div className="flex min-h-0 flex-col gap-2">
+          <div className="flex shrink-0 items-center justify-between">
             <span className="text-sm font-medium">Output</span>
             <Button
               size="sm"
@@ -158,33 +184,19 @@ export default function DesCipherPage() {
             </Button>
           </div>
           {error ? (
-            <div className="flex h-[420px] items-start overflow-auto rounded-md border border-destructive bg-destructive/10 p-3 font-mono text-sm text-destructive">
+            <div className="min-h-0 flex-1 overflow-auto rounded-md border border-destructive bg-destructive/10 p-3 font-mono text-sm text-destructive">
               {error}
             </div>
           ) : (
             <textarea
               readOnly
-              className="h-[420px] w-full resize-none rounded-md border bg-muted p-3 font-mono text-sm outline-none"
+              className="min-h-0 w-full flex-1 resize-none rounded-md border bg-muted p-3 font-mono text-sm outline-none"
               value={output}
               placeholder={t.outputPlaceholder}
               spellCheck={false}
             />
           )}
         </div>
-      </div>
-
-      <div className="flex gap-4">
-        <Button size="lg" onClick={encrypt} disabled={!input || !secretKey}>
-          {t.cryptoEncrypt}
-        </Button>
-        <Button
-          size="lg"
-          variant="secondary"
-          onClick={decrypt}
-          disabled={!input || !secretKey}
-        >
-          {t.cryptoDecrypt}
-        </Button>
       </div>
     </div>
   )

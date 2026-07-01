@@ -22,9 +22,7 @@ interface JwtParts {
 
 function decodeJwt(token: string, invalidMsg: string): JwtParts {
   const parts = token.trim().split(".")
-  if (parts.length !== 3) {
-    throw new Error(invalidMsg)
-  }
+  if (parts.length !== 3) throw new Error(invalidMsg)
   const header = JSON.parse(base64UrlDecode(parts[0]))
   const payload = JSON.parse(base64UrlDecode(parts[1]))
   return { header, payload, signature: parts[2] }
@@ -40,17 +38,15 @@ function formatTimestamp(val: unknown): string {
   return `${val} (${new Date(val * 1000).toLocaleString()})`
 }
 
-interface CopyButtonProps {
-  text: string
-  copy: string
-  copied: string
-}
-
 function CopyButton({
   text,
   copy: copyLabel,
   copied: copiedLabel,
-}: CopyButtonProps) {
+}: {
+  text: string
+  copy: string
+  copied: string
+}) {
   const [isCopied, setIsCopied] = useState(false)
   const handleCopy = async () => {
     await navigator.clipboard.writeText(text)
@@ -133,12 +129,22 @@ export default function JwtDecoderPage() {
     : null
 
   return (
-    <div className="flex flex-col gap-4 px-4 lg:px-6">
-      <span className="text-sm font-medium">JWT Token</span>
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <div className="flex flex-col gap-2">
+    <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
+      <div className="flex shrink-0 gap-4">
+        <Button onClick={decode} disabled={!token}>
+          {t.decode}
+        </Button>
+        <Button variant="ghost" onClick={clear}>
+          {t.clear}
+        </Button>
+      </div>
+
+      <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 lg:grid-cols-2">
+        {/* Input */}
+        <div className="flex min-h-0 flex-col gap-2">
+          <span className="shrink-0 text-sm font-medium">JWT Token</span>
           <textarea
-            className="h-[520px] w-full resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="min-h-0 w-full flex-1 resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
             placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
             value={token}
             onChange={(e) => {
@@ -150,56 +156,58 @@ export default function JwtDecoderPage() {
           />
         </div>
 
-        <div>
-          {error && (
-            <div className="rounded-md border border-destructive bg-destructive/10 p-3 font-mono text-sm text-destructive">
-              {error}
-            </div>
-          )}
+        {/* Output */}
+        <div className="flex min-h-0 flex-col gap-2">
+          <span className="shrink-0 text-sm font-medium">Decoded</span>
+          <div className="min-h-0 flex-1 overflow-auto">
+            {error && (
+              <div className="rounded-md border border-destructive bg-destructive/10 p-3 font-mono text-sm text-destructive">
+                {error}
+              </div>
+            )}
 
-          {decoded && (
-            <div className="flex flex-col gap-4">
-              <JsonBlock
-                label="Header"
-                data={decoded.header}
-                copyLabel={t.copy}
-                copiedLabel={t.copied}
-              />
-              <JsonBlock
-                label="Payload"
-                data={displayPayload}
-                copyLabel={t.copy}
-                copiedLabel={t.copied}
-              />
-              <div className="flex flex-col gap-1.5">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">Signature</span>
-                  <CopyButton
-                    text={decoded.signature}
-                    copy={t.copy}
-                    copied={t.copied}
-                  />
-                </div>
-                <div className="overflow-auto rounded-md border bg-muted p-3 font-mono text-sm break-all">
-                  {decoded.signature}
+            {decoded && (
+              <div className="flex flex-col gap-4">
+                <JsonBlock
+                  label="Header"
+                  data={decoded.header}
+                  copyLabel={t.copy}
+                  copiedLabel={t.copied}
+                />
+                <JsonBlock
+                  label="Payload"
+                  data={displayPayload}
+                  badge={
+                    <Badge variant={expired ? "destructive" : "secondary"}>
+                      {expired ? t.jwtExpired : t.jwtValid}
+                    </Badge>
+                  }
+                  copyLabel={t.copy}
+                  copiedLabel={t.copied}
+                />
+                <div className="flex flex-col gap-1.5">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium">Signature</span>
+                    <CopyButton
+                      text={decoded.signature}
+                      copy={t.copy}
+                      copied={t.copied}
+                    />
+                  </div>
+                  <div className="overflow-auto rounded-md border bg-muted p-3 font-mono text-sm break-all">
+                    {decoded.signature}
+                  </div>
                 </div>
               </div>
+            )}
 
-              <Badge variant={expired ? "destructive" : "secondary"}>
-                {expired ? t.jwtExpired : t.jwtValid}
-              </Badge>
-            </div>
-          )}
+            {!decoded && !error && (
+              <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
+                {t.outputPlaceholder}
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-
-      <div className="flex gap-2">
-        <Button onClick={decode} disabled={!token}>
-          {t.decode}
-        </Button>
-        <Button variant="ghost" onClick={clear}>
-          {t.clear}
-        </Button>
       </div>
     </div>
   )

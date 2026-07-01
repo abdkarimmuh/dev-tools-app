@@ -51,64 +51,8 @@ export default function UrlEncodePage() {
   }
 
   return (
-    <div className="px-4 lg:px-6">
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <div className="flex flex-col gap-2">
-          <div className="flex items-center justify-between">
-            <span className="text-sm font-medium">Input</span>
-            <Button
-              size="sm"
-              variant="ghost"
-              onClick={clear}
-              className="text-xs"
-            >
-              {t.clear}
-            </Button>
-          </div>
-          <textarea
-            className="h-[520px] w-full resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            placeholder={t.urlEncodeInputPlaceholder}
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            spellCheck={false}
-          />
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <div className="flex items-center justify-between">
-            <span className="text-sm font-medium">Output</span>
-            <Button
-              size="sm"
-              variant="ghost"
-              onClick={copy}
-              disabled={!output}
-              className="gap-1 text-xs"
-            >
-              {copied ? (
-                <Check className="size-3" />
-              ) : (
-                <Copy className="size-3" />
-              )}
-              {copied ? t.copied : t.copy}
-            </Button>
-          </div>
-          {error ? (
-            <div className="flex h-[520px] items-start overflow-auto rounded-md border border-destructive bg-destructive/10 p-3 font-mono text-sm text-destructive">
-              {error}
-            </div>
-          ) : (
-            <textarea
-              readOnly
-              className="h-[520px] w-full resize-none rounded-md border bg-muted p-3 font-mono text-sm outline-none"
-              value={output}
-              placeholder={t.outputPlaceholder}
-              spellCheck={false}
-            />
-          )}
-        </div>
-      </div>
-
-      <div className="mt-4 flex gap-4">
+    <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
+      <div className="flex shrink-0 justify-end gap-4">
         <Button size="lg" onClick={encode} disabled={!input}>
           {t.encode}
         </Button>
@@ -120,16 +64,78 @@ export default function UrlEncodePage() {
         >
           {t.decode}
         </Button>
-        {output && (
-          <Button
-            size="lg"
-            variant="secondary"
-            onClick={swap}
-            className="ml-auto"
-          >
-            {t.swap}
-          </Button>
-        )}
+      </div>
+
+      <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 lg:grid-cols-2">
+        <div className="flex min-h-0 flex-col gap-2">
+          <div className="flex shrink-0 items-center justify-between">
+            <span className="text-sm font-medium">Input</span>
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={clear}
+              className="text-xs"
+            >
+              {t.clear}
+            </Button>
+          </div>
+          <textarea
+            className="min-h-0 w-full flex-1 resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            placeholder={t.urlEncodeInputPlaceholder}
+            value={input}
+            onChange={(e) => {
+              setInput(e.target.value)
+              setOutput("")
+              setError(null)
+            }}
+            spellCheck={false}
+          />
+        </div>
+
+        <div className="flex min-h-0 flex-col gap-2">
+          <div className="flex shrink-0 items-center justify-between">
+            <span className="text-sm font-medium">Output</span>
+            <div className="flex items-center gap-1">
+              {output && (
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={swap}
+                  className="text-xs"
+                >
+                  {t.swap}
+                </Button>
+              )}
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={copy}
+                disabled={!output}
+                className="gap-1 text-xs"
+              >
+                {copied ? (
+                  <Check className="size-3" />
+                ) : (
+                  <Copy className="size-3" />
+                )}
+                {copied ? t.copied : t.copy}
+              </Button>
+            </div>
+          </div>
+          {error ? (
+            <div className="min-h-0 flex-1 overflow-auto rounded-md border border-destructive bg-destructive/10 p-3 font-mono text-sm text-destructive">
+              {error}
+            </div>
+          ) : (
+            <textarea
+              readOnly
+              className="min-h-0 w-full flex-1 resize-none rounded-md border bg-muted p-3 font-mono text-sm outline-none"
+              value={output}
+              placeholder={t.outputPlaceholder}
+              spellCheck={false}
+            />
+          )}
+        </div>
       </div>
     </div>
   )

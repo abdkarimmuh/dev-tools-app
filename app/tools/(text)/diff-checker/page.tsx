@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
@@ -238,6 +238,48 @@ export default function DiffCheckerPage() {
     false
   )
 
+  const [splitPercent, setSplitPercent] = useState(50)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const isDragging = useRef(false)
+
+  const handleDividerMouseDown = useCallback((e: React.MouseEvent) => {
+    e.preventDefault()
+    isDragging.current = true
+    document.body.style.cursor = "col-resize"
+    document.body.style.userSelect = "none"
+  }, [])
+
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    if (!isDragging.current || !containerRef.current) return
+    const rect = containerRef.current.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const percent = Math.min(Math.max((x / rect.width) * 100, 20), 80)
+    setSplitPercent(percent)
+  }, [])
+
+  const handleMouseUp = useCallback(() => {
+    if (!isDragging.current) return
+    isDragging.current = false
+    document.body.style.cursor = ""
+    document.body.style.userSelect = ""
+  }, [])
+
+  useEffect(() => {
+    window.addEventListener("mousemove", handleMouseMove)
+    window.addEventListener("mouseup", handleMouseUp)
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove)
+      window.removeEventListener("mouseup", handleMouseUp)
+    }
+  }, [handleMouseMove, handleMouseUp])
+
+  const swapTexts = () => {
+    const tmp = textA
+    setTextA(textB)
+    setTextB(tmp)
+    setRows(null)
+  }
+
   const compare = () => {
     const diff = computeDiff(textA, textB, ignoreWhitespace)
     setRows(toSideBySide(diff))
@@ -254,11 +296,18 @@ export default function DiffCheckerPage() {
 
   return (
     <div className="flex flex-col gap-4 px-4 lg:px-6">
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <div className="flex flex-col gap-2">
-          <span className="text-sm font-medium">Original</span>
+      {/* Split pane input */}
+      <div
+        ref={containerRef}
+        className="relative flex h-52 w-full overflow-hidden rounded-md border select-none"
+      >
+        {/* Left pane */}
+        <div className="flex flex-col" style={{ width: `${splitPercent}%` }}>
+          <div className="border-b bg-muted/50 px-3 py-1.5 text-xs font-medium text-muted-foreground">
+            Original
+          </div>
           <textarea
-            className="h-52 w-full resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="h-full w-full resize-none bg-background p-3 font-mono text-sm outline-none"
             placeholder={t.diffFirstPlaceholder}
             value={textA}
             onChange={(e) => {
@@ -268,10 +317,52 @@ export default function DiffCheckerPage() {
             spellCheck={false}
           />
         </div>
-        <div className="flex flex-col gap-2">
-          <span className="text-sm font-medium">Changed</span>
+
+        {/* Divider */}
+        <div
+          className="group relative z-10 flex w-3 flex-shrink-0 cursor-col-resize items-center justify-center bg-border transition-colors hover:bg-primary/20 active:bg-primary/30"
+          onMouseDown={handleDividerMouseDown}
+        >
+          {/* Swap button */}
+          <button
+            className="absolute z-20 flex h-8 w-8 items-center justify-center rounded-full border bg-background shadow-md transition-all hover:scale-110 hover:bg-muted active:scale-95"
+            onMouseDown={(e) => e.stopPropagation()}
+            onClick={swapTexts}
+            title="Swap sides"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M8 3 4 7l4 4" />
+              <path d="M4 7h16" />
+              <path d="m16 21 4-4-4-4" />
+              <path d="M20 17H4" />
+            </svg>
+          </button>
+
+          {/* Drag handle dots */}
+          <div className="flex flex-col gap-1 opacity-40 transition-opacity group-hover:opacity-80">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="h-1 w-1 rounded-full bg-foreground" />
+            ))}
+          </div>
+        </div>
+
+        {/* Right pane */}
+        <div className="flex flex-1 flex-col">
+          <div className="border-b bg-muted/50 px-3 py-1.5 text-xs font-medium text-muted-foreground">
+            Changed
+          </div>
           <textarea
-            className="h-52 w-full resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="h-full w-full resize-none bg-background p-3 font-mono text-sm outline-none"
             placeholder={t.diffSecondPlaceholder}
             value={textB}
             onChange={(e) => {
@@ -283,6 +374,7 @@ export default function DiffCheckerPage() {
         </div>
       </div>
 
+      {/* Controls */}
       <div className="flex flex-wrap items-center gap-3">
         <Button onClick={compare} disabled={!textA && !textB}>
           Compare
@@ -316,6 +408,7 @@ export default function DiffCheckerPage() {
         )}
       </div>
 
+      {/* Diff result */}
       {rows && (
         <div className="overflow-hidden rounded-md border">
           <div className="grid grid-cols-2 border-b bg-muted/50 text-xs font-medium text-muted-foreground">

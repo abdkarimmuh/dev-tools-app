@@ -65,6 +65,9 @@ export const navMenus: NavGroup[] = [
     label: "Encoding",
     items: [
       { title: "Base64", url: "/tools/base64", icon: KeyRound },
+      { title: "Base32", url: "/tools/base32", icon: KeyRound },
+      { title: "Base58", url: "/tools/base58", icon: KeyRound },
+      { title: "Hex (Base16)", url: "/tools/hex", icon: Hash },
       { title: "URL Encode/Decode", url: "/tools/url-encode", icon: Link },
       { title: "HTML Entities", url: "/tools/html-entities", icon: Code },
       { title: "JWT Decoder", url: "/tools/jwt-decoder", icon: Lock },

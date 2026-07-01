@@ -13,11 +13,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useLanguage } from "@/contexts/language-context"
 import { useToolState } from "@/hooks/use-tool-state"
 
 type Curve = "P-256" | "P-384"
+type Mode = "keys" | "sign" | "verify"
 
 function ab2b64(buf: ArrayBuffer): string {
   return btoa(String.fromCharCode(...new Uint8Array(buf)))
@@ -60,6 +60,7 @@ function CopyBtn({ text }: { text: string }) {
 
 export default function EcdsaPage() {
   const { t } = useLanguage()
+  const [mode, setMode] = useState<Mode>("keys")
   const [curve, setCurve] = useToolState<Curve>("ecdsa", "curve", "P-256")
   const [publicKeyPem, setPublicKeyPem] = useToolState("ecdsa", "publicKey", "")
   const [privateKeyPem, setPrivateKeyPem] = useToolState(
@@ -79,8 +80,6 @@ export default function EcdsaPage() {
   const [verifyResult, setVerifyResult] = useState<boolean | null>(null)
   const [verifyError, setVerifyError] = useState<string | null>(null)
   const [verifyLoading, setVerifyLoading] = useState(false)
-
-  const hashAlgo = "SHA-256"
 
   const generateKeys = async () => {
     setGenerating(true)
@@ -114,7 +113,7 @@ export default function EcdsaPage() {
         ["sign"]
       )
       const sig = await crypto.subtle.sign(
-        { name: "ECDSA", hash: hashAlgo },
+        { name: "ECDSA", hash: "SHA-256" },
         key,
         new TextEncoder().encode(signMessage)
       )
@@ -141,7 +140,7 @@ export default function EcdsaPage() {
         ["verify"]
       )
       const valid = await crypto.subtle.verify(
-        { name: "ECDSA", hash: hashAlgo },
+        { name: "ECDSA", hash: "SHA-256" },
         key,
         b642ab(verifySig),
         new TextEncoder().encode(verifyMessage)
@@ -155,216 +154,227 @@ export default function EcdsaPage() {
   }
 
   return (
-    <div className="px-4 lg:px-6">
-      <Tabs defaultValue="keys">
-        <TabsList>
-          <TabsTrigger value="keys">{t.rsaKeys}</TabsTrigger>
-          <TabsTrigger value="sign">{t.ecdsaSign}</TabsTrigger>
-          <TabsTrigger value="verify">{t.ecdsaVerify}</TabsTrigger>
-        </TabsList>
-
-        {/* ── Keys ── */}
-        <TabsContent value="keys">
-          <div className="flex flex-col gap-4 pt-4">
-            <div className="flex flex-wrap items-end gap-3">
-              <div className="flex flex-col gap-1.5">
-                <Label>{t.ecdsaCurve}</Label>
-                <Select
-                  value={curve}
-                  onValueChange={(v) => setCurve(v as Curve)}
-                >
-                  <SelectTrigger className="w-32">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="P-256">P-256</SelectItem>
-                    <SelectItem value="P-384">P-384</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <Button onClick={generateKeys} disabled={generating}>
-                <RefreshCw
-                  className={`mr-2 size-4 ${generating ? "animate-spin" : ""}`}
-                />
-                {generating ? t.rsaGenerating : t.rsaGenerate}
-              </Button>
-            </div>
-
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-              <div className="flex flex-col gap-1.5">
-                <div className="flex items-center justify-between">
-                  <Label>{t.rsaPublicKey}</Label>
-                  <CopyBtn text={publicKeyPem} />
-                </div>
-                <textarea
-                  className="h-48 w-full resize-none rounded-md border bg-muted p-3 font-mono text-xs outline-none"
-                  value={publicKeyPem}
-                  onChange={(e) => setPublicKeyPem(e.target.value)}
-                  placeholder="-----BEGIN PUBLIC KEY-----"
-                  spellCheck={false}
-                />
-              </div>
-              <div className="flex flex-col gap-1.5">
-                <div className="flex items-center justify-between">
-                  <Label>{t.rsaPrivateKey}</Label>
-                  <CopyBtn text={privateKeyPem} />
-                </div>
-                <textarea
-                  className="h-48 w-full resize-none rounded-md border bg-muted p-3 font-mono text-xs outline-none"
-                  value={privateKeyPem}
-                  onChange={(e) => setPrivateKeyPem(e.target.value)}
-                  placeholder="-----BEGIN PRIVATE KEY-----"
-                  spellCheck={false}
-                />
-              </div>
-            </div>
+    <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
+      {/* Top bar */}
+      <div className="flex shrink-0 items-end justify-between gap-4">
+        <div className="flex flex-wrap items-end gap-3">
+          <div className="flex flex-col gap-1.5">
+            <Label>Mode</Label>
+            <Select value={mode} onValueChange={(v) => setMode(v as Mode)}>
+              <SelectTrigger className="w-36">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="keys">{t.rsaKeys}</SelectItem>
+                <SelectItem value="sign">{t.ecdsaSign}</SelectItem>
+                <SelectItem value="verify">{t.ecdsaVerify}</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
-        </TabsContent>
 
-        {/* ── Sign ── */}
-        <TabsContent value="sign">
-          <div className="flex flex-col gap-4 pt-4">
+          {mode === "keys" && (
             <div className="flex flex-col gap-1.5">
-              <div className="flex items-center justify-between">
-                <Label>{t.rsaPrivateKey}</Label>
-                {!privateKeyPem && (
-                  <Badge variant="destructive" className="text-xs">
-                    {t.rsaNoKey}
-                  </Badge>
-                )}
-              </div>
+              <Label>{t.ecdsaCurve}</Label>
+              <Select value={curve} onValueChange={(v) => setCurve(v as Curve)}>
+                <SelectTrigger className="w-28">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="P-256">P-256</SelectItem>
+                  <SelectItem value="P-384">P-384</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+        </div>
+
+        {mode === "keys" && (
+          <Button onClick={generateKeys} disabled={generating}>
+            <RefreshCw
+              className={`mr-2 size-4 ${generating ? "animate-spin" : ""}`}
+            />
+            {generating ? t.rsaGenerating : t.rsaGenerate}
+          </Button>
+        )}
+        {mode === "sign" && (
+          <Button
+            size="lg"
+            onClick={sign}
+            disabled={!signMessage || !privateKeyPem || signLoading}
+          >
+            {signLoading ? t.rsaGenerating : t.ecdsaSign}
+          </Button>
+        )}
+        {mode === "verify" && (
+          <Button
+            size="lg"
+            onClick={verify}
+            disabled={
+              !verifyMessage || !verifySig || !publicKeyPem || verifyLoading
+            }
+          >
+            {verifyLoading ? t.rsaGenerating : t.ecdsaVerify}
+          </Button>
+        )}
+      </div>
+
+      {/* Keys mode */}
+      {mode === "keys" && (
+        <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 lg:grid-cols-2">
+          <div className="flex min-h-0 flex-col gap-1.5">
+            <div className="flex shrink-0 items-center justify-between">
+              <Label>{t.rsaPublicKey}</Label>
+              <CopyBtn text={publicKeyPem} />
+            </div>
+            <textarea
+              className="min-h-0 w-full flex-1 resize-none rounded-md border bg-muted p-3 font-mono text-xs outline-none"
+              value={publicKeyPem}
+              onChange={(e) => setPublicKeyPem(e.target.value)}
+              placeholder="-----BEGIN PUBLIC KEY-----"
+              spellCheck={false}
+            />
+          </div>
+          <div className="flex min-h-0 flex-col gap-1.5">
+            <div className="flex shrink-0 items-center justify-between">
+              <Label>{t.rsaPrivateKey}</Label>
+              <CopyBtn text={privateKeyPem} />
+            </div>
+            <textarea
+              className="min-h-0 w-full flex-1 resize-none rounded-md border bg-muted p-3 font-mono text-xs outline-none"
+              value={privateKeyPem}
+              onChange={(e) => setPrivateKeyPem(e.target.value)}
+              placeholder="-----BEGIN PRIVATE KEY-----"
+              spellCheck={false}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Sign mode */}
+      {mode === "sign" && (
+        <div className="flex min-h-0 flex-1 flex-col gap-4">
+          <div className="flex shrink-0 flex-col gap-1.5">
+            <div className="flex items-center justify-between">
+              <Label>{t.rsaPrivateKey}</Label>
+              {!privateKeyPem && (
+                <Badge variant="destructive" className="text-xs">
+                  {t.rsaNoKey}
+                </Badge>
+              )}
+            </div>
+            <textarea
+              className="h-24 w-full resize-none rounded-md border bg-muted p-3 font-mono text-xs outline-none"
+              value={privateKeyPem}
+              onChange={(e) => setPrivateKeyPem(e.target.value)}
+              placeholder="-----BEGIN PRIVATE KEY-----"
+              spellCheck={false}
+            />
+          </div>
+          <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 lg:grid-cols-2">
+            <div className="flex min-h-0 flex-col gap-2">
+              <span className="shrink-0 py-1.5 text-sm font-medium">
+                {t.ecdsaMessage}
+              </span>
               <textarea
-                className="h-24 w-full resize-none rounded-md border bg-muted p-3 font-mono text-xs outline-none"
-                value={privateKeyPem}
-                onChange={(e) => setPrivateKeyPem(e.target.value)}
-                placeholder="-----BEGIN PRIVATE KEY-----"
+                className="min-h-0 w-full flex-1 resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                placeholder={t.ecdsaMessagePlaceholder}
+                value={signMessage}
+                onChange={(e) => setSignMessage(e.target.value)}
                 spellCheck={false}
               />
             </div>
-
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-              <div className="flex flex-col gap-2">
-                <span className="text-sm font-medium">{t.ecdsaMessage}</span>
-                <textarea
-                  className="h-52 w-full resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                  placeholder={t.ecdsaMessagePlaceholder}
-                  value={signMessage}
-                  onChange={(e) => setSignMessage(e.target.value)}
-                  spellCheck={false}
-                />
-              </div>
-              <div className="flex flex-col gap-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">
-                    {t.ecdsaSignature}
-                  </span>
-                  <CopyBtn text={signature} />
-                </div>
-                {signError ? (
-                  <div className="flex h-52 items-start overflow-auto rounded-md border border-destructive bg-destructive/10 p-3 font-mono text-sm text-destructive">
-                    {signError}
-                  </div>
-                ) : (
-                  <textarea
-                    readOnly
-                    className="h-52 w-full resize-none rounded-md border bg-muted p-3 font-mono text-sm outline-none"
-                    value={signature}
-                    placeholder={t.outputPlaceholder}
-                    spellCheck={false}
-                  />
-                )}
-              </div>
-            </div>
-
-            <Button
-              size="lg"
-              onClick={sign}
-              disabled={!signMessage || !privateKeyPem || signLoading}
-              className="w-fit"
-            >
-              {signLoading ? t.rsaGenerating : t.ecdsaSign}
-            </Button>
-          </div>
-        </TabsContent>
-
-        {/* ── Verify ── */}
-        <TabsContent value="verify">
-          <div className="flex flex-col gap-4 pt-4">
-            <div className="flex flex-col gap-1.5">
-              <div className="flex items-center justify-between">
-                <Label>{t.rsaPublicKey}</Label>
-                {!publicKeyPem && (
-                  <Badge variant="destructive" className="text-xs">
-                    {t.rsaNoKey}
-                  </Badge>
-                )}
-              </div>
-              <textarea
-                className="h-24 w-full resize-none rounded-md border bg-muted p-3 font-mono text-xs outline-none"
-                value={publicKeyPem}
-                onChange={(e) => setPublicKeyPem(e.target.value)}
-                placeholder="-----BEGIN PUBLIC KEY-----"
-                spellCheck={false}
-              />
-            </div>
-
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-              <div className="flex flex-col gap-2">
-                <span className="text-sm font-medium">{t.ecdsaMessage}</span>
-                <textarea
-                  className="h-36 w-full resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                  placeholder={t.ecdsaMessagePlaceholder}
-                  value={verifyMessage}
-                  onChange={(e) => {
-                    setVerifyMessage(e.target.value)
-                    setVerifyResult(null)
-                  }}
-                  spellCheck={false}
-                />
-              </div>
-              <div className="flex flex-col gap-2">
+            <div className="flex min-h-0 flex-col gap-2">
+              <div className="flex shrink-0 items-center justify-between">
                 <span className="text-sm font-medium">{t.ecdsaSignature}</span>
+                <CopyBtn text={signature} />
+              </div>
+              {signError ? (
+                <div className="min-h-0 flex-1 overflow-auto rounded-md border border-destructive bg-destructive/10 p-3 font-mono text-sm text-destructive">
+                  {signError}
+                </div>
+              ) : (
                 <textarea
-                  className="h-36 w-full resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                  placeholder={t.ecdsaSignaturePlaceholder}
-                  value={verifySig}
-                  onChange={(e) => {
-                    setVerifySig(e.target.value)
-                    setVerifyResult(null)
-                  }}
+                  readOnly
+                  className="min-h-0 w-full flex-1 resize-none rounded-md border bg-muted p-3 font-mono text-sm outline-none"
+                  value={signature}
+                  placeholder={t.outputPlaceholder}
                   spellCheck={false}
                 />
-              </div>
+              )}
             </div>
-
-            {verifyError && (
-              <div className="rounded-md border border-destructive bg-destructive/10 p-3 font-mono text-sm text-destructive">
-                {verifyError}
-              </div>
-            )}
-
-            {verifyResult !== null && !verifyError && (
-              <Badge
-                variant={verifyResult ? "secondary" : "destructive"}
-                className="w-fit px-3 py-1 text-sm"
-              >
-                {verifyResult ? t.ecdsaValid : t.ecdsaInvalid}
-              </Badge>
-            )}
-
-            <Button
-              size="lg"
-              onClick={verify}
-              disabled={
-                !verifyMessage || !verifySig || !publicKeyPem || verifyLoading
-              }
-              className="w-fit"
-            >
-              {verifyLoading ? t.rsaGenerating : t.ecdsaVerify}
-            </Button>
           </div>
-        </TabsContent>
-      </Tabs>
+        </div>
+      )}
+
+      {/* Verify mode */}
+      {mode === "verify" && (
+        <div className="flex min-h-0 flex-1 flex-col gap-4">
+          <div className="flex shrink-0 flex-col gap-1.5">
+            <div className="flex items-center justify-between">
+              <Label>{t.rsaPublicKey}</Label>
+              {!publicKeyPem && (
+                <Badge variant="destructive" className="text-xs">
+                  {t.rsaNoKey}
+                </Badge>
+              )}
+            </div>
+            <textarea
+              className="h-24 w-full resize-none rounded-md border bg-muted p-3 font-mono text-xs outline-none"
+              value={publicKeyPem}
+              onChange={(e) => setPublicKeyPem(e.target.value)}
+              placeholder="-----BEGIN PUBLIC KEY-----"
+              spellCheck={false}
+            />
+          </div>
+
+          {verifyResult !== null && !verifyError && (
+            <Badge
+              variant={verifyResult ? "secondary" : "destructive"}
+              className="w-fit shrink-0 px-3 py-1 text-sm"
+            >
+              {verifyResult ? t.ecdsaValid : t.ecdsaInvalid}
+            </Badge>
+          )}
+          {verifyError && (
+            <div className="shrink-0 rounded-md border border-destructive bg-destructive/10 p-3 font-mono text-sm text-destructive">
+              {verifyError}
+            </div>
+          )}
+
+          <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 lg:grid-cols-2">
+            <div className="flex min-h-0 flex-col gap-2">
+              <span className="shrink-0 text-sm font-medium">
+                {t.ecdsaMessage}
+              </span>
+              <textarea
+                className="min-h-0 w-full flex-1 resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                placeholder={t.ecdsaMessagePlaceholder}
+                value={verifyMessage}
+                onChange={(e) => {
+                  setVerifyMessage(e.target.value)
+                  setVerifyResult(null)
+                }}
+                spellCheck={false}
+              />
+            </div>
+            <div className="flex min-h-0 flex-col gap-2">
+              <span className="shrink-0 text-sm font-medium">
+                {t.ecdsaSignature}
+              </span>
+              <textarea
+                className="min-h-0 w-full flex-1 resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                placeholder={t.ecdsaSignaturePlaceholder}
+                value={verifySig}
+                onChange={(e) => {
+                  setVerifySig(e.target.value)
+                  setVerifyResult(null)
+                }}
+                spellCheck={false}
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

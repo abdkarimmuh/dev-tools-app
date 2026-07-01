@@ -1,61 +1,63 @@
 "use client"
 
 import { Check, Copy } from "lucide-react"
-import { useEffect, useRef, useState } from "react"
+import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
 import { useToolState } from "@/hooks/use-tool-state"
 
-export default function JsonFormatterPage() {
+function encodeHex(str: string): string {
+  return Array.from(new TextEncoder().encode(str))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("")
+}
+
+function decodeHex(hex: string): string {
+  const clean = hex.replace(/\s/g, "")
+  if (clean.length % 2 !== 0)
+    throw new Error("Invalid hex: odd number of characters.")
+  const bytes = clean.match(/.{2}/g)!.map((b) => {
+    const n = parseInt(b, 16)
+    if (isNaN(n)) throw new Error(`Invalid hex byte: ${b}`)
+    return n
+  })
+  return new TextDecoder().decode(new Uint8Array(bytes))
+}
+
+export default function HexPage() {
   const { t } = useLanguage()
-  const [input, setInput] = useToolState("json-formatter", "input", "")
+  const [input, setInput] = useToolState("hex", "input", "")
   const [output, setOutput] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  useEffect(() => {
-    if (debounceRef.current) clearTimeout(debounceRef.current)
-    debounceRef.current = setTimeout(() => {
-      if (!input) {
-        setOutput("")
-        setError(null)
-        return
-      }
-      try {
-        const parsed = JSON.parse(input)
-        setOutput(JSON.stringify(parsed, null, 2))
-        setError(null)
-      } catch (e) {
-        setError((e as Error).message)
-        setOutput("")
-      }
-    }, 500)
-    return () => {
-      if (debounceRef.current) clearTimeout(debounceRef.current)
-    }
-  }, [input])
-
-  const minify = () => {
+  const encode = () => {
     try {
-      const parsed = JSON.parse(input)
-      setOutput(JSON.stringify(parsed))
+      setOutput(encodeHex(input))
       setError(null)
-    } catch (e) {
-      setError((e as Error).message)
-      setOutput("")
+    } catch {
+      setError(t.hexEncodeError)
     }
   }
 
-  const format = () => {
-    if (!output) return
-    setInput(output)
-    setError(null)
+  const decode = () => {
+    try {
+      setOutput(decodeHex(input))
+      setError(null)
+    } catch (e) {
+      setError((e as Error).message || t.hexDecodeError)
+    }
   }
 
   const clear = () => {
     setInput("")
+    setOutput("")
+    setError(null)
+  }
+
+  const swap = () => {
+    setInput(output)
     setOutput("")
     setError(null)
   }
@@ -69,16 +71,16 @@ export default function JsonFormatterPage() {
   return (
     <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
       <div className="flex shrink-0 justify-end gap-4">
-        <Button size="lg" onClick={format} disabled={!input}>
-          {t.format || "Format"}
+        <Button size="lg" onClick={encode} disabled={!input}>
+          {t.encode}
         </Button>
         <Button
           size="lg"
-          onClick={minify}
-          disabled={!output}
           variant="secondary"
+          onClick={decode}
+          disabled={!input}
         >
-          {t.minify}
+          {t.decode}
         </Button>
       </div>
 
@@ -97,9 +99,13 @@ export default function JsonFormatterPage() {
           </div>
           <textarea
             className="min-h-0 w-full flex-1 resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            placeholder='{"key": "value"}'
+            placeholder={t.hexInputPlaceholder}
             value={input}
-            onChange={(e) => setInput(e.target.value)}
+            onChange={(e) => {
+              setInput(e.target.value)
+              setOutput("")
+              setError(null)
+            }}
             spellCheck={false}
           />
         </div>
@@ -107,24 +113,36 @@ export default function JsonFormatterPage() {
         <div className="flex min-h-0 flex-col gap-2">
           <div className="flex shrink-0 items-center justify-between">
             <span className="text-sm font-medium">Output</span>
-            <Button
-              size="sm"
-              variant="ghost"
-              onClick={copy}
-              disabled={!output}
-              className="gap-1 text-xs"
-            >
-              {copied ? (
-                <Check className="size-3" />
-              ) : (
-                <Copy className="size-3" />
+            <div className="flex items-center gap-1">
+              {output && (
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={swap}
+                  className="text-xs"
+                >
+                  {t.swap}
+                </Button>
               )}
-              {copied ? t.copied : t.copy}
-            </Button>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={copy}
+                disabled={!output}
+                className="gap-1 text-xs"
+              >
+                {copied ? (
+                  <Check className="size-3" />
+                ) : (
+                  <Copy className="size-3" />
+                )}
+                {copied ? t.copied : t.copy}
+              </Button>
+            </div>
           </div>
           {error ? (
             <div className="min-h-0 flex-1 overflow-auto rounded-md border border-destructive bg-destructive/10 p-3 font-mono text-sm text-destructive">
-              <span>{error}</span>
+              {error}
             </div>
           ) : (
             <textarea

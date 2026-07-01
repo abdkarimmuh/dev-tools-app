@@ -46,8 +46,7 @@ export default function HashGeneratorPage() {
     if (!input) return
     setLoading(true)
     try {
-      const hash = await computeHash(algorithm, input)
-      setOutput(hash)
+      setOutput(await computeHash(algorithm, input))
     } finally {
       setLoading(false)
     }
@@ -60,74 +59,80 @@ export default function HashGeneratorPage() {
   }
 
   return (
-    <div className="flex max-w-3xl flex-col gap-6 px-4 lg:px-6">
-      <div className="flex flex-col gap-2">
-        <Label>Input</Label>
-        <textarea
-          className="h-40 w-full resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          placeholder={t.hashInputPlaceholder}
-          value={input}
-          onChange={(e) => {
-            setInput(e.target.value)
-            setOutput("")
-          }}
-          spellCheck={false}
-        />
-      </div>
-
-      <div className="flex flex-wrap items-end gap-3">
-        <div className="flex flex-col gap-1.5">
-          <Label>{t.hashAlgorithm}</Label>
-          <Select
-            value={algorithm}
-            onValueChange={(v) => {
-              setAlgorithm(v as Algorithm)
+    <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
+      <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 lg:grid-cols-2">
+        {/* Left: Input */}
+        <div className="flex min-h-0 flex-col gap-2">
+          <span className="shrink-0 text-sm font-medium">Input</span>
+          <textarea
+            className="min-h-0 w-full flex-1 resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            placeholder={t.hashInputPlaceholder}
+            value={input}
+            onChange={(e) => {
+              setInput(e.target.value)
               setOutput("")
             }}
-          >
-            <SelectTrigger className="w-36">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {ALGORITHMS.map((alg) => (
-                <SelectItem key={alg} value={alg}>
-                  {alg}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+            spellCheck={false}
+          />
         </div>
-        <Button onClick={generate} disabled={!input || loading}>
-          {loading ? t.hashComputing : t.hashGenerateBtn}
-        </Button>
-      </div>
 
-      {output && (
-        <div className="flex flex-col gap-2">
-          <div className="flex items-center justify-between">
-            <Label>{algorithm} Hash</Label>
-            <Button
-              size="sm"
-              variant="ghost"
-              onClick={copy}
-              className="gap-1 text-xs"
-            >
-              {copied ? (
-                <Check className="size-3" />
-              ) : (
-                <Copy className="size-3" />
-              )}
-              {copied ? t.copied : t.copy}
+        {/* Right: Algorithm + Output */}
+        <div className="flex min-h-0 flex-col gap-4">
+          <div className="flex shrink-0 items-end gap-3">
+            <div className="flex flex-col gap-1.5">
+              <Label>{t.hashAlgorithm}</Label>
+              <Select
+                value={algorithm}
+                onValueChange={(v) => {
+                  setAlgorithm(v as Algorithm)
+                  setOutput("")
+                }}
+              >
+                <SelectTrigger className="w-36">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {ALGORITHMS.map((alg) => (
+                    <SelectItem key={alg} value={alg}>
+                      {alg}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <Button onClick={generate} disabled={!input || loading}>
+              {loading ? t.hashComputing : t.hashGenerateBtn}
             </Button>
           </div>
-          <div className="rounded-md border bg-muted p-3 font-mono text-sm break-all">
-            {output}
-          </div>
-          <p className="text-xs text-muted-foreground">
-            {output.length / 2} bytes ({output.length * 4} bits)
-          </p>
+
+          {output && (
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center justify-between">
+                <Label>{algorithm} Hash</Label>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={copy}
+                  className="gap-1 text-xs"
+                >
+                  {copied ? (
+                    <Check className="size-3" />
+                  ) : (
+                    <Copy className="size-3" />
+                  )}
+                  {copied ? t.copied : t.copy}
+                </Button>
+              </div>
+              <div className="rounded-md border bg-muted p-3 font-mono text-sm break-all">
+                {output}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                {output.length / 2} bytes ({output.length * 4} bits)
+              </p>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   )
 }

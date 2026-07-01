@@ -7,39 +7,66 @@ import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
 import { useToolState } from "@/hooks/use-tool-state"
 
-function encodeHtmlEntities(str: string): string {
-  return str
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;")
+const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567"
+
+function encodeBase32(str: string): string {
+  const bytes = new TextEncoder().encode(str)
+  let bits = 0
+  let value = 0
+  let output = ""
+  for (const byte of bytes) {
+    value = (value << 8) | byte
+    bits += 8
+    while (bits >= 5) {
+      output += ALPHABET[(value >>> (bits - 5)) & 31]
+      bits -= 5
+    }
+  }
+  if (bits > 0) output += ALPHABET[(value << (5 - bits)) & 31]
+  while (output.length % 8 !== 0) output += "="
+  return output
 }
 
-function decodeHtmlEntities(str: string): string {
-  const txt = document.createElement("textarea")
-  txt.innerHTML = str
-  return txt.value
+function decodeBase32(str: string): string {
+  const clean = str.toUpperCase().replace(/=+$/, "").replace(/\s/g, "")
+  let bits = 0
+  let value = 0
+  const bytes: number[] = []
+  for (const char of clean) {
+    const idx = ALPHABET.indexOf(char)
+    if (idx === -1) throw new Error(`Invalid Base32 character: "${char}"`)
+    value = (value << 5) | idx
+    bits += 5
+    if (bits >= 8) {
+      bytes.push((value >>> (bits - 8)) & 255)
+      bits -= 8
+    }
+  }
+  return new TextDecoder().decode(new Uint8Array(bytes))
 }
 
-export default function HtmlEntitiesPage() {
+export default function Base32Page() {
   const { t } = useLanguage()
-  const [input, setInput] = useToolState("html-entities", "input", "")
+  const [input, setInput] = useToolState("base32", "input", "")
   const [output, setOutput] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
 
   const encode = () => {
-    setOutput(encodeHtmlEntities(input))
-    setError(null)
+    try {
+      setOutput(encodeBase32(input))
+      setError(null)
+    } catch {
+      setError(t.base32EncodeError)
+    }
   }
 
   const decode = () => {
     try {
-      setOutput(decodeHtmlEntities(input))
+      setOutput(decodeBase32(input))
       setError(null)
-    } catch {
-      setError(t.htmlEntitiesDecodeError)
+    } catch (e) {
+      setError((e as Error).message || t.base32DecodeError)
     }
   }
 
@@ -92,7 +119,7 @@ export default function HtmlEntitiesPage() {
           </div>
           <textarea
             className="min-h-0 w-full flex-1 resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            placeholder={`${t.htmlEntitiesEncodeExample}: <div class="hello">\n${t.htmlEntitiesDecodeExample}: &lt;div class=&quot;hello&quot;&gt;`}
+            placeholder={t.base32InputPlaceholder}
             value={input}
             onChange={(e) => {
               setInput(e.target.value)

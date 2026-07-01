@@ -95,10 +95,24 @@ export default function HtmlFormatterPage() {
   }
 
   return (
-    <div className="px-4 lg:px-6">
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <div className="flex flex-col gap-2">
-          <div className="flex items-center justify-between">
+    <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
+      <div className="flex shrink-0 justify-end gap-4">
+        <Button size="lg" onClick={format} disabled={!input || loading}>
+          {loading ? t.formatting : t.format}
+        </Button>
+        <Button
+          size="lg"
+          onClick={minify}
+          disabled={!output || loading}
+          variant="secondary"
+        >
+          {t.minify}
+        </Button>
+      </div>
+
+      <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 lg:grid-cols-2">
+        <div className="flex min-h-0 flex-col gap-2">
+          <div className="flex shrink-0 items-center justify-between">
             <span className="text-sm font-medium">Input</span>
             <Button
               size="sm"
@@ -110,7 +124,7 @@ export default function HtmlFormatterPage() {
             </Button>
           </div>
           <textarea
-            className="h-[520px] w-full resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="min-h-0 w-full flex-1 resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
             placeholder={t.htmlInputPlaceholder}
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -118,8 +132,8 @@ export default function HtmlFormatterPage() {
           />
         </div>
 
-        <div className="flex flex-col gap-2">
-          <div className="flex items-center justify-between">
+        <div className="flex min-h-0 flex-col gap-2">
+          <div className="flex shrink-0 items-center justify-between">
             <span className="text-sm font-medium">Output</span>
             <Button
               size="sm"
@@ -137,33 +151,19 @@ export default function HtmlFormatterPage() {
             </Button>
           </div>
           {error ? (
-            <div className="flex h-[520px] items-start overflow-auto rounded-md border border-destructive bg-destructive/10 p-3 font-mono text-sm whitespace-pre-wrap text-destructive">
+            <div className="min-h-0 flex-1 overflow-auto rounded-md border border-destructive bg-destructive/10 p-3 font-mono text-sm whitespace-pre-wrap text-destructive">
               {error}
             </div>
           ) : (
             <textarea
               readOnly
-              className="h-[520px] w-full resize-none rounded-md border bg-muted p-3 font-mono text-sm outline-none"
+              className="min-h-0 w-full flex-1 resize-none rounded-md border bg-muted p-3 font-mono text-sm outline-none"
               value={output}
               placeholder={t.outputPlaceholder}
               spellCheck={false}
             />
           )}
         </div>
-      </div>
-
-      <div className="mt-4 flex gap-4">
-        <Button size="lg" onClick={format} disabled={!input || loading}>
-          {t.format}
-        </Button>
-        <Button
-          size="lg"
-          onClick={minify}
-          disabled={!output || loading}
-          variant="secondary"
-        >
-          {t.minify}
-        </Button>
       </div>
     </div>
   )

@@ -30,6 +30,22 @@ export const translations = {
     base64EncodeError: "Failed to encode text. Check your input.",
     base64DecodeError: "Input is not valid Base64.",
 
+    // Hex
+    hexInputPlaceholder: "Enter text or hex string (e.g. 48656c6c6f)...",
+    hexEncodeError: "Failed to encode text.",
+    hexDecodeError: "Input is not valid hex.",
+
+    // Base32
+    base32InputPlaceholder:
+      "Enter text or Base32 string (e.g. JBSWY3DPEB3W64TMMQ======)...",
+    base32EncodeError: "Failed to encode text.",
+    base32DecodeError: "Input is not valid Base32.",
+
+    // Base58
+    base58InputPlaceholder: "Enter text or Base58 string...",
+    base58EncodeError: "Failed to encode text.",
+    base58DecodeError: "Input is not valid Base58.",
+
     // URL Encode
     urlEncodeInputPlaceholder: "Enter text or URL encoded string...",
     urlEncodeError: "Failed to encode URL.",
@@ -206,6 +222,22 @@ export const translations = {
     base64InputPlaceholder: "Masukkan teks atau string Base64...",
     base64EncodeError: "Gagal mengencoding teks. Periksa input Anda.",
     base64DecodeError: "Input bukan Base64 yang valid.",
+
+    // Hex
+    hexInputPlaceholder: "Masukkan teks atau string hex (mis. 48656c6c6f)...",
+    hexEncodeError: "Gagal mengencoding teks.",
+    hexDecodeError: "Input bukan hex yang valid.",
+
+    // Base32
+    base32InputPlaceholder:
+      "Masukkan teks atau string Base32 (mis. JBSWY3DPEB3W64TMMQ======)...",
+    base32EncodeError: "Gagal mengencoding teks.",
+    base32DecodeError: "Input bukan Base32 yang valid.",
+
+    // Base58
+    base58InputPlaceholder: "Masukkan teks atau string Base58...",
+    base58EncodeError: "Gagal mengencoding teks.",
+    base58DecodeError: "Input bukan Base58 yang valid.",
 
     // URL Encode
     urlEncodeInputPlaceholder: "Masukkan teks atau URL encoded string...",
