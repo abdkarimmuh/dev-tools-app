@@ -14,6 +14,20 @@ Kumpulan tools berbasis web untuk membantu produktivitas pengembang sehari-hari 
 | **HTML Formatter** | Format, minify, dan validasi kode HTML menggunakan Prettier. |
 | **CSS / SCSS / SASS Formatter** | Format dan minify kode CSS, SCSS, atau SASS menggunakan Prettier. Pilih sintaks via dropdown Select. |
 | **SQL Formatter** | Format dan minify query SQL. Pilih dialek (SQL, MySQL, PostgreSQL, T-SQL, SQLite, PL/SQL) via dropdown Select. |
+| **XML Formatter** | Format, minify, dan validasi XML menggunakan browser-native DOMParser. Menampilkan error parser yang jelas. |
+| **YAML Formatter** | Format dan validasi YAML via js-yaml. Normalisasi indentasi dan struktur otomatis. |
+| **TOML Formatter** | Format dan validasi TOML via smol-toml. Cocok untuk Cargo.toml, pyproject.toml, dan config file lainnya. |
+| **GraphQL Formatter** | Format dan validasi query/schema GraphQL menggunakan graphql `parse` + `print`. |
+
+### Converter
+
+| Tool | Deskripsi |
+|---|---|
+| **JSON ↔ YAML** | Konversi dua arah antara JSON dan YAML. Tombol swap membalik arah konversi dan mengisi ulang input. |
+| **JSON ↔ CSV** | Konversi JSON array ke CSV dan sebaliknya. Menangani quoting, escaping karakter khusus, dan header otomatis. |
+| **JSON ↔ XML** | Konversi JSON ke XML terformat dan XML ke JSON. Menggunakan DOMParser/XMLSerializer browser-native. |
+| **Number Base Converter** | Konversi angka antar basis bilangan (binary, octal, decimal, hexadecimal) secara live-sync dua arah. |
+| **Unix Timestamp** | Konversi Unix timestamp ke tanggal (UTC & local timezone) dan sebaliknya. Menampilkan detik dan milidetik. |
 
 ### Encoding
 
@@ -33,6 +47,8 @@ Kumpulan tools berbasis web untuk membantu produktivitas pengembang sehari-hari 
 | **Case Converter** | Konversi teks ke 8 format sekaligus: `camelCase`, `PascalCase`, `snake_case`, `kebab-case`, `SCREAMING_SNAKE`, `Title Case`, `lowercase`, `UPPERCASE`. |
 | **Regex Tester** | Uji regex secara live dengan highlight match pada teks. Mendukung toggle flag (`g`, `i`, `m`, `s`), menampilkan detail setiap match beserta capture groups. |
 | **Markdown Preview** | Editor markdown split-view dengan toolbar formatting (bold, italic, heading, list, blockquote, code block, link, dll.). Preview live via marked dengan styling `@tailwindcss/typography`. |
+| **Word Counter** | Hitung kata, karakter, karakter tanpa spasi, kalimat, paragraf, baris, dan estimasi reading time secara live. |
+| **JSON Path Tester** | Uji ekspresi JSONPath (`$.store.books[*].title`, `$..price`, dll.) terhadap JSON document. Menampilkan semua hasil yang cocok beserta jumlah match. |
 
 ### Generator
 
@@ -43,6 +59,8 @@ Kumpulan tools berbasis web untuk membantu produktivitas pengembang sehari-hari 
 | **Password Generator** | Generate password aman dengan opsi panjang (4–128 karakter), pilihan charset (huruf besar, huruf kecil, angka, simbol), dan indikator kekuatan password. |
 | **QR Generator** | Generate QR code dari teks atau URL. Mendukung pilihan level koreksi error (L/M/Q/H) dan ukuran output. Download sebagai PNG. |
 | **Barcode Generator** | Generate barcode dalam berbagai format (CODE128, EAN-13, EAN-8, UPC, CODE39, ITF-14, MSI, Pharmacode). Download sebagai SVG. |
+| **CRON Generator** | Builder visual ekspresi CRON dengan field editor (minute/hour/day/month/weekday), preset umum, dan deskripsi human-readable. |
+| **Fake Data Generator** | Generate data palsu untuk testing: Person, Address, Internet, Product, dan Lorem Ipsum. Output dalam format JSON, hingga 100 item. |
 
 ### Cryptography
 
@@ -61,6 +79,9 @@ Kumpulan tools berbasis web untuk membantu produktivitas pengembang sehari-hari 
 |---|---|
 | **Color Converter** | Konversi warna antar format HEX, RGB, dan HSL secara dua arah. Dilengkapi color picker native dan preview warna. |
 | **PX → REM** | Konversi nilai PX ke REM dan sebaliknya dengan base font size yang bisa dikustomisasi (default 16px). Tersedia tabel referensi untuk nilai-nilai umum. |
+| **CSS Gradient Generator** | Builder visual untuk CSS gradient (linear, radial, conic). Tambah/hapus color stops, atur sudut, dan salin CSS langsung dari preview. |
+| **Box Shadow Generator** | Builder visual box-shadow dengan slider offset XY, blur, spread, color picker, dan toggle inset. Mendukung multiple shadows. |
+| **Tailwind Cheatsheet** | Referensi kelas Tailwind CSS yang bisa dicari (flexbox, grid, spacing, sizing, typography, borders, position, animasi). Klik kelas untuk menyalin. |
 
 ## Tech Stack
 
@@ -71,6 +92,9 @@ Kumpulan tools berbasis web untuk membantu produktivitas pengembang sehari-hari 
 - **State Management** — [Zustand](https://zustand-demo.pmnd.rs) (in-memory, per-tool state)
 - **Code Formatter** — [Prettier](https://prettier.io) (dijalankan di browser via standalone build)
 - **SQL Formatter** — [sql-formatter](https://github.com/sql-formatter-org/sql-formatter)
+- **YAML** — [js-yaml](https://github.com/nodeca/js-yaml)
+- **TOML** — [smol-toml](https://github.com/nicolo-ribaudo/smol-toml)
+- **GraphQL** — [graphql](https://github.com/graphql/graphql-js)
 - **Cryptography** — [crypto-js](https://github.com/brix/crypto-js) (AES/DES/RC4) + Web Crypto API (RSA/ECDSA/HMAC)
 - **Markdown** — [marked](https://marked.js.org) + [@tailwindcss/typography](https://tailwindcss.com/docs/typography-plugin)
 - **QR Code** — [qrcode](https://github.com/soldair/node-qrcode)
@@ -126,7 +150,17 @@ dev-tools-app/
 │       │   ├── ts-formatter/
 │       │   ├── html-formatter/
 │       │   ├── css-formatter/    # CSS / SCSS / SASS (pilih via Select)
-│       │   └── sql-formatter/    # SQL dialek (pilih via Select)
+│       │   ├── sql-formatter/    # SQL dialek (pilih via Select)
+│       │   ├── xml-formatter/
+│       │   ├── yaml-formatter/
+│       │   ├── toml-formatter/
+│       │   └── graphql-formatter/
+│       ├── (converter)/          # Kategori baru
+│       │   ├── json-yaml/
+│       │   ├── json-csv/
+│       │   ├── json-xml/
+│       │   ├── number-base/
+│       │   └── unix-timestamp/
 │       ├── (encoding)/
 │       │   ├── base-encoder/     # Base64 / Base32 / Base58 / Hex (pilih via Select)
 │       │   ├── url-encode/
@@ -137,13 +171,17 @@ dev-tools-app/
 │       │   ├── diff-checker/
 │       │   ├── case-converter/
 │       │   ├── regex-tester/
-│       │   └── markdown-preview/
+│       │   ├── markdown-preview/
+│       │   ├── word-counter/
+│       │   └── json-path/
 │       ├── (generator)/
 │       │   ├── uuid-generator/
 │       │   ├── lorem-ipsum/
 │       │   ├── password-generator/
 │       │   ├── qr-generator/
-│       │   └── barcode-generator/
+│       │   ├── barcode-generator/
+│       │   ├── cron-generator/
+│       │   └── fake-data/
 │       ├── (cryptography)/
 │       │   ├── aes-cipher/
 │       │   ├── des-cipher/       # DES / 3DES (pilih via Select)
@@ -153,7 +191,10 @@ dev-tools-app/
 │       │   └── api-signature/    # HMAC signature generator
 │       └── (frontend)/
 │           ├── color-converter/
-│           └── px-rem/
+│           ├── px-rem/
+│           ├── gradient-generator/
+│           ├── box-shadow-generator/
+│           └── tailwind-cheatsheet/
 ├── components/
 │   ├── layouts/
 │   │   ├── app-sidebar.tsx       # Sidebar navigasi

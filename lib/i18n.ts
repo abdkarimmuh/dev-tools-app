@@ -193,6 +193,9 @@ export const translations = {
     notFoundTitle: "Page Not Found",
     notFoundDesc: "The page you are looking for does not exist.",
     notFoundGoHome: "Go to Home",
+
+    // Converter nav group
+    converterGroup: "Converter",
   },
   id: {
     // Navigation
@@ -388,6 +391,9 @@ export const translations = {
     notFoundTitle: "Halaman Tidak Ditemukan",
     notFoundDesc: "Halaman yang Anda cari tidak ada.",
     notFoundGoHome: "Kembali ke Beranda",
+
+    // Converter nav group
+    converterGroup: "Converter",
   },
 }
 
@@ -398,6 +404,7 @@ export type Translations = {
 export const navGroupLabels: Record<Language, Record<string, string>> = {
   en: {
     "Format & Validasi": "Format & Validate",
+    Converter: "Converter",
     Encoding: "Encoding",
     Text: "Text",
     Generator: "Generator",
@@ -406,6 +413,7 @@ export const navGroupLabels: Record<Language, Record<string, string>> = {
   },
   id: {
     "Format & Validasi": "Format & Validasi",
+    Converter: "Converter",
     Encoding: "Encoding",
     Text: "Text",
     Generator: "Generator",

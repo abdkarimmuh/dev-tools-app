@@ -23,7 +23,7 @@ export default function HomePage() {
             <h3 className="mb-3 text-xs font-semibold tracking-widest text-muted-foreground uppercase">
               {navGroupLabels[language][group.label] ?? group.label}
             </h3>
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {group.items.map((item) => (
                 <Link key={item.url} href={item.url} className="group">
                   <Card className="h-full transition-colors hover:bg-accent">

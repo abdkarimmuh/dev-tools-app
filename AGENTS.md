@@ -40,9 +40,33 @@ npm run format     # Prettier (formats .ts/.tsx)
 - [components/layouts/](components/layouts/) — `app-sidebar.tsx`, `site-header.tsx`, `tool-search.tsx`
 - [components/ui/](components/ui/) — UI primitives following shadcn patterns
 - [config/nav.ts](config/nav.ts) — central navigation (update to expose new tools)
+- [lib/i18n.ts](lib/i18n.ts) — all UI strings in EN + ID; add keys here for new tools
 - [lib/](lib/) and [contexts/](contexts/) — utilities and app contexts
 
 When making changes, link to these files in your PR description so reviewers can follow context.
+
+## Current tool inventory (37 tools across 7 categories)
+
+### Format & Validasi (10 tools)
+`json-formatter`, `js-formatter`, `ts-formatter`, `html-formatter`, `css-formatter`, `sql-formatter`, `xml-formatter`, `yaml-formatter`, `toml-formatter`, `graphql-formatter`
+
+### Converter (5 tools)
+`json-yaml`, `json-csv`, `json-xml`, `number-base`, `unix-timestamp`
+
+### Encoding (5 tools)
+`base-encoder`, `url-encode`, `html-entities`, `jwt-decoder`, `hash-generator`
+
+### Text (6 tools)
+`diff-checker`, `case-converter`, `regex-tester`, `markdown-preview`, `word-counter`, `json-path`
+
+### Generator (7 tools)
+`uuid-generator`, `lorem-ipsum`, `password-generator`, `qr-generator`, `barcode-generator`, `cron-generator`, `fake-data`
+
+### Cryptography (6 tools)
+`aes-cipher`, `des-cipher`, `rc4-cipher`, `rsa`, `ecdsa`, `api-signature`
+
+### Frontend / CSS (5 tools)
+`color-converter`, `px-rem`, `gradient-generator`, `box-shadow-generator`, `tailwind-cheatsheet`
 
 ## Conventions & patterns
 
@@ -50,18 +74,52 @@ When making changes, link to these files in your PR description so reviewers can
 - TypeScript strict typing, run `npm run typecheck` before PRs.
 - Tailwind CSS v4 + shadcn UI component patterns — prefer existing component primitives in `components/ui/`.
 - `config/nav.ts` is the single source for sidebar/home navigation; updating it auto-updates UI.
+- `lib/i18n.ts` contains all UI text strings in English and Indonesian. Add new keys to **both** language blocks, then add the new group key to `navGroupLabels` if adding a new category.
+- Use `useToolState(toolId, key, defaultValue)` for all persistent input/output state — this prevents state loss on navigation.
+- Use `useLanguage()` from `contexts/language-context.tsx` to access translated strings via `t.keyName`.
 - Use `sonner` for toast feedback where appropriate (see `components/ui/sonner.tsx`).
+- All tool pages are `"use client"` components.
+- Two-panel input/output layout (left=input, right=output) is the standard for formatter and converter tools.
+
+## Key dependencies
+
+| Package | Purpose |
+|---|---|
+| `js-yaml` | YAML parse/dump (yaml-formatter, json-yaml) |
+| `smol-toml` | TOML parse/stringify (toml-formatter) |
+| `graphql` | GraphQL parse/print (graphql-formatter) |
+| `sql-formatter` | SQL formatting (sql-formatter) |
+| `crypto-js` | AES/DES/RC4 symmetric encryption |
+| `marked` | Markdown → HTML (markdown-preview) |
+| `qrcode` | QR code generation |
+| `jsbarcode` | Barcode generation |
+
+XML and JSON↔XML use browser-native `DOMParser` / `XMLSerializer` — no external package.
 
 ## How to add a new tool (minimal example)
 
 1. Create `app/tools/<tool-name>/page.tsx` with a default export React component.
 2. Add an entry to `config/nav.ts` so the sidebar and home page show the tool.
+3. Add any new UI strings to both language blocks in `lib/i18n.ts`.
 
-Example snippet (to include in patch/PR):
+Example snippet:
 
 ```ts
 // config/nav.ts (add to an appropriate group)
 { title: "My Tool", url: "/tools/my-tool", icon: IconName }
+```
+
+```ts
+// page.tsx skeleton
+"use client"
+import { useToolState } from "@/hooks/use-tool-state"
+import { useLanguage } from "@/contexts/language-context"
+
+export default function MyToolPage() {
+  const { t } = useLanguage()
+  const [input, setInput] = useToolState("my-tool", "input", "")
+  // ...
+}
 ```
 
 ## Verification checklist for PRs
@@ -74,11 +132,3 @@ Example snippet (to include in patch/PR):
 
 - If a change touches `next.config.ts`, global build config, or deps, ask a human to review prior to merging.
 - If unsure about permission to push or create branches, open an issue describing the intended change.
-
-## Suggested next customizations
-
-- Create a small `add-tool` skill that scaffolds `app/tools/<name>/page.tsx` and updates `config/nav.ts`.
-- Add a `lint-and-typecheck` agent hook that runs `npm run lint && npm run typecheck` on generated patches before creating PRs.
-
-If you want, I can scaffold the `add-tool` skill next (creates template files and a usage example). Reply yes to proceed.
-
