@@ -199,9 +199,9 @@ export default function BaseEncoderPage() {
 
   return (
     <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
-      <div className="flex shrink-0 items-end justify-between gap-4">
-        <div className="flex flex-col gap-1.5">
-          <Label className="mb-1">Encoding</Label>
+      <div className="flex shrink-0 items-center justify-between">
+        <div className="flex items-center gap-3">
+          <Label htmlFor="base-encoding">Encoding</Label>
           <Select
             value={encoding}
             onValueChange={(v) => {
@@ -210,7 +210,7 @@ export default function BaseEncoderPage() {
               setError(null)
             }}
           >
-            <SelectTrigger className="w-40">
+            <SelectTrigger id="base-encoding" className="w-40">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -223,7 +223,7 @@ export default function BaseEncoderPage() {
           </Select>
         </div>
 
-        <div className="flex gap-3">
+        <div className="flex gap-4">
           <Button size="lg" onClick={runEncode} disabled={!input}>
             {t.encode}
           </Button>
