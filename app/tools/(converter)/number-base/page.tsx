@@ -1,12 +1,12 @@
 "use client"
 
+import { Check, Copy } from "lucide-react"
 import { useState } from "react"
 
+import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useToolState } from "@/hooks/use-tool-state"
-import { Check, Copy } from "lucide-react"
-import { Button } from "@/components/ui/button"
 
 type Base = 2 | 8 | 10 | 16
 
@@ -109,7 +109,7 @@ export default function NumberBasePage() {
         const value = isActive ? input : getOutput(base)
         return (
           <div key={base} className="flex flex-col gap-1.5">
-            <Label className="flex items-center gap-2">
+            <Label className="mb-1 flex items-center gap-2">
               {label}
               <span className="text-xs font-normal text-muted-foreground">
                 base {base}

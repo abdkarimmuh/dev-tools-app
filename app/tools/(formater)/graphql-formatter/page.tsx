@@ -1,8 +1,8 @@
 "use client"
 
+import { parse, print } from "graphql"
 import { Check, Copy } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
-import { parse, print } from "graphql"
 
 import { Button } from "@/components/ui/button"
 import { useToolState } from "@/hooks/use-tool-state"

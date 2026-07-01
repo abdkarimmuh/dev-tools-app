@@ -192,7 +192,7 @@ export default function CronGeneratorPage() {
   return (
     <div className="flex max-w-2xl flex-col gap-6 px-4 lg:px-6">
       <div className="flex flex-col gap-2">
-        <Label>Cron Expression</Label>
+        <Label className="mb-1">Cron Expression</Label>
         <div className="flex items-center gap-2">
           <Input
             className="font-mono text-base"
@@ -215,7 +215,7 @@ export default function CronGeneratorPage() {
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-5">
         {FIELDS.map(({ key, label, min, max }) => (
           <div key={key} className="flex flex-col gap-1.5">
-            <Label className="text-xs">{label}</Label>
+            <Label className="mb-1 text-xs">{label}</Label>
             <Input
               className="text-center font-mono text-sm"
               value={fields[key]}
@@ -231,8 +231,8 @@ export default function CronGeneratorPage() {
       </div>
 
       <div className="flex flex-col gap-2">
-        <Label>Presets</Label>
-        <div className="flex flex-wrap gap-2">
+        <Label className="mb-1">Presets</Label>
+        <div className="flex flex-wrap gap-3">
           {PRESETS.map(({ label, value }) => (
             <Button
               key={value}

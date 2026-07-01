@@ -101,13 +101,13 @@ export default function GradientGeneratorPage() {
       </div>
 
       <div className="grid grid-cols-2 gap-4">
-        <div className="flex flex-col gap-1.5">
-          <Label>Type</Label>
+        <div className="flex items-center gap-3">
+          <Label htmlFor="gradient-type">Type</Label>
           <Select
             value={type}
             onValueChange={(v) => setType(v as GradientType)}
           >
-            <SelectTrigger>
+            <SelectTrigger id="gradient-type">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>

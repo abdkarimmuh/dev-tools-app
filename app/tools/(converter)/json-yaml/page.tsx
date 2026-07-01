@@ -1,8 +1,8 @@
 "use client"
 
+import * as yaml from "js-yaml"
 import { ArrowLeftRight, Check, Copy } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
-import * as yaml from "js-yaml"
 
 import { Button } from "@/components/ui/button"
 import { useToolState } from "@/hooks/use-tool-state"

@@ -271,7 +271,7 @@ export default function FakeDataPage() {
     <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
       <div className="flex flex-wrap items-end gap-3">
         <div className="flex flex-col gap-1.5">
-          <Label>Type</Label>
+          <Label className="mb-1">Type</Label>
           <Select
             value={dataType}
             onValueChange={(v) => setDataType(v as DataType)}
@@ -289,7 +289,7 @@ export default function FakeDataPage() {
           </Select>
         </div>
         <div className="flex flex-col gap-1.5">
-          <Label>Count</Label>
+          <Label className="mb-1">Count</Label>
           <Input
             type="number"
             min={1}

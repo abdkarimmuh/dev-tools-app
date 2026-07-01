@@ -1,7 +1,7 @@
 "use client"
 
 import { Check, Copy, RefreshCw } from "lucide-react"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -50,9 +50,7 @@ export default function UnixTimestampPage() {
     "dateInput",
     ""
   )
-  const [tsError, setTsError] = useState<string | null>(null)
-  const [dateError, setDateError] = useState<string | null>(null)
-  const [now, setNow] = useState(Math.floor(Date.now() / 1000))
+  const [now, setNow] = useState(() => Math.floor(Date.now() / 1000))
 
   const tsDate = (() => {
     if (!tsInput) return null
@@ -69,13 +67,8 @@ export default function UnixTimestampPage() {
     return isNaN(d.getTime()) ? null : Math.floor(d.getTime() / 1000)
   })()
 
-  useEffect(() => {
-    setTsError(tsInput && !tsDate ? "Invalid timestamp" : null)
-  }, [tsInput, tsDate])
-
-  useEffect(() => {
-    setDateError(dateInput && dateTs === null ? "Invalid date format" : null)
-  }, [dateInput, dateTs])
+  const tsError = tsInput && !tsDate ? "Invalid timestamp" : null
+  const dateError = dateInput && dateTs === null ? "Invalid date format" : null
 
   const localTz = Intl.DateTimeFormat().resolvedOptions().timeZone
 
@@ -99,7 +92,7 @@ export default function UnixTimestampPage() {
 
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1.5">
-          <Label>Unix Timestamp → Date</Label>
+          <Label className="mb-1">Unix Timestamp → Date</Label>
           <Input
             className="font-mono"
             placeholder="e.g. 1704067200"
@@ -148,7 +141,7 @@ export default function UnixTimestampPage() {
 
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1.5">
-          <Label>Date → Unix Timestamp</Label>
+          <Label className="mb-1">Date → Unix Timestamp</Label>
           <Input
             type="datetime-local"
             className="font-mono"

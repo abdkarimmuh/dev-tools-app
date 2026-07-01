@@ -166,7 +166,7 @@ export default function JsonPathPage() {
   return (
     <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
       <div className="flex shrink-0 flex-col gap-2">
-        <Label>JSONPath Expression</Label>
+        <Label className="mb-1">JSONPath Expression</Label>
         <Input
           className="font-mono"
           placeholder="$.store.books[*].title"

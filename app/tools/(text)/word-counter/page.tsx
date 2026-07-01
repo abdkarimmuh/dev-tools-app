@@ -1,7 +1,8 @@
 "use client"
 
-import { useToolState } from "@/hooks/use-tool-state"
 import { useMemo } from "react"
+
+import { useToolState } from "@/hooks/use-tool-state"
 
 function countWords(text: string): number {
   return text.trim() === "" ? 0 : text.trim().split(/\s+/).length
