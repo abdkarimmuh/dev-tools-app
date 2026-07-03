@@ -1,72 +1,72 @@
-"use client"
+"use client";
 
-import { Check, Copy } from "lucide-react"
-import { useState } from "react"
-import { format } from "sql-formatter"
+import { Check, Copy } from "lucide-react";
+import { useState } from "react";
+import { format } from "sql-formatter";
 
-import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import { type Dialect, DIALECTS } from "@/constants/formatters/sql-formatter"
-import { useLanguage } from "@/contexts/language-context"
-import { useToolState } from "@/hooks/use-tool-state"
-import { handleTextareaTab } from "@/lib/utils"
+  SelectValue
+} from "@/components/ui/select";
+import { type Dialect, DIALECTS } from "@/constants/formatters/sql-formatter";
+import { useLanguage } from "@/contexts/language-context";
+import { useToolState } from "@/hooks/use-tool-state";
+import { handleTextareaTab } from "@/lib/utils";
 
 function minifySql(sql: string): string {
   return sql
     .replace(/--[^\n]*/g, "")
     .replace(/\/\*[\s\S]*?\*\//g, "")
     .replace(/\s+/g, " ")
-    .trim()
+    .trim();
 }
 
 export default function SqlFormatterPage() {
-  const { t } = useLanguage()
+  const { t } = useLanguage();
   const [dialect, setDialect] = useToolState<Dialect>(
     "sql-formatter",
     "dialect",
     "sql"
-  )
-  const [input, setInput] = useToolState("sql-formatter", "input", "")
-  const [output, setOutput] = useState("")
-  const [error, setError] = useState<string | null>(null)
-  const [copied, setCopied] = useState(false)
+  );
+  const [input, setInput] = useToolState("sql-formatter", "input", "");
+  const [output, setOutput] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
 
   const formatSql = () => {
-    if (!input.trim()) return
+    if (!input.trim()) return;
     try {
       setOutput(
         format(input, { language: dialect, tabWidth: 2, keywordCase: "upper" })
-      )
-      setError(null)
+      );
+      setError(null);
     } catch (e) {
-      setError((e as Error).message)
-      setOutput("")
+      setError((e as Error).message);
+      setOutput("");
     }
-  }
+  };
 
   const minify = () => {
-    if (!input.trim()) return
-    setOutput(minifySql(input))
-    setError(null)
-  }
+    if (!input.trim()) return;
+    setOutput(minifySql(input));
+    setError(null);
+  };
 
   const clear = () => {
-    setInput("")
-    setOutput("")
-    setError(null)
-  }
+    setInput("");
+    setOutput("");
+    setError(null);
+  };
   const copy = async () => {
-    await navigator.clipboard.writeText(output)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
-  }
+    await navigator.clipboard.writeText(output);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
 
   return (
     <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
@@ -76,9 +76,9 @@ export default function SqlFormatterPage() {
           <Select
             value={dialect}
             onValueChange={(v) => {
-              setDialect(v as Dialect)
-              setOutput("")
-              setError(null)
+              setDialect(v as Dialect);
+              setOutput("");
+              setError(null);
             }}
           >
             <SelectTrigger id="sql-dialect" className="w-40">
@@ -166,5 +166,5 @@ export default function SqlFormatterPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -1,60 +1,60 @@
-"use client"
+"use client";
 
-import { Check, Copy } from "lucide-react"
-import { useState } from "react"
+import { Check, Copy } from "lucide-react";
+import { useState } from "react";
 
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
-import { useLanguage } from "@/contexts/language-context"
-import { useToolState } from "@/hooks/use-tool-state"
-import { handleTextareaTab } from "@/lib/utils"
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { useLanguage } from "@/contexts/language-context";
+import { useToolState } from "@/hooks/use-tool-state";
+import { handleTextareaTab } from "@/lib/utils";
 
 function base64UrlDecode(str: string): string {
-  const base64 = str.replace(/-/g, "+").replace(/_/g, "/")
-  const padded = base64 + "=".repeat((4 - (base64.length % 4)) % 4)
-  return atob(padded)
+  const base64 = str.replace(/-/g, "+").replace(/_/g, "/");
+  const padded = base64 + "=".repeat((4 - (base64.length % 4)) % 4);
+  return atob(padded);
 }
 
 interface JwtParts {
-  header: Record<string, unknown>
-  payload: Record<string, unknown>
-  signature: string
+  header: Record<string, unknown>;
+  payload: Record<string, unknown>;
+  signature: string;
 }
 
 function decodeJwt(token: string, invalidMsg: string): JwtParts {
-  const parts = token.trim().split(".")
-  if (parts.length !== 3) throw new Error(invalidMsg)
-  const header = JSON.parse(base64UrlDecode(parts[0]))
-  const payload = JSON.parse(base64UrlDecode(parts[1]))
-  return { header, payload, signature: parts[2] }
+  const parts = token.trim().split(".");
+  if (parts.length !== 3) throw new Error(invalidMsg);
+  const header = JSON.parse(base64UrlDecode(parts[0]));
+  const payload = JSON.parse(base64UrlDecode(parts[1]));
+  return { header, payload, signature: parts[2] };
 }
 
 function isExpired(payload: Record<string, unknown>): boolean {
-  if (typeof payload.exp !== "number") return false
-  return Date.now() / 1000 > payload.exp
+  if (typeof payload.exp !== "number") return false;
+  return Date.now() / 1000 > payload.exp;
 }
 
 function formatTimestamp(val: unknown): string {
-  if (typeof val !== "number") return String(val)
-  return `${val} (${new Date(val * 1000).toLocaleString()})`
+  if (typeof val !== "number") return String(val);
+  return `${val} (${new Date(val * 1000).toLocaleString()})`;
 }
 
 function CopyButton({
   text,
   copy: copyLabel,
-  copied: copiedLabel,
+  copied: copiedLabel
 }: {
-  text: string
-  copy: string
-  copied: string
+  text: string;
+  copy: string;
+  copied: string;
 }) {
-  const [isCopied, setIsCopied] = useState(false)
+  const [isCopied, setIsCopied] = useState(false);
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(text)
-    setIsCopied(true)
-    setTimeout(() => setIsCopied(false), 1500)
-  }
+    await navigator.clipboard.writeText(text);
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 1500);
+  };
   return (
     <Button
       size="sm"
@@ -65,7 +65,7 @@ function CopyButton({
       {isCopied ? <Check className="size-3" /> : <Copy className="size-3" />}
       {isCopied ? copiedLabel : copyLabel}
     </Button>
-  )
+  );
 }
 
 function JsonBlock({
@@ -73,15 +73,15 @@ function JsonBlock({
   data,
   badge,
   copyLabel,
-  copiedLabel,
+  copiedLabel
 }: {
-  label: string
-  data: unknown
-  badge?: React.ReactNode
-  copyLabel: string
-  copiedLabel: string
+  label: string;
+  data: unknown;
+  badge?: React.ReactNode;
+  copyLabel: string;
+  copiedLabel: string;
 }) {
-  const json = JSON.stringify(data, null, 2)
+  const json = JSON.stringify(data, null, 2);
   return (
     <div className="flex flex-col gap-1.5">
       <div className="flex items-center justify-between">
@@ -95,32 +95,32 @@ function JsonBlock({
         {json}
       </pre>
     </div>
-  )
+  );
 }
 
 export default function JwtDecoderPage() {
-  const { t } = useLanguage()
-  const [token, setToken] = useToolState("jwt-decoder", "token", "")
-  const [decoded, setDecoded] = useState<JwtParts | null>(null)
-  const [error, setError] = useState<string | null>(null)
+  const { t } = useLanguage();
+  const [token, setToken] = useToolState("jwt-decoder", "token", "");
+  const [decoded, setDecoded] = useState<JwtParts | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const decode = () => {
     try {
-      setDecoded(decodeJwt(token, t.jwtInvalidError))
-      setError(null)
+      setDecoded(decodeJwt(token, t.jwtInvalidError));
+      setError(null);
     } catch (e) {
-      setError((e as Error).message)
-      setDecoded(null)
+      setError((e as Error).message);
+      setDecoded(null);
     }
-  }
+  };
 
   const clear = () => {
-    setToken("")
-    setDecoded(null)
-    setError(null)
-  }
+    setToken("");
+    setDecoded(null);
+    setError(null);
+  };
 
-  const expired = decoded ? isExpired(decoded.payload) : false
+  const expired = decoded ? isExpired(decoded.payload) : false;
 
   const displayPayload = decoded
     ? Object.fromEntries(
@@ -128,7 +128,7 @@ export default function JwtDecoderPage() {
           ["exp", "iat", "nbf"].includes(k) ? [k, formatTimestamp(v)] : [k, v]
         )
       )
-    : null
+    : null;
 
   return (
     <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
@@ -141,9 +141,9 @@ export default function JwtDecoderPage() {
             placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
             value={token}
             onChange={(e) => {
-              setToken(e.target.value)
-              setDecoded(null)
-              setError(null)
+              setToken(e.target.value);
+              setDecoded(null);
+              setError(null);
             }}
             onKeyDown={(e) => handleTextareaTab(e, token, setToken)}
             spellCheck={false}
@@ -213,5 +213,5 @@ export default function JwtDecoderPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -1,26 +1,26 @@
-"use client"
+"use client";
 
-import { Check, Copy } from "lucide-react"
-import { useEffect, useRef, useState } from "react"
+import { Check, Copy } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
-import { Button } from "@/components/ui/button"
-import { useLanguage } from "@/contexts/language-context"
-import { useToolState } from "@/hooks/use-tool-state"
-import { handleTextareaTab } from "@/lib/utils"
+import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/contexts/language-context";
+import { useToolState } from "@/hooks/use-tool-state";
+import { handleTextareaTab } from "@/lib/utils";
 
 async function formatHtml(code: string): Promise<string> {
   const [prettier, htmlPlugin] = await Promise.all([
     import("prettier/standalone"),
-    import("prettier/plugins/html"),
-  ])
+    import("prettier/plugins/html")
+  ]);
 
   return prettier.format(code, {
     parser: "html",
     plugins: [htmlPlugin] as any[],
     printWidth: 80,
     tabWidth: 2,
-    useTabs: false,
-  } as Parameters<typeof prettier.format>[1])
+    useTabs: false
+  } as Parameters<typeof prettier.format>[1]);
 }
 
 function minifyHtml(code: string): string {
@@ -30,70 +30,70 @@ function minifyHtml(code: string): string {
     .replace(/>\s+</g, "><")
     .replace(/\s+>/g, ">")
     .replace(/<\s+/g, "<")
-    .trim()
+    .trim();
 }
 
 export default function HtmlFormatterPage() {
-  const { t } = useLanguage()
-  const [input, setInput] = useToolState("html-formatter", "input", "")
-  const [output, setOutput] = useState("")
-  const [error, setError] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
-  const [copied, setCopied] = useState(false)
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const { t } = useLanguage();
+  const [input, setInput] = useToolState("html-formatter", "input", "");
+  const [output, setOutput] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    if (debounceRef.current) clearTimeout(debounceRef.current)
+    if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(async () => {
       if (!input.trim()) {
-        setOutput("")
-        setError(null)
-        return
+        setOutput("");
+        setError(null);
+        return;
       }
-      setLoading(true)
-      setError(null)
+      setLoading(true);
+      setError(null);
       try {
-        setOutput(await formatHtml(input))
+        setOutput(await formatHtml(input));
       } catch (e) {
-        setError((e as Error).message)
-        setOutput("")
+        setError((e as Error).message);
+        setOutput("");
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }, 500)
+    }, 500);
     return () => {
-      if (debounceRef.current) clearTimeout(debounceRef.current)
-    }
-  }, [input])
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [input]);
 
   const minify = () => {
-    if (!input.trim()) return
-    setError(null)
+    if (!input.trim()) return;
+    setError(null);
     try {
-      setOutput(minifyHtml(input))
+      setOutput(minifyHtml(input));
     } catch (e) {
-      setError((e as Error).message)
-      setOutput("")
+      setError((e as Error).message);
+      setOutput("");
     }
-  }
+  };
 
   const format = () => {
-    if (!output) return
-    setInput(output)
-    setError(null)
-  }
+    if (!output) return;
+    setInput(output);
+    setError(null);
+  };
 
   const clear = () => {
-    setInput("")
-    setOutput("")
-    setError(null)
-  }
+    setInput("");
+    setOutput("");
+    setError(null);
+  };
 
   const copy = async () => {
-    await navigator.clipboard.writeText(output)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
-  }
+    await navigator.clipboard.writeText(output);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
 
   return (
     <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
@@ -168,5 +168,5 @@ export default function HtmlFormatterPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

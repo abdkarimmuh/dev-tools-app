@@ -1,21 +1,21 @@
-"use client"
+"use client";
 
-import { Check, Copy } from "lucide-react"
-import { useState } from "react"
+import { Check, Copy } from "lucide-react";
+import { useState } from "react";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { useToolState } from "@/hooks/use-tool-state"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useToolState } from "@/hooks/use-tool-state";
 
-type Base = 2 | 8 | 10 | 16
+type Base = 2 | 8 | 10 | 16;
 
 interface BaseConfig {
-  base: Base
-  label: string
-  prefix: string
-  placeholder: string
-  chars: RegExp
+  base: Base;
+  label: string;
+  prefix: string;
+  placeholder: string;
+  chars: RegExp;
 }
 
 const BASES: BaseConfig[] = [
@@ -24,38 +24,38 @@ const BASES: BaseConfig[] = [
     label: "Binary",
     prefix: "0b",
     placeholder: "1010",
-    chars: /^[01]+$/,
+    chars: /^[01]+$/
   },
   {
     base: 8,
     label: "Octal",
     prefix: "0o",
     placeholder: "17",
-    chars: /^[0-7]+$/,
+    chars: /^[0-7]+$/
   },
   {
     base: 10,
     label: "Decimal",
     prefix: "",
     placeholder: "255",
-    chars: /^[0-9]+$/,
+    chars: /^[0-9]+$/
   },
   {
     base: 16,
     label: "Hexadecimal",
     prefix: "0x",
     placeholder: "FF",
-    chars: /^[0-9a-fA-F]+$/,
-  },
-]
+    chars: /^[0-9a-fA-F]+$/
+  }
+];
 
 function CopyButton({ text }: { text: string }) {
-  const [copied, setCopied] = useState(false)
+  const [copied, setCopied] = useState(false);
   const copy = async () => {
-    await navigator.clipboard.writeText(text)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
-  }
+    await navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
   return (
     <Button
       size="sm"
@@ -66,7 +66,7 @@ function CopyButton({ text }: { text: string }) {
     >
       {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
     </Button>
-  )
+  );
 }
 
 export default function NumberBasePage() {
@@ -74,29 +74,29 @@ export default function NumberBasePage() {
     "number-base",
     "activeBase",
     10
-  )
-  const [input, setInput] = useToolState("number-base", "input", "")
+  );
+  const [input, setInput] = useToolState("number-base", "input", "");
 
   const decimal = (() => {
-    if (!input) return null
+    if (!input) return null;
     try {
-      const n = parseInt(input, activeBase)
-      return isNaN(n) ? null : n
+      const n = parseInt(input, activeBase);
+      return isNaN(n) ? null : n;
     } catch {
-      return null
+      return null;
     }
-  })()
+  })();
 
   const handleChange = (base: Base, value: string) => {
-    setActiveBase(base)
-    setInput(value.toUpperCase())
-  }
+    setActiveBase(base);
+    setInput(value.toUpperCase());
+  };
 
   const getOutput = (base: Base): string => {
-    if (decimal === null) return ""
-    if (base === activeBase) return input
-    return decimal.toString(base).toUpperCase()
-  }
+    if (decimal === null) return "";
+    if (base === activeBase) return input;
+    return decimal.toString(base).toUpperCase();
+  };
 
   return (
     <div className="flex max-w-lg flex-col gap-6 px-4 lg:px-6">
@@ -105,8 +105,8 @@ export default function NumberBasePage() {
       </p>
 
       {BASES.map(({ base, label, prefix, placeholder }) => {
-        const isActive = base === activeBase
-        const value = isActive ? input : getOutput(base)
+        const isActive = base === activeBase;
+        const value = isActive ? input : getOutput(base);
         return (
           <div key={base} className="flex flex-col gap-1.5">
             <Label className="mb-1 flex items-center gap-2">
@@ -131,7 +131,7 @@ export default function NumberBasePage() {
               <CopyButton text={value} />
             </div>
           </div>
-        )
+        );
       })}
 
       {decimal !== null && (
@@ -149,5 +149,5 @@ export default function NumberBasePage() {
         </p>
       )}
     </div>
-  )
+  );
 }

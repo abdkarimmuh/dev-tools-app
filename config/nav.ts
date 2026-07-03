@@ -1,4 +1,4 @@
-import type { LucideIcon } from "lucide-react"
+import type { LucideIcon } from "lucide-react";
 import {
   AlignLeft,
   ArrowLeftRight,
@@ -34,18 +34,18 @@ import {
   TableProperties,
   Type,
   Webhook,
-  Wind,
-} from "lucide-react"
+  Wind
+} from "lucide-react";
 
 export interface NavItem {
-  title: string
-  url: string
-  icon: LucideIcon
+  title: string;
+  url: string;
+  icon: LucideIcon;
 }
 
 export interface NavGroup {
-  label: string
-  items: NavItem[]
+  label: string;
+  items: NavItem[];
 }
 
 export const navMenus: NavGroup[] = [
@@ -56,18 +56,18 @@ export const navMenus: NavGroup[] = [
       {
         title: "JavaScript Formatter",
         url: "/tools/js-formatter",
-        icon: FileCode2,
+        icon: FileCode2
       },
       {
         title: "TypeScript Formatter",
         url: "/tools/ts-formatter",
-        icon: FileCode,
+        icon: FileCode
       },
       { title: "HTML Formatter", url: "/tools/html-formatter", icon: Code },
       {
         title: "CSS / SCSS / SASS Formatter",
         url: "/tools/css-formatter",
-        icon: Paintbrush,
+        icon: Paintbrush
       },
       { title: "SQL Formatter", url: "/tools/sql-formatter", icon: Database },
       { title: "XML Formatter", url: "/tools/xml-formatter", icon: Code },
@@ -76,9 +76,9 @@ export const navMenus: NavGroup[] = [
       {
         title: "GraphQL Formatter",
         url: "/tools/graphql-formatter",
-        icon: Layers,
-      },
-    ],
+        icon: Layers
+      }
+    ]
   },
   {
     label: "Converter",
@@ -89,10 +89,10 @@ export const navMenus: NavGroup[] = [
       {
         title: "Number Base Converter",
         url: "/tools/number-base",
-        icon: Binary,
+        icon: Binary
       },
-      { title: "Unix Timestamp", url: "/tools/unix-timestamp", icon: Clock },
-    ],
+      { title: "Unix Timestamp", url: "/tools/unix-timestamp", icon: Clock }
+    ]
   },
   {
     label: "Encoding",
@@ -101,8 +101,8 @@ export const navMenus: NavGroup[] = [
       { title: "URL Encode/Decode", url: "/tools/url-encode", icon: Link },
       { title: "HTML Entities", url: "/tools/html-entities", icon: Code },
       { title: "JWT Decoder", url: "/tools/jwt-decoder", icon: Lock },
-      { title: "Hash Generator", url: "/tools/hash-generator", icon: Shield },
-    ],
+      { title: "Hash Generator", url: "/tools/hash-generator", icon: Shield }
+    ]
   },
   {
     label: "Text",
@@ -110,22 +110,22 @@ export const navMenus: NavGroup[] = [
       {
         title: "Diff Checker",
         url: "/tools/diff-checker",
-        icon: ArrowLeftRight,
+        icon: ArrowLeftRight
       },
       {
         title: "Case Converter",
         url: "/tools/case-converter",
-        icon: CaseSensitive,
+        icon: CaseSensitive
       },
       { title: "Regex Tester", url: "/tools/regex-tester", icon: Asterisk },
       {
         title: "Markdown Preview",
         url: "/tools/markdown-preview",
-        icon: FileText,
+        icon: FileText
       },
       { title: "Word Counter", url: "/tools/word-counter", icon: Type },
-      { title: "JSON Path Tester", url: "/tools/json-path", icon: Braces },
-    ],
+      { title: "JSON Path Tester", url: "/tools/json-path", icon: Braces }
+    ]
   },
   {
     label: "Generator",
@@ -135,17 +135,17 @@ export const navMenus: NavGroup[] = [
       {
         title: "Password Generator",
         url: "/tools/password-generator",
-        icon: Shield,
+        icon: Shield
       },
       { title: "QR Generator", url: "/tools/qr-generator", icon: QrCode },
       {
         title: "Barcode Generator",
         url: "/tools/barcode-generator",
-        icon: Barcode,
+        icon: Barcode
       },
       { title: "CRON Generator", url: "/tools/cron-generator", icon: Clock },
-      { title: "Fake Data Generator", url: "/tools/fake-data", icon: Sparkles },
-    ],
+      { title: "Fake Data Generator", url: "/tools/fake-data", icon: Sparkles }
+    ]
   },
   {
     label: "Cryptography",
@@ -154,7 +154,7 @@ export const navMenus: NavGroup[] = [
       {
         title: "DES / 3DES Cipher",
         url: "/tools/des-cipher",
-        icon: ShieldCheck,
+        icon: ShieldCheck
       },
       { title: "RC4 Cipher", url: "/tools/rc4-cipher", icon: Shield },
       { title: "RSA", url: "/tools/rsa", icon: Key },
@@ -162,9 +162,9 @@ export const navMenus: NavGroup[] = [
       {
         title: "API Signature (HMAC)",
         url: "/tools/api-signature",
-        icon: Webhook,
-      },
-    ],
+        icon: Webhook
+      }
+    ]
   },
   {
     label: "Frontend / CSS",
@@ -172,28 +172,28 @@ export const navMenus: NavGroup[] = [
       {
         title: "Color Converter",
         url: "/tools/color-converter",
-        icon: Palette,
+        icon: Palette
       },
       { title: "PX → REM", url: "/tools/px-rem", icon: Ruler },
       {
         title: "CSS Gradient Generator",
         url: "/tools/gradient-generator",
-        icon: SunMedium,
+        icon: SunMedium
       },
       {
         title: "Box Shadow Generator",
         url: "/tools/box-shadow-generator",
-        icon: Sliders,
+        icon: Sliders
       },
       {
         title: "Tailwind Cheatsheet",
         url: "/tools/tailwind-cheatsheet",
-        icon: Wind,
-      },
-    ],
-  },
-]
+        icon: Wind
+      }
+    ]
+  }
+];
 
 export const navTitleMap: Record<string, string> = Object.fromEntries(
   navMenus.flatMap((group) => group.items.map((item) => [item.url, item.title]))
-)
+);

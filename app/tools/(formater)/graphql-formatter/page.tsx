@@ -1,46 +1,46 @@
-"use client"
+"use client";
 
-import { parse, print } from "graphql"
-import { Check, Copy } from "lucide-react"
-import { useEffect, useRef, useState } from "react"
+import { parse, print } from "graphql";
+import { Check, Copy } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
-import { Button } from "@/components/ui/button"
-import { useToolState } from "@/hooks/use-tool-state"
-import { handleTextareaTab } from "@/lib/utils"
+import { Button } from "@/components/ui/button";
+import { useToolState } from "@/hooks/use-tool-state";
+import { handleTextareaTab } from "@/lib/utils";
 
 export default function GraphqlFormatterPage() {
-  const [input, setInput] = useToolState("graphql-formatter", "input", "")
-  const [output, setOutput] = useState("")
-  const [error, setError] = useState<string | null>(null)
-  const [copied, setCopied] = useState(false)
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const [input, setInput] = useToolState("graphql-formatter", "input", "");
+  const [output, setOutput] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    if (debounceRef.current) clearTimeout(debounceRef.current)
+    if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
       if (!input) {
-        setOutput("")
-        setError(null)
-        return
+        setOutput("");
+        setError(null);
+        return;
       }
       try {
-        setOutput(print(parse(input)))
-        setError(null)
+        setOutput(print(parse(input)));
+        setError(null);
       } catch (e) {
-        setError((e as Error).message)
-        setOutput("")
+        setError((e as Error).message);
+        setOutput("");
       }
-    }, 500)
+    }, 500);
     return () => {
-      if (debounceRef.current) clearTimeout(debounceRef.current)
-    }
-  }, [input])
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [input]);
 
   const copy = async () => {
-    await navigator.clipboard.writeText(output)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
-  }
+    await navigator.clipboard.writeText(output);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
 
   return (
     <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
@@ -49,11 +49,11 @@ export default function GraphqlFormatterPage() {
           size="lg"
           onClick={() => {
             try {
-              setOutput(print(parse(input)))
-              setError(null)
+              setOutput(print(parse(input)));
+              setError(null);
             } catch (e) {
-              setError((e as Error).message)
-              setOutput("")
+              setError((e as Error).message);
+              setOutput("");
             }
           }}
           disabled={!input}
@@ -70,9 +70,9 @@ export default function GraphqlFormatterPage() {
               size="sm"
               variant="ghost"
               onClick={() => {
-                setInput("")
-                setOutput("")
-                setError(null)
+                setInput("");
+                setOutput("");
+                setError(null);
               }}
               className="text-xs"
             >
@@ -125,5 +125,5 @@ export default function GraphqlFormatterPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

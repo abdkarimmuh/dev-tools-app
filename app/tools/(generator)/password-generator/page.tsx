@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import { Check, Copy, RefreshCw } from "lucide-react"
-import { useState } from "react"
+import { Check, Copy, RefreshCw } from "lucide-react";
+import { useState } from "react";
 
-import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Label } from "@/components/ui/label"
-import { CHARSETS } from "@/constants/generators/password-generator"
-import { useLanguage } from "@/contexts/language-context"
-import { useToolState } from "@/hooks/use-tool-state"
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import { CHARSETS } from "@/constants/generators/password-generator";
+import { useLanguage } from "@/contexts/language-context";
+import { useToolState } from "@/hooks/use-tool-state";
 
 function generatePassword(
   length: number,
@@ -18,69 +18,73 @@ function generatePassword(
     opts.upper ? CHARSETS.upper : "",
     opts.lower ? CHARSETS.lower : "",
     opts.numbers ? CHARSETS.numbers : "",
-    opts.symbols ? CHARSETS.symbols : "",
-  ].join("")
+    opts.symbols ? CHARSETS.symbols : ""
+  ].join("");
 
-  if (!charset) return ""
+  if (!charset) return "";
 
-  const array = new Uint32Array(length)
-  crypto.getRandomValues(array)
-  return Array.from(array, (n) => charset[n % charset.length]).join("")
+  const array = new Uint32Array(length);
+  crypto.getRandomValues(array);
+  return Array.from(array, (n) => charset[n % charset.length]).join("");
 }
 
 export default function PasswordGeneratorPage() {
-  const { t } = useLanguage()
-  const [length, setLength] = useToolState("password-generator", "length", 16)
+  const { t } = useLanguage();
+  const [length, setLength] = useToolState("password-generator", "length", 16);
   const [opts, setOpts] = useToolState("password-generator", "opts", {
     upper: true,
     lower: true,
     numbers: true,
-    symbols: false,
-  })
-  const [password, setPassword] = useState("")
-  const [copied, setCopied] = useState(false)
+    symbols: false
+  });
+  const [password, setPassword] = useState("");
+  const [copied, setCopied] = useState(false);
 
   const getStrength = (
     pw: string
   ): { label: string; color: string; width: string } => {
-    if (!pw) return { label: "", color: "", width: "0%" }
+    if (!pw) return { label: "", color: "", width: "0%" };
     const has = {
       upper: /[A-Z]/.test(pw),
       lower: /[a-z]/.test(pw),
       number: /[0-9]/.test(pw),
-      symbol: /[^a-zA-Z0-9]/.test(pw),
-    }
+      symbol: /[^a-zA-Z0-9]/.test(pw)
+    };
     const score =
-      Object.values(has).filter(Boolean).length + (pw.length >= 16 ? 1 : 0)
+      Object.values(has).filter(Boolean).length + (pw.length >= 16 ? 1 : 0);
     if (score <= 2)
-      return { label: t.passwordWeak, color: "bg-red-500", width: "25%" }
+      return { label: t.passwordWeak, color: "bg-red-500", width: "25%" };
     if (score === 3)
-      return { label: t.passwordMedium, color: "bg-yellow-500", width: "50%" }
+      return { label: t.passwordMedium, color: "bg-yellow-500", width: "50%" };
     if (score === 4)
-      return { label: t.passwordStrong, color: "bg-blue-500", width: "75%" }
-    return { label: t.passwordVeryStrong, color: "bg-green-500", width: "100%" }
-  }
+      return { label: t.passwordStrong, color: "bg-blue-500", width: "75%" };
+    return {
+      label: t.passwordVeryStrong,
+      color: "bg-green-500",
+      width: "100%"
+    };
+  };
 
   const generate = () => {
-    setPassword(generatePassword(length, opts))
-  }
+    setPassword(generatePassword(length, opts));
+  };
 
   const copy = async () => {
-    await navigator.clipboard.writeText(password)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
-  }
+    await navigator.clipboard.writeText(password);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
 
-  const strength = getStrength(password)
+  const strength = getStrength(password);
   const noneSelected =
-    !opts.upper && !opts.lower && !opts.numbers && !opts.symbols
+    !opts.upper && !opts.lower && !opts.numbers && !opts.symbols;
 
   const charOptions = [
     { key: "upper" as const, label: t.passwordUppercase },
     { key: "lower" as const, label: t.passwordLowercase },
     { key: "numbers" as const, label: t.passwordNumbers },
-    { key: "symbols" as const, label: t.passwordSymbols },
-  ]
+    { key: "symbols" as const, label: t.passwordSymbols }
+  ];
 
   return (
     <div className="flex max-w-lg flex-col gap-6 px-4 lg:px-6">
@@ -172,5 +176,5 @@ export default function PasswordGeneratorPage() {
         </div>
       )}
     </div>
-  )
+  );
 }

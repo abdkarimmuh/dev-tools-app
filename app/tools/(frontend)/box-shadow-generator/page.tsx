@@ -1,25 +1,25 @@
-"use client"
+"use client";
 
-import { Check, Copy, Plus, Trash2 } from "lucide-react"
-import { useState } from "react"
+import { Check, Copy, Plus, Trash2 } from "lucide-react";
+import { useState } from "react";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { useToolState } from "@/hooks/use-tool-state"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useToolState } from "@/hooks/use-tool-state";
 
 interface Shadow {
-  id: string
-  x: number
-  y: number
-  blur: number
-  spread: number
-  color: string
-  inset: boolean
+  id: string;
+  x: number;
+  y: number;
+  blur: number;
+  spread: number;
+  color: string;
+  inset: boolean;
 }
 
 function shadowToCss(s: Shadow): string {
-  return `${s.inset ? "inset " : ""}${s.x}px ${s.y}px ${s.blur}px ${s.spread}px ${s.color}`
+  return `${s.inset ? "inset " : ""}${s.x}px ${s.y}px ${s.blur}px ${s.spread}px ${s.color}`;
 }
 
 function SliderField({
@@ -27,13 +27,13 @@ function SliderField({
   value,
   min,
   max,
-  onChange,
+  onChange
 }: {
-  label: string
-  value: number
-  min: number
-  max: number
-  onChange: (v: number) => void
+  label: string;
+  value: number;
+  min: number;
+  max: number;
+  onChange: (v: number) => void;
 }) {
   return (
     <div className="flex flex-col gap-1">
@@ -50,7 +50,7 @@ function SliderField({
         className="w-full accent-primary"
       />
     </div>
-  )
+  );
 }
 
 export default function BoxShadowGeneratorPage() {
@@ -65,27 +65,27 @@ export default function BoxShadowGeneratorPage() {
         blur: 6,
         spread: -1,
         color: "rgba(0,0,0,0.1)",
-        inset: false,
-      },
+        inset: false
+      }
     ]
-  )
+  );
   const [selected, setSelected] = useToolState(
     "box-shadow-gen",
     "selected",
     "1"
-  )
-  const [copied, setCopied] = useState(false)
+  );
+  const [copied, setCopied] = useState(false);
 
-  const cssValue = shadows.map(shadowToCss).join(", ")
-  const css = `box-shadow: ${cssValue};`
+  const cssValue = shadows.map(shadowToCss).join(", ");
+  const css = `box-shadow: ${cssValue};`;
 
-  const shadow = shadows.find((s) => s.id === selected) ?? shadows[0]
+  const shadow = shadows.find((s) => s.id === selected) ?? shadows[0];
 
   const update = (key: keyof Shadow, value: number | string | boolean) => {
     setShadows(
       shadows.map((s) => (s.id === selected ? { ...s, [key]: value } : s))
-    )
-  }
+    );
+  };
 
   const addShadow = () => {
     const newShadow: Shadow = {
@@ -95,24 +95,24 @@ export default function BoxShadowGeneratorPage() {
       blur: 8,
       spread: 0,
       color: "rgba(0,0,0,0.15)",
-      inset: false,
-    }
-    setShadows([...shadows, newShadow])
-    setSelected(newShadow.id)
-  }
+      inset: false
+    };
+    setShadows([...shadows, newShadow]);
+    setSelected(newShadow.id);
+  };
 
   const removeShadow = (id: string) => {
-    const next = shadows.filter((s) => s.id !== id)
-    if (next.length === 0) return
-    setShadows(next)
-    if (selected === id) setSelected(next[0].id)
-  }
+    const next = shadows.filter((s) => s.id !== id);
+    if (next.length === 0) return;
+    setShadows(next);
+    if (selected === id) setSelected(next[0].id);
+  };
 
   const copy = async () => {
-    await navigator.clipboard.writeText(css)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
-  }
+    await navigator.clipboard.writeText(css);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
 
   return (
     <div className="flex max-w-xl flex-col gap-6 px-4 lg:px-6">
@@ -240,5 +240,5 @@ export default function BoxShadowGeneratorPage() {
         </div>
       )}
     </div>
-  )
+  );
 }

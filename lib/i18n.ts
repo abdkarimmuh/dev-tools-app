@@ -1,4 +1,4 @@
-export type Language = "en" | "id"
+export type Language = "en" | "id";
 
 export const translations = {
   en: {
@@ -195,7 +195,7 @@ export const translations = {
     notFoundGoHome: "Go to Home",
 
     // Converter nav group
-    converterGroup: "Converter",
+    converterGroup: "Converter"
   },
   id: {
     // Navigation
@@ -393,13 +393,13 @@ export const translations = {
     notFoundGoHome: "Kembali ke Beranda",
 
     // Converter nav group
-    converterGroup: "Converter",
-  },
-}
+    converterGroup: "Converter"
+  }
+};
 
 export type Translations = {
-  readonly [K in keyof typeof translations.en]: string
-}
+  readonly [K in keyof typeof translations.en]: string;
+};
 
 export const navGroupLabels: Record<Language, Record<string, string>> = {
   en: {
@@ -409,7 +409,7 @@ export const navGroupLabels: Record<Language, Record<string, string>> = {
     Text: "Text",
     Generator: "Generator",
     Cryptography: "Cryptography",
-    "Frontend / CSS": "Frontend / CSS",
+    "Frontend / CSS": "Frontend / CSS"
   },
   id: {
     "Format & Validasi": "Format & Validasi",
@@ -418,9 +418,9 @@ export const navGroupLabels: Record<Language, Record<string, string>> = {
     Text: "Text",
     Generator: "Generator",
     Cryptography: "Kriptografi",
-    "Frontend / CSS": "Frontend / CSS",
-  },
-}
+    "Frontend / CSS": "Frontend / CSS"
+  }
+};
 
 export const navGroupDescriptions: Record<Language, Record<string, string>> = {
   en: {
@@ -436,7 +436,7 @@ export const navGroupDescriptions: Record<Language, Record<string, string>> = {
     Cryptography:
       "Encryption, decryption, and digital signatures — AES, DES/3DES, RSA, RC4, ECDSA, and HMAC-based API signing.",
     "Frontend / CSS":
-      "CSS generators and frontend utilities — gradients, box shadows, Tailwind cheatsheet, px↔rem conversion, and color converter.",
+      "CSS generators and frontend utilities — gradients, box shadows, Tailwind cheatsheet, px↔rem conversion, and color converter."
   },
   id: {
     "Format & Validasi":
@@ -451,6 +451,6 @@ export const navGroupDescriptions: Record<Language, Record<string, string>> = {
     Cryptography:
       "Enkripsi, dekripsi, dan tanda tangan digital — AES, DES/3DES, RSA, RC4, ECDSA, dan API signing berbasis HMAC.",
     "Frontend / CSS":
-      "Generator CSS dan utilitas frontend — gradient, box shadow, Tailwind cheatsheet, konversi px↔rem, dan color converter.",
-  },
-}
+      "Generator CSS dan utilitas frontend — gradient, box shadow, Tailwind cheatsheet, konversi px↔rem, dan color converter."
+  }
+};

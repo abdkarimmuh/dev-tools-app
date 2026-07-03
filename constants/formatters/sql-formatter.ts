@@ -4,7 +4,7 @@ export type Dialect =
   | "postgresql"
   | "transactsql"
   | "sqlite"
-  | "plsql"
+  | "plsql";
 
 export const DIALECTS: { value: Dialect; label: string }[] = [
   { value: "sql", label: "SQL" },
@@ -12,5 +12,5 @@ export const DIALECTS: { value: Dialect; label: string }[] = [
   { value: "postgresql", label: "PostgreSQL" },
   { value: "transactsql", label: "T-SQL" },
   { value: "sqlite", label: "SQLite" },
-  { value: "plsql", label: "PL/SQL" },
-]
+  { value: "plsql", label: "PL/SQL" }
+];

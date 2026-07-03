@@ -1,71 +1,71 @@
-"use client"
+"use client";
 
-import * as yaml from "js-yaml"
-import { ArrowLeftRight, Check, Copy } from "lucide-react"
-import { useEffect, useRef, useState } from "react"
+import * as yaml from "js-yaml";
+import { ArrowLeftRight, Check, Copy } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
-import { Button } from "@/components/ui/button"
-import { useToolState } from "@/hooks/use-tool-state"
-import { handleTextareaTab } from "@/lib/utils"
+import { Button } from "@/components/ui/button";
+import { useToolState } from "@/hooks/use-tool-state";
+import { handleTextareaTab } from "@/lib/utils";
 
-type Direction = "json-to-yaml" | "yaml-to-json"
+type Direction = "json-to-yaml" | "yaml-to-json";
 
 export default function JsonYamlPage() {
-  const [input, setInput] = useToolState("json-yaml", "input", "")
+  const [input, setInput] = useToolState("json-yaml", "input", "");
   const [direction, setDirection] = useToolState<Direction>(
     "json-yaml",
     "direction",
     "json-to-yaml"
-  )
-  const [output, setOutput] = useState("")
-  const [error, setError] = useState<string | null>(null)
-  const [copied, setCopied] = useState(false)
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  );
+  const [output, setOutput] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const convert = (src: string, dir: Direction) => {
     if (!src) {
-      setOutput("")
-      setError(null)
-      return
+      setOutput("");
+      setError(null);
+      return;
     }
     try {
       if (dir === "json-to-yaml") {
-        const parsed = JSON.parse(src)
-        setOutput(yaml.dump(parsed, { indent: 2, lineWidth: -1 }))
+        const parsed = JSON.parse(src);
+        setOutput(yaml.dump(parsed, { indent: 2, lineWidth: -1 }));
       } else {
-        const parsed = yaml.load(src)
-        setOutput(JSON.stringify(parsed, null, 2))
+        const parsed = yaml.load(src);
+        setOutput(JSON.stringify(parsed, null, 2));
       }
-      setError(null)
+      setError(null);
     } catch (e) {
-      setError((e as Error).message)
-      setOutput("")
+      setError((e as Error).message);
+      setOutput("");
     }
-  }
+  };
 
   useEffect(() => {
-    if (debounceRef.current) clearTimeout(debounceRef.current)
-    debounceRef.current = setTimeout(() => convert(input, direction), 500)
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => convert(input, direction), 500);
     return () => {
-      if (debounceRef.current) clearTimeout(debounceRef.current)
-    }
-  }, [input, direction])
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [input, direction]);
 
   const swap = () => {
     const next: Direction =
-      direction === "json-to-yaml" ? "yaml-to-json" : "json-to-yaml"
-    setInput(output)
-    setDirection(next)
-  }
+      direction === "json-to-yaml" ? "yaml-to-json" : "json-to-yaml";
+    setInput(output);
+    setDirection(next);
+  };
 
   const copy = async () => {
-    await navigator.clipboard.writeText(output)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
-  }
+    await navigator.clipboard.writeText(output);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
 
-  const inputLabel = direction === "json-to-yaml" ? "JSON" : "YAML"
-  const outputLabel = direction === "json-to-yaml" ? "YAML" : "JSON"
+  const inputLabel = direction === "json-to-yaml" ? "JSON" : "YAML";
+  const outputLabel = direction === "json-to-yaml" ? "YAML" : "JSON";
 
   return (
     <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
@@ -84,9 +84,9 @@ export default function JsonYamlPage() {
               size="sm"
               variant="ghost"
               onClick={() => {
-                setInput("")
-                setOutput("")
-                setError(null)
+                setInput("");
+                setOutput("");
+                setError(null);
               }}
               className="text-xs"
             >
@@ -141,5 +141,5 @@ export default function JsonYamlPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

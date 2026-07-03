@@ -1,22 +1,22 @@
-"use client"
+"use client";
 
-import { Check, Copy } from "lucide-react"
-import { useState } from "react"
+import { Check, Copy } from "lucide-react";
+import { useState } from "react";
 
-import { Input } from "@/components/ui/input"
+import { Input } from "@/components/ui/input";
 import {
   SECTIONS,
-  type TailwindEntry,
-} from "@/constants/frontend/tailwind-cheatsheet"
-import { useToolState } from "@/hooks/use-tool-state"
+  type TailwindEntry
+} from "@/constants/frontend/tailwind-cheatsheet";
+import { useToolState } from "@/hooks/use-tool-state";
 
 function ClassRow({ entry }: { entry: TailwindEntry }) {
-  const [copied, setCopied] = useState(false)
+  const [copied, setCopied] = useState(false);
   const copy = async () => {
-    await navigator.clipboard.writeText(entry.class)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
-  }
+    await navigator.clipboard.writeText(entry.class);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
   return (
     <div className="group flex items-center gap-3 rounded px-2 py-1.5 hover:bg-muted/50">
       <button onClick={copy} className="flex shrink-0 items-center gap-1.5">
@@ -33,13 +33,13 @@ function ClassRow({ entry }: { entry: TailwindEntry }) {
         {entry.css}
       </span>
     </div>
-  )
+  );
 }
 
 export default function TailwindCheatsheetPage() {
-  const [search, setSearch] = useToolState("tailwind-cheatsheet", "search", "")
+  const [search, setSearch] = useToolState("tailwind-cheatsheet", "search", "");
 
-  const query = search.toLowerCase().trim()
+  const query = search.toLowerCase().trim();
   const filtered = SECTIONS.map((section) => ({
     ...section,
     entries: section.entries.filter(
@@ -48,10 +48,10 @@ export default function TailwindCheatsheetPage() {
         e.class.toLowerCase().includes(query) ||
         e.css.toLowerCase().includes(query) ||
         section.title.toLowerCase().includes(query)
-    ),
-  })).filter((s) => s.entries.length > 0)
+    )
+  })).filter((s) => s.entries.length > 0);
 
-  const totalEntries = SECTIONS.reduce((sum, s) => sum + s.entries.length, 0)
+  const totalEntries = SECTIONS.reduce((sum, s) => sum + s.entries.length, 0);
 
   return (
     <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
@@ -91,5 +91,5 @@ export default function TailwindCheatsheetPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

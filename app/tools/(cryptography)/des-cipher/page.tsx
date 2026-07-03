@@ -1,82 +1,82 @@
-"use client"
+"use client";
 
-import CryptoJS from "crypto-js"
-import { Check, Copy, Eye, EyeOff } from "lucide-react"
-import { useState } from "react"
+import CryptoJS from "crypto-js";
+import { Check, Copy, Eye, EyeOff } from "lucide-react";
+import { useState } from "react";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import { useLanguage } from "@/contexts/language-context"
-import { useToolState } from "@/hooks/use-tool-state"
-import { handleTextareaTab } from "@/lib/utils"
+  SelectValue
+} from "@/components/ui/select";
+import { useLanguage } from "@/contexts/language-context";
+import { useToolState } from "@/hooks/use-tool-state";
+import { handleTextareaTab } from "@/lib/utils";
 
-type DesAlgorithm = "DES" | "TripleDES"
+type DesAlgorithm = "DES" | "TripleDES";
 
 const ALGORITHMS: { value: DesAlgorithm; label: string }[] = [
   { value: "DES", label: "DES" },
-  { value: "TripleDES", label: "Triple DES (3DES)" },
-]
+  { value: "TripleDES", label: "Triple DES (3DES)" }
+];
 
 export default function DesCipherPage() {
-  const { t } = useLanguage()
+  const { t } = useLanguage();
   const [algorithm, setAlgorithm] = useToolState<DesAlgorithm>(
     "des-cipher",
     "algorithm",
     "DES"
-  )
-  const [input, setInput] = useToolState("des-cipher", "input", "")
-  const [secretKey, setSecretKey] = useToolState("des-cipher", "key", "")
-  const [output, setOutput] = useState("")
-  const [error, setError] = useState<string | null>(null)
-  const [copied, setCopied] = useState(false)
-  const [showKey, setShowKey] = useState(false)
+  );
+  const [input, setInput] = useToolState("des-cipher", "input", "");
+  const [secretKey, setSecretKey] = useToolState("des-cipher", "key", "");
+  const [output, setOutput] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+  const [showKey, setShowKey] = useState(false);
 
-  const cipher = algorithm === "DES" ? CryptoJS.DES : CryptoJS.TripleDES
+  const cipher = algorithm === "DES" ? CryptoJS.DES : CryptoJS.TripleDES;
 
   const encrypt = () => {
-    if (!input || !secretKey) return
+    if (!input || !secretKey) return;
     try {
-      setOutput(cipher.encrypt(input, secretKey).toString())
-      setError(null)
+      setOutput(cipher.encrypt(input, secretKey).toString());
+      setError(null);
     } catch (e) {
-      setError((e as Error).message)
-      setOutput("")
+      setError((e as Error).message);
+      setOutput("");
     }
-  }
+  };
 
   const decrypt = () => {
-    if (!input || !secretKey) return
+    if (!input || !secretKey) return;
     try {
-      const bytes = cipher.decrypt(input, secretKey)
-      const result = bytes.toString(CryptoJS.enc.Utf8)
-      if (!result) throw new Error(t.cryptoDecryptError)
-      setOutput(result)
-      setError(null)
+      const bytes = cipher.decrypt(input, secretKey);
+      const result = bytes.toString(CryptoJS.enc.Utf8);
+      if (!result) throw new Error(t.cryptoDecryptError);
+      setOutput(result);
+      setError(null);
     } catch (e) {
-      setError((e as Error).message)
-      setOutput("")
+      setError((e as Error).message);
+      setOutput("");
     }
-  }
+  };
 
   const clear = () => {
-    setInput("")
-    setOutput("")
-    setError(null)
-  }
+    setInput("");
+    setOutput("");
+    setError(null);
+  };
 
   const copy = async () => {
-    await navigator.clipboard.writeText(output)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
-  }
+    await navigator.clipboard.writeText(output);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
 
   return (
     <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
@@ -87,9 +87,9 @@ export default function DesCipherPage() {
             <Select
               value={algorithm}
               onValueChange={(v) => {
-                setAlgorithm(v as DesAlgorithm)
-                setOutput("")
-                setError(null)
+                setAlgorithm(v as DesAlgorithm);
+                setOutput("");
+                setError(null);
               }}
             >
               <SelectTrigger className="w-44">
@@ -203,5 +203,5 @@ export default function DesCipherPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

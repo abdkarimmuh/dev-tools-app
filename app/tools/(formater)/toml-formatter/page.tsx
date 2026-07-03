@@ -1,47 +1,47 @@
-"use client"
+"use client";
 
-import { Check, Copy } from "lucide-react"
-import { useEffect, useRef, useState } from "react"
-import * as TOML from "smol-toml"
+import { Check, Copy } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import * as TOML from "smol-toml";
 
-import { Button } from "@/components/ui/button"
-import { useToolState } from "@/hooks/use-tool-state"
-import { handleTextareaTab } from "@/lib/utils"
+import { Button } from "@/components/ui/button";
+import { useToolState } from "@/hooks/use-tool-state";
+import { handleTextareaTab } from "@/lib/utils";
 
 export default function TomlFormatterPage() {
-  const [input, setInput] = useToolState("toml-formatter", "input", "")
-  const [output, setOutput] = useState("")
-  const [error, setError] = useState<string | null>(null)
-  const [copied, setCopied] = useState(false)
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const [input, setInput] = useToolState("toml-formatter", "input", "");
+  const [output, setOutput] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    if (debounceRef.current) clearTimeout(debounceRef.current)
+    if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
       if (!input) {
-        setOutput("")
-        setError(null)
-        return
+        setOutput("");
+        setError(null);
+        return;
       }
       try {
-        const parsed = TOML.parse(input)
-        setOutput(TOML.stringify(parsed))
-        setError(null)
+        const parsed = TOML.parse(input);
+        setOutput(TOML.stringify(parsed));
+        setError(null);
       } catch (e) {
-        setError((e as Error).message)
-        setOutput("")
+        setError((e as Error).message);
+        setOutput("");
       }
-    }, 500)
+    }, 500);
     return () => {
-      if (debounceRef.current) clearTimeout(debounceRef.current)
-    }
-  }, [input])
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [input]);
 
   const copy = async () => {
-    await navigator.clipboard.writeText(output)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
-  }
+    await navigator.clipboard.writeText(output);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
 
   return (
     <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
@@ -50,12 +50,12 @@ export default function TomlFormatterPage() {
           size="lg"
           onClick={() => {
             try {
-              const parsed = TOML.parse(input)
-              setOutput(TOML.stringify(parsed))
-              setError(null)
+              const parsed = TOML.parse(input);
+              setOutput(TOML.stringify(parsed));
+              setError(null);
             } catch (e) {
-              setError((e as Error).message)
-              setOutput("")
+              setError((e as Error).message);
+              setOutput("");
             }
           }}
           disabled={!input}
@@ -72,9 +72,9 @@ export default function TomlFormatterPage() {
               size="sm"
               variant="ghost"
               onClick={() => {
-                setInput("")
-                setOutput("")
-                setError(null)
+                setInput("");
+                setOutput("");
+                setError(null);
               }}
               className="text-xs"
             >
@@ -127,5 +127,5 @@ export default function TomlFormatterPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

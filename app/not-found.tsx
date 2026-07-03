@@ -1,22 +1,22 @@
-"use client"
+"use client";
 
-import { IconFolderCode } from "@tabler/icons-react"
-import { ArrowUpRightIcon } from "lucide-react"
-import Link from "next/link"
+import { IconFolderCode } from "@tabler/icons-react";
+import { ArrowUpRightIcon } from "lucide-react";
+import Link from "next/link";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Empty,
   EmptyContent,
   EmptyDescription,
   EmptyHeader,
   EmptyMedia,
-  EmptyTitle,
-} from "@/components/ui/empty"
-import { useLanguage } from "@/contexts/language-context"
+  EmptyTitle
+} from "@/components/ui/empty";
+import { useLanguage } from "@/contexts/language-context";
 
 export default function NotFound() {
-  const { t } = useLanguage()
+  const { t } = useLanguage();
 
   return (
     <Empty>
@@ -40,5 +40,5 @@ export default function NotFound() {
         </Button>
       </EmptyContent>
     </Empty>
-  )
+  );
 }

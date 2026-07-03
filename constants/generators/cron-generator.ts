@@ -1,9 +1,9 @@
 export interface CronField {
-  key: "minute" | "hour" | "day" | "month" | "weekday"
-  label: string
-  min: number
-  max: number
-  names?: string[]
+  key: "minute" | "hour" | "day" | "month" | "weekday";
+  label: string;
+  min: number;
+  max: number;
+  names?: string[];
 }
 
 export const FIELDS: CronField[] = [
@@ -27,17 +27,17 @@ export const FIELDS: CronField[] = [
       "Sep",
       "Oct",
       "Nov",
-      "Dec",
-    ],
+      "Dec"
+    ]
   },
   {
     key: "weekday",
     label: "Day of Week",
     min: 0,
     max: 6,
-    names: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-  },
-]
+    names: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+  }
+];
 
 export const PRESETS = [
   { label: "Every minute", value: "* * * * *" },
@@ -49,5 +49,5 @@ export const PRESETS = [
   { label: "First day of month", value: "0 0 1 * *" },
   { label: "Every 15 minutes", value: "*/15 * * * *" },
   { label: "Every 6 hours", value: "0 */6 * * *" },
-  { label: "Weekdays at 9am", value: "0 9 * * 1-5" },
-]
+  { label: "Weekdays at 9am", value: "0 9 * * 1-5" }
+];

@@ -1,65 +1,65 @@
-"use client"
+"use client";
 
-import { Check, Copy, Eye, EyeOff } from "lucide-react"
-import { useCallback, useEffect, useRef, useState } from "react"
+import { Check, Copy, Eye, EyeOff } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import { useLanguage } from "@/contexts/language-context"
-import { useToolState } from "@/hooks/use-tool-state"
-import { handleTextareaTab } from "@/lib/utils"
+  SelectValue
+} from "@/components/ui/select";
+import { useLanguage } from "@/contexts/language-context";
+import { useToolState } from "@/hooks/use-tool-state";
+import { handleTextareaTab } from "@/lib/utils";
 
-type Algorithm = "SHA-1" | "SHA-256" | "SHA-384" | "SHA-512"
-type KeyEncoding = "utf8" | "hex" | "base64"
-type OutputFormat = "hex" | "base64"
+type Algorithm = "SHA-1" | "SHA-256" | "SHA-384" | "SHA-512";
+type KeyEncoding = "utf8" | "hex" | "base64";
+type OutputFormat = "hex" | "base64";
 
 const ALGORITHMS: { value: Algorithm; label: string }[] = [
   { value: "SHA-256", label: "HMAC-SHA256" },
   { value: "SHA-512", label: "HMAC-SHA512" },
   { value: "SHA-384", label: "HMAC-SHA384" },
-  { value: "SHA-1", label: "HMAC-SHA1" },
-]
+  { value: "SHA-1", label: "HMAC-SHA1" }
+];
 
 const KEY_ENCODINGS: { value: KeyEncoding; label: string }[] = [
   { value: "utf8", label: "UTF-8 (plaintext)" },
   { value: "hex", label: "Hex" },
-  { value: "base64", label: "Base64" },
-]
+  { value: "base64", label: "Base64" }
+];
 
 const OUTPUT_FORMATS: { value: OutputFormat; label: string }[] = [
   { value: "hex", label: "Hex" },
-  { value: "base64", label: "Base64" },
-]
+  { value: "base64", label: "Base64" }
+];
 
 function hexToBytes(hex: string): Uint8Array {
-  const clean = hex.replace(/\s+/g, "")
-  if (clean.length % 2 !== 0) throw new Error("Invalid hex string")
-  const bytes = new Uint8Array(clean.length / 2)
+  const clean = hex.replace(/\s+/g, "");
+  if (clean.length % 2 !== 0) throw new Error("Invalid hex string");
+  const bytes = new Uint8Array(clean.length / 2);
   for (let i = 0; i < clean.length; i += 2)
-    bytes[i / 2] = parseInt(clean.substring(i, i + 2), 16)
-  return bytes
+    bytes[i / 2] = parseInt(clean.substring(i, i + 2), 16);
+  return bytes;
 }
 
 function base64ToBytes(b64: string): Uint8Array {
-  return Uint8Array.from(atob(b64), (c) => c.charCodeAt(0))
+  return Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
 }
 
 function bytesToHex(bytes: Uint8Array): string {
   return Array.from(bytes)
     .map((b) => b.toString(16).padStart(2, "0"))
-    .join("")
+    .join("");
 }
 
 function bytesToBase64(bytes: Uint8Array): string {
-  return btoa(String.fromCharCode(...bytes))
+  return btoa(String.fromCharCode(...bytes));
 }
 
 async function generateHmac(
@@ -69,65 +69,65 @@ async function generateHmac(
   keyEncoding: KeyEncoding,
   outputFormat: OutputFormat
 ): Promise<string> {
-  let keyBytes: Uint8Array
-  if (keyEncoding === "hex") keyBytes = hexToBytes(secretKey)
-  else if (keyEncoding === "base64") keyBytes = base64ToBytes(secretKey)
-  else keyBytes = new TextEncoder().encode(secretKey)
+  let keyBytes: Uint8Array;
+  if (keyEncoding === "hex") keyBytes = hexToBytes(secretKey);
+  else if (keyEncoding === "base64") keyBytes = base64ToBytes(secretKey);
+  else keyBytes = new TextEncoder().encode(secretKey);
 
   const keyBuffer = keyBytes.buffer.slice(
     keyBytes.byteOffset,
     keyBytes.byteOffset + keyBytes.byteLength
-  ) as ArrayBuffer
+  ) as ArrayBuffer;
   const cryptoKey = await crypto.subtle.importKey(
     "raw",
     keyBuffer,
     { name: "HMAC", hash: algorithm },
     false,
     ["sign"]
-  )
+  );
   const sig = await crypto.subtle.sign(
     "HMAC",
     cryptoKey,
     new TextEncoder().encode(message)
-  )
-  const bytes = new Uint8Array(sig)
-  return outputFormat === "hex" ? bytesToHex(bytes) : bytesToBase64(bytes)
+  );
+  const bytes = new Uint8Array(sig);
+  return outputFormat === "hex" ? bytesToHex(bytes) : bytesToBase64(bytes);
 }
 
 export default function ApiSignaturePage() {
-  const { t } = useLanguage()
+  const { t } = useLanguage();
   const [algorithm, setAlgorithm] = useToolState<Algorithm>(
     "api-signature",
     "algorithm",
     "SHA-256"
-  )
+  );
   const [keyEncoding, setKeyEncoding] = useToolState<KeyEncoding>(
     "api-signature",
     "keyEncoding",
     "utf8"
-  )
+  );
   const [outputFormat, setOutputFormat] = useToolState<OutputFormat>(
     "api-signature",
     "outputFormat",
     "hex"
-  )
+  );
   const [secretKey, setSecretKey] = useToolState(
     "api-signature",
     "secretKey",
     ""
-  )
-  const [message, setMessage] = useToolState("api-signature", "message", "")
-  const [signature, setSignature] = useState("")
-  const [error, setError] = useState<string | null>(null)
-  const [showKey, setShowKey] = useState(false)
-  const [copied, setCopied] = useState(false)
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  );
+  const [message, setMessage] = useToolState("api-signature", "message", "");
+  const [signature, setSignature] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [showKey, setShowKey] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const sign = useCallback(async () => {
     if (!secretKey || !message) {
-      setSignature("")
-      setError(null)
-      return
+      setSignature("");
+      setError(null);
+      return;
     }
     try {
       setSignature(
@@ -138,34 +138,34 @@ export default function ApiSignaturePage() {
           keyEncoding,
           outputFormat
         )
-      )
-      setError(null)
+      );
+      setError(null);
     } catch (e) {
-      setError((e as Error).message)
-      setSignature("")
+      setError((e as Error).message);
+      setSignature("");
     }
-  }, [secretKey, message, algorithm, keyEncoding, outputFormat])
+  }, [secretKey, message, algorithm, keyEncoding, outputFormat]);
 
   useEffect(() => {
-    if (debounceRef.current) clearTimeout(debounceRef.current)
-    debounceRef.current = setTimeout(sign, 300)
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(sign, 300);
     return () => {
-      if (debounceRef.current) clearTimeout(debounceRef.current)
-    }
-  }, [sign])
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [sign]);
 
   const copy = async () => {
-    await navigator.clipboard.writeText(signature)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
-  }
+    await navigator.clipboard.writeText(signature);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
 
   const clear = () => {
-    setSecretKey("")
-    setMessage("")
-    setSignature("")
-    setError(null)
-  }
+    setSecretKey("");
+    setMessage("");
+    setSignature("");
+    setError(null);
+  };
 
   return (
     <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
@@ -329,5 +329,5 @@ export default function ApiSignaturePage() {
         </div>
       )}
     </div>
-  )
+  );
 }

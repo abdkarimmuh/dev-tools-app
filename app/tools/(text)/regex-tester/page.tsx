@@ -1,20 +1,20 @@
-"use client"
+"use client";
 
-import { useMemo } from "react"
+import { useMemo } from "react";
 
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { useLanguage } from "@/contexts/language-context"
-import { useToolState } from "@/hooks/use-tool-state"
-import { cn, handleTextareaTab } from "@/lib/utils"
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useLanguage } from "@/contexts/language-context";
+import { useToolState } from "@/hooks/use-tool-state";
+import { cn, handleTextareaTab } from "@/lib/utils";
 
 interface Match {
-  index: number
-  length: number
-  value: string
-  groups: string[]
+  index: number;
+  length: number;
+  value: string;
+  groups: string[];
 }
 
 function findMatches(
@@ -23,39 +23,42 @@ function findMatches(
   text: string
 ): Match[] | null {
   try {
-    const regex = new RegExp(pattern, flags.includes("g") ? flags : flags + "g")
-    const results: Match[] = []
-    let m: RegExpExecArray | null
+    const regex = new RegExp(
+      pattern,
+      flags.includes("g") ? flags : flags + "g"
+    );
+    const results: Match[] = [];
+    let m: RegExpExecArray | null;
     while ((m = regex.exec(text)) !== null) {
       results.push({
         index: m.index,
         length: m[0].length,
         value: m[0],
-        groups: m.slice(1),
-      })
-      if (m[0].length === 0) regex.lastIndex++
+        groups: m.slice(1)
+      });
+      if (m[0].length === 0) regex.lastIndex++;
     }
-    return results
+    return results;
   } catch {
-    return null
+    return null;
   }
 }
 
 function HighlightedText({
   text,
-  matches,
+  matches
 }: {
-  text: string
-  matches: Match[]
+  text: string;
+  matches: Match[];
 }) {
-  if (!matches.length) return <span>{text}</span>
+  if (!matches.length) return <span>{text}</span>;
 
-  const parts: React.ReactNode[] = []
-  let cursor = 0
+  const parts: React.ReactNode[] = [];
+  let cursor = 0;
 
   for (const match of matches) {
     if (match.index > cursor) {
-      parts.push(<span key={cursor}>{text.slice(cursor, match.index)}</span>)
+      parts.push(<span key={cursor}>{text.slice(cursor, match.index)}</span>);
     }
     parts.push(
       <mark
@@ -64,43 +67,43 @@ function HighlightedText({
       >
         {text.slice(match.index, match.index + match.length)}
       </mark>
-    )
-    cursor = match.index + match.length
+    );
+    cursor = match.index + match.length;
   }
 
   if (cursor < text.length) {
-    parts.push(<span key={cursor}>{text.slice(cursor)}</span>)
+    parts.push(<span key={cursor}>{text.slice(cursor)}</span>);
   }
 
-  return <>{parts}</>
+  return <>{parts}</>;
 }
 
-import { FLAG_OPTIONS } from "@/constants/text/regex-tester"
+import { FLAG_OPTIONS } from "@/constants/text/regex-tester";
 
 export default function RegexTesterPage() {
-  const { t } = useLanguage()
-  const [pattern, setPattern] = useToolState("regex-tester", "pattern", "")
-  const [flags, setFlags] = useToolState("regex-tester", "flags", "g")
-  const [testStr, setTestStr] = useToolState("regex-tester", "testStr", "")
+  const { t } = useLanguage();
+  const [pattern, setPattern] = useToolState("regex-tester", "pattern", "");
+  const [flags, setFlags] = useToolState("regex-tester", "flags", "g");
+  const [testStr, setTestStr] = useToolState("regex-tester", "testStr", "");
 
   const toggleFlag = (flag: string) => {
-    setFlags(flags.includes(flag) ? flags.replace(flag, "") : flags + flag)
-  }
+    setFlags(flags.includes(flag) ? flags.replace(flag, "") : flags + flag);
+  };
 
   const matches = useMemo(
     () => (pattern && testStr ? findMatches(pattern, flags, testStr) : []),
     [pattern, flags, testStr]
-  )
+  );
 
   const isInvalidRegex = useMemo(() => {
-    if (!pattern) return false
+    if (!pattern) return false;
     try {
-      new RegExp(pattern, flags)
-      return false
+      new RegExp(pattern, flags);
+      return false;
     } catch {
-      return true
+      return true;
     }
-  }, [pattern, flags])
+  }, [pattern, flags]);
 
   return (
     <div className="flex max-w-3xl flex-col gap-6 px-4 lg:px-6">
@@ -212,5 +215,5 @@ export default function RegexTesterPage() {
         </>
       )}
     </div>
-  )
+  );
 }

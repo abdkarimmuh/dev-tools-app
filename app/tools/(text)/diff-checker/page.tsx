@@ -1,38 +1,38 @@
-"use client"
+"use client";
 
-import { ArrowLeftRight } from "lucide-react"
-import { useCallback, useRef, useState } from "react"
+import { ArrowLeftRight } from "lucide-react";
+import { useCallback, useRef, useState } from "react";
 
-import { Button } from "@/components/ui/button"
-import { useLanguage } from "@/contexts/language-context"
-import { useToolState } from "@/hooks/use-tool-state"
-import { cn, handleTextareaTab } from "@/lib/utils"
+import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/contexts/language-context";
+import { useToolState } from "@/hooks/use-tool-state";
+import { cn, handleTextareaTab } from "@/lib/utils";
 
 type DiffLine = {
-  type: "same" | "removed" | "added"
-  line: string
-  lineA?: number
-  lineB?: number
-}
+  type: "same" | "removed" | "added";
+  line: string;
+  lineA?: number;
+  lineB?: number;
+};
 
 type CharPart = {
-  text: string
-  changed: boolean
-}
+  text: string;
+  changed: boolean;
+};
 
 type SideBySideRow = {
-  leftNum: number | null
-  leftContent: string | null
-  leftType: "same" | "removed" | "empty"
-  leftParts: CharPart[] | null
-  rightNum: number | null
-  rightContent: string | null
-  rightType: "same" | "added" | "empty"
-  rightParts: CharPart[] | null
-}
+  leftNum: number | null;
+  leftContent: string | null;
+  leftType: "same" | "removed" | "empty";
+  leftParts: CharPart[] | null;
+  rightNum: number | null;
+  rightContent: string | null;
+  rightType: "same" | "added" | "empty";
+  rightParts: CharPart[] | null;
+};
 
 function normalizeWS(line: string) {
-  return line.replace(/\s+/g, " ").trim()
+  return line.replace(/\s+/g, " ").trim();
 }
 
 function computeDiff(
@@ -40,115 +40,115 @@ function computeDiff(
   b: string,
   ignoreWhitespace: boolean
 ): DiffLine[] {
-  const aLines = a.split("\n")
-  const bLines = b.split("\n")
-  const m = aLines.length
-  const n = bLines.length
+  const aLines = a.split("\n");
+  const bLines = b.split("\n");
+  const m = aLines.length;
+  const n = bLines.length;
   const eq = (x: string, y: string) =>
-    ignoreWhitespace ? normalizeWS(x) === normalizeWS(y) : x === y
+    ignoreWhitespace ? normalizeWS(x) === normalizeWS(y) : x === y;
 
   const dp: number[][] = Array.from({ length: m + 1 }, () =>
     new Array(n + 1).fill(0)
-  )
+  );
   for (let i = 1; i <= m; i++) {
     for (let j = 1; j <= n; j++) {
       dp[i][j] = eq(aLines[i - 1], bLines[j - 1])
         ? dp[i - 1][j - 1] + 1
-        : Math.max(dp[i - 1][j], dp[i][j - 1])
+        : Math.max(dp[i - 1][j], dp[i][j - 1]);
     }
   }
 
-  const result: DiffLine[] = []
-  let i = m
-  let j = n
+  const result: DiffLine[] = [];
+  let i = m;
+  let j = n;
   while (i > 0 || j > 0) {
     if (i > 0 && j > 0 && eq(aLines[i - 1], bLines[j - 1])) {
-      result.unshift({ type: "same", line: aLines[i - 1], lineA: i, lineB: j })
-      i--
-      j--
+      result.unshift({ type: "same", line: aLines[i - 1], lineA: i, lineB: j });
+      i--;
+      j--;
     } else if (j > 0 && (i === 0 || dp[i][j - 1] >= dp[i - 1][j])) {
-      result.unshift({ type: "added", line: bLines[j - 1], lineB: j })
-      j--
+      result.unshift({ type: "added", line: bLines[j - 1], lineB: j });
+      j--;
     } else {
-      result.unshift({ type: "removed", line: aLines[i - 1], lineA: i })
-      i--
+      result.unshift({ type: "removed", line: aLines[i - 1], lineA: i });
+      i--;
     }
   }
 
-  return result
+  return result;
 }
 
 function computeCharDiff(
   a: string,
   b: string
 ): { left: CharPart[]; right: CharPart[] } {
-  const aC = [...a]
-  const bC = [...b]
-  const m = aC.length
-  const n = bC.length
+  const aC = [...a];
+  const bC = [...b];
+  const m = aC.length;
+  const n = bC.length;
 
   const dp: number[][] = Array.from({ length: m + 1 }, () =>
     new Array(n + 1).fill(0)
-  )
+  );
   for (let i = 1; i <= m; i++) {
     for (let j = 1; j <= n; j++) {
       dp[i][j] =
         aC[i - 1] === bC[j - 1]
           ? dp[i - 1][j - 1] + 1
-          : Math.max(dp[i - 1][j], dp[i][j - 1])
+          : Math.max(dp[i - 1][j], dp[i][j - 1]);
     }
   }
 
-  type Op = { type: "same" | "removed" | "added"; ch: string }
-  const ops: Op[] = []
-  let i = m
-  let j = n
+  type Op = { type: "same" | "removed" | "added"; ch: string };
+  const ops: Op[] = [];
+  let i = m;
+  let j = n;
   while (i > 0 || j > 0) {
     if (i > 0 && j > 0 && aC[i - 1] === bC[j - 1]) {
-      ops.unshift({ type: "same", ch: aC[i - 1] })
-      i--
-      j--
+      ops.unshift({ type: "same", ch: aC[i - 1] });
+      i--;
+      j--;
     } else if (j > 0 && (i === 0 || dp[i][j - 1] >= dp[i - 1][j])) {
-      ops.unshift({ type: "added", ch: bC[j - 1] })
-      j--
+      ops.unshift({ type: "added", ch: bC[j - 1] });
+      j--;
     } else {
-      ops.unshift({ type: "removed", ch: aC[i - 1] })
-      i--
+      ops.unshift({ type: "removed", ch: aC[i - 1] });
+      i--;
     }
   }
 
-  const left: CharPart[] = []
-  const right: CharPart[] = []
+  const left: CharPart[] = [];
+  const right: CharPart[] = [];
 
   const push = (arr: CharPart[], ch: string, changed: boolean) => {
-    const last = arr[arr.length - 1]
+    const last = arr[arr.length - 1];
     if (last && last.changed === changed) {
-      last.text += ch
+      last.text += ch;
     } else {
-      arr.push({ text: ch, changed })
+      arr.push({ text: ch, changed });
     }
-  }
+  };
 
   for (const op of ops) {
     if (op.type === "same") {
-      push(left, op.ch, false)
-      push(right, op.ch, false)
+      push(left, op.ch, false);
+      push(right, op.ch, false);
     } else if (op.type === "removed") {
-      push(left, op.ch, true)
+      push(left, op.ch, true);
     } else {
-      push(right, op.ch, true)
+      push(right, op.ch, true);
     }
   }
 
-  return { left, right }
+  return { left, right };
 }
 
 function toSideBySide(diff: DiffLine[]): SideBySideRow[] {
-  const rows: SideBySideRow[] = []
-  let i = 0
+  const rows: SideBySideRow[] = [];
+  let i = 0;
 
   while (i < diff.length) {
-    const entry = diff[i]
+    const entry = diff[i];
 
     if (entry.type === "same") {
       rows.push({
@@ -159,27 +159,27 @@ function toSideBySide(diff: DiffLine[]): SideBySideRow[] {
         rightNum: entry.lineB ?? null,
         rightContent: entry.line,
         rightType: "same",
-        rightParts: null,
-      })
-      i++
+        rightParts: null
+      });
+      i++;
     } else {
-      const removed: DiffLine[] = []
-      const added: DiffLine[] = []
+      const removed: DiffLine[] = [];
+      const added: DiffLine[] = [];
       while (i < diff.length && diff[i].type !== "same") {
-        if (diff[i].type === "removed") removed.push(diff[i])
-        else added.push(diff[i])
-        i++
+        if (diff[i].type === "removed") removed.push(diff[i]);
+        else added.push(diff[i]);
+        i++;
       }
-      const len = Math.max(removed.length, added.length)
+      const len = Math.max(removed.length, added.length);
       for (let k = 0; k < len; k++) {
-        const rem = removed[k] ?? null
-        const add = added[k] ?? null
-        let leftParts: CharPart[] | null = null
-        let rightParts: CharPart[] | null = null
+        const rem = removed[k] ?? null;
+        const add = added[k] ?? null;
+        let leftParts: CharPart[] | null = null;
+        let rightParts: CharPart[] | null = null;
         if (rem && add) {
-          const cd = computeCharDiff(rem.line, add.line)
-          leftParts = cd.left
-          rightParts = cd.right
+          const cd = computeCharDiff(rem.line, add.line);
+          leftParts = cd.left;
+          rightParts = cd.right;
         }
         rows.push({
           leftNum: rem?.lineA ?? null,
@@ -189,21 +189,21 @@ function toSideBySide(diff: DiffLine[]): SideBySideRow[] {
           rightNum: add?.lineB ?? null,
           rightContent: add?.line ?? null,
           rightType: add ? "added" : "empty",
-          rightParts,
-        })
+          rightParts
+        });
       }
     }
   }
 
-  return rows
+  return rows;
 }
 
 function InlineDiff({
   parts,
-  side,
+  side
 }: {
-  parts: CharPart[]
-  side: "left" | "right"
+  parts: CharPart[];
+  side: "left" | "right";
 }) {
   return (
     <>
@@ -225,23 +225,23 @@ function InlineDiff({
         )
       )}
     </>
-  )
+  );
 }
 
 export default function DiffCheckerPage() {
-  const { t } = useLanguage()
-  const [textA, setTextA] = useToolState("diff-checker", "textA", "")
-  const [textB, setTextB] = useToolState("diff-checker", "textB", "")
-  const [rows, setRows] = useState<SideBySideRow[] | null>(null)
+  const { t } = useLanguage();
+  const [textA, setTextA] = useToolState("diff-checker", "textA", "");
+  const [textB, setTextB] = useToolState("diff-checker", "textB", "");
+  const [rows, setRows] = useState<SideBySideRow[] | null>(null);
   const [ignoreWhitespace, setIgnoreWhitespace] = useToolState(
     "diff-checker",
     "ignoreWS",
     false
-  )
+  );
 
-  const leftPanelRef = useRef<HTMLDivElement>(null)
-  const rightPanelRef = useRef<HTMLDivElement>(null)
-  const isSyncingScroll = useRef(false)
+  const leftPanelRef = useRef<HTMLDivElement>(null);
+  const rightPanelRef = useRef<HTMLDivElement>(null);
+  const isSyncingScroll = useRef(false);
 
   const handleLeftScroll = useCallback(() => {
     if (
@@ -249,12 +249,12 @@ export default function DiffCheckerPage() {
       !rightPanelRef.current ||
       !leftPanelRef.current
     )
-      return
-    isSyncingScroll.current = true
-    rightPanelRef.current.scrollTop = leftPanelRef.current.scrollTop
-    rightPanelRef.current.scrollLeft = leftPanelRef.current.scrollLeft
-    isSyncingScroll.current = false
-  }, [])
+      return;
+    isSyncingScroll.current = true;
+    rightPanelRef.current.scrollTop = leftPanelRef.current.scrollTop;
+    rightPanelRef.current.scrollLeft = leftPanelRef.current.scrollLeft;
+    isSyncingScroll.current = false;
+  }, []);
 
   const handleRightScroll = useCallback(() => {
     if (
@@ -262,33 +262,33 @@ export default function DiffCheckerPage() {
       !leftPanelRef.current ||
       !rightPanelRef.current
     )
-      return
-    isSyncingScroll.current = true
-    leftPanelRef.current.scrollTop = rightPanelRef.current.scrollTop
-    leftPanelRef.current.scrollLeft = rightPanelRef.current.scrollLeft
-    isSyncingScroll.current = false
-  }, [])
+      return;
+    isSyncingScroll.current = true;
+    leftPanelRef.current.scrollTop = rightPanelRef.current.scrollTop;
+    leftPanelRef.current.scrollLeft = rightPanelRef.current.scrollLeft;
+    isSyncingScroll.current = false;
+  }, []);
 
   const swapTexts = () => {
-    setTextA(textB)
-    setTextB(textA)
-    const diff = computeDiff(textB, textA, ignoreWhitespace)
-    setRows(toSideBySide(diff))
-  }
+    setTextA(textB);
+    setTextB(textA);
+    const diff = computeDiff(textB, textA, ignoreWhitespace);
+    setRows(toSideBySide(diff));
+  };
 
   const compare = () => {
-    const diff = computeDiff(textA, textB, ignoreWhitespace)
-    setRows(toSideBySide(diff))
-  }
+    const diff = computeDiff(textA, textB, ignoreWhitespace);
+    setRows(toSideBySide(diff));
+  };
 
   const clear = () => {
-    setTextA("")
-    setTextB("")
-    setRows(null)
-  }
+    setTextA("");
+    setTextB("");
+    setRows(null);
+  };
 
-  const added = rows?.filter((r) => r.rightType === "added").length ?? 0
-  const removed = rows?.filter((r) => r.leftType === "removed").length ?? 0
+  const added = rows?.filter((r) => r.rightType === "added").length ?? 0;
+  const removed = rows?.filter((r) => r.leftType === "removed").length ?? 0;
 
   return (
     <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
@@ -431,8 +431,8 @@ export default function DiffCheckerPage() {
             className="h-4 w-4 rounded accent-primary"
             checked={ignoreWhitespace}
             onChange={(e) => {
-              setIgnoreWhitespace(e.target.checked)
-              setRows(null)
+              setIgnoreWhitespace(e.target.checked);
+              setRows(null);
             }}
           />
           Hide whitespace
@@ -462,7 +462,7 @@ export default function DiffCheckerPage() {
             placeholder={t.diffFirstPlaceholder}
             value={textA}
             onChange={(e) => {
-              setTextA(e.target.value)
+              setTextA(e.target.value);
             }}
             onKeyDown={(e) => handleTextareaTab(e, textA, setTextA)}
             spellCheck={false}
@@ -490,7 +490,7 @@ export default function DiffCheckerPage() {
             placeholder={t.diffSecondPlaceholder}
             value={textB}
             onChange={(e) => {
-              setTextB(e.target.value)
+              setTextB(e.target.value);
             }}
             onKeyDown={(e) => handleTextareaTab(e, textB, setTextB)}
             spellCheck={false}
@@ -498,5 +498,5 @@ export default function DiffCheckerPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

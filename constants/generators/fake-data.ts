@@ -24,8 +24,8 @@ export const FIRST_NAMES = [
   "Wendy",
   "Xander",
   "Yara",
-  "Zoe",
-]
+  "Zoe"
+];
 
 export const LAST_NAMES = [
   "Smith",
@@ -47,8 +47,8 @@ export const LAST_NAMES = [
   "Taylor",
   "Moore",
   "Jackson",
-  "Martin",
-]
+  "Martin"
+];
 
 export const DOMAINS = [
   "gmail.com",
@@ -58,8 +58,8 @@ export const DOMAINS = [
   "protonmail.com",
   "icloud.com",
   "example.com",
-  "dev.io",
-]
+  "dev.io"
+];
 
 export const STREETS = [
   "Main St",
@@ -69,8 +69,8 @@ export const STREETS = [
   "Pine Rd",
   "Elm St",
   "Birch Blvd",
-  "Walnut Way",
-]
+  "Walnut Way"
+];
 
 export const CITIES = [
   "New York",
@@ -87,8 +87,8 @@ export const CITIES = [
   "Bandung",
   "Surabaya",
   "Medan",
-  "Bali",
-]
+  "Bali"
+];
 
 export const COMPANIES = [
   "Acme Corp",
@@ -99,8 +99,8 @@ export const COMPANIES = [
   "Hooli",
   "Pied Piper",
   "Dunder Mifflin",
-  "Vandelay Industries",
-]
+  "Vandelay Industries"
+];
 
 export const JOBS = [
   "Software Engineer",
@@ -113,10 +113,10 @@ export const JOBS = [
   "Frontend Developer",
   "Full Stack Developer",
   "CTO",
-  "CEO",
-]
+  "CEO"
+];
 
 export const LOREM =
   "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad minim veniam quis nostrud exercitation ullamco".split(
     " "
-  )
+  );

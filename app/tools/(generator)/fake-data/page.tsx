@@ -1,18 +1,18 @@
-"use client"
+"use client";
 
-import { Check, Copy, RefreshCw } from "lucide-react"
-import { useState } from "react"
+import { Check, Copy, RefreshCw } from "lucide-react";
+import { useState } from "react";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+  SelectValue
+} from "@/components/ui/select";
 import {
   CITIES,
   COMPANIES,
@@ -21,30 +21,30 @@ import {
   JOBS,
   LAST_NAMES,
   LOREM,
-  STREETS,
-} from "@/constants/generators/fake-data"
-import { useToolState } from "@/hooks/use-tool-state"
+  STREETS
+} from "@/constants/generators/fake-data";
+import { useToolState } from "@/hooks/use-tool-state";
 
 function rand<T>(arr: T[]): T {
-  return arr[Math.floor(Math.random() * arr.length)]
+  return arr[Math.floor(Math.random() * arr.length)];
 }
 function randInt(min: number, max: number): number {
-  return Math.floor(Math.random() * (max - min + 1)) + min
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 function generatePerson() {
-  const first = rand(FIRST_NAMES)
-  const last = rand(LAST_NAMES)
-  const email = `${first.toLowerCase()}.${last.toLowerCase()}${randInt(1, 99)}@${rand(DOMAINS)}`
-  const phone = `+1${randInt(200, 999)}${randInt(100, 999)}${randInt(1000, 9999)}`
+  const first = rand(FIRST_NAMES);
+  const last = rand(LAST_NAMES);
+  const email = `${first.toLowerCase()}.${last.toLowerCase()}${randInt(1, 99)}@${rand(DOMAINS)}`;
+  const phone = `+1${randInt(200, 999)}${randInt(100, 999)}${randInt(1000, 9999)}`;
   return {
     name: `${first} ${last}`,
     email,
     phone,
     age: randInt(18, 65),
     company: rand(COMPANIES),
-    job: rand(JOBS),
-  }
+    job: rand(JOBS)
+  };
 }
 
 function generateAddress() {
@@ -52,21 +52,21 @@ function generateAddress() {
     street: `${randInt(1, 999)} ${rand(STREETS)}`,
     city: rand(CITIES),
     zip: String(randInt(10000, 99999)),
-    country: rand(["US", "ID", "UK", "AU", "CA", "DE", "FR"]),
-  }
+    country: rand(["US", "ID", "UK", "AU", "CA", "DE", "FR"])
+  };
 }
 
 function generateInternet() {
-  const first = rand(FIRST_NAMES)
-  const last = rand(LAST_NAMES)
-  const username = `${first.toLowerCase()}${last.toLowerCase()}${randInt(1, 999)}`
+  const first = rand(FIRST_NAMES);
+  const last = rand(LAST_NAMES);
+  const username = `${first.toLowerCase()}${last.toLowerCase()}${randInt(1, 999)}`;
   return {
     username,
     email: `${username}@${rand(DOMAINS)}`,
     url: `https://${username.replace(/\d+/, "")}.${rand(["com", "dev", "io", "net", "org"])}`,
     avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}`,
-    ip: `${randInt(1, 254)}.${randInt(0, 254)}.${randInt(0, 254)}.${randInt(1, 254)}`,
-  }
+    ip: `${randInt(1, 254)}.${randInt(0, 254)}.${randInt(0, 254)}.${randInt(1, 254)}`
+  };
 }
 
 function generateProduct() {
@@ -78,8 +78,8 @@ function generateProduct() {
     "Ultra",
     "Smart",
     "Eco",
-    "Digital",
-  ]
+    "Digital"
+  ];
   const nouns = [
     "Widget",
     "Gadget",
@@ -88,8 +88,8 @@ function generateProduct() {
     "Suite",
     "Package",
     "Set",
-    "Kit",
-  ]
+    "Kit"
+  ];
   return {
     name: `${rand(adjectives)} ${rand(nouns)}`,
     price: `$${(randInt(99, 9999) / 100).toFixed(2)}`,
@@ -101,65 +101,65 @@ function generateProduct() {
       "Home",
       "Sports",
       "Beauty",
-      "Toys",
+      "Toys"
     ]),
-    stock: randInt(0, 500),
-  }
+    stock: randInt(0, 500)
+  };
 }
 
 function generateLoremParagraph(): string {
-  const sentences = randInt(3, 6)
+  const sentences = randInt(3, 6);
   return Array.from({ length: sentences }, () => {
-    const wordCount = randInt(8, 20)
-    const words = Array.from({ length: wordCount }, () => rand(LOREM))
+    const wordCount = randInt(8, 20);
+    const words = Array.from({ length: wordCount }, () => rand(LOREM));
     return (
       words[0].charAt(0).toUpperCase() +
       words[0].slice(1) +
       " " +
       words.slice(1).join(" ") +
       "."
-    )
-  }).join(" ")
+    );
+  }).join(" ");
 }
 
-type DataType = "person" | "address" | "internet" | "product" | "lorem"
+type DataType = "person" | "address" | "internet" | "product" | "lorem";
 
 const DATA_TYPES: { value: DataType; label: string }[] = [
   { value: "person", label: "Person" },
   { value: "address", label: "Address" },
   { value: "internet", label: "Internet" },
   { value: "product", label: "Product" },
-  { value: "lorem", label: "Lorem Ipsum" },
-]
+  { value: "lorem", label: "Lorem Ipsum" }
+];
 
 const generators: Record<DataType, () => unknown> = {
   person: generatePerson,
   address: generateAddress,
   internet: generateInternet,
   product: generateProduct,
-  lorem: generateLoremParagraph,
-}
+  lorem: generateLoremParagraph
+};
 
 export default function FakeDataPage() {
   const [dataType, setDataType] = useToolState<DataType>(
     "fake-data",
     "dataType",
     "person"
-  )
-  const [count, setCount] = useToolState("fake-data", "count", 5)
-  const [output, setOutput] = useState("")
-  const [copied, setCopied] = useState(false)
+  );
+  const [count, setCount] = useToolState("fake-data", "count", 5);
+  const [output, setOutput] = useState("");
+  const [copied, setCopied] = useState(false);
 
   const generate = () => {
-    const items = Array.from({ length: count }, generators[dataType])
-    setOutput(JSON.stringify(dataType === "lorem" ? items : items, null, 2))
-  }
+    const items = Array.from({ length: count }, generators[dataType]);
+    setOutput(JSON.stringify(dataType === "lorem" ? items : items, null, 2));
+  };
 
   const copy = async () => {
-    await navigator.clipboard.writeText(output)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
-  }
+    await navigator.clipboard.writeText(output);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
 
   return (
     <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
@@ -226,5 +226,5 @@ export default function FakeDataPage() {
         </div>
       )}
     </div>
-  )
+  );
 }

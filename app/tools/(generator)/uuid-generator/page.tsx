@@ -1,112 +1,112 @@
-"use client"
+"use client";
 
-import { Check, Copy, RefreshCw } from "lucide-react"
-import { useState } from "react"
+import { Check, Copy, RefreshCw } from "lucide-react";
+import { useState } from "react";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import { useLanguage } from "@/contexts/language-context"
-import { useToolState } from "@/hooks/use-tool-state"
+  SelectValue
+} from "@/components/ui/select";
+import { useLanguage } from "@/contexts/language-context";
+import { useToolState } from "@/hooks/use-tool-state";
 
-type UuidVersion = "v1" | "v4" | "v7"
+type UuidVersion = "v1" | "v4" | "v7";
 
 function generateV1(): string {
-  const bytes = new Uint8Array(16)
-  crypto.getRandomValues(bytes)
-  const EPOCH_OFFSET = 122192928000000000n
-  const timestamp = BigInt(Date.now()) * 10000n + EPOCH_OFFSET
-  const tLow = timestamp & 0xffffffffn
-  const tMid = (timestamp >> 32n) & 0xffffn
-  const tHi = (timestamp >> 48n) & 0x0fffn
-  bytes[0] = Number((tLow >> 24n) & 0xffn)
-  bytes[1] = Number((tLow >> 16n) & 0xffn)
-  bytes[2] = Number((tLow >> 8n) & 0xffn)
-  bytes[3] = Number(tLow & 0xffn)
-  bytes[4] = Number((tMid >> 8n) & 0xffn)
-  bytes[5] = Number(tMid & 0xffn)
-  bytes[6] = (Number(tHi >> 8n) & 0x0f) | 0x10
-  bytes[7] = Number(tHi & 0xffn)
-  bytes[8] = (bytes[8] & 0x3f) | 0x80
+  const bytes = new Uint8Array(16);
+  crypto.getRandomValues(bytes);
+  const EPOCH_OFFSET = 122192928000000000n;
+  const timestamp = BigInt(Date.now()) * 10000n + EPOCH_OFFSET;
+  const tLow = timestamp & 0xffffffffn;
+  const tMid = (timestamp >> 32n) & 0xffffn;
+  const tHi = (timestamp >> 48n) & 0x0fffn;
+  bytes[0] = Number((tLow >> 24n) & 0xffn);
+  bytes[1] = Number((tLow >> 16n) & 0xffn);
+  bytes[2] = Number((tLow >> 8n) & 0xffn);
+  bytes[3] = Number(tLow & 0xffn);
+  bytes[4] = Number((tMid >> 8n) & 0xffn);
+  bytes[5] = Number(tMid & 0xffn);
+  bytes[6] = (Number(tHi >> 8n) & 0x0f) | 0x10;
+  bytes[7] = Number(tHi & 0xffn);
+  bytes[8] = (bytes[8] & 0x3f) | 0x80;
   const hex = Array.from(bytes)
     .map((b) => b.toString(16).padStart(2, "0"))
-    .join("")
-  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`
+    .join("");
+  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
 }
 
 function generateV4(): string {
-  return crypto.randomUUID()
+  return crypto.randomUUID();
 }
 
 function generateV7(): string {
-  const bytes = new Uint8Array(16)
-  crypto.getRandomValues(bytes)
-  const ms = BigInt(Date.now())
-  bytes[0] = Number((ms >> 40n) & 0xffn)
-  bytes[1] = Number((ms >> 32n) & 0xffn)
-  bytes[2] = Number((ms >> 24n) & 0xffn)
-  bytes[3] = Number((ms >> 16n) & 0xffn)
-  bytes[4] = Number((ms >> 8n) & 0xffn)
-  bytes[5] = Number(ms & 0xffn)
-  bytes[6] = (bytes[6] & 0x0f) | 0x70
-  bytes[8] = (bytes[8] & 0x3f) | 0x80
+  const bytes = new Uint8Array(16);
+  crypto.getRandomValues(bytes);
+  const ms = BigInt(Date.now());
+  bytes[0] = Number((ms >> 40n) & 0xffn);
+  bytes[1] = Number((ms >> 32n) & 0xffn);
+  bytes[2] = Number((ms >> 24n) & 0xffn);
+  bytes[3] = Number((ms >> 16n) & 0xffn);
+  bytes[4] = Number((ms >> 8n) & 0xffn);
+  bytes[5] = Number(ms & 0xffn);
+  bytes[6] = (bytes[6] & 0x0f) | 0x70;
+  bytes[8] = (bytes[8] & 0x3f) | 0x80;
   const hex = Array.from(bytes)
     .map((b) => b.toString(16).padStart(2, "0"))
-    .join("")
-  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`
+    .join("");
+  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
 }
 
 const VERSION_LABELS: Record<UuidVersion, string> = {
   v1: "v1 — Time-based",
   v4: "v4 — Random",
-  v7: "v7 — Time-ordered",
-}
+  v7: "v7 — Time-ordered"
+};
 
 const generators: Record<UuidVersion, () => string> = {
   v1: generateV1,
   v4: generateV4,
-  v7: generateV7,
-}
+  v7: generateV7
+};
 
 export default function UuidGeneratorPage() {
-  const { t } = useLanguage()
+  const { t } = useLanguage();
   const [version, setVersion] = useToolState<UuidVersion>(
     "uuid-generator",
     "version",
     "v4"
-  )
-  const [count, setCount] = useToolState("uuid-generator", "count", 1)
-  const [uuids, setUuids] = useState<string[]>([])
-  const [copiedIndex, setCopiedIndex] = useState<number | null>(null)
-  const [copiedAll, setCopiedAll] = useState(false)
+  );
+  const [count, setCount] = useToolState("uuid-generator", "count", 1);
+  const [uuids, setUuids] = useState<string[]>([]);
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+  const [copiedAll, setCopiedAll] = useState(false);
 
   const generate = () => {
-    setUuids(Array.from({ length: count }, generators[version]))
-  }
+    setUuids(Array.from({ length: count }, generators[version]));
+  };
 
   const copyOne = async (uuid: string, index: number) => {
-    await navigator.clipboard.writeText(uuid)
-    setCopiedIndex(index)
-    setTimeout(() => setCopiedIndex(null), 1500)
-  }
+    await navigator.clipboard.writeText(uuid);
+    setCopiedIndex(index);
+    setTimeout(() => setCopiedIndex(null), 1500);
+  };
 
   const copyAll = async () => {
-    await navigator.clipboard.writeText(uuids.join("\n"))
-    setCopiedAll(true)
-    setTimeout(() => setCopiedAll(false), 1500)
-  }
+    await navigator.clipboard.writeText(uuids.join("\n"));
+    setCopiedAll(true);
+    setTimeout(() => setCopiedAll(false), 1500);
+  };
 
   const handleCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = parseInt(e.target.value) || 1
-    setCount(Math.min(100, Math.max(1, val)))
-  }
+    const val = parseInt(e.target.value) || 1;
+    setCount(Math.min(100, Math.max(1, val)));
+  };
 
   return (
     <div className="flex flex-col gap-6 px-4 lg:px-6">
@@ -192,5 +192,5 @@ export default function UuidGeneratorPage() {
         </div>
       )}
     </div>
-  )
+  );
 }

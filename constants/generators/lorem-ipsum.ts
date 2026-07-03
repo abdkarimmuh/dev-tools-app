@@ -107,5 +107,5 @@ export const WORDS = [
   "amet",
   "porttitor",
   "eget",
-  "dolor",
-]
+  "dolor"
+];

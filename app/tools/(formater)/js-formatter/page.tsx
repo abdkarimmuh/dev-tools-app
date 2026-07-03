@@ -1,19 +1,19 @@
-"use client"
+"use client";
 
-import { Check, Copy } from "lucide-react"
-import { useEffect, useRef, useState } from "react"
+import { Check, Copy } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
-import { Button } from "@/components/ui/button"
-import { useLanguage } from "@/contexts/language-context"
-import { useToolState } from "@/hooks/use-tool-state"
-import { handleTextareaTab } from "@/lib/utils"
+import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/contexts/language-context";
+import { useToolState } from "@/hooks/use-tool-state";
+import { handleTextareaTab } from "@/lib/utils";
 
 async function formatCode(code: string): Promise<string> {
   const [prettier, babelPlugin, estreePlugin] = await Promise.all([
     import("prettier/standalone"),
     import("prettier/plugins/babel"),
-    import("prettier/plugins/estree"),
-  ])
+    import("prettier/plugins/estree")
+  ]);
   return prettier.format(code, {
     parser: "babel",
     plugins: [babelPlugin, estreePlugin] as any[],
@@ -22,8 +22,8 @@ async function formatCode(code: string): Promise<string> {
     useTabs: false,
     semi: true,
     singleQuote: false,
-    trailingComma: "es5",
-  } as Parameters<typeof prettier.format>[1])
+    trailingComma: "es5"
+  } as Parameters<typeof prettier.format>[1]);
 }
 
 function minifyCode(code: string): string {
@@ -34,68 +34,68 @@ function minifyCode(code: string): string {
     .replace(/\n\s*\n/g, "\n")
     .replace(/\n /g, "\n")
     .replace(/ \n/g, "\n")
-    .trim()
+    .trim();
 }
 
 export default function JsFormatterPage() {
-  const { t } = useLanguage()
-  const [input, setInput] = useToolState("js-formatter", "input", "")
-  const [output, setOutput] = useState("")
-  const [error, setError] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
-  const [copied, setCopied] = useState(false)
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const { t } = useLanguage();
+  const [input, setInput] = useToolState("js-formatter", "input", "");
+  const [output, setOutput] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    if (debounceRef.current) clearTimeout(debounceRef.current)
+    if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(async () => {
       if (!input.trim()) {
-        setOutput("")
-        setError(null)
-        return
+        setOutput("");
+        setError(null);
+        return;
       }
-      setLoading(true)
-      setError(null)
+      setLoading(true);
+      setError(null);
       try {
-        setOutput(await formatCode(input))
+        setOutput(await formatCode(input));
       } catch (e) {
-        setError((e as Error).message)
-        setOutput("")
+        setError((e as Error).message);
+        setOutput("");
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }, 500)
+    }, 500);
     return () => {
-      if (debounceRef.current) clearTimeout(debounceRef.current)
-    }
-  }, [input])
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [input]);
 
   const minify = () => {
-    if (!input.trim()) return
+    if (!input.trim()) return;
     try {
-      setOutput(minifyCode(input))
-      setError(null)
+      setOutput(minifyCode(input));
+      setError(null);
     } catch (e) {
-      setError((e as Error).message)
-      setOutput("")
+      setError((e as Error).message);
+      setOutput("");
     }
-  }
+  };
 
   const format = () => {
-    if (!output) return
-    setInput(output)
-    setError(null)
-  }
+    if (!output) return;
+    setInput(output);
+    setError(null);
+  };
   const clear = () => {
-    setInput("")
-    setOutput("")
-    setError(null)
-  }
+    setInput("");
+    setOutput("");
+    setError(null);
+  };
   const copy = async () => {
-    await navigator.clipboard.writeText(output)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
-  }
+    await navigator.clipboard.writeText(output);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
 
   return (
     <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
@@ -170,5 +170,5 @@ export default function JsFormatterPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

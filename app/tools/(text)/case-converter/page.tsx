@@ -1,12 +1,12 @@
-"use client"
+"use client";
 
-import { Check, Copy } from "lucide-react"
-import { useState } from "react"
+import { Check, Copy } from "lucide-react";
+import { useState } from "react";
 
-import { Button } from "@/components/ui/button"
-import { useLanguage } from "@/contexts/language-context"
-import { useToolState } from "@/hooks/use-tool-state"
-import { handleTextareaTab } from "@/lib/utils"
+import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/contexts/language-context";
+import { useToolState } from "@/hooks/use-tool-state";
+import { handleTextareaTab } from "@/lib/utils";
 
 function toWords(str: string): string[] {
   return str
@@ -15,83 +15,83 @@ function toWords(str: string): string[] {
     .replace(/[-_]+/g, " ")
     .trim()
     .split(/\s+/)
-    .filter(Boolean)
+    .filter(Boolean);
 }
 
 const conversions = [
   {
     label: "camelCase",
     convert: (str: string) => {
-      const words = toWords(str)
+      const words = toWords(str);
       return words
         .map((w, i) =>
           i === 0
             ? w.toLowerCase()
             : w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()
         )
-        .join("")
-    },
+        .join("");
+    }
   },
   {
     label: "PascalCase",
     convert: (str: string) =>
       toWords(str)
         .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
-        .join(""),
+        .join("")
   },
   {
     label: "snake_case",
     convert: (str: string) =>
       toWords(str)
         .map((w) => w.toLowerCase())
-        .join("_"),
+        .join("_")
   },
   {
     label: "kebab-case",
     convert: (str: string) =>
       toWords(str)
         .map((w) => w.toLowerCase())
-        .join("-"),
+        .join("-")
   },
   {
     label: "SCREAMING_SNAKE",
     convert: (str: string) =>
       toWords(str)
         .map((w) => w.toUpperCase())
-        .join("_"),
+        .join("_")
   },
   {
     label: "Title Case",
     convert: (str: string) =>
       toWords(str)
         .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
-        .join(" "),
+        .join(" ")
   },
   {
     label: "lowercase",
-    convert: (str: string) => str.toLowerCase(),
+    convert: (str: string) => str.toLowerCase()
   },
   {
     label: "UPPERCASE",
-    convert: (str: string) => str.toUpperCase(),
-  },
-]
+    convert: (str: string) => str.toUpperCase()
+  }
+];
 
 function CopyButton({
   text,
   copyLabel,
-  copiedLabel,
+  copiedLabel
 }: {
-  text: string
-  copyLabel: string
-  copiedLabel: string
+  text: string;
+  copyLabel: string;
+  copiedLabel: string;
 }) {
-  const [copied, setCopied] = useState(false)
+  const [copied, setCopied] = useState(false);
   const copy = async () => {
-    await navigator.clipboard.writeText(text)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
-  }
+    await navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
   return (
     <Button
       size="sm"
@@ -102,12 +102,12 @@ function CopyButton({
       {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
       {copied ? copiedLabel : copyLabel}
     </Button>
-  )
+  );
 }
 
 export default function CaseConverterPage() {
-  const { t } = useLanguage()
-  const [input, setInput] = useToolState("case-converter", "input", "")
+  const { t } = useLanguage();
+  const [input, setInput] = useToolState("case-converter", "input", "");
 
   return (
     <div className="flex max-w-3xl flex-col gap-6 px-4 lg:px-6">
@@ -126,7 +126,7 @@ export default function CaseConverterPage() {
       {input ? (
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           {conversions.map(({ label, convert }) => {
-            const result = convert(input)
+            const result = convert(input);
             return (
               <div
                 key={label}
@@ -142,7 +142,7 @@ export default function CaseConverterPage() {
                   copiedLabel={t.copied}
                 />
               </div>
-            )
+            );
           })}
         </div>
       ) : (
@@ -151,5 +151,5 @@ export default function CaseConverterPage() {
         </div>
       )}
     </div>
-  )
+  );
 }

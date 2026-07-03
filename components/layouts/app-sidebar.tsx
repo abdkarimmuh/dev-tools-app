@@ -1,18 +1,20 @@
-"use client"
+"use client";
 
-import { Globe, Wrench } from "lucide-react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import * as React from "react"
+import { Globe } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useTheme } from "next-themes";
+import * as React from "react";
 
-import { ToolSearch } from "@/components/layouts/tool-search"
-import { Button } from "@/components/ui/button"
+import { ToolSearch } from "@/components/layouts/tool-search";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+  DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu";
 import {
   Sidebar,
   SidebarContent,
@@ -23,16 +25,17 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar,
-} from "@/components/ui/sidebar"
-import { navMenus } from "@/config/nav"
-import { useLanguage } from "@/contexts/language-context"
-import { navGroupLabels } from "@/lib/i18n"
+  useSidebar
+} from "@/components/ui/sidebar";
+import { navMenus } from "@/config/nav";
+import { useLanguage } from "@/contexts/language-context";
+import { navGroupLabels } from "@/lib/i18n";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const pathname = usePathname()
-  const { language, setLanguage } = useLanguage()
-  const { setOpenMobile } = useSidebar()
+  const pathname = usePathname();
+  const { language, setLanguage } = useLanguage();
+  const { setOpenMobile } = useSidebar();
+  const { resolvedTheme } = useTheme();
 
   return (
     <Sidebar collapsible="offcanvas" {...props}>
@@ -44,7 +47,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               className="data-[slot=sidebar-menu-button]:p-1.5!"
             >
               <Link href="/" onClick={() => setOpenMobile(false)}>
-                <Wrench className="size-5!" />
+                <Image
+                  src={
+                    resolvedTheme === "dark" ? "/logo-white.png" : "/logo.png"
+                  }
+                  alt="DevTools"
+                  width={20}
+                  height={20}
+                />
                 <span className="text-base font-semibold">DevTools</span>
               </Link>
             </SidebarMenuButton>
@@ -59,7 +69,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             </SidebarGroupLabel>
             <SidebarMenu>
               {group.items.map((item) => {
-                const isActive = pathname === item.url
+                const isActive = pathname === item.url;
                 return (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton
@@ -81,7 +91,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
-                )
+                );
               })}
             </SidebarMenu>
           </SidebarGroup>
@@ -122,5 +132,5 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </div>
       </SidebarFooter>
     </Sidebar>
-  )
+  );
 }

@@ -1,45 +1,45 @@
-"use client"
+"use client";
 
-import { Check, Copy } from "lucide-react"
-import { useState } from "react"
+import { Check, Copy } from "lucide-react";
+import { useState } from "react";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   type CronField,
   FIELDS,
-  PRESETS,
-} from "@/constants/generators/cron-generator"
-import { useToolState } from "@/hooks/use-tool-state"
+  PRESETS
+} from "@/constants/generators/cron-generator";
+import { useToolState } from "@/hooks/use-tool-state";
 
 function describeCron(expr: string): string {
-  const parts = expr.trim().split(/\s+/)
-  if (parts.length !== 5) return "Invalid cron expression"
-  const [min, hour, day, month, weekday] = parts
+  const parts = expr.trim().split(/\s+/);
+  if (parts.length !== 5) return "Invalid cron expression";
+  const [min, hour, day, month, weekday] = parts;
 
   const describeField = (
     val: string,
     unit: string,
     names?: string[]
   ): string => {
-    if (val === "*") return `every ${unit}`
-    if (val.startsWith("*/")) return `every ${val.slice(2)} ${unit}s`
+    if (val === "*") return `every ${unit}`;
+    if (val.startsWith("*/")) return `every ${val.slice(2)} ${unit}s`;
     if (val.includes("-")) {
-      const [a, b] = val.split("-")
-      const na = names ? (names[Number(a)] ?? a) : a
-      const nb = names ? (names[Number(b)] ?? b) : b
-      return `${unit} ${na}–${nb}`
+      const [a, b] = val.split("-");
+      const na = names ? (names[Number(a)] ?? a) : a;
+      const nb = names ? (names[Number(b)] ?? b) : b;
+      return `${unit} ${na}–${nb}`;
     }
     if (val.includes(",")) {
       const parts = val
         .split(",")
-        .map((v) => (names ? (names[Number(v)] ?? v) : v))
-      return `${unit}s ${parts.join(", ")}`
+        .map((v) => (names ? (names[Number(v)] ?? v) : v));
+      return `${unit}s ${parts.join(", ")}`;
     }
-    const name = names ? (names[Number(val)] ?? val) : val
-    return `${unit} ${name}`
-  }
+    const name = names ? (names[Number(val)] ?? val) : val;
+    return `${unit} ${name}`;
+  };
 
   const parts_desc = [
     min === "*" ? null : describeField(min, "minute"),
@@ -60,7 +60,7 @@ function describeCron(expr: string): string {
           "Sep",
           "Oct",
           "Nov",
-          "Dec",
+          "Dec"
         ]),
     weekday === "*"
       ? null
@@ -71,30 +71,30 @@ function describeCron(expr: string): string {
           "Wed",
           "Thu",
           "Fri",
-          "Sat",
-        ]),
-  ].filter(Boolean)
+          "Sat"
+        ])
+  ].filter(Boolean);
 
-  if (parts_desc.length === 0) return "Every minute"
-  return "Runs at " + parts_desc.join(", ")
+  if (parts_desc.length === 0) return "Every minute";
+  return "Runs at " + parts_desc.join(", ");
 }
 
-type FieldValues = Record<CronField["key"], string>
+type FieldValues = Record<CronField["key"], string>;
 
 function fieldsToExpr(fields: FieldValues): string {
-  return `${fields.minute} ${fields.hour} ${fields.day} ${fields.month} ${fields.weekday}`
+  return `${fields.minute} ${fields.hour} ${fields.day} ${fields.month} ${fields.weekday}`;
 }
 
 function exprToFields(expr: string): FieldValues | null {
-  const parts = expr.trim().split(/\s+/)
-  if (parts.length !== 5) return null
+  const parts = expr.trim().split(/\s+/);
+  if (parts.length !== 5) return null;
   return {
     minute: parts[0],
     hour: parts[1],
     day: parts[2],
     month: parts[3],
-    weekday: parts[4],
-  }
+    weekday: parts[4]
+  };
 }
 
 export default function CronGeneratorPage() {
@@ -106,39 +106,39 @@ export default function CronGeneratorPage() {
       hour: "*",
       day: "*",
       month: "*",
-      weekday: "*",
+      weekday: "*"
     }
-  )
+  );
   const [rawExpr, setRawExpr] = useToolState(
     "cron-generator",
     "rawExpr",
     "* * * * *"
-  )
-  const [copied, setCopied] = useState(false)
+  );
+  const [copied, setCopied] = useState(false);
 
-  const expr = fieldsToExpr(fields)
+  const expr = fieldsToExpr(fields);
 
   const updateField = (key: CronField["key"], value: string) => {
-    const next = { ...fields, [key]: value || "*" }
-    setFields(next)
-    setRawExpr(fieldsToExpr(next))
-  }
+    const next = { ...fields, [key]: value || "*" };
+    setFields(next);
+    setRawExpr(fieldsToExpr(next));
+  };
 
   const applyRaw = (value: string) => {
-    setRawExpr(value)
-    const parsed = exprToFields(value)
-    if (parsed) setFields(parsed)
-  }
+    setRawExpr(value);
+    const parsed = exprToFields(value);
+    if (parsed) setFields(parsed);
+  };
 
   const applyPreset = (value: string) => {
-    applyRaw(value)
-  }
+    applyRaw(value);
+  };
 
   const copy = async () => {
-    await navigator.clipboard.writeText(expr)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
-  }
+    await navigator.clipboard.writeText(expr);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
 
   return (
     <div className="flex max-w-2xl flex-col gap-6 px-4 lg:px-6">
@@ -212,5 +212,5 @@ export default function CronGeneratorPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

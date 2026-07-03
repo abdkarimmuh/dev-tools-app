@@ -1,33 +1,33 @@
-"use client"
+"use client";
 
-import { Check, Copy } from "lucide-react"
-import { useState } from "react"
+import { Check, Copy } from "lucide-react";
+import { useState } from "react";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { useLanguage } from "@/contexts/language-context"
-import { useToolState } from "@/hooks/use-tool-state"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useLanguage } from "@/contexts/language-context";
+import { useToolState } from "@/hooks/use-tool-state";
 
 function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
-  const clean = hex.replace("#", "")
+  const clean = hex.replace("#", "");
   const full =
     clean.length === 3
       ? clean
           .split("")
           .map((c) => c + c)
           .join("")
-      : clean
-  if (!/^[0-9a-f]{6}$/i.test(full)) return null
+      : clean;
+  if (!/^[0-9a-f]{6}$/i.test(full)) return null;
   return {
     r: parseInt(full.slice(0, 2), 16),
     g: parseInt(full.slice(2, 4), 16),
-    b: parseInt(full.slice(4, 6), 16),
-  }
+    b: parseInt(full.slice(4, 6), 16)
+  };
 }
 
 function rgbToHex(r: number, g: number, b: number): string {
-  return "#" + [r, g, b].map((v) => v.toString(16).padStart(2, "0")).join("")
+  return "#" + [r, g, b].map((v) => v.toString(16).padStart(2, "0")).join("");
 }
 
 function rgbToHsl(
@@ -37,30 +37,30 @@ function rgbToHsl(
 ): { h: number; s: number; l: number } {
   const rn = r / 255,
     gn = g / 255,
-    bn = b / 255
+    bn = b / 255;
   const max = Math.max(rn, gn, bn),
-    min = Math.min(rn, gn, bn)
-  const l = (max + min) / 2
-  if (max === min) return { h: 0, s: 0, l: Math.round(l * 100) }
-  const d = max - min
-  const s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
-  let h = 0
+    min = Math.min(rn, gn, bn);
+  const l = (max + min) / 2;
+  if (max === min) return { h: 0, s: 0, l: Math.round(l * 100) };
+  const d = max - min;
+  const s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+  let h = 0;
   switch (max) {
     case rn:
-      h = ((gn - bn) / d + (gn < bn ? 6 : 0)) / 6
-      break
+      h = ((gn - bn) / d + (gn < bn ? 6 : 0)) / 6;
+      break;
     case gn:
-      h = ((bn - rn) / d + 2) / 6
-      break
+      h = ((bn - rn) / d + 2) / 6;
+      break;
     case bn:
-      h = ((rn - gn) / d + 4) / 6
-      break
+      h = ((rn - gn) / d + 4) / 6;
+      break;
   }
   return {
     h: Math.round(h * 360),
     s: Math.round(s * 100),
-    l: Math.round(l * 100),
-  }
+    l: Math.round(l * 100)
+  };
 }
 
 function hslToRgb(
@@ -69,52 +69,52 @@ function hslToRgb(
   l: number
 ): { r: number; g: number; b: number } {
   const sn = s / 100,
-    ln = l / 100
-  const k = (n: number) => (n + h / 30) % 12
-  const a = sn * Math.min(ln, 1 - ln)
+    ln = l / 100;
+  const k = (n: number) => (n + h / 30) % 12;
+  const a = sn * Math.min(ln, 1 - ln);
   const f = (n: number) =>
-    ln - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)))
+    ln - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
   return {
     r: Math.round(f(0) * 255),
     g: Math.round(f(8) * 255),
-    b: Math.round(f(4) * 255),
-  }
+    b: Math.round(f(4) * 255)
+  };
 }
 
 interface Color {
-  hex: string
-  r: number
-  g: number
-  b: number
-  h: number
-  s: number
-  l: number
+  hex: string;
+  r: number;
+  g: number;
+  b: number;
+  h: number;
+  s: number;
+  l: number;
 }
 
 function fromHex(hex: string): Color | null {
-  const rgb = hexToRgb(hex)
-  if (!rgb) return null
-  const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b)
-  return { hex: rgbToHex(rgb.r, rgb.g, rgb.b), ...rgb, ...hsl }
+  const rgb = hexToRgb(hex);
+  if (!rgb) return null;
+  const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
+  return { hex: rgbToHex(rgb.r, rgb.g, rgb.b), ...rgb, ...hsl };
 }
 
 function fromRgb(r: number, g: number, b: number): Color {
-  const hsl = rgbToHsl(r, g, b)
-  return { hex: rgbToHex(r, g, b), r, g, b, ...hsl }
+  const hsl = rgbToHsl(r, g, b);
+  return { hex: rgbToHex(r, g, b), r, g, b, ...hsl };
 }
 
 function fromHsl(h: number, s: number, l: number): Color {
-  const rgb = hslToRgb(h, s, l)
-  return { hex: rgbToHex(rgb.r, rgb.g, rgb.b), ...rgb, h, s, l }
+  const rgb = hslToRgb(h, s, l);
+  return { hex: rgbToHex(rgb.r, rgb.g, rgb.b), ...rgb, h, s, l };
 }
 
 function CopyButton({ text }: { text: string }) {
-  const [copied, setCopied] = useState(false)
+  const [copied, setCopied] = useState(false);
   const copy = async () => {
-    await navigator.clipboard.writeText(text)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
-  }
+    await navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
   return (
     <Button
       size="sm"
@@ -124,80 +124,80 @@ function CopyButton({ text }: { text: string }) {
     >
       {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
     </Button>
-  )
+  );
 }
 
 export default function ColorConverterPage() {
-  const { t } = useLanguage()
-  const [hexInput, setHexInput] = useToolState("color-converter", "hex", "")
-  const [color, setColor] = useState<Color | null>(() => fromHex(hexInput))
+  const { t } = useLanguage();
+  const [hexInput, setHexInput] = useToolState("color-converter", "hex", "");
+  const [color, setColor] = useState<Color | null>(() => fromHex(hexInput));
   const [rgbInput, setRgbInput] = useState(() => {
-    const c = fromHex(hexInput)
+    const c = fromHex(hexInput);
     return c
       ? { r: String(c.r), g: String(c.g), b: String(c.b) }
-      : { r: "", g: "", b: "" }
-  })
+      : { r: "", g: "", b: "" };
+  });
   const [hslInput, setHslInput] = useState(() => {
-    const c = fromHex(hexInput)
+    const c = fromHex(hexInput);
     return c
       ? { h: String(c.h), s: String(c.s), l: String(c.l) }
-      : { h: "", s: "", l: "" }
-  })
+      : { h: "", s: "", l: "" };
+  });
   const [activeInput, setActiveInput] = useState<"hex" | "rgb" | "hsl" | null>(
     null
-  )
+  );
 
   const applyHex = (value: string) => {
-    setHexInput(value)
-    const parsed = fromHex(value)
+    setHexInput(value);
+    const parsed = fromHex(value);
     if (parsed) {
-      setColor(parsed)
+      setColor(parsed);
       if (activeInput === "hex") {
         setRgbInput({
           r: String(parsed.r),
           g: String(parsed.g),
-          b: String(parsed.b),
-        })
+          b: String(parsed.b)
+        });
         setHslInput({
           h: String(parsed.h),
           s: String(parsed.s),
-          l: String(parsed.l),
-        })
+          l: String(parsed.l)
+        });
       }
     }
-  }
+  };
 
   const applyRgb = () => {
     const r = parseInt(rgbInput.r),
       g = parseInt(rgbInput.g),
-      b = parseInt(rgbInput.b)
-    if ([r, g, b].some((v) => isNaN(v) || v < 0 || v > 255)) return
-    const parsed = fromRgb(r, g, b)
-    setColor(parsed)
-    setHexInput(parsed.hex)
+      b = parseInt(rgbInput.b);
+    if ([r, g, b].some((v) => isNaN(v) || v < 0 || v > 255)) return;
+    const parsed = fromRgb(r, g, b);
+    setColor(parsed);
+    setHexInput(parsed.hex);
     setHslInput({
       h: String(parsed.h),
       s: String(parsed.s),
-      l: String(parsed.l),
-    })
-  }
+      l: String(parsed.l)
+    });
+  };
 
   const applyHsl = () => {
     const h = parseInt(hslInput.h),
       s = parseInt(hslInput.s),
-      l = parseInt(hslInput.l)
-    if (isNaN(h) || h < 0 || h > 360) return
-    if (isNaN(s) || s < 0 || s > 100) return
-    if (isNaN(l) || l < 0 || l > 100) return
-    const parsed = fromHsl(h, s, l)
-    setColor(parsed)
-    setHexInput(parsed.hex)
+      l = parseInt(hslInput.l);
+    if (isNaN(h) || h < 0 || h > 360) return;
+    if (isNaN(s) || s < 0 || s > 100) return;
+    if (isNaN(l) || l < 0 || l > 100) return;
+    const parsed = fromHsl(h, s, l);
+    setColor(parsed);
+    setHexInput(parsed.hex);
     setRgbInput({
       r: String(parsed.r),
       g: String(parsed.g),
-      b: String(parsed.b),
-    })
-  }
+      b: String(parsed.b)
+    });
+  };
 
   return (
     <div className="flex max-w-lg flex-col gap-6 px-4 lg:px-6">
@@ -262,7 +262,7 @@ export default function ColorConverterPage() {
             [
               { key: "h", label: "H", max: 360 },
               { key: "s", label: "S", max: 100 },
-              { key: "l", label: "L", max: 100 },
+              { key: "l", label: "L", max: 100 }
             ] as const
           ).map(({ key, label, max }) => (
             <div key={key} className="flex flex-1 flex-col gap-1">
@@ -300,20 +300,20 @@ export default function ColorConverterPage() {
           type="color"
           value={color?.hex ?? "#000000"}
           onChange={(e) => {
-            setActiveInput("hex")
-            applyHex(e.target.value)
-            const parsed = fromHex(e.target.value)
+            setActiveInput("hex");
+            applyHex(e.target.value);
+            const parsed = fromHex(e.target.value);
             if (parsed) {
               setRgbInput({
                 r: String(parsed.r),
                 g: String(parsed.g),
-                b: String(parsed.b),
-              })
+                b: String(parsed.b)
+              });
               setHslInput({
                 h: String(parsed.h),
                 s: String(parsed.s),
-                l: String(parsed.l),
-              })
+                l: String(parsed.l)
+              });
             }
           }}
           className="h-9 w-16 cursor-pointer rounded-md border bg-transparent p-1"
@@ -323,5 +323,5 @@ export default function ColorConverterPage() {
         </span>
       </div>
     </div>
-  )
+  );
 }

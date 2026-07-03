@@ -1,67 +1,67 @@
-"use client"
+"use client";
 
-import { Check, Copy } from "lucide-react"
-import { useState } from "react"
+import { Check, Copy } from "lucide-react";
+import { useState } from "react";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { COMMON_PX } from "@/constants/frontend/px-rem"
-import { useLanguage } from "@/contexts/language-context"
-import { useToolState } from "@/hooks/use-tool-state"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { COMMON_PX } from "@/constants/frontend/px-rem";
+import { useLanguage } from "@/contexts/language-context";
+import { useToolState } from "@/hooks/use-tool-state";
 
 function round(n: number, decimals = 4): number {
-  return Math.round(n * 10 ** decimals) / 10 ** decimals
+  return Math.round(n * 10 ** decimals) / 10 ** decimals;
 }
 
 function CopyButton({ text }: { text: string }) {
-  const [copied, setCopied] = useState(false)
+  const [copied, setCopied] = useState(false);
   const copy = async () => {
-    await navigator.clipboard.writeText(text)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
-  }
+    await navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
   return (
     <Button size="sm" variant="ghost" onClick={copy} className="h-6 w-6 p-0">
       {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
     </Button>
-  )
+  );
 }
 
 export default function PxRemPage() {
-  const { t } = useLanguage()
-  const [base, setBase] = useToolState("px-rem", "base", 16)
-  const [pxInput, setPxInput] = useToolState("px-rem", "px", "")
-  const [remInput, setRemInput] = useToolState("px-rem", "rem", "")
+  const { t } = useLanguage();
+  const [base, setBase] = useToolState("px-rem", "base", 16);
+  const [pxInput, setPxInput] = useToolState("px-rem", "px", "");
+  const [remInput, setRemInput] = useToolState("px-rem", "rem", "");
 
   const pxToRem = (px: string) => {
-    const val = parseFloat(px)
-    if (isNaN(val)) return ""
-    return String(round(val / base))
-  }
+    const val = parseFloat(px);
+    if (isNaN(val)) return "";
+    return String(round(val / base));
+  };
 
   const remToPx = (rem: string) => {
-    const val = parseFloat(rem)
-    if (isNaN(val)) return ""
-    return String(round(val * base))
-  }
+    const val = parseFloat(rem);
+    if (isNaN(val)) return "";
+    return String(round(val * base));
+  };
 
   const handlePxChange = (v: string) => {
-    setPxInput(v)
-    setRemInput(pxToRem(v))
-  }
+    setPxInput(v);
+    setRemInput(pxToRem(v));
+  };
 
   const handleRemChange = (v: string) => {
-    setRemInput(v)
-    setPxInput(remToPx(v))
-  }
+    setRemInput(v);
+    setPxInput(remToPx(v));
+  };
 
   const handleBaseChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = parseFloat(e.target.value) || 16
-    setBase(Math.max(1, val))
+    const val = parseFloat(e.target.value) || 16;
+    setBase(Math.max(1, val));
     if (pxInput)
-      setRemInput(String(round(parseFloat(pxInput) / Math.max(1, val))))
-  }
+      setRemInput(String(round(parseFloat(pxInput) / Math.max(1, val))));
+  };
 
   return (
     <div className="flex max-w-2xl flex-col gap-8 px-4 lg:px-6">
@@ -130,8 +130,8 @@ export default function PxRemPage() {
             </thead>
             <tbody>
               {COMMON_PX.map((px) => {
-                const rem = round(px / base)
-                const remStr = `${rem}rem`
+                const rem = round(px / base);
+                const remStr = `${rem}rem`;
                 return (
                   <tr
                     key={px}
@@ -143,12 +143,12 @@ export default function PxRemPage() {
                       <CopyButton text={remStr} />
                     </td>
                   </tr>
-                )
+                );
               })}
             </tbody>
           </table>
         </div>
       </div>
     </div>
-  )
+  );
 }

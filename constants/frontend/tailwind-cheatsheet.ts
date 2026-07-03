@@ -1,11 +1,11 @@
 export interface TailwindEntry {
-  class: string
-  css: string
+  class: string;
+  css: string;
 }
 
 export interface TailwindSection {
-  title: string
-  entries: TailwindEntry[]
+  title: string;
+  entries: TailwindEntry[];
 }
 
 export const SECTIONS: TailwindSection[] = [
@@ -25,8 +25,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "hidden", css: "display: none" },
       { class: "table", css: "display: table" },
       { class: "table-row", css: "display: table-row" },
-      { class: "table-cell", css: "display: table-cell" },
-    ],
+      { class: "table-cell", css: "display: table-cell" }
+    ]
   },
   {
     title: "Position",
@@ -46,16 +46,16 @@ export const SECTIONS: TailwindSection[] = [
       { class: "left-0", css: "left: 0px" },
       { class: "top-auto", css: "top: auto" },
       { class: "top-1/2", css: "top: 50%" },
-      { class: "top-full", css: "top: 100%" },
-    ],
+      { class: "top-full", css: "top: 100%" }
+    ]
   },
   {
     title: "Visibility",
     entries: [
       { class: "visible", css: "visibility: visible" },
       { class: "invisible", css: "visibility: hidden" },
-      { class: "collapse", css: "visibility: collapse" },
-    ],
+      { class: "collapse", css: "visibility: collapse" }
+    ]
   },
   {
     title: "Z-Index",
@@ -66,8 +66,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "z-30", css: "z-index: 30" },
       { class: "z-40", css: "z-index: 40" },
       { class: "z-50", css: "z-index: 50" },
-      { class: "z-auto", css: "z-index: auto" },
-    ],
+      { class: "z-auto", css: "z-index: auto" }
+    ]
   },
   {
     title: "Overflow",
@@ -82,8 +82,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "overflow-x-hidden", css: "overflow-x: hidden" },
       { class: "overflow-y-hidden", css: "overflow-y: hidden" },
       { class: "overflow-x-scroll", css: "overflow-x: scroll" },
-      { class: "overflow-y-scroll", css: "overflow-y: scroll" },
-    ],
+      { class: "overflow-y-scroll", css: "overflow-y: scroll" }
+    ]
   },
   {
     title: "Overscroll Behavior",
@@ -93,15 +93,15 @@ export const SECTIONS: TailwindSection[] = [
       { class: "overscroll-none", css: "overscroll-behavior: none" },
       { class: "overscroll-y-auto", css: "overscroll-behavior-y: auto" },
       { class: "overscroll-y-contain", css: "overscroll-behavior-y: contain" },
-      { class: "overscroll-x-none", css: "overscroll-behavior-x: none" },
-    ],
+      { class: "overscroll-x-none", css: "overscroll-behavior-x: none" }
+    ]
   },
   {
     title: "Box Sizing",
     entries: [
       { class: "box-border", css: "box-sizing: border-box" },
-      { class: "box-content", css: "box-sizing: content-box" },
-    ],
+      { class: "box-content", css: "box-sizing: content-box" }
+    ]
   },
   {
     title: "Float & Clear",
@@ -116,15 +116,15 @@ export const SECTIONS: TailwindSection[] = [
       { class: "clear-left", css: "clear: left" },
       { class: "clear-right", css: "clear: right" },
       { class: "clear-both", css: "clear: both" },
-      { class: "clear-none", css: "clear: none" },
-    ],
+      { class: "clear-none", css: "clear: none" }
+    ]
   },
   {
     title: "Isolation",
     entries: [
       { class: "isolate", css: "isolation: isolate" },
-      { class: "isolation-auto", css: "isolation: auto" },
-    ],
+      { class: "isolation-auto", css: "isolation: auto" }
+    ]
   },
   {
     title: "Object Fit",
@@ -133,8 +133,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "object-cover", css: "object-fit: cover" },
       { class: "object-fill", css: "object-fit: fill" },
       { class: "object-none", css: "object-fit: none" },
-      { class: "object-scale-down", css: "object-fit: scale-down" },
-    ],
+      { class: "object-scale-down", css: "object-fit: scale-down" }
+    ]
   },
   {
     title: "Object Position",
@@ -147,16 +147,16 @@ export const SECTIONS: TailwindSection[] = [
       { class: "object-right", css: "object-position: right" },
       { class: "object-right-bottom", css: "object-position: right bottom" },
       { class: "object-right-top", css: "object-position: right top" },
-      { class: "object-top", css: "object-position: top" },
-    ],
+      { class: "object-top", css: "object-position: top" }
+    ]
   },
   {
     title: "Aspect Ratio",
     entries: [
       { class: "aspect-auto", css: "aspect-ratio: auto" },
       { class: "aspect-square", css: "aspect-ratio: 1 / 1" },
-      { class: "aspect-video", css: "aspect-ratio: 16 / 9" },
-    ],
+      { class: "aspect-video", css: "aspect-ratio: 16 / 9" }
+    ]
   },
   {
     title: "Columns",
@@ -168,8 +168,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "columns-3xs", css: "columns: 16rem" },
       { class: "columns-xs", css: "columns: 20rem" },
       { class: "columns-sm", css: "columns: 24rem" },
-      { class: "columns-md", css: "columns: 28rem" },
-    ],
+      { class: "columns-md", css: "columns: 28rem" }
+    ]
   },
   {
     title: "Break",
@@ -183,17 +183,17 @@ export const SECTIONS: TailwindSection[] = [
       { class: "break-inside-auto", css: "break-inside: auto" },
       { class: "break-inside-avoid", css: "break-inside: avoid" },
       { class: "break-inside-avoid-page", css: "break-inside: avoid-page" },
-      { class: "break-inside-avoid-column", css: "break-inside: avoid-column" },
-    ],
+      { class: "break-inside-avoid-column", css: "break-inside: avoid-column" }
+    ]
   },
   {
     title: "Container",
     entries: [
       {
         class: "container",
-        css: "width: 100%; max-width per breakpoint (sm→640px, md→768px, lg→1024px, xl→1280px, 2xl→1536px)",
-      },
-    ],
+        css: "width: 100%; max-width per breakpoint (sm→640px, md→768px, lg→1024px, xl→1280px, 2xl→1536px)"
+      }
+    ]
   },
   // ─── FLEXBOX ──────────────────────────────────────────────────────────────
   {
@@ -202,16 +202,16 @@ export const SECTIONS: TailwindSection[] = [
       { class: "flex-row", css: "flex-direction: row" },
       { class: "flex-row-reverse", css: "flex-direction: row-reverse" },
       { class: "flex-col", css: "flex-direction: column" },
-      { class: "flex-col-reverse", css: "flex-direction: column-reverse" },
-    ],
+      { class: "flex-col-reverse", css: "flex-direction: column-reverse" }
+    ]
   },
   {
     title: "Flex Wrap",
     entries: [
       { class: "flex-wrap", css: "flex-wrap: wrap" },
       { class: "flex-wrap-reverse", css: "flex-wrap: wrap-reverse" },
-      { class: "flex-nowrap", css: "flex-wrap: nowrap" },
-    ],
+      { class: "flex-nowrap", css: "flex-wrap: nowrap" }
+    ]
   },
   {
     title: "Flex",
@@ -219,8 +219,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "flex-1", css: "flex: 1 1 0%" },
       { class: "flex-auto", css: "flex: 1 1 auto" },
       { class: "flex-initial", css: "flex: 0 1 auto" },
-      { class: "flex-none", css: "flex: none" },
-    ],
+      { class: "flex-none", css: "flex: none" }
+    ]
   },
   {
     title: "Flex Grow & Shrink",
@@ -228,8 +228,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "grow", css: "flex-grow: 1" },
       { class: "grow-0", css: "flex-grow: 0" },
       { class: "shrink", css: "flex-shrink: 1" },
-      { class: "shrink-0", css: "flex-shrink: 0" },
-    ],
+      { class: "shrink-0", css: "flex-shrink: 0" }
+    ]
   },
   {
     title: "Flex Basis",
@@ -239,8 +239,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "basis-1/2", css: "flex-basis: 50%" },
       { class: "basis-1/3", css: "flex-basis: 33.333333%" },
       { class: "basis-1/4", css: "flex-basis: 25%" },
-      { class: "basis-full", css: "flex-basis: 100%" },
-    ],
+      { class: "basis-full", css: "flex-basis: 100%" }
+    ]
   },
   {
     title: "Order",
@@ -250,8 +250,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "order-none", css: "order: 0" },
       { class: "order-1", css: "order: 1" },
       { class: "order-2", css: "order: 2" },
-      { class: "order-3", css: "order: 3" },
-    ],
+      { class: "order-3", css: "order: 3" }
+    ]
   },
   // ─── ALIGNMENT ────────────────────────────────────────────────────────────
   {
@@ -261,8 +261,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "items-end", css: "align-items: flex-end" },
       { class: "items-center", css: "align-items: center" },
       { class: "items-baseline", css: "align-items: baseline" },
-      { class: "items-stretch", css: "align-items: stretch" },
-    ],
+      { class: "items-stretch", css: "align-items: stretch" }
+    ]
   },
   {
     title: "Align Self",
@@ -272,8 +272,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "self-end", css: "align-self: flex-end" },
       { class: "self-center", css: "align-self: center" },
       { class: "self-stretch", css: "align-self: stretch" },
-      { class: "self-baseline", css: "align-self: baseline" },
-    ],
+      { class: "self-baseline", css: "align-self: baseline" }
+    ]
   },
   {
     title: "Align Content",
@@ -286,8 +286,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "content-around", css: "align-content: space-around" },
       { class: "content-evenly", css: "align-content: space-evenly" },
       { class: "content-baseline", css: "align-content: baseline" },
-      { class: "content-stretch", css: "align-content: stretch" },
-    ],
+      { class: "content-stretch", css: "align-content: stretch" }
+    ]
   },
   {
     title: "Justify Content",
@@ -299,8 +299,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "justify-between", css: "justify-content: space-between" },
       { class: "justify-around", css: "justify-content: space-around" },
       { class: "justify-evenly", css: "justify-content: space-evenly" },
-      { class: "justify-stretch", css: "justify-content: stretch" },
-    ],
+      { class: "justify-stretch", css: "justify-content: stretch" }
+    ]
   },
   {
     title: "Justify Items",
@@ -308,8 +308,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "justify-items-start", css: "justify-items: start" },
       { class: "justify-items-end", css: "justify-items: end" },
       { class: "justify-items-center", css: "justify-items: center" },
-      { class: "justify-items-stretch", css: "justify-items: stretch" },
-    ],
+      { class: "justify-items-stretch", css: "justify-items: stretch" }
+    ]
   },
   {
     title: "Justify Self",
@@ -318,8 +318,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "justify-self-start", css: "justify-self: start" },
       { class: "justify-self-end", css: "justify-self: end" },
       { class: "justify-self-center", css: "justify-self: center" },
-      { class: "justify-self-stretch", css: "justify-self: stretch" },
-    ],
+      { class: "justify-self-stretch", css: "justify-self: stretch" }
+    ]
   },
   // ─── GRID ─────────────────────────────────────────────────────────────────
   {
@@ -328,34 +328,34 @@ export const SECTIONS: TailwindSection[] = [
       { class: "grid-cols-none", css: "grid-template-columns: none" },
       {
         class: "grid-cols-1",
-        css: "grid-template-columns: repeat(1, minmax(0, 1fr))",
+        css: "grid-template-columns: repeat(1, minmax(0, 1fr))"
       },
       {
         class: "grid-cols-2",
-        css: "grid-template-columns: repeat(2, minmax(0, 1fr))",
+        css: "grid-template-columns: repeat(2, minmax(0, 1fr))"
       },
       {
         class: "grid-cols-3",
-        css: "grid-template-columns: repeat(3, minmax(0, 1fr))",
+        css: "grid-template-columns: repeat(3, minmax(0, 1fr))"
       },
       {
         class: "grid-cols-4",
-        css: "grid-template-columns: repeat(4, minmax(0, 1fr))",
+        css: "grid-template-columns: repeat(4, minmax(0, 1fr))"
       },
       {
         class: "grid-cols-5",
-        css: "grid-template-columns: repeat(5, minmax(0, 1fr))",
+        css: "grid-template-columns: repeat(5, minmax(0, 1fr))"
       },
       {
         class: "grid-cols-6",
-        css: "grid-template-columns: repeat(6, minmax(0, 1fr))",
+        css: "grid-template-columns: repeat(6, minmax(0, 1fr))"
       },
       {
         class: "grid-cols-12",
-        css: "grid-template-columns: repeat(12, minmax(0, 1fr))",
+        css: "grid-template-columns: repeat(12, minmax(0, 1fr))"
       },
-      { class: "grid-cols-subgrid", css: "grid-template-columns: subgrid" },
-    ],
+      { class: "grid-cols-subgrid", css: "grid-template-columns: subgrid" }
+    ]
   },
   {
     title: "Grid Column Span",
@@ -369,8 +369,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "col-start-1", css: "grid-column-start: 1" },
       { class: "col-start-auto", css: "grid-column-start: auto" },
       { class: "col-end-1", css: "grid-column-end: 1" },
-      { class: "col-end-auto", css: "grid-column-end: auto" },
-    ],
+      { class: "col-end-auto", css: "grid-column-end: auto" }
+    ]
   },
   {
     title: "Grid Template Rows",
@@ -378,26 +378,26 @@ export const SECTIONS: TailwindSection[] = [
       { class: "grid-rows-none", css: "grid-template-rows: none" },
       {
         class: "grid-rows-1",
-        css: "grid-template-rows: repeat(1, minmax(0, 1fr))",
+        css: "grid-template-rows: repeat(1, minmax(0, 1fr))"
       },
       {
         class: "grid-rows-2",
-        css: "grid-template-rows: repeat(2, minmax(0, 1fr))",
+        css: "grid-template-rows: repeat(2, minmax(0, 1fr))"
       },
       {
         class: "grid-rows-3",
-        css: "grid-template-rows: repeat(3, minmax(0, 1fr))",
+        css: "grid-template-rows: repeat(3, minmax(0, 1fr))"
       },
       {
         class: "grid-rows-4",
-        css: "grid-template-rows: repeat(4, minmax(0, 1fr))",
+        css: "grid-template-rows: repeat(4, minmax(0, 1fr))"
       },
       {
         class: "grid-rows-6",
-        css: "grid-template-rows: repeat(6, minmax(0, 1fr))",
+        css: "grid-template-rows: repeat(6, minmax(0, 1fr))"
       },
-      { class: "grid-rows-subgrid", css: "grid-template-rows: subgrid" },
-    ],
+      { class: "grid-rows-subgrid", css: "grid-template-rows: subgrid" }
+    ]
   },
   {
     title: "Grid Row Span",
@@ -408,8 +408,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "row-span-full", css: "grid-row: 1 / -1" },
       { class: "row-start-1", css: "grid-row-start: 1" },
       { class: "row-start-auto", css: "grid-row-start: auto" },
-      { class: "row-end-1", css: "grid-row-end: 1" },
-    ],
+      { class: "row-end-1", css: "grid-row-end: 1" }
+    ]
   },
   {
     title: "Grid Auto Flow",
@@ -418,8 +418,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "grid-flow-col", css: "grid-auto-flow: column" },
       { class: "grid-flow-dense", css: "grid-auto-flow: dense" },
       { class: "grid-flow-row-dense", css: "grid-auto-flow: row dense" },
-      { class: "grid-flow-col-dense", css: "grid-auto-flow: column dense" },
-    ],
+      { class: "grid-flow-col-dense", css: "grid-auto-flow: column dense" }
+    ]
   },
   {
     title: "Grid Auto Columns/Rows",
@@ -431,8 +431,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "auto-rows-auto", css: "grid-auto-rows: auto" },
       { class: "auto-rows-min", css: "grid-auto-rows: min-content" },
       { class: "auto-rows-max", css: "grid-auto-rows: max-content" },
-      { class: "auto-rows-fr", css: "grid-auto-rows: minmax(0, 1fr)" },
-    ],
+      { class: "auto-rows-fr", css: "grid-auto-rows: minmax(0, 1fr)" }
+    ]
   },
   // ─── GAP ──────────────────────────────────────────────────────────────────
   {
@@ -452,8 +452,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "gap-12", css: "gap: 3rem" },
       { class: "gap-16", css: "gap: 4rem" },
       { class: "gap-x-4", css: "column-gap: 1rem" },
-      { class: "gap-y-4", css: "row-gap: 1rem" },
-    ],
+      { class: "gap-y-4", css: "row-gap: 1rem" }
+    ]
   },
   // ─── SPACING ──────────────────────────────────────────────────────────────
   {
@@ -481,8 +481,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "pt-4", css: "padding-top: 1rem" },
       { class: "pr-4", css: "padding-right: 1rem" },
       { class: "pb-4", css: "padding-bottom: 1rem" },
-      { class: "pl-4", css: "padding-left: 1rem" },
-    ],
+      { class: "pl-4", css: "padding-left: 1rem" }
+    ]
   },
   {
     title: "Margin",
@@ -505,8 +505,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "mb-4", css: "margin-bottom: 1rem" },
       { class: "ml-4", css: "margin-left: 1rem" },
       { class: "-m-4", css: "margin: -1rem" },
-      { class: "-mt-4", css: "margin-top: -1rem" },
-    ],
+      { class: "-mt-4", css: "margin-top: -1rem" }
+    ]
   },
   {
     title: "Space Between",
@@ -522,8 +522,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "space-y-4", css: "margin-top: 1rem (children)" },
       { class: "space-y-8", css: "margin-top: 2rem (children)" },
       { class: "space-x-reverse", css: "--tw-space-x-reverse: 1" },
-      { class: "space-y-reverse", css: "--tw-space-y-reverse: 1" },
-    ],
+      { class: "space-y-reverse", css: "--tw-space-y-reverse: 1" }
+    ]
   },
   // ─── SIZING ───────────────────────────────────────────────────────────────
   {
@@ -551,8 +551,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "w-dvw", css: "width: 100dvw" },
       { class: "w-min", css: "width: min-content" },
       { class: "w-max", css: "width: max-content" },
-      { class: "w-fit", css: "width: fit-content" },
-    ],
+      { class: "w-fit", css: "width: fit-content" }
+    ]
   },
   {
     title: "Min / Max Width",
@@ -580,8 +580,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "max-w-prose", css: "max-width: 65ch" },
       { class: "max-w-min", css: "max-width: min-content" },
       { class: "max-w-max", css: "max-width: max-content" },
-      { class: "max-w-fit", css: "max-width: fit-content" },
-    ],
+      { class: "max-w-fit", css: "max-width: fit-content" }
+    ]
   },
   {
     title: "Height",
@@ -603,8 +603,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "h-dvh", css: "height: 100dvh" },
       { class: "h-min", css: "height: min-content" },
       { class: "h-max", css: "height: max-content" },
-      { class: "h-fit", css: "height: fit-content" },
-    ],
+      { class: "h-fit", css: "height: fit-content" }
+    ]
   },
   {
     title: "Min / Max Height",
@@ -624,8 +624,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "max-h-dvh", css: "max-height: 100dvh" },
       { class: "max-h-min", css: "max-height: min-content" },
       { class: "max-h-max", css: "max-height: max-content" },
-      { class: "max-h-fit", css: "max-height: fit-content" },
-    ],
+      { class: "max-h-fit", css: "max-height: fit-content" }
+    ]
   },
   {
     title: "Size",
@@ -635,8 +635,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "size-1", css: "width: 0.25rem; height: 0.25rem" },
       { class: "size-4", css: "width: 1rem; height: 1rem" },
       { class: "size-8", css: "width: 2rem; height: 2rem" },
-      { class: "size-full", css: "width: 100%; height: 100%" },
-    ],
+      { class: "size-full", css: "width: 100%; height: 100%" }
+    ]
   },
   // ─── TYPOGRAPHY ───────────────────────────────────────────────────────────
   {
@@ -644,17 +644,17 @@ export const SECTIONS: TailwindSection[] = [
     entries: [
       {
         class: "font-sans",
-        css: "font-family: ui-sans-serif, system-ui, sans-serif, ...",
+        css: "font-family: ui-sans-serif, system-ui, sans-serif, ..."
       },
       {
         class: "font-serif",
-        css: "font-family: ui-serif, Georgia, Cambria, ...",
+        css: "font-family: ui-serif, Georgia, Cambria, ..."
       },
       {
         class: "font-mono",
-        css: "font-family: ui-monospace, SFMono-Regular, ...",
-      },
-    ],
+        css: "font-family: ui-monospace, SFMono-Regular, ..."
+      }
+    ]
   },
   {
     title: "Font Size",
@@ -671,8 +671,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "text-6xl", css: "font-size: 3.75rem; line-height: 1" },
       { class: "text-7xl", css: "font-size: 4.5rem; line-height: 1" },
       { class: "text-8xl", css: "font-size: 6rem; line-height: 1" },
-      { class: "text-9xl", css: "font-size: 8rem; line-height: 1" },
-    ],
+      { class: "text-9xl", css: "font-size: 8rem; line-height: 1" }
+    ]
   },
   {
     title: "Font Weight",
@@ -685,8 +685,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "font-semibold", css: "font-weight: 600" },
       { class: "font-bold", css: "font-weight: 700" },
       { class: "font-extrabold", css: "font-weight: 800" },
-      { class: "font-black", css: "font-weight: 900" },
-    ],
+      { class: "font-black", css: "font-weight: 900" }
+    ]
   },
   {
     title: "Font Style & Smoothing",
@@ -695,13 +695,13 @@ export const SECTIONS: TailwindSection[] = [
       { class: "not-italic", css: "font-style: normal" },
       {
         class: "antialiased",
-        css: "-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale",
+        css: "-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale"
       },
       {
         class: "subpixel-antialiased",
-        css: "-webkit-font-smoothing: auto; -moz-osx-font-smoothing: auto",
-      },
-    ],
+        css: "-webkit-font-smoothing: auto; -moz-osx-font-smoothing: auto"
+      }
+    ]
   },
   {
     title: "Letter Spacing",
@@ -711,8 +711,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "tracking-normal", css: "letter-spacing: 0em" },
       { class: "tracking-wide", css: "letter-spacing: 0.025em" },
       { class: "tracking-wider", css: "letter-spacing: 0.05em" },
-      { class: "tracking-widest", css: "letter-spacing: 0.1em" },
-    ],
+      { class: "tracking-widest", css: "letter-spacing: 0.1em" }
+    ]
   },
   {
     title: "Line Height",
@@ -729,15 +729,15 @@ export const SECTIONS: TailwindSection[] = [
       { class: "leading-6", css: "line-height: 1.5rem" },
       { class: "leading-7", css: "line-height: 1.75rem" },
       { class: "leading-8", css: "line-height: 2rem" },
-      { class: "leading-10", css: "line-height: 2.5rem" },
-    ],
+      { class: "leading-10", css: "line-height: 2.5rem" }
+    ]
   },
   {
     title: "Line Clamp",
     entries: [
       {
         class: "line-clamp-1",
-        css: "overflow: hidden; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical",
+        css: "overflow: hidden; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical"
       },
       { class: "line-clamp-2", css: "-webkit-line-clamp: 2" },
       { class: "line-clamp-3", css: "-webkit-line-clamp: 3" },
@@ -745,9 +745,9 @@ export const SECTIONS: TailwindSection[] = [
       { class: "line-clamp-6", css: "-webkit-line-clamp: 6" },
       {
         class: "line-clamp-none",
-        css: "overflow: visible; display: block; -webkit-line-clamp: unset",
-      },
-    ],
+        css: "overflow: visible; display: block; -webkit-line-clamp: unset"
+      }
+    ]
   },
   {
     title: "Text Align",
@@ -757,8 +757,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "text-right", css: "text-align: right" },
       { class: "text-justify", css: "text-align: justify" },
       { class: "text-start", css: "text-align: start" },
-      { class: "text-end", css: "text-align: end" },
-    ],
+      { class: "text-end", css: "text-align: end" }
+    ]
   },
   {
     title: "Text Decoration",
@@ -777,8 +777,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "decoration-2", css: "text-decoration-thickness: 2px" },
       { class: "underline-offset-auto", css: "text-underline-offset: auto" },
       { class: "underline-offset-1", css: "text-underline-offset: 1px" },
-      { class: "underline-offset-4", css: "text-underline-offset: 4px" },
-    ],
+      { class: "underline-offset-4", css: "text-underline-offset: 4px" }
+    ]
   },
   {
     title: "Text Transform",
@@ -786,19 +786,19 @@ export const SECTIONS: TailwindSection[] = [
       { class: "uppercase", css: "text-transform: uppercase" },
       { class: "lowercase", css: "text-transform: lowercase" },
       { class: "capitalize", css: "text-transform: capitalize" },
-      { class: "normal-case", css: "text-transform: none" },
-    ],
+      { class: "normal-case", css: "text-transform: none" }
+    ]
   },
   {
     title: "Text Overflow",
     entries: [
       {
         class: "truncate",
-        css: "overflow: hidden; text-overflow: ellipsis; white-space: nowrap",
+        css: "overflow: hidden; text-overflow: ellipsis; white-space: nowrap"
       },
       { class: "text-ellipsis", css: "text-overflow: ellipsis" },
-      { class: "text-clip", css: "text-overflow: clip" },
-    ],
+      { class: "text-clip", css: "text-overflow: clip" }
+    ]
   },
   {
     title: "Text Wrap",
@@ -806,8 +806,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "text-wrap", css: "text-wrap: wrap" },
       { class: "text-nowrap", css: "text-wrap: nowrap" },
       { class: "text-balance", css: "text-wrap: balance" },
-      { class: "text-pretty", css: "text-wrap: pretty" },
-    ],
+      { class: "text-pretty", css: "text-wrap: pretty" }
+    ]
   },
   {
     title: "Text Indent",
@@ -815,8 +815,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "indent-0", css: "text-indent: 0px" },
       { class: "indent-px", css: "text-indent: 1px" },
       { class: "indent-4", css: "text-indent: 1rem" },
-      { class: "indent-8", css: "text-indent: 2rem" },
-    ],
+      { class: "indent-8", css: "text-indent: 2rem" }
+    ]
   },
   {
     title: "Vertical Align",
@@ -828,8 +828,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "align-text-top", css: "vertical-align: text-top" },
       { class: "align-text-bottom", css: "vertical-align: text-bottom" },
       { class: "align-sub", css: "vertical-align: sub" },
-      { class: "align-super", css: "vertical-align: super" },
-    ],
+      { class: "align-super", css: "vertical-align: super" }
+    ]
   },
   {
     title: "Whitespace",
@@ -839,28 +839,28 @@ export const SECTIONS: TailwindSection[] = [
       { class: "whitespace-pre", css: "white-space: pre" },
       { class: "whitespace-pre-line", css: "white-space: pre-line" },
       { class: "whitespace-pre-wrap", css: "white-space: pre-wrap" },
-      { class: "whitespace-break-spaces", css: "white-space: break-spaces" },
-    ],
+      { class: "whitespace-break-spaces", css: "white-space: break-spaces" }
+    ]
   },
   {
     title: "Word Break",
     entries: [
       {
         class: "break-normal",
-        css: "overflow-wrap: normal; word-break: normal",
+        css: "overflow-wrap: normal; word-break: normal"
       },
       { class: "break-words", css: "overflow-wrap: break-word" },
       { class: "break-all", css: "word-break: break-all" },
-      { class: "break-keep", css: "word-break: keep-all" },
-    ],
+      { class: "break-keep", css: "word-break: keep-all" }
+    ]
   },
   {
     title: "Hyphens",
     entries: [
       { class: "hyphens-none", css: "hyphens: none" },
       { class: "hyphens-manual", css: "hyphens: manual" },
-      { class: "hyphens-auto", css: "hyphens: auto" },
-    ],
+      { class: "hyphens-auto", css: "hyphens: auto" }
+    ]
   },
   {
     title: "List Style",
@@ -869,12 +869,12 @@ export const SECTIONS: TailwindSection[] = [
       { class: "list-disc", css: "list-style-type: disc" },
       { class: "list-decimal", css: "list-style-type: decimal" },
       { class: "list-inside", css: "list-style-position: inside" },
-      { class: "list-outside", css: "list-style-position: outside" },
-    ],
+      { class: "list-outside", css: "list-style-position: outside" }
+    ]
   },
   {
     title: "Content",
-    entries: [{ class: "content-none", css: "content: none" }],
+    entries: [{ class: "content-none", css: "content: none" }]
   },
   // ─── BACKGROUNDS ──────────────────────────────────────────────────────────
   {
@@ -882,8 +882,8 @@ export const SECTIONS: TailwindSection[] = [
     entries: [
       { class: "bg-fixed", css: "background-attachment: fixed" },
       { class: "bg-local", css: "background-attachment: local" },
-      { class: "bg-scroll", css: "background-attachment: scroll" },
-    ],
+      { class: "bg-scroll", css: "background-attachment: scroll" }
+    ]
   },
   {
     title: "Background Clip",
@@ -891,16 +891,16 @@ export const SECTIONS: TailwindSection[] = [
       { class: "bg-clip-border", css: "background-clip: border-box" },
       { class: "bg-clip-padding", css: "background-clip: padding-box" },
       { class: "bg-clip-content", css: "background-clip: content-box" },
-      { class: "bg-clip-text", css: "background-clip: text" },
-    ],
+      { class: "bg-clip-text", css: "background-clip: text" }
+    ]
   },
   {
     title: "Background Origin",
     entries: [
       { class: "bg-origin-border", css: "background-origin: border-box" },
       { class: "bg-origin-padding", css: "background-origin: padding-box" },
-      { class: "bg-origin-content", css: "background-origin: content-box" },
-    ],
+      { class: "bg-origin-content", css: "background-origin: content-box" }
+    ]
   },
   {
     title: "Background Position",
@@ -913,8 +913,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "bg-right", css: "background-position: right" },
       { class: "bg-right-bottom", css: "background-position: right bottom" },
       { class: "bg-right-top", css: "background-position: right top" },
-      { class: "bg-top", css: "background-position: top" },
-    ],
+      { class: "bg-top", css: "background-position: top" }
+    ]
   },
   {
     title: "Background Repeat",
@@ -924,16 +924,16 @@ export const SECTIONS: TailwindSection[] = [
       { class: "bg-repeat-x", css: "background-repeat: repeat-x" },
       { class: "bg-repeat-y", css: "background-repeat: repeat-y" },
       { class: "bg-repeat-space", css: "background-repeat: space" },
-      { class: "bg-repeat-round", css: "background-repeat: round" },
-    ],
+      { class: "bg-repeat-round", css: "background-repeat: round" }
+    ]
   },
   {
     title: "Background Size",
     entries: [
       { class: "bg-auto", css: "background-size: auto" },
       { class: "bg-cover", css: "background-size: cover" },
-      { class: "bg-contain", css: "background-size: contain" },
-    ],
+      { class: "bg-contain", css: "background-size: contain" }
+    ]
   },
   {
     title: "Background Image",
@@ -941,43 +941,43 @@ export const SECTIONS: TailwindSection[] = [
       { class: "bg-none", css: "background-image: none" },
       {
         class: "bg-gradient-to-t",
-        css: "background-image: linear-gradient(to top, ...)",
+        css: "background-image: linear-gradient(to top, ...)"
       },
       {
         class: "bg-gradient-to-tr",
-        css: "background-image: linear-gradient(to top right, ...)",
+        css: "background-image: linear-gradient(to top right, ...)"
       },
       {
         class: "bg-gradient-to-r",
-        css: "background-image: linear-gradient(to right, ...)",
+        css: "background-image: linear-gradient(to right, ...)"
       },
       {
         class: "bg-gradient-to-br",
-        css: "background-image: linear-gradient(to bottom right, ...)",
+        css: "background-image: linear-gradient(to bottom right, ...)"
       },
       {
         class: "bg-gradient-to-b",
-        css: "background-image: linear-gradient(to bottom, ...)",
+        css: "background-image: linear-gradient(to bottom, ...)"
       },
       {
         class: "bg-gradient-to-bl",
-        css: "background-image: linear-gradient(to bottom left, ...)",
+        css: "background-image: linear-gradient(to bottom left, ...)"
       },
       {
         class: "bg-gradient-to-l",
-        css: "background-image: linear-gradient(to left, ...)",
+        css: "background-image: linear-gradient(to left, ...)"
       },
       {
         class: "bg-gradient-to-tl",
-        css: "background-image: linear-gradient(to top left, ...)",
+        css: "background-image: linear-gradient(to top left, ...)"
       },
       { class: "from-{color}", css: "--tw-gradient-from: {color}" },
       { class: "via-{color}", css: "--tw-gradient-via: {color}" },
       { class: "to-{color}", css: "--tw-gradient-to: {color}" },
       { class: "from-0%", css: "--tw-gradient-from-position: 0%" },
       { class: "via-50%", css: "--tw-gradient-via-position: 50%" },
-      { class: "to-100%", css: "--tw-gradient-to-position: 100%" },
-    ],
+      { class: "to-100%", css: "--tw-gradient-to-position: 100%" }
+    ]
   },
   // ─── BORDERS ──────────────────────────────────────────────────────────────
   {
@@ -994,25 +994,25 @@ export const SECTIONS: TailwindSection[] = [
       { class: "rounded-full", css: "border-radius: 9999px" },
       {
         class: "rounded-t-lg",
-        css: "border-top-left-radius: 0.5rem; border-top-right-radius: 0.5rem",
+        css: "border-top-left-radius: 0.5rem; border-top-right-radius: 0.5rem"
       },
       {
         class: "rounded-b-lg",
-        css: "border-bottom-left-radius: 0.5rem; border-bottom-right-radius: 0.5rem",
+        css: "border-bottom-left-radius: 0.5rem; border-bottom-right-radius: 0.5rem"
       },
       {
         class: "rounded-l-lg",
-        css: "border-top-left-radius: 0.5rem; border-bottom-left-radius: 0.5rem",
+        css: "border-top-left-radius: 0.5rem; border-bottom-left-radius: 0.5rem"
       },
       {
         class: "rounded-r-lg",
-        css: "border-top-right-radius: 0.5rem; border-bottom-right-radius: 0.5rem",
+        css: "border-top-right-radius: 0.5rem; border-bottom-right-radius: 0.5rem"
       },
       { class: "rounded-tl-lg", css: "border-top-left-radius: 0.5rem" },
       { class: "rounded-tr-lg", css: "border-top-right-radius: 0.5rem" },
       { class: "rounded-bl-lg", css: "border-bottom-left-radius: 0.5rem" },
-      { class: "rounded-br-lg", css: "border-bottom-right-radius: 0.5rem" },
-    ],
+      { class: "rounded-br-lg", css: "border-bottom-right-radius: 0.5rem" }
+    ]
   },
   {
     title: "Border Width",
@@ -1030,13 +1030,13 @@ export const SECTIONS: TailwindSection[] = [
       { class: "border-b-4", css: "border-bottom-width: 4px" },
       {
         class: "border-x",
-        css: "border-left-width: 1px; border-right-width: 1px",
+        css: "border-left-width: 1px; border-right-width: 1px"
       },
       {
         class: "border-y",
-        css: "border-top-width: 1px; border-bottom-width: 1px",
-      },
-    ],
+        css: "border-top-width: 1px; border-bottom-width: 1px"
+      }
+    ]
   },
   {
     title: "Border Style",
@@ -1046,8 +1046,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "border-dotted", css: "border-style: dotted" },
       { class: "border-double", css: "border-style: double" },
       { class: "border-hidden", css: "border-style: hidden" },
-      { class: "border-none", css: "border-style: none" },
-    ],
+      { class: "border-none", css: "border-style: none" }
+    ]
   },
   {
     title: "Divide",
@@ -1059,20 +1059,20 @@ export const SECTIONS: TailwindSection[] = [
       { class: "divide-solid", css: "border-style: solid (between children)" },
       {
         class: "divide-dashed",
-        css: "border-style: dashed (between children)",
+        css: "border-style: dashed (between children)"
       },
       {
         class: "divide-dotted",
-        css: "border-style: dotted (between children)",
-      },
-    ],
+        css: "border-style: dotted (between children)"
+      }
+    ]
   },
   {
     title: "Outline",
     entries: [
       {
         class: "outline-none",
-        css: "outline: 2px solid transparent; outline-offset: 2px",
+        css: "outline: 2px solid transparent; outline-offset: 2px"
       },
       { class: "outline", css: "outline-style: solid" },
       { class: "outline-dashed", css: "outline-style: dashed" },
@@ -1084,38 +1084,38 @@ export const SECTIONS: TailwindSection[] = [
       { class: "outline-4", css: "outline-width: 4px" },
       { class: "outline-offset-0", css: "outline-offset: 0px" },
       { class: "outline-offset-2", css: "outline-offset: 2px" },
-      { class: "outline-offset-4", css: "outline-offset: 4px" },
-    ],
+      { class: "outline-offset-4", css: "outline-offset: 4px" }
+    ]
   },
   {
     title: "Ring",
     entries: [
       {
         class: "ring-0",
-        css: "box-shadow: var(--tw-ring-inset) 0 0 0 0px ...",
+        css: "box-shadow: var(--tw-ring-inset) 0 0 0 0px ..."
       },
       {
         class: "ring-1",
-        css: "box-shadow: var(--tw-ring-inset) 0 0 0 1px ...",
+        css: "box-shadow: var(--tw-ring-inset) 0 0 0 1px ..."
       },
       {
         class: "ring-2",
-        css: "box-shadow: var(--tw-ring-inset) 0 0 0 2px ...",
+        css: "box-shadow: var(--tw-ring-inset) 0 0 0 2px ..."
       },
       { class: "ring", css: "box-shadow: var(--tw-ring-inset) 0 0 0 3px ..." },
       {
         class: "ring-4",
-        css: "box-shadow: var(--tw-ring-inset) 0 0 0 4px ...",
+        css: "box-shadow: var(--tw-ring-inset) 0 0 0 4px ..."
       },
       {
         class: "ring-8",
-        css: "box-shadow: var(--tw-ring-inset) 0 0 0 8px ...",
+        css: "box-shadow: var(--tw-ring-inset) 0 0 0 8px ..."
       },
       { class: "ring-inset", css: "--tw-ring-inset: inset" },
       { class: "ring-offset-0", css: "--tw-ring-offset-width: 0px" },
       { class: "ring-offset-2", css: "--tw-ring-offset-width: 2px" },
-      { class: "ring-offset-4", css: "--tw-ring-offset-width: 4px" },
-    ],
+      { class: "ring-offset-4", css: "--tw-ring-offset-width: 4px" }
+    ]
   },
   // ─── EFFECTS ──────────────────────────────────────────────────────────────
   {
@@ -1125,29 +1125,29 @@ export const SECTIONS: TailwindSection[] = [
       { class: "shadow-sm", css: "box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05)" },
       {
         class: "shadow",
-        css: "box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
+        css: "box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)"
       },
       {
         class: "shadow-md",
-        css: "box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+        css: "box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)"
       },
       {
         class: "shadow-lg",
-        css: "box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
+        css: "box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)"
       },
       {
         class: "shadow-xl",
-        css: "box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)",
+        css: "box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)"
       },
       {
         class: "shadow-2xl",
-        css: "box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25)",
+        css: "box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25)"
       },
       {
         class: "shadow-inner",
-        css: "box-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.05)",
-      },
-    ],
+        css: "box-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.05)"
+      }
+    ]
   },
   {
     title: "Opacity",
@@ -1166,8 +1166,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "opacity-80", css: "opacity: 0.8" },
       { class: "opacity-90", css: "opacity: 0.9" },
       { class: "opacity-95", css: "opacity: 0.95" },
-      { class: "opacity-100", css: "opacity: 1" },
-    ],
+      { class: "opacity-100", css: "opacity: 1" }
+    ]
   },
   {
     title: "Mix Blend Mode",
@@ -1189,8 +1189,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "mix-blend-color", css: "mix-blend-mode: color" },
       { class: "mix-blend-luminosity", css: "mix-blend-mode: luminosity" },
       { class: "mix-blend-plus-darker", css: "mix-blend-mode: plus-darker" },
-      { class: "mix-blend-plus-lighter", css: "mix-blend-mode: plus-lighter" },
-    ],
+      { class: "mix-blend-plus-lighter", css: "mix-blend-mode: plus-lighter" }
+    ]
   },
   {
     title: "Background Blend Mode",
@@ -1203,26 +1203,26 @@ export const SECTIONS: TailwindSection[] = [
       { class: "bg-blend-lighten", css: "background-blend-mode: lighten" },
       {
         class: "bg-blend-color-dodge",
-        css: "background-blend-mode: color-dodge",
+        css: "background-blend-mode: color-dodge"
       },
       {
         class: "bg-blend-color-burn",
-        css: "background-blend-mode: color-burn",
+        css: "background-blend-mode: color-burn"
       },
       {
         class: "bg-blend-hard-light",
-        css: "background-blend-mode: hard-light",
+        css: "background-blend-mode: hard-light"
       },
       {
         class: "bg-blend-difference",
-        css: "background-blend-mode: difference",
+        css: "background-blend-mode: difference"
       },
       { class: "bg-blend-hue", css: "background-blend-mode: hue" },
       {
         class: "bg-blend-luminosity",
-        css: "background-blend-mode: luminosity",
-      },
-    ],
+        css: "background-blend-mode: luminosity"
+      }
+    ]
   },
   // ─── FILTERS ──────────────────────────────────────────────────────────────
   {
@@ -1230,7 +1230,7 @@ export const SECTIONS: TailwindSection[] = [
     entries: [
       {
         class: "filter",
-        css: "filter: var(--tw-blur) var(--tw-brightness) ...",
+        css: "filter: var(--tw-blur) var(--tw-brightness) ..."
       },
       { class: "filter-none", css: "filter: none" },
       { class: "blur-none", css: "filter: blur(0)" },
@@ -1261,27 +1261,27 @@ export const SECTIONS: TailwindSection[] = [
       { class: "drop-shadow-none", css: "filter: drop-shadow(0 0 #0000)" },
       {
         class: "drop-shadow-sm",
-        css: "filter: drop-shadow(0 1px 1px rgb(0 0 0/0.05))",
+        css: "filter: drop-shadow(0 1px 1px rgb(0 0 0/0.05))"
       },
       {
         class: "drop-shadow",
-        css: "filter: drop-shadow(0 1px 2px rgb(0 0 0/0.1)) drop-shadow(0 1px 1px rgb(0 0 0/0.06))",
+        css: "filter: drop-shadow(0 1px 2px rgb(0 0 0/0.1)) drop-shadow(0 1px 1px rgb(0 0 0/0.06))"
       },
       {
         class: "drop-shadow-md",
-        css: "filter: drop-shadow(0 4px 3px rgb(0 0 0/0.07)) ...",
+        css: "filter: drop-shadow(0 4px 3px rgb(0 0 0/0.07)) ..."
       },
       {
         class: "drop-shadow-lg",
-        css: "filter: drop-shadow(0 10px 8px rgb(0 0 0/0.04)) ...",
+        css: "filter: drop-shadow(0 10px 8px rgb(0 0 0/0.04)) ..."
       },
       {
         class: "drop-shadow-xl",
-        css: "filter: drop-shadow(0 20px 13px rgb(0 0 0/0.03)) ...",
+        css: "filter: drop-shadow(0 20px 13px rgb(0 0 0/0.03)) ..."
       },
       {
         class: "drop-shadow-2xl",
-        css: "filter: drop-shadow(0 25px 25px rgb(0 0 0/0.15))",
+        css: "filter: drop-shadow(0 25px 25px rgb(0 0 0/0.15))"
       },
       { class: "grayscale-0", css: "filter: grayscale(0)" },
       { class: "grayscale", css: "filter: grayscale(100%)" },
@@ -1299,8 +1299,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "saturate-150", css: "filter: saturate(1.5)" },
       { class: "saturate-200", css: "filter: saturate(2)" },
       { class: "sepia-0", css: "filter: sepia(0)" },
-      { class: "sepia", css: "filter: sepia(100%)" },
-    ],
+      { class: "sepia", css: "filter: sepia(100%)" }
+    ]
   },
   {
     title: "Backdrop Filter",
@@ -1315,19 +1315,19 @@ export const SECTIONS: TailwindSection[] = [
       { class: "backdrop-blur-3xl", css: "backdrop-filter: blur(64px)" },
       {
         class: "backdrop-brightness-100",
-        css: "backdrop-filter: brightness(1)",
+        css: "backdrop-filter: brightness(1)"
       },
       { class: "backdrop-contrast-100", css: "backdrop-filter: contrast(1)" },
       { class: "backdrop-grayscale", css: "backdrop-filter: grayscale(100%)" },
       {
         class: "backdrop-hue-rotate-30",
-        css: "backdrop-filter: hue-rotate(30deg)",
+        css: "backdrop-filter: hue-rotate(30deg)"
       },
       { class: "backdrop-invert", css: "backdrop-filter: invert(100%)" },
       { class: "backdrop-opacity-50", css: "backdrop-filter: opacity(.5)" },
       { class: "backdrop-saturate-150", css: "backdrop-filter: saturate(1.5)" },
-      { class: "backdrop-sepia", css: "backdrop-filter: sepia(100%)" },
-    ],
+      { class: "backdrop-sepia", css: "backdrop-filter: sepia(100%)" }
+    ]
   },
   // ─── TABLES ───────────────────────────────────────────────────────────────
   {
@@ -1340,8 +1340,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "table-auto", css: "table-layout: auto" },
       { class: "table-fixed", css: "table-layout: fixed" },
       { class: "caption-top", css: "caption-side: top" },
-      { class: "caption-bottom", css: "caption-side: bottom" },
-    ],
+      { class: "caption-bottom", css: "caption-side: bottom" }
+    ]
   },
   // ─── TRANSITIONS & ANIMATIONS ─────────────────────────────────────────────
   {
@@ -1350,29 +1350,29 @@ export const SECTIONS: TailwindSection[] = [
       { class: "transition-none", css: "transition-property: none" },
       {
         class: "transition-all",
-        css: "transition-property: all; duration: 150ms; timing: cubic-bezier(0.4, 0, 0.2, 1)",
+        css: "transition-property: all; duration: 150ms; timing: cubic-bezier(0.4, 0, 0.2, 1)"
       },
       {
         class: "transition",
-        css: "transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter; duration: 150ms",
+        css: "transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter; duration: 150ms"
       },
       {
         class: "transition-colors",
-        css: "transition-property: color, background-color, border-color, text-decoration-color, fill, stroke; duration: 150ms",
+        css: "transition-property: color, background-color, border-color, text-decoration-color, fill, stroke; duration: 150ms"
       },
       {
         class: "transition-opacity",
-        css: "transition-property: opacity; duration: 150ms",
+        css: "transition-property: opacity; duration: 150ms"
       },
       {
         class: "transition-shadow",
-        css: "transition-property: box-shadow; duration: 150ms",
+        css: "transition-property: box-shadow; duration: 150ms"
       },
       {
         class: "transition-transform",
-        css: "transition-property: transform; duration: 150ms",
-      },
-    ],
+        css: "transition-property: transform; duration: 150ms"
+      }
+    ]
   },
   {
     title: "Duration & Easing",
@@ -1389,15 +1389,15 @@ export const SECTIONS: TailwindSection[] = [
       { class: "ease-linear", css: "transition-timing-function: linear" },
       {
         class: "ease-in",
-        css: "transition-timing-function: cubic-bezier(0.4, 0, 1, 1)",
+        css: "transition-timing-function: cubic-bezier(0.4, 0, 1, 1)"
       },
       {
         class: "ease-out",
-        css: "transition-timing-function: cubic-bezier(0, 0, 0.2, 1)",
+        css: "transition-timing-function: cubic-bezier(0, 0, 0.2, 1)"
       },
       {
         class: "ease-in-out",
-        css: "transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1)",
+        css: "transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1)"
       },
       { class: "delay-0", css: "transition-delay: 0s" },
       { class: "delay-75", css: "transition-delay: 75ms" },
@@ -1407,8 +1407,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "delay-300", css: "transition-delay: 300ms" },
       { class: "delay-500", css: "transition-delay: 500ms" },
       { class: "delay-700", css: "transition-delay: 700ms" },
-      { class: "delay-1000", css: "transition-delay: 1000ms" },
-    ],
+      { class: "delay-1000", css: "transition-delay: 1000ms" }
+    ]
   },
   {
     title: "Animation",
@@ -1417,14 +1417,14 @@ export const SECTIONS: TailwindSection[] = [
       { class: "animate-spin", css: "animation: spin 1s linear infinite" },
       {
         class: "animate-ping",
-        css: "animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite",
+        css: "animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite"
       },
       {
         class: "animate-pulse",
-        css: "animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        css: "animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite"
       },
-      { class: "animate-bounce", css: "animation: bounce 1s infinite" },
-    ],
+      { class: "animate-bounce", css: "animation: bounce 1s infinite" }
+    ]
   },
   // ─── TRANSFORMS ───────────────────────────────────────────────────────────
   {
@@ -1441,8 +1441,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "scale-125", css: "transform: scale(1.25)" },
       { class: "scale-150", css: "transform: scale(1.5)" },
       { class: "scale-x-75", css: "transform: scaleX(.75)" },
-      { class: "scale-y-75", css: "transform: scaleY(.75)" },
-    ],
+      { class: "scale-y-75", css: "transform: scaleY(.75)" }
+    ]
   },
   {
     title: "Rotate",
@@ -1457,8 +1457,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "rotate-90", css: "transform: rotate(90deg)" },
       { class: "rotate-180", css: "transform: rotate(180deg)" },
       { class: "-rotate-45", css: "transform: rotate(-45deg)" },
-      { class: "-rotate-90", css: "transform: rotate(-90deg)" },
-    ],
+      { class: "-rotate-90", css: "transform: rotate(-90deg)" }
+    ]
   },
   {
     title: "Translate",
@@ -1475,8 +1475,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "translate-y-4", css: "transform: translateY(1rem)" },
       { class: "translate-y-1/2", css: "transform: translateY(50%)" },
       { class: "translate-y-full", css: "transform: translateY(100%)" },
-      { class: "-translate-y-full", css: "transform: translateY(-100%)" },
-    ],
+      { class: "-translate-y-full", css: "transform: translateY(-100%)" }
+    ]
   },
   {
     title: "Skew",
@@ -1490,8 +1490,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "skew-y-0", css: "transform: skewY(0deg)" },
       { class: "skew-y-3", css: "transform: skewY(3deg)" },
       { class: "skew-y-6", css: "transform: skewY(6deg)" },
-      { class: "skew-y-12", css: "transform: skewY(12deg)" },
-    ],
+      { class: "skew-y-12", css: "transform: skewY(12deg)" }
+    ]
   },
   {
     title: "Transform Origin",
@@ -1504,8 +1504,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "origin-bottom", css: "transform-origin: bottom" },
       { class: "origin-bottom-left", css: "transform-origin: bottom left" },
       { class: "origin-left", css: "transform-origin: left" },
-      { class: "origin-top-left", css: "transform-origin: top left" },
-    ],
+      { class: "origin-top-left", css: "transform-origin: top left" }
+    ]
   },
   // ─── INTERACTIVITY ────────────────────────────────────────────────────────
   {
@@ -1531,15 +1531,15 @@ export const SECTIONS: TailwindSection[] = [
       { class: "cursor-grab", css: "cursor: grab" },
       { class: "cursor-grabbing", css: "cursor: grabbing" },
       { class: "cursor-zoom-in", css: "cursor: zoom-in" },
-      { class: "cursor-zoom-out", css: "cursor: zoom-out" },
-    ],
+      { class: "cursor-zoom-out", css: "cursor: zoom-out" }
+    ]
   },
   {
     title: "Pointer Events",
     entries: [
       { class: "pointer-events-none", css: "pointer-events: none" },
-      { class: "pointer-events-auto", css: "pointer-events: auto" },
-    ],
+      { class: "pointer-events-auto", css: "pointer-events: auto" }
+    ]
   },
   {
     title: "User Select",
@@ -1547,8 +1547,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "select-none", css: "user-select: none" },
       { class: "select-text", css: "user-select: text" },
       { class: "select-all", css: "user-select: all" },
-      { class: "select-auto", css: "user-select: auto" },
-    ],
+      { class: "select-auto", css: "user-select: auto" }
+    ]
   },
   {
     title: "Resize",
@@ -1556,15 +1556,15 @@ export const SECTIONS: TailwindSection[] = [
       { class: "resize-none", css: "resize: none" },
       { class: "resize", css: "resize: both" },
       { class: "resize-y", css: "resize: vertical" },
-      { class: "resize-x", css: "resize: horizontal" },
-    ],
+      { class: "resize-x", css: "resize: horizontal" }
+    ]
   },
   {
     title: "Scroll Behavior",
     entries: [
       { class: "scroll-auto", css: "scroll-behavior: auto" },
-      { class: "scroll-smooth", css: "scroll-behavior: smooth" },
-    ],
+      { class: "scroll-smooth", css: "scroll-behavior: smooth" }
+    ]
   },
   {
     title: "Scroll Snap",
@@ -1572,31 +1572,31 @@ export const SECTIONS: TailwindSection[] = [
       { class: "snap-none", css: "scroll-snap-type: none" },
       {
         class: "snap-x",
-        css: "scroll-snap-type: x var(--tw-scroll-snap-strictness)",
+        css: "scroll-snap-type: x var(--tw-scroll-snap-strictness)"
       },
       {
         class: "snap-y",
-        css: "scroll-snap-type: y var(--tw-scroll-snap-strictness)",
+        css: "scroll-snap-type: y var(--tw-scroll-snap-strictness)"
       },
       {
         class: "snap-both",
-        css: "scroll-snap-type: both var(--tw-scroll-snap-strictness)",
+        css: "scroll-snap-type: both var(--tw-scroll-snap-strictness)"
       },
       {
         class: "snap-mandatory",
-        css: "--tw-scroll-snap-strictness: mandatory",
+        css: "--tw-scroll-snap-strictness: mandatory"
       },
       {
         class: "snap-proximity",
-        css: "--tw-scroll-snap-strictness: proximity",
+        css: "--tw-scroll-snap-strictness: proximity"
       },
       { class: "snap-start", css: "scroll-snap-align: start" },
       { class: "snap-end", css: "scroll-snap-align: end" },
       { class: "snap-center", css: "scroll-snap-align: center" },
       { class: "snap-align-none", css: "scroll-snap-align: none" },
       { class: "snap-normal", css: "scroll-snap-stop: normal" },
-      { class: "snap-always", css: "scroll-snap-stop: always" },
-    ],
+      { class: "snap-always", css: "scroll-snap-stop: always" }
+    ]
   },
   {
     title: "Scroll Margin & Padding",
@@ -1610,8 +1610,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "scroll-pt-4", css: "scroll-padding-top: 1rem" },
       { class: "scroll-pr-4", css: "scroll-padding-right: 1rem" },
       { class: "scroll-pb-4", css: "scroll-padding-bottom: 1rem" },
-      { class: "scroll-pl-4", css: "scroll-padding-left: 1rem" },
-    ],
+      { class: "scroll-pl-4", css: "scroll-padding-left: 1rem" }
+    ]
   },
   {
     title: "Touch Action",
@@ -1625,8 +1625,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "touch-pan-up", css: "touch-action: pan-up" },
       { class: "touch-pan-down", css: "touch-action: pan-down" },
       { class: "touch-pinch-zoom", css: "touch-action: pinch-zoom" },
-      { class: "touch-manipulation", css: "touch-action: manipulation" },
-    ],
+      { class: "touch-manipulation", css: "touch-action: manipulation" }
+    ]
   },
   {
     title: "Will Change",
@@ -1634,15 +1634,15 @@ export const SECTIONS: TailwindSection[] = [
       { class: "will-change-auto", css: "will-change: auto" },
       { class: "will-change-scroll", css: "will-change: scroll-position" },
       { class: "will-change-contents", css: "will-change: contents" },
-      { class: "will-change-transform", css: "will-change: transform" },
-    ],
+      { class: "will-change-transform", css: "will-change: transform" }
+    ]
   },
   {
     title: "Appearance",
     entries: [
       { class: "appearance-none", css: "appearance: none" },
-      { class: "appearance-auto", css: "appearance: auto" },
-    ],
+      { class: "appearance-auto", css: "appearance: auto" }
+    ]
   },
   {
     title: "Accent & Caret Color",
@@ -1654,8 +1654,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "caret-auto", css: "caret-color: auto" },
       { class: "caret-inherit", css: "caret-color: inherit" },
       { class: "caret-current", css: "caret-color: currentColor" },
-      { class: "caret-{color}", css: "caret-color: {color}" },
-    ],
+      { class: "caret-{color}", css: "caret-color: {color}" }
+    ]
   },
   // ─── SVG ──────────────────────────────────────────────────────────────────
   {
@@ -1671,8 +1671,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "stroke-{color}", css: "stroke: {color}" },
       { class: "stroke-0", css: "stroke-width: 0" },
       { class: "stroke-1", css: "stroke-width: 1" },
-      { class: "stroke-2", css: "stroke-width: 2" },
-    ],
+      { class: "stroke-2", css: "stroke-width: 2" }
+    ]
   },
   // ─── ACCESSIBILITY ────────────────────────────────────────────────────────
   {
@@ -1680,15 +1680,15 @@ export const SECTIONS: TailwindSection[] = [
     entries: [
       {
         class: "sr-only",
-        css: "position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border-width: 0",
+        css: "position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border-width: 0"
       },
       {
         class: "not-sr-only",
-        css: "position: static; width: auto; height: auto; padding: 0; margin: 0; overflow: visible; clip: auto; white-space: normal",
+        css: "position: static; width: auto; height: auto; padding: 0; margin: 0; overflow: visible; clip: auto; white-space: normal"
       },
       { class: "forced-color-adjust-auto", css: "forced-color-adjust: auto" },
-      { class: "forced-color-adjust-none", css: "forced-color-adjust: none" },
-    ],
+      { class: "forced-color-adjust-none", css: "forced-color-adjust: none" }
+    ]
   },
   // ─── MODIFIERS ────────────────────────────────────────────────────────────
   {
@@ -1701,8 +1701,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "2xl:{utility}", css: "@media (min-width: 1536px)" },
       { class: "max-sm:{utility}", css: "@media (max-width: 639px)" },
       { class: "max-md:{utility}", css: "@media (max-width: 767px)" },
-      { class: "max-lg:{utility}", css: "@media (max-width: 1023px)" },
-    ],
+      { class: "max-lg:{utility}", css: "@media (max-width: 1023px)" }
+    ]
   },
   {
     title: "State Modifiers",
@@ -1727,8 +1727,8 @@ export const SECTIONS: TailwindSection[] = [
       { class: "last:{utility}", css: ":last-child" },
       { class: "only:{utility}", css: ":only-child" },
       { class: "odd:{utility}", css: ":nth-child(odd)" },
-      { class: "even:{utility}", css: ":nth-child(even)" },
-    ],
+      { class: "even:{utility}", css: ":nth-child(even)" }
+    ]
   },
   {
     title: "Group & Peer Modifiers",
@@ -1742,31 +1742,31 @@ export const SECTIONS: TailwindSection[] = [
       { class: "peer-checked:{utility}", css: ".peer:checked ~ .{utility}" },
       { class: "peer-focus:{utility}", css: ".peer:focus ~ .{utility}" },
       { class: "peer-invalid:{utility}", css: ".peer:invalid ~ .{utility}" },
-      { class: "peer-disabled:{utility}", css: ".peer:disabled ~ .{utility}" },
-    ],
+      { class: "peer-disabled:{utility}", css: ".peer:disabled ~ .{utility}" }
+    ]
   },
   {
     title: "Dark Mode & Other Modifiers",
     entries: [
       {
         class: "dark:{utility}",
-        css: "@media (prefers-color-scheme: dark) / .dark .{utility}",
+        css: "@media (prefers-color-scheme: dark) / .dark .{utility}"
       },
       {
         class: "motion-safe:{utility}",
-        css: "@media (prefers-reduced-motion: no-preference)",
+        css: "@media (prefers-reduced-motion: no-preference)"
       },
       {
         class: "motion-reduce:{utility}",
-        css: "@media (prefers-reduced-motion: reduce)",
+        css: "@media (prefers-reduced-motion: reduce)"
       },
       {
         class: "contrast-more:{utility}",
-        css: "@media (prefers-contrast: more)",
+        css: "@media (prefers-contrast: more)"
       },
       {
         class: "contrast-less:{utility}",
-        css: "@media (prefers-contrast: less)",
+        css: "@media (prefers-contrast: less)"
       },
       { class: "print:{utility}", css: "@media print" },
       { class: "portrait:{utility}", css: "@media (orientation: portrait)" },
@@ -1780,7 +1780,7 @@ export const SECTIONS: TailwindSection[] = [
       { class: "first-line:{utility}", css: "::first-line" },
       { class: "first-letter:{utility}", css: "::first-letter" },
       { class: "marker:{utility}", css: "::marker" },
-      { class: "backdrop:{utility}", css: "::backdrop" },
-    ],
-  },
-]
+      { class: "backdrop:{utility}", css: "::backdrop" }
+    ]
+  }
+];

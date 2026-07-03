@@ -1,89 +1,89 @@
-"use client"
+"use client";
 
-import { Download } from "lucide-react"
-import QRCode from "qrcode"
-import { useRef, useState } from "react"
+import { Download } from "lucide-react";
+import QRCode from "qrcode";
+import { useRef, useState } from "react";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import { useLanguage } from "@/contexts/language-context"
-import { useToolState } from "@/hooks/use-tool-state"
+  SelectValue
+} from "@/components/ui/select";
+import { useLanguage } from "@/contexts/language-context";
+import { useToolState } from "@/hooks/use-tool-state";
 
-type ErrorLevel = "L" | "M" | "Q" | "H"
-type QrSize = "200" | "300" | "400" | "600"
+type ErrorLevel = "L" | "M" | "Q" | "H";
+type QrSize = "200" | "300" | "400" | "600";
 
 const ERROR_LEVELS: { value: ErrorLevel; label: string }[] = [
   { value: "L", label: "L — 7%" },
   { value: "M", label: "M — 15%" },
   { value: "Q", label: "Q — 25%" },
-  { value: "H", label: "H — 30%" },
-]
+  { value: "H", label: "H — 30%" }
+];
 
 const SIZES: { value: QrSize; label: string }[] = [
   { value: "200", label: "200 x 200" },
   { value: "300", label: "300 x 300" },
   { value: "400", label: "400 x 400" },
-  { value: "600", label: "600 x 600" },
-]
+  { value: "600", label: "600 x 600" }
+];
 
 export default function QrGeneratorPage() {
-  const { t } = useLanguage()
-  const [text, setText] = useToolState("qr-generator", "text", "")
+  const { t } = useLanguage();
+  const [text, setText] = useToolState("qr-generator", "text", "");
   const [errorLevel, setErrorLevel] = useToolState<ErrorLevel>(
     "qr-generator",
     "errorLevel",
     "M"
-  )
-  const [size, setSize] = useToolState<QrSize>("qr-generator", "size", "300")
-  const canvasRef = useRef<HTMLCanvasElement>(null)
-  const [hasOutput, setHasOutput] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  );
+  const [size, setSize] = useToolState<QrSize>("qr-generator", "size", "300");
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [hasOutput, setHasOutput] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const generate = async (
     currentText = text,
     currentErrorLevel = errorLevel,
     currentSize = size
   ) => {
-    if (!currentText.trim() || !canvasRef.current) return
+    if (!currentText.trim() || !canvasRef.current) return;
     try {
       await QRCode.toCanvas(canvasRef.current, currentText, {
         width: Number(currentSize),
         errorCorrectionLevel: currentErrorLevel,
-        margin: 2,
-      })
-      setHasOutput(true)
-      setError(null)
+        margin: 2
+      });
+      setHasOutput(true);
+      setError(null);
     } catch (e) {
-      setError((e as Error).message)
-      setHasOutput(false)
+      setError((e as Error).message);
+      setHasOutput(false);
     }
-  }
+  };
 
   const download = () => {
-    if (!canvasRef.current) return
-    const link = document.createElement("a")
-    link.download = "qrcode.png"
-    link.href = canvasRef.current.toDataURL("image/png")
-    link.click()
-  }
+    if (!canvasRef.current) return;
+    const link = document.createElement("a");
+    link.download = "qrcode.png";
+    link.href = canvasRef.current.toDataURL("image/png");
+    link.click();
+  };
 
   const clear = () => {
-    setText("")
-    setHasOutput(false)
-    setError(null)
-    const ctx = canvasRef.current?.getContext("2d")
+    setText("");
+    setHasOutput(false);
+    setError(null);
+    const ctx = canvasRef.current?.getContext("2d");
     if (ctx && canvasRef.current) {
-      ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
+      ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
     }
-  }
+  };
 
   return (
     <div className="flex flex-col gap-6 px-4 lg:px-6">
@@ -164,5 +164,5 @@ export default function QrGeneratorPage() {
         )}
       </div>
     </div>
-  )
+  );
 }

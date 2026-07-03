@@ -1,55 +1,55 @@
-"use client"
+"use client";
 
-import { Check, Copy } from "lucide-react"
-import { useState } from "react"
+import { Check, Copy } from "lucide-react";
+import { useState } from "react";
 
-import { Button } from "@/components/ui/button"
-import { useLanguage } from "@/contexts/language-context"
-import { useToolState } from "@/hooks/use-tool-state"
-import { handleTextareaTab } from "@/lib/utils"
+import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/contexts/language-context";
+import { useToolState } from "@/hooks/use-tool-state";
+import { handleTextareaTab } from "@/lib/utils";
 
 export default function UrlEncodePage() {
-  const { t } = useLanguage()
-  const [input, setInput] = useToolState("url-encode", "input", "")
-  const [output, setOutput] = useState("")
-  const [error, setError] = useState<string | null>(null)
-  const [copied, setCopied] = useState(false)
+  const { t } = useLanguage();
+  const [input, setInput] = useToolState("url-encode", "input", "");
+  const [output, setOutput] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
 
   const encode = () => {
     try {
-      setOutput(encodeURIComponent(input))
-      setError(null)
+      setOutput(encodeURIComponent(input));
+      setError(null);
     } catch {
-      setError(t.urlEncodeError)
+      setError(t.urlEncodeError);
     }
-  }
+  };
 
   const decode = () => {
     try {
-      setOutput(decodeURIComponent(input))
-      setError(null)
+      setOutput(decodeURIComponent(input));
+      setError(null);
     } catch {
-      setError(t.urlDecodeError)
+      setError(t.urlDecodeError);
     }
-  }
+  };
 
   const clear = () => {
-    setInput("")
-    setOutput("")
-    setError(null)
-  }
+    setInput("");
+    setOutput("");
+    setError(null);
+  };
 
   const swap = () => {
-    setInput(output)
-    setOutput("")
-    setError(null)
-  }
+    setInput(output);
+    setOutput("");
+    setError(null);
+  };
 
   const copy = async () => {
-    await navigator.clipboard.writeText(output)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
-  }
+    await navigator.clipboard.writeText(output);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
 
   return (
     <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
@@ -85,9 +85,9 @@ export default function UrlEncodePage() {
             placeholder={t.urlEncodeInputPlaceholder}
             value={input}
             onChange={(e) => {
-              setInput(e.target.value)
-              setOutput("")
-              setError(null)
+              setInput(e.target.value);
+              setOutput("");
+              setError(null);
             }}
             onKeyDown={(e) => handleTextareaTab(e, input, setInput)}
             spellCheck={false}
@@ -140,5 +140,5 @@ export default function UrlEncodePage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

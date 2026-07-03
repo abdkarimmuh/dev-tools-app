@@ -1,71 +1,71 @@
-"use client"
+"use client";
 
-import { Check, Copy } from "lucide-react"
-import { useEffect, useRef, useState } from "react"
+import { Check, Copy } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
-import { Button } from "@/components/ui/button"
-import { useLanguage } from "@/contexts/language-context"
-import { useToolState } from "@/hooks/use-tool-state"
-import { handleTextareaTab } from "@/lib/utils"
+import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/contexts/language-context";
+import { useToolState } from "@/hooks/use-tool-state";
+import { handleTextareaTab } from "@/lib/utils";
 
 export default function JsonFormatterPage() {
-  const { t } = useLanguage()
-  const [input, setInput] = useToolState("json-formatter", "input", "")
-  const [output, setOutput] = useState("")
-  const [error, setError] = useState<string | null>(null)
-  const [copied, setCopied] = useState(false)
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const { t } = useLanguage();
+  const [input, setInput] = useToolState("json-formatter", "input", "");
+  const [output, setOutput] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    if (debounceRef.current) clearTimeout(debounceRef.current)
+    if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
       if (!input) {
-        setOutput("")
-        setError(null)
-        return
+        setOutput("");
+        setError(null);
+        return;
       }
       try {
-        const parsed = JSON.parse(input)
-        setOutput(JSON.stringify(parsed, null, 2))
-        setError(null)
+        const parsed = JSON.parse(input);
+        setOutput(JSON.stringify(parsed, null, 2));
+        setError(null);
       } catch (e) {
-        setError((e as Error).message)
-        setOutput("")
+        setError((e as Error).message);
+        setOutput("");
       }
-    }, 500)
+    }, 500);
     return () => {
-      if (debounceRef.current) clearTimeout(debounceRef.current)
-    }
-  }, [input])
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [input]);
 
   const minify = () => {
     try {
-      const parsed = JSON.parse(input)
-      setOutput(JSON.stringify(parsed))
-      setError(null)
+      const parsed = JSON.parse(input);
+      setOutput(JSON.stringify(parsed));
+      setError(null);
     } catch (e) {
-      setError((e as Error).message)
-      setOutput("")
+      setError((e as Error).message);
+      setOutput("");
     }
-  }
+  };
 
   const format = () => {
-    if (!output) return
-    setInput(output)
-    setError(null)
-  }
+    if (!output) return;
+    setInput(output);
+    setError(null);
+  };
 
   const clear = () => {
-    setInput("")
-    setOutput("")
-    setError(null)
-  }
+    setInput("");
+    setOutput("");
+    setError(null);
+  };
 
   const copy = async () => {
-    await navigator.clipboard.writeText(output)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
-  }
+    await navigator.clipboard.writeText(output);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
 
   return (
     <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
@@ -140,5 +140,5 @@ export default function JsonFormatterPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

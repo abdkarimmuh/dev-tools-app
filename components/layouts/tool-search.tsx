@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import { useRouter } from "next/navigation"
-import { useSyncExternalStore } from "react"
+import { useRouter } from "next/navigation";
+import { useSyncExternalStore } from "react";
 
 import {
   Command,
@@ -10,22 +10,22 @@ import {
   CommandGroup,
   CommandInput,
   CommandItem,
-  CommandList,
-} from "@/components/ui/command"
-import { useSidebar } from "@/components/ui/sidebar"
-import { navMenus } from "@/config/nav"
-import { useLanguage } from "@/contexts/language-context"
-import { useSearch } from "@/contexts/search-context"
-import { navGroupLabels } from "@/lib/i18n"
+  CommandList
+} from "@/components/ui/command";
+import { useSidebar } from "@/components/ui/sidebar";
+import { navMenus } from "@/config/nav";
+import { useLanguage } from "@/contexts/language-context";
+import { useSearch } from "@/contexts/search-context";
+import { navGroupLabels } from "@/lib/i18n";
 
 export function ToolSearch() {
-  const { t } = useLanguage()
-  const { setOpen } = useSearch()
+  const { t } = useLanguage();
+  const { setOpen } = useSearch();
   const isMac = useSyncExternalStore(
     () => () => {},
     () => /mac|darwin/i.test(navigator.userAgent),
     () => false
-  )
+  );
 
   return (
     <button
@@ -50,20 +50,20 @@ export function ToolSearch() {
         </kbd>
       )}
     </button>
-  )
+  );
 }
 
 export function ToolSearchDialog() {
-  const { language, t } = useLanguage()
-  const { open, setOpen } = useSearch()
-  const router = useRouter()
-  const { setOpenMobile } = useSidebar()
+  const { language, t } = useLanguage();
+  const { open, setOpen } = useSearch();
+  const router = useRouter();
+  const { setOpenMobile } = useSidebar();
 
   const handleSelect = (url: string) => {
-    setOpen(false)
-    setOpenMobile(false)
-    router.push(url)
-  }
+    setOpen(false);
+    setOpenMobile(false);
+    router.push(url);
+  };
 
   return (
     <CommandDialog
@@ -96,5 +96,5 @@ export function ToolSearchDialog() {
         </CommandList>
       </Command>
     </CommandDialog>
-  )
+  );
 }

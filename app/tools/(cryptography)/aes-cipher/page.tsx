@@ -1,61 +1,61 @@
-"use client"
+"use client";
 
-import CryptoJS from "crypto-js"
-import { Check, Copy, Eye, EyeOff } from "lucide-react"
-import { useState } from "react"
+import CryptoJS from "crypto-js";
+import { Check, Copy, Eye, EyeOff } from "lucide-react";
+import { useState } from "react";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { useLanguage } from "@/contexts/language-context"
-import { useToolState } from "@/hooks/use-tool-state"
-import { handleTextareaTab } from "@/lib/utils"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useLanguage } from "@/contexts/language-context";
+import { useToolState } from "@/hooks/use-tool-state";
+import { handleTextareaTab } from "@/lib/utils";
 
 export default function AesCipherPage() {
-  const { t } = useLanguage()
-  const [input, setInput] = useToolState("aes-cipher", "input", "")
-  const [secretKey, setSecretKey] = useToolState("aes-cipher", "key", "")
-  const [output, setOutput] = useState("")
-  const [error, setError] = useState<string | null>(null)
-  const [copied, setCopied] = useState(false)
-  const [showKey, setShowKey] = useState(false)
+  const { t } = useLanguage();
+  const [input, setInput] = useToolState("aes-cipher", "input", "");
+  const [secretKey, setSecretKey] = useToolState("aes-cipher", "key", "");
+  const [output, setOutput] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+  const [showKey, setShowKey] = useState(false);
 
   const encrypt = () => {
-    if (!input || !secretKey) return
+    if (!input || !secretKey) return;
     try {
-      setOutput(CryptoJS.AES.encrypt(input, secretKey).toString())
-      setError(null)
+      setOutput(CryptoJS.AES.encrypt(input, secretKey).toString());
+      setError(null);
     } catch (e) {
-      setError((e as Error).message)
-      setOutput("")
+      setError((e as Error).message);
+      setOutput("");
     }
-  }
+  };
 
   const decrypt = () => {
-    if (!input || !secretKey) return
+    if (!input || !secretKey) return;
     try {
-      const bytes = CryptoJS.AES.decrypt(input, secretKey)
-      const result = bytes.toString(CryptoJS.enc.Utf8)
-      if (!result) throw new Error(t.cryptoDecryptError)
-      setOutput(result)
-      setError(null)
+      const bytes = CryptoJS.AES.decrypt(input, secretKey);
+      const result = bytes.toString(CryptoJS.enc.Utf8);
+      if (!result) throw new Error(t.cryptoDecryptError);
+      setOutput(result);
+      setError(null);
     } catch (e) {
-      setError((e as Error).message)
-      setOutput("")
+      setError((e as Error).message);
+      setOutput("");
     }
-  }
+  };
 
   const clear = () => {
-    setInput("")
-    setOutput("")
-    setError(null)
-  }
+    setInput("");
+    setOutput("");
+    setError(null);
+  };
 
   const copy = async () => {
-    await navigator.clipboard.writeText(output)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
-  }
+    await navigator.clipboard.writeText(output);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
 
   return (
     <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
@@ -158,5 +158,5 @@ export default function AesCipherPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

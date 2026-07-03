@@ -1,41 +1,41 @@
-"use client"
+"use client";
 
-import { Check, Copy } from "lucide-react"
-import { useEffect, useRef, useState } from "react"
+import { Check, Copy } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
-import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import { useLanguage } from "@/contexts/language-context"
-import { useToolState } from "@/hooks/use-tool-state"
-import { handleTextareaTab } from "@/lib/utils"
+  SelectValue
+} from "@/components/ui/select";
+import { useLanguage } from "@/contexts/language-context";
+import { useToolState } from "@/hooks/use-tool-state";
+import { handleTextareaTab } from "@/lib/utils";
 
-type Syntax = "css" | "scss" | "sass"
+type Syntax = "css" | "scss" | "sass";
 
 const SYNTAXES: { value: Syntax; label: string }[] = [
   { value: "css", label: "CSS" },
   { value: "scss", label: "SCSS" },
-  { value: "sass", label: "SASS" },
-]
+  { value: "sass", label: "SASS" }
+];
 
 async function formatCode(code: string, syntax: Syntax): Promise<string> {
   const [prettier, postcssPlugin] = await Promise.all([
     import("prettier/standalone"),
-    import("prettier/plugins/postcss"),
-  ])
+    import("prettier/plugins/postcss")
+  ]);
   return prettier.format(code, {
     parser: syntax,
     plugins: [postcssPlugin] as any[],
     printWidth: 80,
     tabWidth: 2,
-    useTabs: false,
-  } as Parameters<typeof prettier.format>[1])
+    useTabs: false
+  } as Parameters<typeof prettier.format>[1]);
 }
 
 function minifyCode(code: string, syntax: Syntax): string {
@@ -46,7 +46,7 @@ function minifyCode(code: string, syntax: Syntax): string {
       .split("\n")
       .map((line) => line.trim())
       .filter(Boolean)
-      .join("\n")
+      .join("\n");
   }
   return code
     .replace(/\/\*[\s\S]*?\*\//g, "")
@@ -54,80 +54,80 @@ function minifyCode(code: string, syntax: Syntax): string {
     .replace(/\s*([{};:,>~+])\s*/g, "$1")
     .replace(/\s+/g, " ")
     .replace(/;\}/g, "}")
-    .trim()
+    .trim();
 }
 
 const PLACEHOLDERS: Record<Syntax, keyof ReturnType<typeof useLanguage>["t"]> =
   {
     css: "cssInputPlaceholder",
     scss: "scssInputPlaceholder",
-    sass: "sassInputPlaceholder",
-  }
+    sass: "sassInputPlaceholder"
+  };
 
 export default function CssFormatterPage() {
-  const { t } = useLanguage()
+  const { t } = useLanguage();
   const [syntax, setSyntax] = useToolState<Syntax>(
     "css-formatter",
     "syntax",
     "css"
-  )
-  const [input, setInput] = useToolState("css-formatter", "input", "")
-  const [output, setOutput] = useState("")
-  const [error, setError] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
-  const [copied, setCopied] = useState(false)
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  );
+  const [input, setInput] = useToolState("css-formatter", "input", "");
+  const [output, setOutput] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    if (debounceRef.current) clearTimeout(debounceRef.current)
+    if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(async () => {
       if (!input.trim()) {
-        setOutput("")
-        setError(null)
-        return
+        setOutput("");
+        setError(null);
+        return;
       }
-      setLoading(true)
-      setError(null)
+      setLoading(true);
+      setError(null);
       try {
-        setOutput(await formatCode(input, syntax))
+        setOutput(await formatCode(input, syntax));
       } catch (e) {
-        setError((e as Error).message)
-        setOutput("")
+        setError((e as Error).message);
+        setOutput("");
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }, 500)
+    }, 500);
     return () => {
-      if (debounceRef.current) clearTimeout(debounceRef.current)
-    }
-  }, [input, syntax])
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [input, syntax]);
 
   const minify = () => {
-    if (!input.trim()) return
+    if (!input.trim()) return;
     try {
-      setOutput(minifyCode(input, syntax))
-      setError(null)
+      setOutput(minifyCode(input, syntax));
+      setError(null);
     } catch (e) {
-      setError((e as Error).message)
-      setOutput("")
+      setError((e as Error).message);
+      setOutput("");
     }
-  }
+  };
 
   const format = () => {
-    if (!output) return
-    setInput(output)
-    setError(null)
-  }
+    if (!output) return;
+    setInput(output);
+    setError(null);
+  };
   const clear = () => {
-    setInput("")
-    setOutput("")
-    setError(null)
-  }
+    setInput("");
+    setOutput("");
+    setError(null);
+  };
   const copy = async () => {
-    await navigator.clipboard.writeText(output)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
-  }
+    await navigator.clipboard.writeText(output);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
 
   return (
     <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
@@ -137,9 +137,9 @@ export default function CssFormatterPage() {
           <Select
             value={syntax}
             onValueChange={(v) => {
-              setSyntax(v as Syntax)
-              setOutput("")
-              setError(null)
+              setSyntax(v as Syntax);
+              setOutput("");
+              setError(null);
             }}
           >
             <SelectTrigger id="css-syntax" className="w-32">
@@ -227,5 +227,5 @@ export default function CssFormatterPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

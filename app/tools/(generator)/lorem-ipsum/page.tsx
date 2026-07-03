@@ -1,77 +1,77 @@
-"use client"
+"use client";
 
-import { Check, Copy, RefreshCw } from "lucide-react"
-import { useState } from "react"
+import { Check, Copy, RefreshCw } from "lucide-react";
+import { useState } from "react";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import { WORDS } from "@/constants/generators/lorem-ipsum"
-import { useLanguage } from "@/contexts/language-context"
-import { useToolState } from "@/hooks/use-tool-state"
+  SelectValue
+} from "@/components/ui/select";
+import { WORDS } from "@/constants/generators/lorem-ipsum";
+import { useLanguage } from "@/contexts/language-context";
+import { useToolState } from "@/hooks/use-tool-state";
 
 function randomWord(): string {
-  return WORDS[Math.floor(Math.random() * WORDS.length)]
+  return WORDS[Math.floor(Math.random() * WORDS.length)];
 }
 
 function generateWords(count: number): string {
-  return Array.from({ length: count }, randomWord).join(" ")
+  return Array.from({ length: count }, randomWord).join(" ");
 }
 
 function generateSentence(): string {
-  const len = 8 + Math.floor(Math.random() * 10)
-  const words = Array.from({ length: len }, randomWord)
-  words[0] = words[0].charAt(0).toUpperCase() + words[0].slice(1)
-  return words.join(" ") + "."
+  const len = 8 + Math.floor(Math.random() * 10);
+  const words = Array.from({ length: len }, randomWord);
+  words[0] = words[0].charAt(0).toUpperCase() + words[0].slice(1);
+  return words.join(" ") + ".";
 }
 
 function generateParagraph(): string {
-  const count = 4 + Math.floor(Math.random() * 4)
-  return Array.from({ length: count }, generateSentence).join(" ")
+  const count = 4 + Math.floor(Math.random() * 4);
+  return Array.from({ length: count }, generateSentence).join(" ");
 }
 
-type Unit = "words" | "sentences" | "paragraphs"
+type Unit = "words" | "sentences" | "paragraphs";
 
 export default function LoremIpsumPage() {
-  const { t } = useLanguage()
+  const { t } = useLanguage();
   const [unit, setUnit] = useToolState<Unit>(
     "lorem-ipsum",
     "unit",
     "paragraphs"
-  )
-  const [count, setCount] = useToolState("lorem-ipsum", "count", 3)
-  const [output, setOutput] = useState("")
-  const [copied, setCopied] = useState(false)
+  );
+  const [count, setCount] = useToolState("lorem-ipsum", "count", 3);
+  const [output, setOutput] = useState("");
+  const [copied, setCopied] = useState(false);
 
   const generate = () => {
-    let result = ""
+    let result = "";
     if (unit === "words") {
-      result = generateWords(count)
+      result = generateWords(count);
     } else if (unit === "sentences") {
-      result = Array.from({ length: count }, generateSentence).join(" ")
+      result = Array.from({ length: count }, generateSentence).join(" ");
     } else {
-      result = Array.from({ length: count }, generateParagraph).join("\n\n")
+      result = Array.from({ length: count }, generateParagraph).join("\n\n");
     }
-    setOutput(result)
-  }
+    setOutput(result);
+  };
 
   const copy = async () => {
-    await navigator.clipboard.writeText(output)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
-  }
+    await navigator.clipboard.writeText(output);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
 
   const handleCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = parseInt(e.target.value) || 1
-    setCount(Math.min(100, Math.max(1, val)))
-  }
+    const val = parseInt(e.target.value) || 1;
+    setCount(Math.min(100, Math.max(1, val)));
+  };
 
   return (
     <div className="flex flex-col gap-6 px-4 lg:px-6">
@@ -137,5 +137,5 @@ export default function LoremIpsumPage() {
         </div>
       )}
     </div>
-  )
+  );
 }

@@ -1,52 +1,52 @@
-"use client"
+"use client";
 
-import { Check, Copy, Download, RefreshCw } from "lucide-react"
-import { useState } from "react"
+import { Check, Copy, Download, RefreshCw } from "lucide-react";
+import { useState } from "react";
 
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import { useLanguage } from "@/contexts/language-context"
-import { useToolState } from "@/hooks/use-tool-state"
-import { handleTextareaTab } from "@/lib/utils"
+  SelectValue
+} from "@/components/ui/select";
+import { useLanguage } from "@/contexts/language-context";
+import { useToolState } from "@/hooks/use-tool-state";
+import { handleTextareaTab } from "@/lib/utils";
 
-type Curve = "P-256" | "P-384"
-type Mode = "keys" | "sign" | "verify"
+type Curve = "P-256" | "P-384";
+type Mode = "keys" | "sign" | "verify";
 
 function ab2b64(buf: ArrayBuffer): string {
-  return btoa(String.fromCharCode(...new Uint8Array(buf)))
+  return btoa(String.fromCharCode(...new Uint8Array(buf)));
 }
 
 function b642ab(b64: string): ArrayBuffer {
-  const clean = b64.replace(/-----[^-]+-----/g, "").replace(/\s/g, "")
-  const binary = atob(clean)
-  const buf = new Uint8Array(binary.length)
-  for (let i = 0; i < binary.length; i++) buf[i] = binary.charCodeAt(i)
-  return buf.buffer
+  const clean = b64.replace(/-----[^-]+-----/g, "").replace(/\s/g, "");
+  const binary = atob(clean);
+  const buf = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) buf[i] = binary.charCodeAt(i);
+  return buf.buffer;
 }
 
 function toPem(b64: string, type: "PUBLIC KEY" | "PRIVATE KEY"): string {
-  const chunks = b64.match(/.{1,64}/g)?.join("\n") ?? b64
-  return `-----BEGIN ${type}-----\n${chunks}\n-----END ${type}-----`
+  const chunks = b64.match(/.{1,64}/g)?.join("\n") ?? b64;
+  return `-----BEGIN ${type}-----\n${chunks}\n-----END ${type}-----`;
 }
 
 function DownloadBtn({ text, filename }: { text: string; filename: string }) {
   const handle = () => {
-    const blob = new Blob([text], { type: "text/plain" })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement("a")
-    a.href = url
-    a.download = filename
-    a.click()
-    URL.revokeObjectURL(url)
-  }
+    const blob = new Blob([text], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
   return (
     <Button
       size="sm"
@@ -58,17 +58,17 @@ function DownloadBtn({ text, filename }: { text: string; filename: string }) {
       <Download className="size-3" />
       Download
     </Button>
-  )
+  );
 }
 
 function CopyBtn({ text }: { text: string }) {
-  const { t } = useLanguage()
-  const [copied, setCopied] = useState(false)
+  const { t } = useLanguage();
+  const [copied, setCopied] = useState(false);
   const handle = async () => {
-    await navigator.clipboard.writeText(text)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
-  }
+    await navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
   return (
     <Button
       size="sm"
@@ -80,55 +80,59 @@ function CopyBtn({ text }: { text: string }) {
       {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
       {copied ? t.copied : t.copy}
     </Button>
-  )
+  );
 }
 
 export default function EcdsaPage() {
-  const { t } = useLanguage()
-  const [mode, setMode] = useState<Mode>("keys")
-  const [curve, setCurve] = useToolState<Curve>("ecdsa", "curve", "P-256")
-  const [publicKeyPem, setPublicKeyPem] = useToolState("ecdsa", "publicKey", "")
+  const { t } = useLanguage();
+  const [mode, setMode] = useState<Mode>("keys");
+  const [curve, setCurve] = useToolState<Curve>("ecdsa", "curve", "P-256");
+  const [publicKeyPem, setPublicKeyPem] = useToolState(
+    "ecdsa",
+    "publicKey",
+    ""
+  );
   const [privateKeyPem, setPrivateKeyPem] = useToolState(
     "ecdsa",
     "privateKey",
     ""
-  )
-  const [generating, setGenerating] = useState(false)
+  );
+  const [generating, setGenerating] = useState(false);
 
-  const [signMessage, setSignMessage] = useState("")
-  const [signature, setSignature] = useState("")
-  const [signError, setSignError] = useState<string | null>(null)
-  const [signLoading, setSignLoading] = useState(false)
+  const [signMessage, setSignMessage] = useState("");
+  const [signature, setSignature] = useState("");
+  const [signError, setSignError] = useState<string | null>(null);
+  const [signLoading, setSignLoading] = useState(false);
 
-  const [verifyMessage, setVerifyMessage] = useState("")
-  const [verifySig, setVerifySig] = useState("")
-  const [verifyResult, setVerifyResult] = useState<boolean | null>(null)
-  const [verifyError, setVerifyError] = useState<string | null>(null)
-  const [verifyLoading, setVerifyLoading] = useState(false)
+  const [verifyMessage, setVerifyMessage] = useState("");
+  const [verifySig, setVerifySig] = useState("");
+  const [verifyResult, setVerifyResult] = useState<boolean | null>(null);
+  const [verifyError, setVerifyError] = useState<string | null>(null);
+  const [verifyLoading, setVerifyLoading] = useState(false);
 
   const generateKeys = async () => {
-    setGenerating(true)
+    setGenerating(true);
     try {
       const kp = await crypto.subtle.generateKey(
         { name: "ECDSA", namedCurve: curve },
         true,
         ["sign", "verify"]
-      )
-      const pubBuf = await crypto.subtle.exportKey("spki", kp.publicKey)
-      const privBuf = await crypto.subtle.exportKey("pkcs8", kp.privateKey)
-      setPublicKeyPem(toPem(ab2b64(pubBuf), "PUBLIC KEY"))
-      setPrivateKeyPem(toPem(ab2b64(privBuf), "PRIVATE KEY"))
+      );
+      const pubBuf = await crypto.subtle.exportKey("spki", kp.publicKey);
+      const privBuf = await crypto.subtle.exportKey("pkcs8", kp.privateKey);
+      setPublicKeyPem(toPem(ab2b64(pubBuf), "PUBLIC KEY"));
+      setPrivateKeyPem(toPem(ab2b64(privBuf), "PRIVATE KEY"));
     } catch (e) {
-      console.error(e)
+      console.error(e);
     } finally {
-      setGenerating(false)
+      setGenerating(false);
     }
-  }
+  };
 
   const sign = async () => {
-    if (!signMessage || !privateKeyPem) return
-    setSignLoading(true)
-    setSignError(null)
+    if (!signMessage || !privateKeyPem) return;
+    setSignLoading(true);
+    setSignError(null);
     try {
       const key = await crypto.subtle.importKey(
         "pkcs8",
@@ -136,26 +140,26 @@ export default function EcdsaPage() {
         { name: "ECDSA", namedCurve: curve },
         false,
         ["sign"]
-      )
+      );
       const sig = await crypto.subtle.sign(
         { name: "ECDSA", hash: "SHA-256" },
         key,
         new TextEncoder().encode(signMessage)
-      )
-      setSignature(ab2b64(sig))
+      );
+      setSignature(ab2b64(sig));
     } catch (e) {
-      setSignError((e as Error).message)
-      setSignature("")
+      setSignError((e as Error).message);
+      setSignature("");
     } finally {
-      setSignLoading(false)
+      setSignLoading(false);
     }
-  }
+  };
 
   const verify = async () => {
-    if (!verifyMessage || !verifySig || !publicKeyPem) return
-    setVerifyLoading(true)
-    setVerifyError(null)
-    setVerifyResult(null)
+    if (!verifyMessage || !verifySig || !publicKeyPem) return;
+    setVerifyLoading(true);
+    setVerifyError(null);
+    setVerifyResult(null);
     try {
       const key = await crypto.subtle.importKey(
         "spki",
@@ -163,20 +167,20 @@ export default function EcdsaPage() {
         { name: "ECDSA", namedCurve: curve },
         false,
         ["verify"]
-      )
+      );
       const valid = await crypto.subtle.verify(
         { name: "ECDSA", hash: "SHA-256" },
         key,
         b642ab(verifySig),
         new TextEncoder().encode(verifyMessage)
-      )
-      setVerifyResult(valid)
+      );
+      setVerifyResult(valid);
     } catch (e) {
-      setVerifyError((e as Error).message)
+      setVerifyError((e as Error).message);
     } finally {
-      setVerifyLoading(false)
+      setVerifyLoading(false);
     }
-  }
+  };
 
   return (
     <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
@@ -395,8 +399,8 @@ export default function EcdsaPage() {
                 placeholder={t.ecdsaMessagePlaceholder}
                 value={verifyMessage}
                 onChange={(e) => {
-                  setVerifyMessage(e.target.value)
-                  setVerifyResult(null)
+                  setVerifyMessage(e.target.value);
+                  setVerifyResult(null);
                 }}
                 onKeyDown={(e) =>
                   handleTextareaTab(e, verifyMessage, setVerifyMessage)
@@ -411,8 +415,8 @@ export default function EcdsaPage() {
                 placeholder={t.ecdsaSignaturePlaceholder}
                 value={verifySig}
                 onChange={(e) => {
-                  setVerifySig(e.target.value)
-                  setVerifyResult(null)
+                  setVerifySig(e.target.value);
+                  setVerifyResult(null);
                 }}
                 onKeyDown={(e) => handleTextareaTab(e, verifySig, setVerifySig)}
                 spellCheck={false}
@@ -422,5 +426,5 @@ export default function EcdsaPage() {
         </div>
       )}
     </div>
-  )
+  );
 }

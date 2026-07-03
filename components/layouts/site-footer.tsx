@@ -13,5 +13,5 @@ export function SiteFooter() {
         Muhammad Abdul Karim
       </a>
     </footer>
-  )
+  );
 }

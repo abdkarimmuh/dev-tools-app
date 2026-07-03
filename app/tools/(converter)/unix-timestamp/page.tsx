@@ -1,12 +1,12 @@
-"use client"
+"use client";
 
-import { Check, Copy, RefreshCw } from "lucide-react"
-import { useState } from "react"
+import { Check, Copy, RefreshCw } from "lucide-react";
+import { useState } from "react";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { useToolState } from "@/hooks/use-tool-state"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useToolState } from "@/hooks/use-tool-state";
 
 function formatDate(d: Date, tz: string): string {
   return (
@@ -18,18 +18,18 @@ function formatDate(d: Date, tz: string): string {
       hour: "2-digit",
       minute: "2-digit",
       second: "2-digit",
-      hour12: false,
+      hour12: false
     }) + ` (${tz})`
-  )
+  );
 }
 
 function CopyButton({ text }: { text: string }) {
-  const [copied, setCopied] = useState(false)
+  const [copied, setCopied] = useState(false);
   const copy = async () => {
-    await navigator.clipboard.writeText(text)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
-  }
+    await navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
   return (
     <Button
       size="sm"
@@ -40,37 +40,37 @@ function CopyButton({ text }: { text: string }) {
     >
       {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
     </Button>
-  )
+  );
 }
 
 export default function UnixTimestampPage() {
-  const [tsInput, setTsInput] = useToolState("unix-timestamp", "tsInput", "")
+  const [tsInput, setTsInput] = useToolState("unix-timestamp", "tsInput", "");
   const [dateInput, setDateInput] = useToolState(
     "unix-timestamp",
     "dateInput",
     ""
-  )
-  const [now, setNow] = useState(() => Math.floor(Date.now() / 1000))
+  );
+  const [now, setNow] = useState(() => Math.floor(Date.now() / 1000));
 
   const tsDate = (() => {
-    if (!tsInput) return null
-    const n = Number(tsInput)
-    if (isNaN(n)) return null
-    const ms = tsInput.length >= 13 ? n : n * 1000
-    const d = new Date(ms)
-    return isNaN(d.getTime()) ? null : d
-  })()
+    if (!tsInput) return null;
+    const n = Number(tsInput);
+    if (isNaN(n)) return null;
+    const ms = tsInput.length >= 13 ? n : n * 1000;
+    const d = new Date(ms);
+    return isNaN(d.getTime()) ? null : d;
+  })();
 
   const dateTs = (() => {
-    if (!dateInput) return null
-    const d = new Date(dateInput)
-    return isNaN(d.getTime()) ? null : Math.floor(d.getTime() / 1000)
-  })()
+    if (!dateInput) return null;
+    const d = new Date(dateInput);
+    return isNaN(d.getTime()) ? null : Math.floor(d.getTime() / 1000);
+  })();
 
-  const tsError = tsInput && !tsDate ? "Invalid timestamp" : null
-  const dateError = dateInput && dateTs === null ? "Invalid date format" : null
+  const tsError = tsInput && !tsDate ? "Invalid timestamp" : null;
+  const dateError = dateInput && dateTs === null ? "Invalid date format" : null;
 
-  const localTz = Intl.DateTimeFormat().resolvedOptions().timeZone
+  const localTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   return (
     <div className="flex max-w-xl flex-col gap-8 px-4 lg:px-6">
@@ -106,9 +106,9 @@ export default function UnixTimestampPage() {
           <div className="flex flex-col gap-2 rounded-md border bg-muted p-4">
             {[
               { label: "UTC", tz: "UTC" },
-              { label: "Local", tz: localTz },
+              { label: "Local", tz: localTz }
             ].map(({ label, tz }) => {
-              const str = formatDate(tsDate, tz)
+              const str = formatDate(tsDate, tz);
               return (
                 <div
                   key={tz}
@@ -122,7 +122,7 @@ export default function UnixTimestampPage() {
                   </div>
                   <CopyButton text={str} />
                 </div>
-              )
+              );
             })}
             <div className="flex items-center justify-between gap-2">
               <div>
@@ -173,5 +173,5 @@ export default function UnixTimestampPage() {
         )}
       </div>
     </div>
-  )
+  );
 }

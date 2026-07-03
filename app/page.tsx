@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import Link from "next/link"
+import Link from "next/link";
 
-import { Card, CardTitle } from "@/components/ui/card"
-import { navMenus } from "@/config/nav"
-import { useLanguage } from "@/contexts/language-context"
-import { navGroupDescriptions, navGroupLabels } from "@/lib/i18n"
+import { Card, CardTitle } from "@/components/ui/card";
+import { navMenus } from "@/config/nav";
+import { useLanguage } from "@/contexts/language-context";
+import { navGroupDescriptions, navGroupLabels } from "@/lib/i18n";
 
 export default function HomePage() {
-  const { language, t } = useLanguage()
+  const { language, t } = useLanguage();
 
   return (
     <div className="px-4 lg:px-6">
@@ -50,5 +50,5 @@ export default function HomePage() {
         ))}
       </div>
     </div>
-  )
+  );
 }

@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import type { LucideIcon } from "lucide-react"
+import type { LucideIcon } from "lucide-react";
 import {
   Bold,
   Code,
@@ -14,110 +14,110 @@ import {
   ListOrdered,
   Minus,
   Quote,
-  Strikethrough,
-} from "lucide-react"
-import { marked } from "marked"
-import { useMemo, useRef } from "react"
+  Strikethrough
+} from "lucide-react";
+import { marked } from "marked";
+import { useMemo, useRef } from "react";
 
-import { Button } from "@/components/ui/button"
-import { Separator } from "@/components/ui/separator"
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import {
   Tooltip,
   TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
-import { useLanguage } from "@/contexts/language-context"
-import { useToolState } from "@/hooks/use-tool-state"
-import { handleTextareaTab } from "@/lib/utils"
+  TooltipTrigger
+} from "@/components/ui/tooltip";
+import { useLanguage } from "@/contexts/language-context";
+import { useToolState } from "@/hooks/use-tool-state";
+import { handleTextareaTab } from "@/lib/utils";
 
-marked.use({ gfm: true, breaks: true })
+marked.use({ gfm: true, breaks: true });
 
 type ToolbarItem =
   | {
-      label: string
-      icon: LucideIcon
+      label: string;
+      icon: LucideIcon;
       action: (
         ta: HTMLTextAreaElement,
         val: string
-      ) => { value: string; start: number; end: number }
+      ) => { value: string; start: number; end: number };
     }
-  | "separator"
+  | "separator";
 
 function wrap(before: string, after: string, placeholder: string) {
   return (ta: HTMLTextAreaElement, val: string) => {
-    const s = ta.selectionStart
-    const e = ta.selectionEnd
-    const selected = val.substring(s, e) || placeholder
+    const s = ta.selectionStart;
+    const e = ta.selectionEnd;
+    const selected = val.substring(s, e) || placeholder;
     const value =
-      val.substring(0, s) + before + selected + after + val.substring(e)
+      val.substring(0, s) + before + selected + after + val.substring(e);
     return {
       value,
       start: s + before.length,
-      end: s + before.length + selected.length,
-    }
-  }
+      end: s + before.length + selected.length
+    };
+  };
 }
 
 function linePrefix(prefix: string) {
   return (ta: HTMLTextAreaElement, val: string) => {
-    const s = ta.selectionStart
-    const e = ta.selectionEnd
+    const s = ta.selectionStart;
+    const e = ta.selectionEnd;
 
-    const lineStart = val.lastIndexOf("\n", s - 1) + 1
+    const lineStart = val.lastIndexOf("\n", s - 1) + 1;
     const lineEnd =
-      val.indexOf("\n", e) === -1 ? val.length : val.indexOf("\n", e)
+      val.indexOf("\n", e) === -1 ? val.length : val.indexOf("\n", e);
 
-    const lines = val.substring(lineStart, lineEnd).split("\n")
-    const allHavePrefix = lines.every((l) => l.startsWith(prefix))
+    const lines = val.substring(lineStart, lineEnd).split("\n");
+    const allHavePrefix = lines.every((l) => l.startsWith(prefix));
 
     const newLines = allHavePrefix
       ? lines.map((l) => l.slice(prefix.length))
-      : lines.map((l) => prefix + l)
-    const newBlock = newLines.join("\n")
+      : lines.map((l) => prefix + l);
+    const newBlock = newLines.join("\n");
 
     const value =
-      val.substring(0, lineStart) + newBlock + val.substring(lineEnd)
-    const offset = allHavePrefix ? -prefix.length : prefix.length
+      val.substring(0, lineStart) + newBlock + val.substring(lineEnd);
+    const offset = allHavePrefix ? -prefix.length : prefix.length;
     return {
       value,
       start: Math.max(lineStart, s + offset),
-      end: Math.max(lineStart, e + offset * lines.length),
-    }
-  }
+      end: Math.max(lineStart, e + offset * lines.length)
+    };
+  };
 }
 
 function codeBlock() {
   return (ta: HTMLTextAreaElement, val: string) => {
-    const s = ta.selectionStart
-    const e = ta.selectionEnd
-    const selected = val.substring(s, e) || "code"
-    const inserted = "```\n" + selected + "\n```"
-    const value = val.substring(0, s) + inserted + val.substring(e)
-    return { value, start: s + 4, end: s + 4 + selected.length }
-  }
+    const s = ta.selectionStart;
+    const e = ta.selectionEnd;
+    const selected = val.substring(s, e) || "code";
+    const inserted = "```\n" + selected + "\n```";
+    const value = val.substring(0, s) + inserted + val.substring(e);
+    return { value, start: s + 4, end: s + 4 + selected.length };
+  };
 }
 
 function linkAction() {
   return (ta: HTMLTextAreaElement, val: string) => {
-    const s = ta.selectionStart
-    const e = ta.selectionEnd
-    const selected = val.substring(s, e)
-    const inserted = selected ? `[${selected}](url)` : "[link text](url)"
-    const value = val.substring(0, s) + inserted + val.substring(e)
-    const urlStart = s + inserted.indexOf("(") + 1
-    const urlEnd = urlStart + 3
-    return { value, start: urlStart, end: urlEnd }
-  }
+    const s = ta.selectionStart;
+    const e = ta.selectionEnd;
+    const selected = val.substring(s, e);
+    const inserted = selected ? `[${selected}](url)` : "[link text](url)";
+    const value = val.substring(0, s) + inserted + val.substring(e);
+    const urlStart = s + inserted.indexOf("(") + 1;
+    const urlEnd = urlStart + 3;
+    return { value, start: urlStart, end: urlEnd };
+  };
 }
 
 function hrAction() {
   return (ta: HTMLTextAreaElement, val: string) => {
-    const s = ta.selectionStart
-    const nl = val[s - 1] === "\n" ? "" : "\n"
-    const inserted = nl + "---\n"
-    const value = val.substring(0, s) + inserted + val.substring(s)
-    return { value, start: s + inserted.length, end: s + inserted.length }
-  }
+    const s = ta.selectionStart;
+    const nl = val[s - 1] === "\n" ? "" : "\n";
+    const inserted = nl + "---\n";
+    const value = val.substring(0, s) + inserted + val.substring(s);
+    return { value, start: s + inserted.length, end: s + inserted.length };
+  };
 }
 
 const TOOLBAR: ToolbarItem[] = [
@@ -130,7 +130,7 @@ const TOOLBAR: ToolbarItem[] = [
   {
     label: "Strikethrough",
     icon: Strikethrough,
-    action: wrap("~~", "~~", "strikethrough"),
+    action: wrap("~~", "~~", "strikethrough")
   },
   "separator",
   { label: "Blockquote", icon: Quote, action: linePrefix("> ") },
@@ -141,34 +141,34 @@ const TOOLBAR: ToolbarItem[] = [
   { label: "Ordered List", icon: ListOrdered, action: linePrefix("1. ") },
   "separator",
   { label: "Link", icon: Link, action: linkAction() },
-  { label: "Horizontal Rule", icon: Minus, action: hrAction() },
-]
+  { label: "Horizontal Rule", icon: Minus, action: hrAction() }
+];
 
 export default function MarkdownPreviewPage() {
-  const { t } = useLanguage()
-  const [input, setInput] = useToolState("markdown-preview", "input", "")
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const { t } = useLanguage();
+  const [input, setInput] = useToolState("markdown-preview", "input", "");
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const html = useMemo(() => {
-    if (!input.trim()) return ""
-    return String(marked.parse(input))
-  }, [input])
+    if (!input.trim()) return "";
+    return String(marked.parse(input));
+  }, [input]);
 
   const applyAction = (action: ToolbarItem) => {
-    if (action === "separator") return
-    const ta = textareaRef.current
-    if (!ta) return
+    if (action === "separator") return;
+    const ta = textareaRef.current;
+    if (!ta) return;
 
-    const { value, start, end } = action.action(ta, input)
-    setInput(value)
+    const { value, start, end } = action.action(ta, input);
+    setInput(value);
 
     requestAnimationFrame(() => {
-      ta.focus()
-      ta.setSelectionRange(start, end)
-    })
-  }
+      ta.focus();
+      ta.setSelectionRange(start, end);
+    });
+  };
 
-  const clear = () => setInput("")
+  const clear = () => setInput("");
 
   return (
     <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
@@ -245,5 +245,5 @@ export default function MarkdownPreviewPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

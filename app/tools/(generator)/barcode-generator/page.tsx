@@ -1,42 +1,42 @@
-"use client"
+"use client";
 
-import JsBarcode from "jsbarcode"
-import { Download } from "lucide-react"
-import { useRef, useState } from "react"
+import JsBarcode from "jsbarcode";
+import { Download } from "lucide-react";
+import { useRef, useState } from "react";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+  SelectValue
+} from "@/components/ui/select";
 import {
   type BarcodeFormat,
-  FORMATS,
-} from "@/constants/generators/barcode-generator"
-import { useLanguage } from "@/contexts/language-context"
-import { useToolState } from "@/hooks/use-tool-state"
+  FORMATS
+} from "@/constants/generators/barcode-generator";
+import { useLanguage } from "@/contexts/language-context";
+import { useToolState } from "@/hooks/use-tool-state";
 
 export default function BarcodeGeneratorPage() {
-  const { t } = useLanguage()
-  const [value, setValue] = useToolState("barcode-generator", "value", "")
+  const { t } = useLanguage();
+  const [value, setValue] = useToolState("barcode-generator", "value", "");
   const [format, setFormat] = useToolState<BarcodeFormat>(
     "barcode-generator",
     "format",
     "CODE128"
-  )
-  const svgRef = useRef<SVGSVGElement>(null)
-  const [hasOutput, setHasOutput] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  );
+  const svgRef = useRef<SVGSVGElement>(null);
+  const [hasOutput, setHasOutput] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const currentFormat = FORMATS.find((f) => f.value === format)!
+  const currentFormat = FORMATS.find((f) => f.value === format)!;
 
   const generate = () => {
-    if (!value.trim() || !svgRef.current) return
+    if (!value.trim() || !svgRef.current) return;
     try {
       JsBarcode(svgRef.current, value, {
         format,
@@ -44,32 +44,32 @@ export default function BarcodeGeneratorPage() {
         background: "transparent",
         displayValue: true,
         fontSize: 14,
-        margin: 10,
-      })
-      setHasOutput(true)
-      setError(null)
+        margin: 10
+      });
+      setHasOutput(true);
+      setError(null);
     } catch (e) {
-      setError((e as Error).message)
-      setHasOutput(false)
+      setError((e as Error).message);
+      setHasOutput(false);
     }
-  }
+  };
 
   const download = () => {
-    if (!svgRef.current) return
-    const svgData = new XMLSerializer().serializeToString(svgRef.current)
-    const blob = new Blob([svgData], { type: "image/svg+xml" })
-    const link = document.createElement("a")
-    link.download = "barcode.svg"
-    link.href = URL.createObjectURL(blob)
-    link.click()
-    URL.revokeObjectURL(link.href)
-  }
+    if (!svgRef.current) return;
+    const svgData = new XMLSerializer().serializeToString(svgRef.current);
+    const blob = new Blob([svgData], { type: "image/svg+xml" });
+    const link = document.createElement("a");
+    link.download = "barcode.svg";
+    link.href = URL.createObjectURL(blob);
+    link.click();
+    URL.revokeObjectURL(link.href);
+  };
 
   const clear = () => {
-    setValue("")
-    setHasOutput(false)
-    setError(null)
-  }
+    setValue("");
+    setHasOutput(false);
+    setError(null);
+  };
 
   return (
     <div className="flex flex-col gap-6 px-4 lg:px-6">
@@ -79,9 +79,9 @@ export default function BarcodeGeneratorPage() {
           <Select
             value={format}
             onValueChange={(v) => {
-              setFormat(v as BarcodeFormat)
-              setHasOutput(false)
-              setError(null)
+              setFormat(v as BarcodeFormat);
+              setHasOutput(false);
+              setError(null);
             }}
           >
             <SelectTrigger className="w-48">
@@ -142,5 +142,5 @@ export default function BarcodeGeneratorPage() {
         )}
       </div>
     </div>
-  )
+  );
 }

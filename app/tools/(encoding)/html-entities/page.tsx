@@ -1,12 +1,12 @@
-"use client"
+"use client";
 
-import { Check, Copy } from "lucide-react"
-import { useState } from "react"
+import { Check, Copy } from "lucide-react";
+import { useState } from "react";
 
-import { Button } from "@/components/ui/button"
-import { useLanguage } from "@/contexts/language-context"
-import { useToolState } from "@/hooks/use-tool-state"
-import { handleTextareaTab } from "@/lib/utils"
+import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/contexts/language-context";
+import { useToolState } from "@/hooks/use-tool-state";
+import { handleTextareaTab } from "@/lib/utils";
 
 function encodeHtmlEntities(str: string): string {
   return str
@@ -14,53 +14,53 @@ function encodeHtmlEntities(str: string): string {
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;")
+    .replace(/'/g, "&#039;");
 }
 
 function decodeHtmlEntities(str: string): string {
-  const txt = document.createElement("textarea")
-  txt.innerHTML = str
-  return txt.value
+  const txt = document.createElement("textarea");
+  txt.innerHTML = str;
+  return txt.value;
 }
 
 export default function HtmlEntitiesPage() {
-  const { t } = useLanguage()
-  const [input, setInput] = useToolState("html-entities", "input", "")
-  const [output, setOutput] = useState("")
-  const [error, setError] = useState<string | null>(null)
-  const [copied, setCopied] = useState(false)
+  const { t } = useLanguage();
+  const [input, setInput] = useToolState("html-entities", "input", "");
+  const [output, setOutput] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
 
   const encode = () => {
-    setOutput(encodeHtmlEntities(input))
-    setError(null)
-  }
+    setOutput(encodeHtmlEntities(input));
+    setError(null);
+  };
 
   const decode = () => {
     try {
-      setOutput(decodeHtmlEntities(input))
-      setError(null)
+      setOutput(decodeHtmlEntities(input));
+      setError(null);
     } catch {
-      setError(t.htmlEntitiesDecodeError)
+      setError(t.htmlEntitiesDecodeError);
     }
-  }
+  };
 
   const clear = () => {
-    setInput("")
-    setOutput("")
-    setError(null)
-  }
+    setInput("");
+    setOutput("");
+    setError(null);
+  };
 
   const swap = () => {
-    setInput(output)
-    setOutput("")
-    setError(null)
-  }
+    setInput(output);
+    setOutput("");
+    setError(null);
+  };
 
   const copy = async () => {
-    await navigator.clipboard.writeText(output)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
-  }
+    await navigator.clipboard.writeText(output);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
 
   return (
     <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
@@ -96,9 +96,9 @@ export default function HtmlEntitiesPage() {
             placeholder={`${t.htmlEntitiesEncodeExample}: <div class="hello">\n${t.htmlEntitiesDecodeExample}: &lt;div class=&quot;hello&quot;&gt;`}
             value={input}
             onChange={(e) => {
-              setInput(e.target.value)
-              setOutput("")
-              setError(null)
+              setInput(e.target.value);
+              setOutput("");
+              setError(null);
             }}
             onKeyDown={(e) => handleTextareaTab(e, input, setInput)}
             spellCheck={false}
@@ -151,5 +151,5 @@ export default function HtmlEntitiesPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

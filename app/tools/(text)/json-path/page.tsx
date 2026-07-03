@@ -1,105 +1,105 @@
-"use client"
+"use client";
 
-import { Check, Copy } from "lucide-react"
-import { useEffect, useRef, useState } from "react"
+import { Check, Copy } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { useToolState } from "@/hooks/use-tool-state"
-import { handleTextareaTab } from "@/lib/utils"
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useToolState } from "@/hooks/use-tool-state";
+import { handleTextareaTab } from "@/lib/utils";
 
 function queryPath(obj: unknown, path: string): unknown[] {
-  if (!path || path === "$") return [obj]
+  if (!path || path === "$") return [obj];
 
-  const tokens = tokenize(path.replace(/^[$]\.?/, ""))
-  return evaluate([obj], tokens)
+  const tokens = tokenize(path.replace(/^[$]\.?/, ""));
+  return evaluate([obj], tokens);
 }
 
 function tokenize(path: string): string[] {
-  const tokens: string[] = []
-  let i = 0
+  const tokens: string[] = [];
+  let i = 0;
   while (i < path.length) {
     if (path[i] === ".") {
       if (path[i + 1] === ".") {
-        tokens.push("..")
-        i += 2
+        tokens.push("..");
+        i += 2;
       } else {
-        i++
+        i++;
       }
-      continue
+      continue;
     }
     if (path[i] === "[") {
-      const end = path.indexOf("]", i)
-      tokens.push(path.slice(i + 1, end))
-      i = end + 1
-      continue
+      const end = path.indexOf("]", i);
+      tokens.push(path.slice(i + 1, end));
+      i = end + 1;
+      continue;
     }
-    const end = path.slice(i).search(/[.\[]/)
+    const end = path.slice(i).search(/[.\[]/);
     if (end === -1) {
-      tokens.push(path.slice(i))
-      break
+      tokens.push(path.slice(i));
+      break;
     }
-    tokens.push(path.slice(i, i + end))
-    i += end
+    tokens.push(path.slice(i, i + end));
+    i += end;
   }
-  return tokens.filter(Boolean)
+  return tokens.filter(Boolean);
 }
 
 function evaluate(current: unknown[], tokens: string[]): unknown[] {
-  if (tokens.length === 0) return current
-  const [head, ...rest] = tokens
+  if (tokens.length === 0) return current;
+  const [head, ...rest] = tokens;
 
   if (head === "..") {
-    const all = flatDeep(current)
-    return evaluate(all, rest)
+    const all = flatDeep(current);
+    return evaluate(all, rest);
   }
   if (head === "*") {
-    const next: unknown[] = []
+    const next: unknown[] = [];
     for (const item of current) {
-      if (Array.isArray(item)) next.push(...item)
+      if (Array.isArray(item)) next.push(...item);
       else if (item && typeof item === "object")
-        next.push(...Object.values(item))
+        next.push(...Object.values(item));
     }
-    return evaluate(next, rest)
+    return evaluate(next, rest);
   }
-  const idx = Number(head)
+  const idx = Number(head);
   if (!isNaN(idx)) {
     const next = current
       .flatMap((item) => (Array.isArray(item) ? [item[idx]] : []))
-      .filter((v) => v !== undefined)
-    return evaluate(next, rest)
+      .filter((v) => v !== undefined);
+    return evaluate(next, rest);
   }
   if (head.includes(":")) {
-    const [startStr, endStr] = head.split(":")
+    const [startStr, endStr] = head.split(":");
     return current.flatMap((item) => {
-      if (!Array.isArray(item)) return []
-      const start = startStr ? Number(startStr) : 0
-      const end = endStr ? Number(endStr) : item.length
-      return item.slice(start, end)
-    })
+      if (!Array.isArray(item)) return [];
+      const start = startStr ? Number(startStr) : 0;
+      const end = endStr ? Number(endStr) : item.length;
+      return item.slice(start, end);
+    });
   }
   const next = current.flatMap((item) => {
     if (item && typeof item === "object" && !Array.isArray(item)) {
-      const val = (item as Record<string, unknown>)[head]
-      return val !== undefined ? [val] : []
+      const val = (item as Record<string, unknown>)[head];
+      return val !== undefined ? [val] : [];
     }
-    return []
-  })
-  return evaluate(next, rest)
+    return [];
+  });
+  return evaluate(next, rest);
 }
 
 function flatDeep(items: unknown[]): unknown[] {
-  const result: unknown[] = []
+  const result: unknown[] = [];
   const traverse = (val: unknown) => {
-    result.push(val)
-    if (Array.isArray(val)) val.forEach(traverse)
+    result.push(val);
+    if (Array.isArray(val)) val.forEach(traverse);
     else if (val && typeof val === "object")
-      Object.values(val).forEach(traverse)
-  }
-  items.forEach(traverse)
-  return result
+      Object.values(val).forEach(traverse);
+  };
+  items.forEach(traverse);
+  return result;
 }
 
 const EXAMPLE_JSON = `{
@@ -111,58 +111,58 @@ const EXAMPLE_JSON = `{
     ],
     "name": "Book Haven"
   }
-}`
+}`;
 
 const EXAMPLES = [
   { label: "All books", path: "$.store.books[*]" },
   { label: "First book", path: "$.store.books[0]" },
   { label: "All titles", path: "$.store.books[*].title" },
   { label: "Store name", path: "$.store.name" },
-  { label: "All prices", path: "$..price" },
-]
+  { label: "All prices", path: "$..price" }
+];
 
 export default function JsonPathPage() {
-  const [json, setJson] = useToolState("json-path", "json", EXAMPLE_JSON)
+  const [json, setJson] = useToolState("json-path", "json", EXAMPLE_JSON);
   const [path, setPath] = useToolState(
     "json-path",
     "path",
     "$.store.books[*].title"
-  )
-  const [results, setResults] = useState<unknown[]>([])
-  const [error, setError] = useState<string | null>(null)
-  const [copied, setCopied] = useState(false)
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  );
+  const [results, setResults] = useState<unknown[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    if (debounceRef.current) clearTimeout(debounceRef.current)
+    if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
       if (!json || !path) {
-        setResults([])
-        setError(null)
-        return
+        setResults([]);
+        setError(null);
+        return;
       }
       try {
-        const parsed = JSON.parse(json)
-        const res = queryPath(parsed, path)
-        setResults(res)
-        setError(null)
+        const parsed = JSON.parse(json);
+        const res = queryPath(parsed, path);
+        setResults(res);
+        setError(null);
       } catch (e) {
-        setError((e as Error).message)
-        setResults([])
+        setError((e as Error).message);
+        setResults([]);
       }
-    }, 400)
+    }, 400);
     return () => {
-      if (debounceRef.current) clearTimeout(debounceRef.current)
-    }
-  }, [json, path])
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [json, path]);
 
-  const output = JSON.stringify(results, null, 2)
+  const output = JSON.stringify(results, null, 2);
 
   const copy = async () => {
-    await navigator.clipboard.writeText(output)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
-  }
+    await navigator.clipboard.writeText(output);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
 
   return (
     <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
@@ -196,9 +196,9 @@ export default function JsonPathPage() {
               size="sm"
               variant="ghost"
               onClick={() => {
-                setJson("")
-                setResults([])
-                setError(null)
+                setJson("");
+                setResults([]);
+                setError(null);
               }}
               className="text-xs"
             >
@@ -255,5 +255,5 @@ export default function JsonPathPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -1,116 +1,116 @@
-"use client"
+"use client";
 
-import { ArrowLeftRight, Check, Copy } from "lucide-react"
-import { useEffect, useRef, useState } from "react"
+import { ArrowLeftRight, Check, Copy } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
-import { Button } from "@/components/ui/button"
-import { useToolState } from "@/hooks/use-tool-state"
-import { handleTextareaTab } from "@/lib/utils"
+import { Button } from "@/components/ui/button";
+import { useToolState } from "@/hooks/use-tool-state";
+import { handleTextareaTab } from "@/lib/utils";
 
-type Direction = "json-to-csv" | "csv-to-json"
+type Direction = "json-to-csv" | "csv-to-json";
 
 function jsonToCsv(jsonStr: string): string {
-  const data = JSON.parse(jsonStr)
-  if (!Array.isArray(data)) throw new Error("Input must be a JSON array")
-  if (data.length === 0) return ""
-  const headers = Array.from(new Set(data.flatMap((row) => Object.keys(row))))
+  const data = JSON.parse(jsonStr);
+  if (!Array.isArray(data)) throw new Error("Input must be a JSON array");
+  if (data.length === 0) return "";
+  const headers = Array.from(new Set(data.flatMap((row) => Object.keys(row))));
   const escape = (v: unknown) => {
-    const str = v === null || v === undefined ? "" : String(v)
+    const str = v === null || v === undefined ? "" : String(v);
     return str.includes(",") || str.includes('"') || str.includes("\n")
       ? `"${str.replace(/"/g, '""')}"`
-      : str
-  }
+      : str;
+  };
   const rows = data.map((row: Record<string, unknown>) =>
     headers.map((h) => escape(row[h])).join(",")
-  )
-  return [headers.join(","), ...rows].join("\n")
+  );
+  return [headers.join(","), ...rows].join("\n");
 }
 
 function csvToJson(csvStr: string): string {
-  const lines = csvStr.trim().split("\n")
+  const lines = csvStr.trim().split("\n");
   if (lines.length < 2)
-    throw new Error("CSV must have a header row and at least one data row")
+    throw new Error("CSV must have a header row and at least one data row");
 
   function parseLine(line: string): string[] {
-    const result: string[] = []
-    let current = ""
-    let inQuotes = false
+    const result: string[] = [];
+    let current = "";
+    let inQuotes = false;
     for (let i = 0; i < line.length; i++) {
-      const ch = line[i]
+      const ch = line[i];
       if (ch === '"') {
         if (inQuotes && line[i + 1] === '"') {
-          current += '"'
-          i++
-        } else inQuotes = !inQuotes
+          current += '"';
+          i++;
+        } else inQuotes = !inQuotes;
       } else if (ch === "," && !inQuotes) {
-        result.push(current)
-        current = ""
+        result.push(current);
+        current = "";
       } else {
-        current += ch
+        current += ch;
       }
     }
-    result.push(current)
-    return result
+    result.push(current);
+    return result;
   }
 
-  const headers = parseLine(lines[0])
+  const headers = parseLine(lines[0]);
   const rows = lines
     .slice(1)
     .filter(Boolean)
     .map((line) => {
-      const values = parseLine(line)
-      return Object.fromEntries(headers.map((h, i) => [h, values[i] ?? ""]))
-    })
-  return JSON.stringify(rows, null, 2)
+      const values = parseLine(line);
+      return Object.fromEntries(headers.map((h, i) => [h, values[i] ?? ""]));
+    });
+  return JSON.stringify(rows, null, 2);
 }
 
 export default function JsonCsvPage() {
-  const [input, setInput] = useToolState("json-csv", "input", "")
+  const [input, setInput] = useToolState("json-csv", "input", "");
   const [direction, setDirection] = useToolState<Direction>(
     "json-csv",
     "direction",
     "json-to-csv"
-  )
-  const [output, setOutput] = useState("")
-  const [error, setError] = useState<string | null>(null)
-  const [copied, setCopied] = useState(false)
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  );
+  const [output, setOutput] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const convert = (src: string, dir: Direction) => {
     if (!src) {
-      setOutput("")
-      setError(null)
-      return
+      setOutput("");
+      setError(null);
+      return;
     }
     try {
-      setOutput(dir === "json-to-csv" ? jsonToCsv(src) : csvToJson(src))
-      setError(null)
+      setOutput(dir === "json-to-csv" ? jsonToCsv(src) : csvToJson(src));
+      setError(null);
     } catch (e) {
-      setError((e as Error).message)
-      setOutput("")
+      setError((e as Error).message);
+      setOutput("");
     }
-  }
+  };
 
   useEffect(() => {
-    if (debounceRef.current) clearTimeout(debounceRef.current)
-    debounceRef.current = setTimeout(() => convert(input, direction), 500)
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => convert(input, direction), 500);
     return () => {
-      if (debounceRef.current) clearTimeout(debounceRef.current)
-    }
-  }, [input, direction])
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [input, direction]);
 
   const swap = () => {
     const next: Direction =
-      direction === "json-to-csv" ? "csv-to-json" : "json-to-csv"
-    setInput(output)
-    setDirection(next)
-  }
+      direction === "json-to-csv" ? "csv-to-json" : "json-to-csv";
+    setInput(output);
+    setDirection(next);
+  };
 
   const copy = async () => {
-    await navigator.clipboard.writeText(output)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
-  }
+    await navigator.clipboard.writeText(output);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
 
   return (
     <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
@@ -131,9 +131,9 @@ export default function JsonCsvPage() {
               size="sm"
               variant="ghost"
               onClick={() => {
-                setInput("")
-                setOutput("")
-                setError(null)
+                setInput("");
+                setOutput("");
+                setError(null);
               }}
               className="text-xs"
             >
@@ -190,5 +190,5 @@ export default function JsonCsvPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

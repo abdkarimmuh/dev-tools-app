@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
-import { useMemo } from "react"
+import { useMemo } from "react";
 
-import { useToolState } from "@/hooks/use-tool-state"
-import { handleTextareaTab } from "@/lib/utils"
+import { useToolState } from "@/hooks/use-tool-state";
+import { handleTextareaTab } from "@/lib/utils";
 
 function countWords(text: string): number {
-  return text.trim() === "" ? 0 : text.trim().split(/\s+/).length
+  return text.trim() === "" ? 0 : text.trim().split(/\s+/).length;
 }
 
 function countSentences(text: string): number {
-  return text.trim() === "" ? 0 : (text.match(/[.!?]+/g) ?? []).length
+  return text.trim() === "" ? 0 : (text.match(/[.!?]+/g) ?? []).length;
 }
 
 function countParagraphs(text: string): number {
@@ -19,18 +19,18 @@ function countParagraphs(text: string): number {
     : text
         .trim()
         .split(/\n\s*\n/)
-        .filter(Boolean).length
+        .filter(Boolean).length;
 }
 
 function readingTime(words: number): string {
-  const minutes = words / 200
-  if (minutes < 1) return "< 1 min"
-  return `~${Math.ceil(minutes)} min`
+  const minutes = words / 200;
+  if (minutes < 1) return "< 1 min";
+  return `~${Math.ceil(minutes)} min`;
 }
 
 interface StatCardProps {
-  label: string
-  value: string | number
+  label: string;
+  value: string | number;
 }
 
 function StatCard({ label, value }: StatCardProps) {
@@ -39,19 +39,19 @@ function StatCard({ label, value }: StatCardProps) {
       <p className="font-mono text-2xl font-bold">{value}</p>
       <p className="mt-0.5 text-xs text-muted-foreground">{label}</p>
     </div>
-  )
+  );
 }
 
 export default function WordCounterPage() {
-  const [text, setText] = useToolState("word-counter", "text", "")
+  const [text, setText] = useToolState("word-counter", "text", "");
 
   const stats = useMemo(() => {
-    const words = countWords(text)
-    const chars = text.length
-    const charsNoSpaces = text.replace(/\s/g, "").length
-    const sentences = countSentences(text)
-    const paragraphs = countParagraphs(text)
-    const lines = text === "" ? 0 : text.split("\n").length
+    const words = countWords(text);
+    const chars = text.length;
+    const charsNoSpaces = text.replace(/\s/g, "").length;
+    const sentences = countSentences(text);
+    const paragraphs = countParagraphs(text);
+    const lines = text === "" ? 0 : text.split("\n").length;
     return {
       words,
       chars,
@@ -59,9 +59,9 @@ export default function WordCounterPage() {
       sentences,
       paragraphs,
       lines,
-      readingTime: readingTime(words),
-    }
-  }, [text])
+      readingTime: readingTime(words)
+    };
+  }, [text]);
 
   return (
     <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
@@ -84,5 +84,5 @@ export default function WordCounterPage() {
         spellCheck={true}
       />
     </div>
-  )
+  );
 }

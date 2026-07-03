@@ -6,82 +6,82 @@ Kumpulan tools berbasis web untuk membantu produktivitas pengembang sehari-hari 
 
 ### Format & Validasi
 
-| Tool | Deskripsi |
-|---|---|
-| **JSON Formatter** | Format (pretty-print), minify, dan validasi JSON. Menampilkan pesan error yang jelas jika JSON tidak valid. |
-| **JavaScript Formatter** | Format dan minify kode JavaScript menggunakan Prettier (parser: babel). |
-| **TypeScript Formatter** | Format dan minify kode TypeScript menggunakan Prettier (parser: typescript). |
-| **HTML Formatter** | Format, minify, dan validasi kode HTML menggunakan Prettier. |
-| **CSS / SCSS / SASS Formatter** | Format dan minify kode CSS, SCSS, atau SASS menggunakan Prettier. Pilih sintaks via dropdown Select. |
-| **SQL Formatter** | Format dan minify query SQL. Pilih dialek (SQL, MySQL, PostgreSQL, T-SQL, SQLite, PL/SQL) via dropdown Select. |
-| **XML Formatter** | Format, minify, dan validasi XML menggunakan browser-native DOMParser. Menampilkan error parser yang jelas. |
-| **YAML Formatter** | Format dan validasi YAML via js-yaml. Normalisasi indentasi dan struktur otomatis. |
-| **TOML Formatter** | Format dan validasi TOML via smol-toml. Cocok untuk Cargo.toml, pyproject.toml, dan config file lainnya. |
-| **GraphQL Formatter** | Format dan validasi query/schema GraphQL menggunakan graphql `parse` + `print`. |
+| Tool                            | Deskripsi                                                                                                      |
+| ------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| **JSON Formatter**              | Format (pretty-print), minify, dan validasi JSON. Menampilkan pesan error yang jelas jika JSON tidak valid.    |
+| **JavaScript Formatter**        | Format dan minify kode JavaScript menggunakan Prettier.                                                        |
+| **TypeScript Formatter**        | Format dan minify kode TypeScript menggunakan Prettier.                                                        |
+| **HTML Formatter**              | Format, minify, dan validasi kode HTML menggunakan Prettier.                                                   |
+| **CSS / SCSS / SASS Formatter** | Format dan minify kode CSS, SCSS, atau SASS menggunakan Prettier. Pilih sintaks via dropdown Select.           |
+| **SQL Formatter**               | Format dan minify query SQL. Pilih dialek (SQL, MySQL, PostgreSQL, T-SQL, SQLite, PL/SQL) via dropdown Select. |
+| **XML Formatter**               | Format, minify, dan validasi XML menggunakan browser-native DOMParser. Menampilkan error parser yang jelas.    |
+| **YAML Formatter**              | Format dan validasi YAML via js-yaml. Normalisasi indentasi dan struktur otomatis.                             |
+| **TOML Formatter**              | Format dan validasi TOML via smol-toml. Cocok untuk Cargo.toml, pyproject.toml, dan config file lainnya.       |
+| **GraphQL Formatter**           | Format dan validasi query/schema GraphQL menggunakan graphql `parse` + `print`.                                |
 
 ### Converter
 
-| Tool | Deskripsi |
-|---|---|
-| **JSON ↔ YAML** | Konversi dua arah antara JSON dan YAML. Tombol swap membalik arah konversi dan mengisi ulang input. |
-| **JSON ↔ CSV** | Konversi JSON array ke CSV dan sebaliknya. Menangani quoting, escaping karakter khusus, dan header otomatis. |
-| **JSON ↔ XML** | Konversi JSON ke XML terformat dan XML ke JSON. Menggunakan DOMParser/XMLSerializer browser-native. |
-| **Number Base Converter** | Konversi angka antar basis bilangan (binary, octal, decimal, hexadecimal) secara live-sync dua arah. |
-| **Unix Timestamp** | Konversi Unix timestamp ke tanggal (UTC & local timezone) dan sebaliknya. Menampilkan detik dan milidetik. |
+| Tool                      | Deskripsi                                                                                                    |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| **JSON ↔ YAML**           | Konversi dua arah antara JSON dan YAML. Tombol swap membalik arah konversi dan mengisi ulang input.          |
+| **JSON ↔ CSV**            | Konversi JSON array ke CSV dan sebaliknya. Menangani quoting, escaping karakter khusus, dan header otomatis. |
+| **JSON ↔ XML**            | Konversi JSON ke XML terformat dan XML ke JSON. Menggunakan DOMParser/XMLSerializer browser-native.          |
+| **Number Base Converter** | Konversi angka antar basis bilangan (binary, octal, decimal, hexadecimal) secara live-sync dua arah.         |
+| **Unix Timestamp**        | Konversi Unix timestamp ke tanggal (UTC & local timezone) dan sebaliknya. Menampilkan detik dan milidetik.   |
 
 ### Encoding
 
-| Tool | Deskripsi |
-|---|---|
-| **Base Encoder** | Encode dan decode teks dalam empat format sekaligus: Base64, Base32, Base58, dan Hex (Base16). Pilih format via dropdown Select. Dilengkapi tombol Swap untuk membalik output ke input. |
-| **URL Encode/Decode** | Encode dan decode string menggunakan `encodeURIComponent` / `decodeURIComponent`. |
-| **HTML Entities** | Encode karakter khusus HTML (`<`, `>`, `&`, dll.) dan decode kembali ke teks biasa. |
-| **JWT Decoder** | Decode token JWT menjadi Header dan Payload yang terbaca. Timestamp `exp`, `iat`, `nbf` otomatis dikonversi ke tanggal, serta badge status expired. |
-| **Hash Generator** | Generate hash menggunakan algoritma SHA-1, SHA-256, SHA-384, dan SHA-512 via Web Crypto API. |
+| Tool                  | Deskripsi                                                                                                                                                                               |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Base Encoder**      | Encode dan decode teks dalam empat format sekaligus: Base64, Base32, Base58, dan Hex (Base16). Pilih format via dropdown Select. Dilengkapi tombol Swap untuk membalik output ke input. |
+| **URL Encode/Decode** | Encode dan decode string menggunakan `encodeURIComponent` / `decodeURIComponent`.                                                                                                       |
+| **HTML Entities**     | Encode karakter khusus HTML (`<`, `>`, `&`, dll.) dan decode kembali ke teks biasa.                                                                                                     |
+| **JWT Decoder**       | Decode token JWT menjadi Header dan Payload yang terbaca. Timestamp `exp`, `iat`, `nbf` otomatis dikonversi ke tanggal, serta badge status expired.                                     |
+| **Hash Generator**    | Generate hash menggunakan algoritma SHA-1, SHA-256, SHA-384, dan SHA-512 via Web Crypto API.                                                                                            |
 
 ### Text
 
-| Tool | Deskripsi |
-|---|---|
-| **Diff Checker** | Bandingkan dua teks baris per baris menggunakan algoritma LCS (Longest Common Subsequence). Menampilkan baris ditambah (hijau) dan dihapus (merah) beserta nomor baris. Panel input split-pane dengan divider yang bisa di-drag. |
-| **Case Converter** | Konversi teks ke 8 format sekaligus: `camelCase`, `PascalCase`, `snake_case`, `kebab-case`, `SCREAMING_SNAKE`, `Title Case`, `lowercase`, `UPPERCASE`. |
-| **Regex Tester** | Uji regex secara live dengan highlight match pada teks. Mendukung toggle flag (`g`, `i`, `m`, `s`), menampilkan detail setiap match beserta capture groups. |
-| **Markdown Preview** | Editor markdown split-view dengan toolbar formatting (bold, italic, heading, list, blockquote, code block, link, dll.). Preview live via marked dengan styling `@tailwindcss/typography`. |
-| **Word Counter** | Hitung kata, karakter, karakter tanpa spasi, kalimat, paragraf, baris, dan estimasi reading time secara live. |
-| **JSON Path Tester** | Uji ekspresi JSONPath (`$.store.books[*].title`, `$..price`, dll.) terhadap JSON document. Menampilkan semua hasil yang cocok beserta jumlah match. |
+| Tool                 | Deskripsi                                                                                                                                                                                                                        |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Diff Checker**     | Bandingkan dua teks baris per baris menggunakan algoritma LCS (Longest Common Subsequence). Menampilkan baris ditambah (hijau) dan dihapus (merah) beserta nomor baris. Panel input split-pane dengan divider yang bisa di-drag. |
+| **Case Converter**   | Konversi teks ke 8 format sekaligus: `camelCase`, `PascalCase`, `snake_case`, `kebab-case`, `SCREAMING_SNAKE`, `Title Case`, `lowercase`, `UPPERCASE`.                                                                           |
+| **Regex Tester**     | Uji regex secara live dengan highlight match pada teks. Mendukung toggle flag (`g`, `i`, `m`, `s`), menampilkan detail setiap match beserta capture groups.                                                                      |
+| **Markdown Preview** | Editor markdown split-view dengan toolbar formatting (bold, italic, heading, list, blockquote, code block, link, dll.). Preview live via marked dengan styling `@tailwindcss/typography`.                                        |
+| **Word Counter**     | Hitung kata, karakter, karakter tanpa spasi, kalimat, paragraf, baris, dan estimasi reading time secara live.                                                                                                                    |
+| **JSON Path Tester** | Uji ekspresi JSONPath (`$.store.books[*].title`, `$..price`, dll.) terhadap JSON document. Menampilkan semua hasil yang cocok beserta jumlah match.                                                                              |
 
 ### Generator
 
-| Tool | Deskripsi |
-|---|---|
-| **UUID Generator** | Generate UUID versi v1 (time-based), v4 (random), atau v7 (time-ordered) secara bulk hingga 100 UUID sekaligus. Salin satu per satu atau semua sekaligus. |
-| **Lorem Ipsum** | Generate placeholder text dalam satuan kata, kalimat, atau paragraf dengan jumlah yang bisa dikustomisasi. |
-| **Password Generator** | Generate password aman dengan opsi panjang (4–128 karakter), pilihan charset (huruf besar, huruf kecil, angka, simbol), dan indikator kekuatan password. |
-| **QR Generator** | Generate QR code dari teks atau URL. Mendukung pilihan level koreksi error (L/M/Q/H) dan ukuran output. Download sebagai PNG. |
-| **Barcode Generator** | Generate barcode dalam berbagai format (CODE128, EAN-13, EAN-8, UPC, CODE39, ITF-14, MSI, Pharmacode). Download sebagai SVG. |
-| **CRON Generator** | Builder visual ekspresi CRON dengan field editor (minute/hour/day/month/weekday), preset umum, dan deskripsi human-readable. |
-| **Fake Data Generator** | Generate data palsu untuk testing: Person, Address, Internet, Product, dan Lorem Ipsum. Output dalam format JSON, hingga 100 item. |
+| Tool                    | Deskripsi                                                                                                                                                 |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **UUID Generator**      | Generate UUID versi v1 (time-based), v4 (random), atau v7 (time-ordered) secara bulk hingga 100 UUID sekaligus. Salin satu per satu atau semua sekaligus. |
+| **Lorem Ipsum**         | Generate placeholder text dalam satuan kata, kalimat, atau paragraf dengan jumlah yang bisa dikustomisasi.                                                |
+| **Password Generator**  | Generate password aman dengan opsi panjang (4–128 karakter), pilihan charset (huruf besar, huruf kecil, angka, simbol), dan indikator kekuatan password.  |
+| **QR Generator**        | Generate QR code dari teks atau URL. Mendukung pilihan level koreksi error (L/M/Q/H) dan ukuran output. Download sebagai PNG.                             |
+| **Barcode Generator**   | Generate barcode dalam berbagai format (CODE128, EAN-13, EAN-8, UPC, CODE39, ITF-14, MSI, Pharmacode). Download sebagai SVG.                              |
+| **CRON Generator**      | Builder visual ekspresi CRON dengan field editor (minute/hour/day/month/weekday), preset umum, dan deskripsi human-readable.                              |
+| **Fake Data Generator** | Generate data palsu untuk testing: Person, Address, Internet, Product, dan Lorem Ipsum. Output dalam format JSON, hingga 100 item.                        |
 
 ### Cryptography
 
-| Tool | Deskripsi |
-|---|---|
-| **AES Cipher** | Enkripsi dan dekripsi teks menggunakan AES-256 (CBC mode, passphrase-based via crypto-js). Output dalam format Base64. |
-| **DES / 3DES Cipher** | Enkripsi dan dekripsi menggunakan DES atau Triple DES (3DES). Pilih algoritma via dropdown Select. |
-| **RC4 Cipher** | Enkripsi dan dekripsi menggunakan stream cipher RC4 berbasis passphrase. |
-| **RSA** | Generate key pair RSA (1024/2048/4096-bit) via Web Crypto API. Enkripsi dengan public key (RSA-OAEP + SHA-256), dekripsi dengan private key. PEM format. Mode (Keys/Encrypt/Decrypt) dipilih via Select. |
-| **ECDSA** | Generate key pair ECDSA (P-256/P-384) via Web Crypto API. Sign pesan dengan private key, verifikasi tanda tangan dengan public key. Mode (Keys/Sign/Verify) dipilih via Select. |
-| **API Signature (HMAC)** | Generate HMAC signature untuk kebutuhan API. Mendukung HMAC-SHA256/512/384/1, key encoding (UTF-8/Hex/Base64), dan output Hex atau Base64. Generate otomatis saat key dan payload diisi. |
+| Tool                     | Deskripsi                                                                                                                                                                                                |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **AES Cipher**           | Enkripsi dan dekripsi teks menggunakan AES-256 (CBC mode, passphrase-based via crypto-js). Output dalam format Base64.                                                                                   |
+| **DES / 3DES Cipher**    | Enkripsi dan dekripsi menggunakan DES atau Triple DES (3DES). Pilih algoritma via dropdown Select.                                                                                                       |
+| **RC4 Cipher**           | Enkripsi dan dekripsi menggunakan stream cipher RC4 berbasis passphrase.                                                                                                                                 |
+| **RSA**                  | Generate key pair RSA (1024/2048/4096-bit) via Web Crypto API. Enkripsi dengan public key (RSA-OAEP + SHA-256), dekripsi dengan private key. PEM format. Mode (Keys/Encrypt/Decrypt) dipilih via Select. |
+| **ECDSA**                | Generate key pair ECDSA (P-256/P-384) via Web Crypto API. Sign pesan dengan private key, verifikasi tanda tangan dengan public key. Mode (Keys/Sign/Verify) dipilih via Select.                          |
+| **API Signature (HMAC)** | Generate HMAC signature untuk kebutuhan API. Mendukung HMAC-SHA256/512/384/1, key encoding (UTF-8/Hex/Base64), dan output Hex atau Base64. Generate otomatis saat key dan payload diisi.                 |
 
 ### Frontend / CSS
 
-| Tool | Deskripsi |
-|---|---|
-| **Color Converter** | Konversi warna antar format HEX, RGB, dan HSL secara dua arah. Dilengkapi color picker native dan preview warna. |
-| **PX → REM** | Konversi nilai PX ke REM dan sebaliknya dengan base font size yang bisa dikustomisasi (default 16px). Tersedia tabel referensi untuk nilai-nilai umum. |
-| **CSS Gradient Generator** | Builder visual untuk CSS gradient (linear, radial, conic). Tambah/hapus color stops, atur sudut, dan salin CSS langsung dari preview. |
-| **Box Shadow Generator** | Builder visual box-shadow dengan slider offset XY, blur, spread, color picker, dan toggle inset. Mendukung multiple shadows. |
-| **Tailwind Cheatsheet** | Referensi kelas Tailwind CSS yang bisa dicari (flexbox, grid, spacing, sizing, typography, borders, position, animasi). Klik kelas untuk menyalin. |
+| Tool                       | Deskripsi                                                                                                                                              |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Color Converter**        | Konversi warna antar format HEX, RGB, dan HSL secara dua arah. Dilengkapi color picker native dan preview warna.                                       |
+| **PX → REM**               | Konversi nilai PX ke REM dan sebaliknya dengan base font size yang bisa dikustomisasi (default 16px). Tersedia tabel referensi untuk nilai-nilai umum. |
+| **CSS Gradient Generator** | Builder visual untuk CSS gradient (linear, radial, conic). Tambah/hapus color stops, atur sudut, dan salin CSS langsung dari preview.                  |
+| **Box Shadow Generator**   | Builder visual box-shadow dengan slider offset XY, blur, spread, color picker, dan toggle inset. Mendukung multiple shadows.                           |
+| **Tailwind Cheatsheet**    | Referensi kelas Tailwind CSS yang bisa dicari (flexbox, grid, spacing, sizing, typography, borders, position, animasi). Klik kelas untuk menyalin.     |
 
 ## Tech Stack
 
@@ -233,9 +233,9 @@ Cukup dua langkah:
 Gunakan hook `useToolState` untuk state input/output agar state tidak hilang saat navigasi:
 
 ```ts
-import { useToolState } from "@/hooks/use-tool-state"
+import { useToolState } from "@/hooks/use-tool-state";
 
-const [input, setInput] = useToolState("nama-tool", "input", "")
+const [input, setInput] = useToolState("nama-tool", "input", "");
 ```
 
 ## Lisensi

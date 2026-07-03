@@ -1,63 +1,63 @@
-"use client"
+"use client";
 
-import { Check, Copy } from "lucide-react"
-import { useState } from "react"
+import { Check, Copy } from "lucide-react";
+import { useState } from "react";
 
-import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import { useLanguage } from "@/contexts/language-context"
-import { useToolState } from "@/hooks/use-tool-state"
-import { handleTextareaTab } from "@/lib/utils"
+  SelectValue
+} from "@/components/ui/select";
+import { useLanguage } from "@/contexts/language-context";
+import { useToolState } from "@/hooks/use-tool-state";
+import { handleTextareaTab } from "@/lib/utils";
 
-type Algorithm = "SHA-1" | "SHA-256" | "SHA-384" | "SHA-512"
+type Algorithm = "SHA-1" | "SHA-256" | "SHA-384" | "SHA-512";
 
-const ALGORITHMS: Algorithm[] = ["SHA-1", "SHA-256", "SHA-384", "SHA-512"]
+const ALGORITHMS: Algorithm[] = ["SHA-1", "SHA-256", "SHA-384", "SHA-512"];
 
 async function computeHash(
   algorithm: Algorithm,
   text: string
 ): Promise<string> {
-  const buffer = new TextEncoder().encode(text)
-  const hashBuffer = await crypto.subtle.digest(algorithm, buffer)
+  const buffer = new TextEncoder().encode(text);
+  const hashBuffer = await crypto.subtle.digest(algorithm, buffer);
   return Array.from(new Uint8Array(hashBuffer))
     .map((b) => b.toString(16).padStart(2, "0"))
-    .join("")
+    .join("");
 }
 
 export default function HashGeneratorPage() {
-  const { t } = useLanguage()
-  const [input, setInput] = useToolState("hash-generator", "input", "")
+  const { t } = useLanguage();
+  const [input, setInput] = useToolState("hash-generator", "input", "");
   const [algorithm, setAlgorithm] = useToolState<Algorithm>(
     "hash-generator",
     "algorithm",
     "SHA-256"
-  )
-  const [output, setOutput] = useState("")
-  const [loading, setLoading] = useState(false)
-  const [copied, setCopied] = useState(false)
+  );
+  const [output, setOutput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const generate = async () => {
-    if (!input) return
-    setLoading(true)
+    if (!input) return;
+    setLoading(true);
     try {
-      setOutput(await computeHash(algorithm, input))
+      setOutput(await computeHash(algorithm, input));
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const copy = async () => {
-    await navigator.clipboard.writeText(output)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
-  }
+    await navigator.clipboard.writeText(output);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
 
   return (
     <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
@@ -70,8 +70,8 @@ export default function HashGeneratorPage() {
             placeholder={t.hashInputPlaceholder}
             value={input}
             onChange={(e) => {
-              setInput(e.target.value)
-              setOutput("")
+              setInput(e.target.value);
+              setOutput("");
             }}
             onKeyDown={(e) => handleTextareaTab(e, input, setInput)}
             spellCheck={false}
@@ -86,8 +86,8 @@ export default function HashGeneratorPage() {
               <Select
                 value={algorithm}
                 onValueChange={(v) => {
-                  setAlgorithm(v as Algorithm)
-                  setOutput("")
+                  setAlgorithm(v as Algorithm);
+                  setOutput("");
                 }}
               >
                 <SelectTrigger className="w-36">
@@ -136,5 +136,5 @@ export default function HashGeneratorPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
