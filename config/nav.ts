@@ -1,3 +1,4 @@
+import type { LucideIcon } from "lucide-react"
 import {
   AlignLeft,
   ArrowLeftRight,
@@ -19,7 +20,6 @@ import {
   Layers,
   Link,
   Lock,
-  type LucideIcon,
   Paintbrush,
   Palette,
   QrCode,

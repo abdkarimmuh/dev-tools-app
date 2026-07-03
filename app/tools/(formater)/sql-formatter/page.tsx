@@ -13,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { type Dialect,DIALECTS } from "@/constants/formatters/sql-formatter"
+import { type Dialect, DIALECTS } from "@/constants/formatters/sql-formatter"
 import { useLanguage } from "@/contexts/language-context"
 import { useToolState } from "@/hooks/use-tool-state"
 import { handleTextareaTab } from "@/lib/utils"

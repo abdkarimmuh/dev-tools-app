@@ -58,20 +58,31 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               {navGroupLabels[language][group.label] ?? group.label}
             </SidebarGroupLabel>
             <SidebarMenu>
-              {group.items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton
-                    asChild
-                    isActive={pathname === item.url}
-                    tooltip={item.title}
-                  >
-                    <Link href={item.url} onClick={() => setOpenMobile(false)}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+              {group.items.map((item) => {
+                const isActive = pathname === item.url
+                return (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={isActive}
+                      tooltip={item.title}
+                      className={
+                        isActive
+                          ? "bg-sidebar-primary! text-sidebar-primary-foreground! [&_svg]:text-sidebar-primary-foreground!"
+                          : ""
+                      }
+                    >
+                      <Link
+                        href={item.url}
+                        onClick={() => setOpenMobile(false)}
+                      >
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                )
+              })}
             </SidebarMenu>
           </SidebarGroup>
         ))}

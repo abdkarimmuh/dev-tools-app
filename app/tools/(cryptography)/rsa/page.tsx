@@ -262,7 +262,9 @@ export default function RsaPage() {
               className="min-h-0 w-full flex-1 resize-none rounded-md border bg-muted p-3 font-mono text-xs outline-none"
               value={publicKeyPem}
               onChange={(e) => setPublicKeyPem(e.target.value)}
-              onKeyDown={(e) => handleTextareaTab(e, publicKeyPem, setPublicKeyPem)}
+              onKeyDown={(e) =>
+                handleTextareaTab(e, publicKeyPem, setPublicKeyPem)
+              }
               placeholder="-----BEGIN PUBLIC KEY-----"
               spellCheck={false}
             />
@@ -279,7 +281,9 @@ export default function RsaPage() {
               className="min-h-0 w-full flex-1 resize-none rounded-md border bg-muted p-3 font-mono text-xs outline-none"
               value={privateKeyPem}
               onChange={(e) => setPrivateKeyPem(e.target.value)}
-              onKeyDown={(e) => handleTextareaTab(e, privateKeyPem, setPrivateKeyPem)}
+              onKeyDown={(e) =>
+                handleTextareaTab(e, privateKeyPem, setPrivateKeyPem)
+              }
               placeholder="-----BEGIN PRIVATE KEY-----"
               spellCheck={false}
             />
@@ -303,7 +307,9 @@ export default function RsaPage() {
               className="h-24 w-full resize-none rounded-md border bg-muted p-3 font-mono text-xs outline-none"
               value={publicKeyPem}
               onChange={(e) => setPublicKeyPem(e.target.value)}
-              onKeyDown={(e) => handleTextareaTab(e, publicKeyPem, setPublicKeyPem)}
+              onKeyDown={(e) =>
+                handleTextareaTab(e, publicKeyPem, setPublicKeyPem)
+              }
               placeholder="-----BEGIN PUBLIC KEY-----"
               spellCheck={false}
             />
@@ -361,7 +367,9 @@ export default function RsaPage() {
               className="h-24 w-full resize-none rounded-md border bg-muted p-3 font-mono text-xs outline-none"
               value={privateKeyPem}
               onChange={(e) => setPrivateKeyPem(e.target.value)}
-              onKeyDown={(e) => handleTextareaTab(e, privateKeyPem, setPrivateKeyPem)}
+              onKeyDown={(e) =>
+                handleTextareaTab(e, privateKeyPem, setPrivateKeyPem)
+              }
               placeholder="-----BEGIN PRIVATE KEY-----"
               spellCheck={false}
             />

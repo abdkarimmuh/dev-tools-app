@@ -1,5 +1,6 @@
 "use client"
 
+import type { LucideIcon } from "lucide-react"
 import {
   Bold,
   Code,
@@ -11,7 +12,6 @@ import {
   Link,
   List,
   ListOrdered,
-  type LucideIcon,
   Minus,
   Quote,
   Strikethrough,
