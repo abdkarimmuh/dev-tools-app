@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/tooltip"
 import { useLanguage } from "@/contexts/language-context"
 import { useToolState } from "@/hooks/use-tool-state"
+import { handleTextareaTab } from "@/lib/utils"
 
 marked.use({ gfm: true, breaks: true })
 
@@ -219,6 +220,7 @@ export default function MarkdownPreviewPage() {
             }
             value={input}
             onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => handleTextareaTab(e, input, setInput)}
             spellCheck={false}
           />
         </div>

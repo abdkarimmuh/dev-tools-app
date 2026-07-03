@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useLanguage } from "@/contexts/language-context"
 import { useToolState } from "@/hooks/use-tool-state"
-import { cn } from "@/lib/utils"
+import { cn, handleTextareaTab } from "@/lib/utils"
 
 interface Match {
   index: number
@@ -152,6 +152,7 @@ export default function RegexTesterPage() {
           placeholder={t.regexTestPlaceholder}
           value={testStr}
           onChange={(e) => setTestStr(e.target.value)}
+          onKeyDown={(e) => handleTextareaTab(e, testStr, setTestStr)}
           spellCheck={false}
         />
       </div>

@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
 import { useToolState } from "@/hooks/use-tool-state"
+import { handleTextareaTab } from "@/lib/utils"
 
 async function formatHtml(code: string): Promise<string> {
   const [prettier, htmlPlugin] = await Promise.all([
@@ -128,6 +129,7 @@ export default function HtmlFormatterPage() {
             placeholder={t.htmlInputPlaceholder}
             value={input}
             onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => handleTextareaTab(e, input, setInput)}
             spellCheck={false}
           />
         </div>

@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/select"
 import { useLanguage } from "@/contexts/language-context"
 import { useToolState } from "@/hooks/use-tool-state"
+import { handleTextareaTab } from "@/lib/utils"
 
 type Algorithm = "SHA-1" | "SHA-256" | "SHA-384" | "SHA-512"
 
@@ -72,6 +73,7 @@ export default function HashGeneratorPage() {
               setInput(e.target.value)
               setOutput("")
             }}
+            onKeyDown={(e) => handleTextareaTab(e, input, setInput)}
             spellCheck={false}
           />
         </div>

@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/select"
 import { useLanguage } from "@/contexts/language-context"
 import { useToolState } from "@/hooks/use-tool-state"
+import { handleTextareaTab } from "@/lib/utils"
 
 type Encoding = "base64" | "base32" | "base58" | "base16"
 
@@ -260,6 +261,7 @@ export default function BaseEncoderPage() {
               setOutput("")
               setError(null)
             }}
+            onKeyDown={(e) => handleTextareaTab(e, input, setInput)}
             spellCheck={false}
           />
         </div>

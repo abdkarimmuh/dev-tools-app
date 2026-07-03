@@ -3,6 +3,7 @@
 import { useMemo } from "react"
 
 import { useToolState } from "@/hooks/use-tool-state"
+import { handleTextareaTab } from "@/lib/utils"
 
 function countWords(text: string): number {
   return text.trim() === "" ? 0 : text.trim().split(/\s+/).length
@@ -79,6 +80,7 @@ export default function WordCounterPage() {
         placeholder="Start typing or paste your text here..."
         value={text}
         onChange={(e) => setText(e.target.value)}
+        onKeyDown={(e) => handleTextareaTab(e, text, setText)}
         spellCheck={true}
       />
     </div>

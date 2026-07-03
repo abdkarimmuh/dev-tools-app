@@ -6,7 +6,7 @@ import { useCallback, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
 import { useToolState } from "@/hooks/use-tool-state"
-import { cn } from "@/lib/utils"
+import { cn, handleTextareaTab } from "@/lib/utils"
 
 type DiffLine = {
   type: "same" | "removed" | "added"
@@ -464,6 +464,7 @@ export default function DiffCheckerPage() {
             onChange={(e) => {
               setTextA(e.target.value)
             }}
+            onKeyDown={(e) => handleTextareaTab(e, textA, setTextA)}
             spellCheck={false}
           />
         </div>
@@ -491,6 +492,7 @@ export default function DiffCheckerPage() {
             onChange={(e) => {
               setTextB(e.target.value)
             }}
+            onKeyDown={(e) => handleTextareaTab(e, textB, setTextB)}
             spellCheck={false}
           />
         </div>

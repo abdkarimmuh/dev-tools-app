@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { useToolState } from "@/hooks/use-tool-state"
+import { handleTextareaTab } from "@/lib/utils"
 
 type Direction = "json-to-csv" | "csv-to-json"
 
@@ -148,6 +149,7 @@ export default function JsonCsvPage() {
             }
             value={input}
             onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => handleTextareaTab(e, input, setInput)}
             spellCheck={false}
           />
         </div>

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useToolState } from "@/hooks/use-tool-state"
+import { handleTextareaTab } from "@/lib/utils"
 
 function queryPath(obj: unknown, path: string): unknown[] {
   if (!path || path === "$") return [obj]
@@ -208,6 +209,7 @@ export default function JsonPathPage() {
             className="min-h-0 w-full flex-1 resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
             value={json}
             onChange={(e) => setJson(e.target.value)}
+            onKeyDown={(e) => handleTextareaTab(e, json, setJson)}
             spellCheck={false}
           />
         </div>

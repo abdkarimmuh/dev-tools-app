@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/select"
 import { useLanguage } from "@/contexts/language-context"
 import { useToolState } from "@/hooks/use-tool-state"
+import { handleTextareaTab } from "@/lib/utils"
 
 type Curve = "P-256" | "P-384"
 type Mode = "keys" | "sign" | "verify"
@@ -257,6 +258,7 @@ export default function EcdsaPage() {
               className="min-h-0 w-full flex-1 resize-none rounded-md border bg-muted p-3 font-mono text-xs outline-none"
               value={publicKeyPem}
               onChange={(e) => setPublicKeyPem(e.target.value)}
+              onKeyDown={(e) => handleTextareaTab(e, publicKeyPem, setPublicKeyPem)}
               placeholder="-----BEGIN PUBLIC KEY-----"
               spellCheck={false}
             />
@@ -273,6 +275,7 @@ export default function EcdsaPage() {
               className="min-h-0 w-full flex-1 resize-none rounded-md border bg-muted p-3 font-mono text-xs outline-none"
               value={privateKeyPem}
               onChange={(e) => setPrivateKeyPem(e.target.value)}
+              onKeyDown={(e) => handleTextareaTab(e, privateKeyPem, setPrivateKeyPem)}
               placeholder="-----BEGIN PRIVATE KEY-----"
               spellCheck={false}
             />
@@ -296,6 +299,7 @@ export default function EcdsaPage() {
               className="h-24 w-full resize-none rounded-md border bg-muted p-3 font-mono text-xs outline-none"
               value={privateKeyPem}
               onChange={(e) => setPrivateKeyPem(e.target.value)}
+              onKeyDown={(e) => handleTextareaTab(e, privateKeyPem, setPrivateKeyPem)}
               placeholder="-----BEGIN PRIVATE KEY-----"
               spellCheck={false}
             />
@@ -310,6 +314,7 @@ export default function EcdsaPage() {
                 placeholder={t.ecdsaMessagePlaceholder}
                 value={signMessage}
                 onChange={(e) => setSignMessage(e.target.value)}
+                onKeyDown={(e) => handleTextareaTab(e, signMessage, setSignMessage)}
                 spellCheck={false}
               />
             </div>
@@ -352,6 +357,7 @@ export default function EcdsaPage() {
               className="h-24 w-full resize-none rounded-md border bg-muted p-3 font-mono text-xs outline-none"
               value={publicKeyPem}
               onChange={(e) => setPublicKeyPem(e.target.value)}
+              onKeyDown={(e) => handleTextareaTab(e, publicKeyPem, setPublicKeyPem)}
               placeholder="-----BEGIN PUBLIC KEY-----"
               spellCheck={false}
             />
@@ -382,6 +388,7 @@ export default function EcdsaPage() {
                   setVerifyMessage(e.target.value)
                   setVerifyResult(null)
                 }}
+                onKeyDown={(e) => handleTextareaTab(e, verifyMessage, setVerifyMessage)}
                 spellCheck={false}
               />
             </div>
@@ -395,6 +402,7 @@ export default function EcdsaPage() {
                   setVerifySig(e.target.value)
                   setVerifyResult(null)
                 }}
+                onKeyDown={(e) => handleTextareaTab(e, verifySig, setVerifySig)}
                 spellCheck={false}
               />
             </div>

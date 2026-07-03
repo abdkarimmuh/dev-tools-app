@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useLanguage } from "@/contexts/language-context"
 import { useToolState } from "@/hooks/use-tool-state"
+import { handleTextareaTab } from "@/lib/utils"
 
 export default function Rc4CipherPage() {
   const { t } = useLanguage()
@@ -118,6 +119,7 @@ export default function Rc4CipherPage() {
             placeholder={t.rc4InputPlaceholder}
             value={input}
             onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => handleTextareaTab(e, input, setInput)}
             spellCheck={false}
           />
         </div>

@@ -6,6 +6,7 @@ import * as TOML from "smol-toml"
 
 import { Button } from "@/components/ui/button"
 import { useToolState } from "@/hooks/use-tool-state"
+import { handleTextareaTab } from "@/lib/utils"
 
 export default function TomlFormatterPage() {
   const [input, setInput] = useToolState("toml-formatter", "input", "")
@@ -87,6 +88,7 @@ export default function TomlFormatterPage() {
             }
             value={input}
             onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => handleTextareaTab(e, input, setInput)}
             spellCheck={false}
           />
         </div>

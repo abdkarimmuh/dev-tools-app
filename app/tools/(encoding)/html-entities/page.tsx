@@ -6,6 +6,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
 import { useToolState } from "@/hooks/use-tool-state"
+import { handleTextareaTab } from "@/lib/utils"
 
 function encodeHtmlEntities(str: string): string {
   return str
@@ -99,6 +100,7 @@ export default function HtmlEntitiesPage() {
               setOutput("")
               setError(null)
             }}
+            onKeyDown={(e) => handleTextareaTab(e, input, setInput)}
             spellCheck={false}
           />
         </div>

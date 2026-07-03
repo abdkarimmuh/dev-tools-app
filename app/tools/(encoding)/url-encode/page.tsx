@@ -6,6 +6,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
 import { useToolState } from "@/hooks/use-tool-state"
+import { handleTextareaTab } from "@/lib/utils"
 
 export default function UrlEncodePage() {
   const { t } = useLanguage()
@@ -88,6 +89,7 @@ export default function UrlEncodePage() {
               setOutput("")
               setError(null)
             }}
+            onKeyDown={(e) => handleTextareaTab(e, input, setInput)}
             spellCheck={false}
           />
         </div>

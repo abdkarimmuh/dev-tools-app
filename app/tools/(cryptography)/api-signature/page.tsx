@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/select"
 import { useLanguage } from "@/contexts/language-context"
 import { useToolState } from "@/hooks/use-tool-state"
+import { handleTextareaTab } from "@/lib/utils"
 
 type Algorithm = "SHA-1" | "SHA-256" | "SHA-384" | "SHA-512"
 type KeyEncoding = "utf8" | "hex" | "base64"
@@ -274,6 +275,7 @@ export default function ApiSignaturePage() {
             placeholder={'{\n  "user_id": 123,\n  "timestamp": 1700000000\n}'}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={(e) => handleTextareaTab(e, message, setMessage)}
             spellCheck={false}
           />
         </div>

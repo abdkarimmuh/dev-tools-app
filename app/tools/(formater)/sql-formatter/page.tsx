@@ -16,6 +16,7 @@ import {
 import { type Dialect,DIALECTS } from "@/constants/formatters/sql-formatter"
 import { useLanguage } from "@/contexts/language-context"
 import { useToolState } from "@/hooks/use-tool-state"
+import { handleTextareaTab } from "@/lib/utils"
 
 function minifySql(sql: string): string {
   return sql
@@ -126,6 +127,7 @@ export default function SqlFormatterPage() {
             placeholder={t.sqlInputPlaceholder}
             value={input}
             onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => handleTextareaTab(e, input, setInput)}
             spellCheck={false}
           />
         </div>

@@ -6,6 +6,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
 import { useToolState } from "@/hooks/use-tool-state"
+import { handleTextareaTab } from "@/lib/utils"
 
 function toWords(str: string): string[] {
   return str
@@ -117,6 +118,7 @@ export default function CaseConverterPage() {
           placeholder="hello world example text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => handleTextareaTab(e, input, setInput)}
           spellCheck={false}
         />
       </div>

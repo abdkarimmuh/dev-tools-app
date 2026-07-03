@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { useLanguage } from "@/contexts/language-context"
 import { useToolState } from "@/hooks/use-tool-state"
+import { handleTextareaTab } from "@/lib/utils"
 
 function base64UrlDecode(str: string): string {
   const base64 = str.replace(/-/g, "+").replace(/_/g, "/")
@@ -144,6 +145,7 @@ export default function JwtDecoderPage() {
               setDecoded(null)
               setError(null)
             }}
+            onKeyDown={(e) => handleTextareaTab(e, token, setToken)}
             spellCheck={false}
           />
 

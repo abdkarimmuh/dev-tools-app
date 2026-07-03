@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { useToolState } from "@/hooks/use-tool-state"
+import { handleTextareaTab } from "@/lib/utils"
 
 function formatXml(xml: string, indent = 2): string {
   const parser = new DOMParser()
@@ -169,6 +170,7 @@ export default function XmlFormatterPage() {
             placeholder="<root><item>value</item></root>"
             value={input}
             onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => handleTextareaTab(e, input, setInput)}
             spellCheck={false}
           />
         </div>

@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/select"
 import { useLanguage } from "@/contexts/language-context"
 import { useToolState } from "@/hooks/use-tool-state"
+import { handleTextareaTab } from "@/lib/utils"
 
 type Syntax = "css" | "scss" | "sass"
 
@@ -187,6 +188,7 @@ export default function CssFormatterPage() {
             placeholder={t[PLACEHOLDERS[syntax]]}
             value={input}
             onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => handleTextareaTab(e, input, setInput)}
             spellCheck={false}
           />
         </div>
