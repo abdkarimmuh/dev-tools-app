@@ -193,8 +193,7 @@ dev-tools-app/
 │           ├── color-converter/
 │           ├── px-rem/
 │           ├── gradient-generator/
-│           ├── box-shadow-generator/
-│           └── tailwind-cheatsheet/
+│           └── box-shadow-generator/
 ├── components/
 │   ├── layouts/
 │   │   ├── app-sidebar.tsx       # Sidebar navigasi

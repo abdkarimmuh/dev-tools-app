@@ -33,8 +33,7 @@ import {
   Table,
   TableProperties,
   Type,
-  Webhook,
-  Wind
+  Webhook
 } from "lucide-react";
 
 export interface NavItem {
@@ -184,11 +183,6 @@ export const navMenus: NavGroup[] = [
         title: "Box Shadow Generator",
         url: "/tools/box-shadow-generator",
         icon: Sliders
-      },
-      {
-        title: "Tailwind Cheatsheet",
-        url: "/tools/tailwind-cheatsheet",
-        icon: Wind
       }
     ]
   }

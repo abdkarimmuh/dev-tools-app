@@ -45,7 +45,7 @@ npm run format     # Prettier (formats .ts/.tsx)
 
 When making changes, link to these files in your PR description so reviewers can follow context.
 
-## Current tool inventory (37 tools across 7 categories)
+## Current tool inventory (36 tools across 7 categories)
 
 ### Format & Validasi (10 tools)
 `json-formatter`, `js-formatter`, `ts-formatter`, `html-formatter`, `css-formatter`, `sql-formatter`, `xml-formatter`, `yaml-formatter`, `toml-formatter`, `graphql-formatter`
@@ -65,8 +65,8 @@ When making changes, link to these files in your PR description so reviewers can
 ### Cryptography (6 tools)
 `aes-cipher`, `des-cipher`, `rc4-cipher`, `rsa`, `ecdsa`, `api-signature`
 
-### Frontend / CSS (5 tools)
-`color-converter`, `px-rem`, `gradient-generator`, `box-shadow-generator`, `tailwind-cheatsheet`
+### Frontend / CSS (4 tools)
+`color-converter`, `px-rem`, `gradient-generator`, `box-shadow-generator`
 
 ## Conventions & patterns
 
