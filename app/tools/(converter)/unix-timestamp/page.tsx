@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useLanguage } from "@/contexts/language-context";
 import { useToolState } from "@/hooks/use-tool-state";
 
 function formatDate(d: Date, tz: string): string {
@@ -44,6 +45,7 @@ function CopyButton({ text }: { text: string }) {
 }
 
 export default function UnixTimestampPage() {
+  const { t } = useLanguage();
   const [tsInput, setTsInput] = useToolState("unix-timestamp", "tsInput", "");
   const [dateInput, setDateInput] = useToolState(
     "unix-timestamp",
@@ -67,8 +69,8 @@ export default function UnixTimestampPage() {
     return isNaN(d.getTime()) ? null : Math.floor(d.getTime() / 1000);
   })();
 
-  const tsError = tsInput && !tsDate ? "Invalid timestamp" : null;
-  const dateError = dateInput && dateTs === null ? "Invalid date format" : null;
+  const tsError = tsInput && !tsDate ? t.unixInvalidTimestamp : null;
+  const dateError = dateInput && dateTs === null ? t.unixInvalidDate : null;
 
   const localTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
@@ -76,7 +78,7 @@ export default function UnixTimestampPage() {
     <div className="flex max-w-xl flex-col gap-8 px-4 lg:px-6">
       <div className="flex items-center gap-3 rounded-md border bg-muted px-4 py-3">
         <span className="text-sm text-muted-foreground">
-          Current Unix timestamp:
+          {t.unixCurrentLabel}
         </span>
         <span className="font-mono text-sm font-medium">{now}</span>
         <Button
@@ -92,10 +94,10 @@ export default function UnixTimestampPage() {
 
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1.5">
-          <Label className="mb-1">Unix Timestamp → Date</Label>
+          <Label className="mb-1">{t.unixToDateLabel}</Label>
           <Input
             className="font-mono"
-            placeholder="e.g. 1704067200"
+            placeholder={t.unixTsPlaceholder}
             value={tsInput}
             onChange={(e) => setTsInput(e.target.value)}
           />
@@ -105,8 +107,8 @@ export default function UnixTimestampPage() {
         {tsDate && (
           <div className="flex flex-col gap-2 rounded-md border bg-muted p-4">
             {[
-              { label: "UTC", tz: "UTC" },
-              { label: "Local", tz: localTz }
+              { label: t.unixUtcLabel, tz: "UTC" },
+              { label: t.unixLocalLabel, tz: localTz }
             ].map(({ label, tz }) => {
               const str = formatDate(tsDate, tz);
               return (
@@ -127,7 +129,7 @@ export default function UnixTimestampPage() {
             <div className="flex items-center justify-between gap-2">
               <div>
                 <span className="text-xs text-muted-foreground">
-                  ISO 8601:{" "}
+                  {t.unixIso8601Label}{" "}
                 </span>
                 <span className="font-mono text-sm">
                   {tsDate.toISOString()}
@@ -141,7 +143,7 @@ export default function UnixTimestampPage() {
 
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1.5">
-          <Label className="mb-1">Date → Unix Timestamp</Label>
+          <Label className="mb-1">{t.unixDateToTsLabel}</Label>
           <Input
             type="datetime-local"
             className="font-mono"
@@ -155,7 +157,9 @@ export default function UnixTimestampPage() {
           <div className="flex flex-col gap-2 rounded-md border bg-muted p-4">
             <div className="flex items-center justify-between gap-2">
               <div>
-                <span className="text-xs text-muted-foreground">Seconds: </span>
+                <span className="text-xs text-muted-foreground">
+                  {t.unixSecondsLabel}{" "}
+                </span>
                 <span className="font-mono text-sm">{dateTs}</span>
               </div>
               <CopyButton text={String(dateTs)} />
@@ -163,7 +167,7 @@ export default function UnixTimestampPage() {
             <div className="flex items-center justify-between gap-2">
               <div>
                 <span className="text-xs text-muted-foreground">
-                  Milliseconds:{" "}
+                  {t.unixMillisecondsLabel}{" "}
                 </span>
                 <span className="font-mono text-sm">{dateTs * 1000}</span>
               </div>

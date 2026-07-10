@@ -13,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select";
+import { useLanguage } from "@/contexts/language-context";
 import { useToolState } from "@/hooks/use-tool-state";
 
 interface ColorStop {
@@ -36,6 +37,7 @@ function buildCss(
 }
 
 export default function GradientGeneratorPage() {
+  const { t } = useLanguage();
   const [type, setType] = useToolState<GradientType>(
     "gradient-gen",
     "type",
@@ -96,13 +98,13 @@ export default function GradientGeneratorPage() {
           className="shrink-0 gap-1 text-xs"
         >
           {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
-          {copied ? "Copied!" : "Copy"}
+          {copied ? t.copied : t.copy}
         </Button>
       </div>
 
       <div className="grid grid-cols-2 gap-4">
         <div className="flex items-center gap-3">
-          <Label htmlFor="gradient-type">Type</Label>
+          <Label htmlFor="gradient-type">{t.gradientTypeLabel}</Label>
           <Select
             value={type}
             onValueChange={(v) => setType(v as GradientType)}
@@ -111,15 +113,17 @@ export default function GradientGeneratorPage() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="linear">Linear</SelectItem>
-              <SelectItem value="radial">Radial</SelectItem>
-              <SelectItem value="conic">Conic</SelectItem>
+              <SelectItem value="linear">{t.gradientLinear}</SelectItem>
+              <SelectItem value="radial">{t.gradientRadial}</SelectItem>
+              <SelectItem value="conic">{t.gradientConic}</SelectItem>
             </SelectContent>
           </Select>
         </div>
         {type !== "radial" && (
           <div className="flex flex-col gap-1.5">
-            <Label>Angle: {angle}°</Label>
+            <Label>
+              {t.gradientAngleLabel}: {angle}°
+            </Label>
             <input
               type="range"
               min={0}
@@ -134,7 +138,7 @@ export default function GradientGeneratorPage() {
 
       <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between">
-          <Label>Color Stops</Label>
+          <Label>{t.gradientColorStops}</Label>
           <Button
             size="sm"
             variant="outline"
@@ -142,7 +146,7 @@ export default function GradientGeneratorPage() {
             className="gap-1 text-xs"
           >
             <Plus className="size-3" />
-            Add Stop
+            {t.gradientAddStop}
           </Button>
         </div>
         {[...stops]

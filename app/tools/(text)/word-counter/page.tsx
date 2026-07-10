@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 
+import { useLanguage } from "@/contexts/language-context";
 import { useToolState } from "@/hooks/use-tool-state";
 import { handleTextareaTab } from "@/lib/utils";
 
@@ -22,10 +23,10 @@ function countParagraphs(text: string): number {
         .filter(Boolean).length;
 }
 
-function readingTime(words: number): string {
+function readingTime(words: number, minUnit: string): string {
   const minutes = words / 200;
-  if (minutes < 1) return "< 1 min";
-  return `~${Math.ceil(minutes)} min`;
+  if (minutes < 1) return `< 1 ${minUnit}`;
+  return `~${Math.ceil(minutes)} ${minUnit}`;
 }
 
 interface StatCardProps {
@@ -43,6 +44,7 @@ function StatCard({ label, value }: StatCardProps) {
 }
 
 export default function WordCounterPage() {
+  const { t } = useLanguage();
   const [text, setText] = useToolState("word-counter", "text", "");
 
   const stats = useMemo(() => {
@@ -59,25 +61,25 @@ export default function WordCounterPage() {
       sentences,
       paragraphs,
       lines,
-      readingTime: readingTime(words)
+      readingTime: readingTime(words, t.wordCounterMinUnit)
     };
-  }, [text]);
+  }, [text, t.wordCounterMinUnit]);
 
   return (
     <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
       <div className="grid shrink-0 grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-7">
-        <StatCard label="Words" value={stats.words} />
-        <StatCard label="Characters" value={stats.chars} />
-        <StatCard label="No Spaces" value={stats.charsNoSpaces} />
-        <StatCard label="Sentences" value={stats.sentences} />
-        <StatCard label="Paragraphs" value={stats.paragraphs} />
-        <StatCard label="Lines" value={stats.lines} />
-        <StatCard label="Reading Time" value={stats.readingTime} />
+        <StatCard label={t.wordCounterWords} value={stats.words} />
+        <StatCard label={t.wordCounterCharacters} value={stats.chars} />
+        <StatCard label={t.wordCounterNoSpaces} value={stats.charsNoSpaces} />
+        <StatCard label={t.wordCounterSentences} value={stats.sentences} />
+        <StatCard label={t.wordCounterParagraphs} value={stats.paragraphs} />
+        <StatCard label={t.wordCounterLines} value={stats.lines} />
+        <StatCard label={t.wordCounterReadingTime} value={stats.readingTime} />
       </div>
 
       <textarea
         className="min-h-0 flex-1 resize-none rounded-md border bg-background p-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
-        placeholder="Start typing or paste your text here..."
+        placeholder={t.wordCounterPlaceholder}
         value={text}
         onChange={(e) => setText(e.target.value)}
         onKeyDown={(e) => handleTextareaTab(e, text, setText)}

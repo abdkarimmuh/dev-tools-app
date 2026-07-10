@@ -45,10 +45,10 @@ npm run format     # Prettier (formats .ts/.tsx)
 
 When making changes, link to these files in your PR description so reviewers can follow context.
 
-## Current tool inventory (36 tools across 7 categories)
+## Current tool inventory (42 tools across 7 categories)
 
-### Format & Validasi (10 tools)
-`json-formatter`, `js-formatter`, `ts-formatter`, `html-formatter`, `css-formatter`, `sql-formatter`, `xml-formatter`, `yaml-formatter`, `toml-formatter`, `graphql-formatter`
+### Format & Validasi (9 tools)
+`json-formatter`, `js-formatter` (JS/TS via Select), `html-formatter`, `css-formatter`, `sql-formatter`, `xml-formatter`, `yaml-formatter`, `toml-formatter`, `graphql-formatter`
 
 ### Converter (5 tools)
 `json-yaml`, `json-csv`, `json-xml`, `number-base`, `unix-timestamp`

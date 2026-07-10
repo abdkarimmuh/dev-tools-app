@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useLanguage } from "@/contexts/language-context";
 import { useToolState } from "@/hooks/use-tool-state";
 
 interface Shadow {
@@ -54,6 +55,7 @@ function SliderField({
 }
 
 export default function BoxShadowGeneratorPage() {
+  const { t } = useLanguage();
   const [shadows, setShadows] = useToolState<Shadow[]>(
     "box-shadow-gen",
     "shadows",
@@ -132,13 +134,13 @@ export default function BoxShadowGeneratorPage() {
           className="shrink-0 gap-1 text-xs"
         >
           {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
-          {copied ? "Copied!" : "Copy"}
+          {copied ? t.copied : t.copy}
         </Button>
       </div>
 
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between">
-          <Label>Shadows</Label>
+          <Label>{t.boxShadowLabel}</Label>
           <Button
             size="sm"
             variant="outline"
@@ -146,7 +148,7 @@ export default function BoxShadowGeneratorPage() {
             className="gap-1 text-xs"
           >
             <Plus className="size-3" />
-            Add
+            {t.boxShadowAdd}
           </Button>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -158,7 +160,7 @@ export default function BoxShadowGeneratorPage() {
                 onClick={() => setSelected(s.id)}
                 className="h-7 text-xs"
               >
-                Shadow {i + 1}
+                {t.boxShadowItem} {i + 1}
               </Button>
               {shadows.length > 1 && (
                 <Button
@@ -178,28 +180,28 @@ export default function BoxShadowGeneratorPage() {
       {shadow && (
         <div className="flex flex-col gap-4 rounded-md border p-4">
           <SliderField
-            label="X Offset"
+            label={t.boxShadowXOffset}
             value={shadow.x}
             min={-50}
             max={50}
             onChange={(v) => update("x", v)}
           />
           <SliderField
-            label="Y Offset"
+            label={t.boxShadowYOffset}
             value={shadow.y}
             min={-50}
             max={50}
             onChange={(v) => update("y", v)}
           />
           <SliderField
-            label="Blur"
+            label={t.boxShadowBlur}
             value={shadow.blur}
             min={0}
             max={100}
             onChange={(v) => update("blur", v)}
           />
           <SliderField
-            label="Spread"
+            label={t.boxShadowSpread}
             value={shadow.spread}
             min={-50}
             max={50}
@@ -208,7 +210,7 @@ export default function BoxShadowGeneratorPage() {
 
           <div className="flex items-center gap-3">
             <div className="flex flex-1 flex-col gap-1.5">
-              <Label className="text-xs">Color</Label>
+              <Label className="text-xs">{t.boxShadowColorLabel}</Label>
               <div className="flex items-center gap-2">
                 <input
                   type="color"
@@ -226,14 +228,14 @@ export default function BoxShadowGeneratorPage() {
               </div>
             </div>
             <div className="flex flex-col gap-1.5">
-              <Label className="text-xs">Inset</Label>
+              <Label className="text-xs">{t.boxShadowInsetLabel}</Label>
               <Button
                 size="sm"
                 variant={shadow.inset ? "default" : "outline"}
                 onClick={() => update("inset", !shadow.inset)}
                 className="h-8"
               >
-                {shadow.inset ? "On" : "Off"}
+                {shadow.inset ? t.boxShadowOn : t.boxShadowOff}
               </Button>
             </div>
           </div>

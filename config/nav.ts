@@ -53,14 +53,9 @@ export const navMenus: NavGroup[] = [
     items: [
       { title: "JSON Formatter", url: "/tools/json-formatter", icon: Braces },
       {
-        title: "JavaScript Formatter",
+        title: "JavaScript / TypeScript Formatter",
         url: "/tools/js-formatter",
         icon: FileCode2
-      },
-      {
-        title: "TypeScript Formatter",
-        url: "/tools/ts-formatter",
-        icon: FileCode
       },
       { title: "HTML Formatter", url: "/tools/html-formatter", icon: Code },
       {

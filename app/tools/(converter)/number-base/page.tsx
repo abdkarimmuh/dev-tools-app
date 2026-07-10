@@ -6,13 +6,18 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useLanguage } from "@/contexts/language-context";
 import { useToolState } from "@/hooks/use-tool-state";
 
 type Base = 2 | 8 | 10 | 16;
 
 interface BaseConfig {
   base: Base;
-  label: string;
+  labelKey:
+    | "numberBaseBinary"
+    | "numberBaseOctal"
+    | "numberBaseDecimal"
+    | "numberBaseHexadecimal";
   prefix: string;
   placeholder: string;
   chars: RegExp;
@@ -21,28 +26,28 @@ interface BaseConfig {
 const BASES: BaseConfig[] = [
   {
     base: 2,
-    label: "Binary",
+    labelKey: "numberBaseBinary",
     prefix: "0b",
     placeholder: "1010",
     chars: /^[01]+$/
   },
   {
     base: 8,
-    label: "Octal",
+    labelKey: "numberBaseOctal",
     prefix: "0o",
     placeholder: "17",
     chars: /^[0-7]+$/
   },
   {
     base: 10,
-    label: "Decimal",
+    labelKey: "numberBaseDecimal",
     prefix: "",
     placeholder: "255",
     chars: /^[0-9]+$/
   },
   {
     base: 16,
-    label: "Hexadecimal",
+    labelKey: "numberBaseHexadecimal",
     prefix: "0x",
     placeholder: "FF",
     chars: /^[0-9a-fA-F]+$/
@@ -70,6 +75,7 @@ function CopyButton({ text }: { text: string }) {
 }
 
 export default function NumberBasePage() {
+  const { t } = useLanguage();
   const [activeBase, setActiveBase] = useToolState<Base>(
     "number-base",
     "activeBase",
@@ -100,19 +106,17 @@ export default function NumberBasePage() {
 
   return (
     <div className="flex max-w-lg flex-col gap-6 px-4 lg:px-6">
-      <p className="text-sm text-muted-foreground">
-        Enter a number in any base — the rest update automatically.
-      </p>
+      <p className="text-sm text-muted-foreground">{t.numberBaseIntro}</p>
 
-      {BASES.map(({ base, label, prefix, placeholder }) => {
+      {BASES.map(({ base, labelKey, prefix, placeholder }) => {
         const isActive = base === activeBase;
         const value = isActive ? input : getOutput(base);
         return (
           <div key={base} className="flex flex-col gap-1.5">
             <Label className="mb-1 flex items-center gap-2">
-              {label}
+              {t[labelKey]}
               <span className="text-xs font-normal text-muted-foreground">
-                base {base}
+                {t.numberBaseLabel} {base}
               </span>
             </Label>
             <div className="flex items-center gap-2">
@@ -136,7 +140,9 @@ export default function NumberBasePage() {
 
       {decimal !== null && (
         <div className="rounded-md border bg-muted px-4 py-3 text-sm">
-          <span className="text-muted-foreground">Decimal value: </span>
+          <span className="text-muted-foreground">
+            {t.numberBaseDecimalValue}{" "}
+          </span>
           <span className="font-mono font-medium">
             {decimal.toLocaleString()}
           </span>
@@ -145,7 +151,7 @@ export default function NumberBasePage() {
 
       {input && decimal === null && (
         <p className="text-sm text-destructive">
-          Invalid value for base {activeBase}
+          {t.numberBaseInvalid} {activeBase}
         </p>
       )}
     </div>

@@ -33,37 +33,32 @@ export default function SqlFormatterPage() {
     "dialect",
     "sql"
   );
-  const [input, setInput] = useToolState("sql-formatter", "input", "");
-  const [output, setOutput] = useState("");
+  const [value, setValue] = useToolState("sql-formatter", "input", "");
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
   const formatSql = () => {
-    if (!input.trim()) return;
     try {
-      setOutput(
-        format(input, { language: dialect, tabWidth: 2, keywordCase: "upper" })
+      setValue(
+        format(value, { language: dialect, tabWidth: 2, keywordCase: "upper" })
       );
       setError(null);
     } catch (e) {
       setError((e as Error).message);
-      setOutput("");
     }
   };
 
   const minify = () => {
-    if (!input.trim()) return;
-    setOutput(minifySql(input));
+    setValue(minifySql(value));
     setError(null);
   };
 
   const clear = () => {
-    setInput("");
-    setOutput("");
+    setValue("");
     setError(null);
   };
   const copy = async () => {
-    await navigator.clipboard.writeText(output);
+    await navigator.clipboard.writeText(value);
     setCopied(true);
     setTimeout(() => setCopied(false), 1500);
   };
@@ -77,7 +72,6 @@ export default function SqlFormatterPage() {
             value={dialect}
             onValueChange={(v) => {
               setDialect(v as Dialect);
-              setOutput("");
               setError(null);
             }}
           >
@@ -92,79 +86,56 @@ export default function SqlFormatterPage() {
               ))}
             </SelectContent>
           </Select>
-        </div>
-
-        <div className="flex gap-4">
-          <Button size="lg" onClick={formatSql} disabled={!input}>
+          <Button size="lg" onClick={formatSql} disabled={!value}>
             {t.format}
           </Button>
           <Button
             size="lg"
             onClick={minify}
-            disabled={!input}
+            disabled={!value}
             variant="secondary"
           >
             {t.minify}
           </Button>
         </div>
-      </div>
-
-      <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 lg:grid-cols-2">
-        <div className="flex min-h-0 flex-col gap-2">
-          <div className="flex shrink-0 items-center justify-between">
-            <span className="text-sm font-medium">Input</span>
-            <Button
-              size="sm"
-              variant="ghost"
-              onClick={clear}
-              className="text-xs"
-            >
-              {t.clear}
-            </Button>
-          </div>
-          <textarea
-            className="min-h-0 w-full flex-1 resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            placeholder={t.sqlInputPlaceholder}
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => handleTextareaTab(e, input, setInput)}
-            spellCheck={false}
-          />
-        </div>
-
-        <div className="flex min-h-0 flex-col gap-2">
-          <div className="flex shrink-0 items-center justify-between">
-            <span className="text-sm font-medium">Output</span>
-            <Button
-              size="sm"
-              variant="ghost"
-              onClick={copy}
-              disabled={!output}
-              className="gap-1 text-xs"
-            >
-              {copied ? (
-                <Check className="size-3" />
-              ) : (
-                <Copy className="size-3" />
-              )}
-              {copied ? t.copied : t.copy}
-            </Button>
-          </div>
-          {error ? (
-            <div className="min-h-0 flex-1 overflow-auto rounded-md border border-destructive bg-destructive/10 p-3 font-mono text-sm text-destructive">
-              <span>{error}</span>
-            </div>
-          ) : (
-            <textarea
-              readOnly
-              className="min-h-0 w-full flex-1 resize-none rounded-md border bg-muted p-3 font-mono text-sm outline-none"
-              value={output}
-              placeholder={t.outputPlaceholder}
-              spellCheck={false}
-            />
-          )}
+        <div className="flex">
+          <Button
+            size="sm"
+            variant="ghost"
+            onClick={copy}
+            disabled={!value}
+            className="gap-1 text-xs"
+          >
+            {copied ? (
+              <Check className="size-3" />
+            ) : (
+              <Copy className="size-3" />
+            )}
+            {copied ? t.copied : t.copy}
+          </Button>
+          <Button size="sm" variant="ghost" onClick={clear} className="text-xs">
+            {t.clear}
+          </Button>
         </div>
       </div>
+
+      {error && (
+        <div className="shrink-0 rounded-md border border-destructive bg-destructive/10 p-3 font-mono text-sm text-destructive">
+          {error}
+        </div>
+      )}
+
+      <textarea
+        className="min-h-0 w-full flex-1 resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        placeholder={t.sqlInputPlaceholder}
+        value={value}
+        onChange={(e) => {
+          setValue(e.target.value);
+          setError(null);
+        }}
+        onKeyDown={(e) => handleTextareaTab(e, value, setValue)}
+        spellCheck={false}
+      />
     </div>
   );
 }

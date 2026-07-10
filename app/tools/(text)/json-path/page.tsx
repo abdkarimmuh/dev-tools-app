@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useLanguage } from "@/contexts/language-context";
 import { useToolState } from "@/hooks/use-tool-state";
 import { handleTextareaTab } from "@/lib/utils";
 
@@ -113,15 +114,15 @@ const EXAMPLE_JSON = `{
   }
 }`;
 
-const EXAMPLES = [
-  { label: "All books", path: "$.store.books[*]" },
-  { label: "First book", path: "$.store.books[0]" },
-  { label: "All titles", path: "$.store.books[*].title" },
-  { label: "Store name", path: "$.store.name" },
-  { label: "All prices", path: "$..price" }
-];
-
 export default function JsonPathPage() {
+  const { t } = useLanguage();
+  const EXAMPLES = [
+    { label: t.jsonPathExampleAllBooks, path: "$.store.books[*]" },
+    { label: t.jsonPathExampleFirstBook, path: "$.store.books[0]" },
+    { label: t.jsonPathExampleAllTitles, path: "$.store.books[*].title" },
+    { label: t.jsonPathExampleStoreName, path: "$.store.name" },
+    { label: t.jsonPathExampleAllPrices, path: "$..price" }
+  ];
   const [json, setJson] = useToolState("json-path", "json", EXAMPLE_JSON);
   const [path, setPath] = useToolState(
     "json-path",
@@ -158,6 +159,16 @@ export default function JsonPathPage() {
 
   const output = JSON.stringify(results, null, 2);
 
+  const format = () => {
+    try {
+      const parsed = JSON.parse(json);
+      setJson(JSON.stringify(parsed, null, 2));
+      setError(null);
+    } catch (e) {
+      setError((e as Error).message);
+    }
+  };
+
   const copy = async () => {
     await navigator.clipboard.writeText(output);
     setCopied(true);
@@ -167,7 +178,7 @@ export default function JsonPathPage() {
   return (
     <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
       <div className="flex shrink-0 flex-col gap-2">
-        <Label className="mb-1">JSONPath Expression</Label>
+        <Label className="mb-1">{t.jsonPathExprLabel}</Label>
         <Input
           className="font-mono"
           placeholder="$.store.books[*].title"
@@ -191,19 +202,30 @@ export default function JsonPathPage() {
       <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 lg:grid-cols-2">
         <div className="flex min-h-0 flex-col gap-2">
           <div className="flex shrink-0 items-center justify-between">
-            <span className="text-sm font-medium">JSON Document</span>
-            <Button
-              size="sm"
-              variant="ghost"
-              onClick={() => {
-                setJson("");
-                setResults([]);
-                setError(null);
-              }}
-              className="text-xs"
-            >
-              Clear
-            </Button>
+            <span className="text-sm font-medium">{t.jsonPathDocLabel}</span>
+            <div className="flex gap-2">
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={format}
+                disabled={!json}
+                className="text-xs"
+              >
+                {t.format}
+              </Button>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => {
+                  setJson("");
+                  setResults([]);
+                  setError(null);
+                }}
+                className="text-xs"
+              >
+                {t.clear}
+              </Button>
+            </div>
           </div>
           <textarea
             className="min-h-0 w-full flex-1 resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
@@ -217,10 +239,13 @@ export default function JsonPathPage() {
         <div className="flex min-h-0 flex-col gap-2">
           <div className="flex shrink-0 items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="text-sm font-medium">Results</span>
+              <span className="text-sm font-medium">
+                {t.jsonPathResultsLabel}
+              </span>
               {!error && results.length > 0 && (
                 <Badge variant="secondary">
-                  {results.length} match{results.length !== 1 ? "es" : ""}
+                  {results.length}{" "}
+                  {results.length !== 1 ? t.jsonPathMatches : t.jsonPathMatch}
                 </Badge>
               )}
             </div>
@@ -236,7 +261,7 @@ export default function JsonPathPage() {
               ) : (
                 <Copy className="size-3" />
               )}
-              {copied ? "Copied!" : "Copy"}
+              {copied ? t.copied : t.copy}
             </Button>
           </div>
           {error ? (
@@ -248,7 +273,7 @@ export default function JsonPathPage() {
               readOnly
               className="min-h-0 w-full flex-1 resize-none rounded-md border bg-muted p-3 font-mono text-sm outline-none"
               value={output}
-              placeholder="Results will appear here..."
+              placeholder={t.jsonPathResultsPlaceholder}
               spellCheck={false}
             />
           )}

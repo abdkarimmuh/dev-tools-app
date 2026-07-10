@@ -1,17 +1,18 @@
 "use client";
 
 import { ArrowLeftRight, Check, Copy } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/contexts/language-context";
 import { useToolState } from "@/hooks/use-tool-state";
 import { handleTextareaTab } from "@/lib/utils";
 
 type Direction = "json-to-csv" | "csv-to-json";
 
-function jsonToCsv(jsonStr: string): string {
+function jsonToCsv(jsonStr: string, arrayError: string): string {
   const data = JSON.parse(jsonStr);
-  if (!Array.isArray(data)) throw new Error("Input must be a JSON array");
+  if (!Array.isArray(data)) throw new Error(arrayError);
   if (data.length === 0) return "";
   const headers = Array.from(new Set(data.flatMap((row) => Object.keys(row))));
   const escape = (v: unknown) => {
@@ -26,10 +27,9 @@ function jsonToCsv(jsonStr: string): string {
   return [headers.join(","), ...rows].join("\n");
 }
 
-function csvToJson(csvStr: string): string {
+function csvToJson(csvStr: string, headerError: string): string {
   const lines = csvStr.trim().split("\n");
-  if (lines.length < 2)
-    throw new Error("CSV must have a header row and at least one data row");
+  if (lines.length < 2) throw new Error(headerError);
 
   function parseLine(line: string): string[] {
     const result: string[] = [];
@@ -65,6 +65,7 @@ function csvToJson(csvStr: string): string {
 }
 
 export default function JsonCsvPage() {
+  const { t } = useLanguage();
   const [input, setInput] = useToolState("json-csv", "input", "");
   const [direction, setDirection] = useToolState<Direction>(
     "json-csv",
@@ -76,20 +77,27 @@ export default function JsonCsvPage() {
   const [copied, setCopied] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const convert = (src: string, dir: Direction) => {
-    if (!src) {
-      setOutput("");
-      setError(null);
-      return;
-    }
-    try {
-      setOutput(dir === "json-to-csv" ? jsonToCsv(src) : csvToJson(src));
-      setError(null);
-    } catch (e) {
-      setError((e as Error).message);
-      setOutput("");
-    }
-  };
+  const convert = useCallback(
+    (src: string, dir: Direction) => {
+      if (!src) {
+        setOutput("");
+        setError(null);
+        return;
+      }
+      try {
+        setOutput(
+          dir === "json-to-csv"
+            ? jsonToCsv(src, t.jsonCsvArrayError)
+            : csvToJson(src, t.jsonCsvHeaderError)
+        );
+        setError(null);
+      } catch (e) {
+        setError((e as Error).message);
+        setOutput("");
+      }
+    },
+    [t.jsonCsvArrayError, t.jsonCsvHeaderError]
+  );
 
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
@@ -97,7 +105,7 @@ export default function JsonCsvPage() {
     return () => {
       if (debounceRef.current) clearTimeout(debounceRef.current);
     };
-  }, [input, direction]);
+  }, [input, direction, convert]);
 
   const swap = () => {
     const next: Direction =
@@ -114,14 +122,7 @@ export default function JsonCsvPage() {
 
   return (
     <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
-      <div className="flex shrink-0 justify-end gap-2">
-        <Button size="lg" variant="outline" onClick={swap} className="gap-2">
-          <ArrowLeftRight className="size-4" />
-          {direction === "json-to-csv" ? "JSON → CSV" : "CSV → JSON"}
-        </Button>
-      </div>
-
-      <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 lg:grid-cols-2">
+      <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 lg:grid-cols-[1fr_auto_1fr]">
         <div className="flex min-h-0 flex-col gap-2">
           <div className="flex shrink-0 items-center justify-between">
             <span className="text-sm font-medium">
@@ -137,7 +138,7 @@ export default function JsonCsvPage() {
               }}
               className="text-xs"
             >
-              Clear
+              {t.clear}
             </Button>
           </div>
           <textarea
@@ -152,6 +153,18 @@ export default function JsonCsvPage() {
             onKeyDown={(e) => handleTextareaTab(e, input, setInput)}
             spellCheck={false}
           />
+        </div>
+
+        <div className="flex shrink-0 items-center justify-center lg:h-full">
+          <Button
+            size="icon"
+            variant="outline"
+            onClick={swap}
+            className="rounded-full"
+            title={direction === "json-to-csv" ? "JSON → CSV" : "CSV → JSON"}
+          >
+            <ArrowLeftRight className="size-4" />
+          </Button>
         </div>
 
         <div className="flex min-h-0 flex-col gap-2">
@@ -171,7 +184,7 @@ export default function JsonCsvPage() {
               ) : (
                 <Copy className="size-3" />
               )}
-              {copied ? "Copied!" : "Copy"}
+              {copied ? t.copied : t.copy}
             </Button>
           </div>
           {error ? (
@@ -183,7 +196,7 @@ export default function JsonCsvPage() {
               readOnly
               className="min-h-0 w-full flex-1 resize-none rounded-md border bg-muted p-3 font-mono text-sm outline-none"
               value={output}
-              placeholder="Output will appear here..."
+              placeholder={t.outputPlaceholder}
               spellCheck={false}
             />
           )}

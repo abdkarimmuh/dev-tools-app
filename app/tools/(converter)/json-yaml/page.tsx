@@ -5,12 +5,14 @@ import { ArrowLeftRight, Check, Copy } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/contexts/language-context";
 import { useToolState } from "@/hooks/use-tool-state";
 import { handleTextareaTab } from "@/lib/utils";
 
 type Direction = "json-to-yaml" | "yaml-to-json";
 
 export default function JsonYamlPage() {
+  const { t } = useLanguage();
   const [input, setInput] = useToolState("json-yaml", "input", "");
   const [direction, setDirection] = useToolState<Direction>(
     "json-yaml",
@@ -69,14 +71,7 @@ export default function JsonYamlPage() {
 
   return (
     <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
-      <div className="flex shrink-0 justify-end gap-2">
-        <Button size="lg" variant="outline" onClick={swap} className="gap-2">
-          <ArrowLeftRight className="size-4" />
-          {direction === "json-to-yaml" ? "JSON → YAML" : "YAML → JSON"}
-        </Button>
-      </div>
-
-      <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 lg:grid-cols-2">
+      <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 lg:grid-cols-[1fr_auto_1fr]">
         <div className="flex min-h-0 flex-col gap-2">
           <div className="flex shrink-0 items-center justify-between">
             <span className="text-sm font-medium">{inputLabel}</span>
@@ -90,7 +85,7 @@ export default function JsonYamlPage() {
               }}
               className="text-xs"
             >
-              Clear
+              {t.clear}
             </Button>
           </div>
           <textarea
@@ -105,6 +100,18 @@ export default function JsonYamlPage() {
             onKeyDown={(e) => handleTextareaTab(e, input, setInput)}
             spellCheck={false}
           />
+        </div>
+
+        <div className="flex shrink-0 items-center justify-center lg:h-full">
+          <Button
+            size="icon"
+            variant="outline"
+            onClick={swap}
+            className="rounded-full"
+            title={direction === "json-to-yaml" ? "JSON → YAML" : "YAML → JSON"}
+          >
+            <ArrowLeftRight className="size-4" />
+          </Button>
         </div>
 
         <div className="flex min-h-0 flex-col gap-2">
@@ -122,7 +129,7 @@ export default function JsonYamlPage() {
               ) : (
                 <Copy className="size-3" />
               )}
-              {copied ? "Copied!" : "Copy"}
+              {copied ? t.copied : t.copy}
             </Button>
           </div>
           {error ? (
@@ -134,7 +141,7 @@ export default function JsonYamlPage() {
               readOnly
               className="min-h-0 w-full flex-1 resize-none rounded-md border bg-muted p-3 font-mono text-sm outline-none"
               value={output}
-              placeholder="Output will appear here..."
+              placeholder={t.outputPlaceholder}
               spellCheck={false}
             />
           )}

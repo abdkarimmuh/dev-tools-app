@@ -23,6 +23,7 @@ import {
   LOREM,
   STREETS
 } from "@/constants/generators/fake-data";
+import { useLanguage } from "@/contexts/language-context";
 import { useToolState } from "@/hooks/use-tool-state";
 
 function rand<T>(arr: T[]): T {
@@ -30,6 +31,9 @@ function rand<T>(arr: T[]): T {
 }
 function randInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+function randDigits(length: number): string {
+  return Array.from({ length }, () => randInt(0, 9)).join("");
 }
 
 function generatePerson() {
@@ -41,6 +45,7 @@ function generatePerson() {
     name: `${first} ${last}`,
     email,
     phone,
+    nationalId: randDigits(16),
     age: randInt(18, 65),
     company: rand(COMPANIES),
     job: rand(JOBS)
@@ -124,14 +129,6 @@ function generateLoremParagraph(): string {
 
 type DataType = "person" | "address" | "internet" | "product" | "lorem";
 
-const DATA_TYPES: { value: DataType; label: string }[] = [
-  { value: "person", label: "Person" },
-  { value: "address", label: "Address" },
-  { value: "internet", label: "Internet" },
-  { value: "product", label: "Product" },
-  { value: "lorem", label: "Lorem Ipsum" }
-];
-
 const generators: Record<DataType, () => unknown> = {
   person: generatePerson,
   address: generateAddress,
@@ -141,6 +138,14 @@ const generators: Record<DataType, () => unknown> = {
 };
 
 export default function FakeDataPage() {
+  const { t } = useLanguage();
+  const DATA_TYPES: { value: DataType; label: string }[] = [
+    { value: "person", label: t.fakeDataPerson },
+    { value: "address", label: t.fakeDataAddress },
+    { value: "internet", label: t.fakeDataInternet },
+    { value: "product", label: t.fakeDataProduct },
+    { value: "lorem", label: t.fakeDataLorem }
+  ];
   const [dataType, setDataType] = useToolState<DataType>(
     "fake-data",
     "dataType",
@@ -165,7 +170,7 @@ export default function FakeDataPage() {
     <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
       <div className="flex flex-wrap items-end gap-3">
         <div className="flex flex-col gap-1.5">
-          <Label className="mb-1">Type</Label>
+          <Label className="mb-1">{t.fakeDataTypeLabel}</Label>
           <Select
             value={dataType}
             onValueChange={(v) => setDataType(v as DataType)}
@@ -183,7 +188,7 @@ export default function FakeDataPage() {
           </Select>
         </div>
         <div className="flex flex-col gap-1.5">
-          <Label className="mb-1">Count</Label>
+          <Label className="mb-1">{t.fakeDataCountLabel}</Label>
           <Input
             type="number"
             min={1}
@@ -199,7 +204,7 @@ export default function FakeDataPage() {
         </div>
         <Button onClick={generate} className="gap-2">
           <RefreshCw className="size-4" />
-          Generate
+          {t.generate}
         </Button>
         {output && (
           <Button variant="outline" onClick={copy} className="gap-2">
@@ -208,7 +213,7 @@ export default function FakeDataPage() {
             ) : (
               <Copy className="size-4" />
             )}
-            {copied ? "Copied!" : "Copy"}
+            {copied ? t.copied : t.copy}
           </Button>
         )}
       </div>
@@ -222,7 +227,7 @@ export default function FakeDataPage() {
         />
       ) : (
         <div className="flex h-40 items-center justify-center rounded-md border border-dashed text-sm text-muted-foreground">
-          Click Generate to create fake data
+          {t.fakeDataEmptyState}
         </div>
       )}
     </div>

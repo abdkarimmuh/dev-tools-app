@@ -170,98 +170,94 @@ export default function ApiSignaturePage() {
   return (
     <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
       {/* Controls */}
-      <div className="flex shrink-0 items-end justify-between gap-4">
-        <div className="flex flex-wrap items-end gap-3">
-          <div className="flex flex-col gap-1.5">
-            <Label className="mb-1">Algorithm</Label>
-            <Select
-              value={algorithm}
-              onValueChange={(v) => setAlgorithm(v as Algorithm)}
+      <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-end">
+        <div className="flex flex-col gap-1.5">
+          <Label className="mb-1">Algorithm</Label>
+          <Select
+            value={algorithm}
+            onValueChange={(v) => setAlgorithm(v as Algorithm)}
+          >
+            <SelectTrigger className="w-full sm:w-44">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {ALGORITHMS.map((a) => (
+                <SelectItem key={a.value} value={a.value}>
+                  {a.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="flex flex-col gap-1.5">
+          <Label className="mb-1">Key Encoding</Label>
+          <Select
+            value={keyEncoding}
+            onValueChange={(v) => setKeyEncoding(v as KeyEncoding)}
+          >
+            <SelectTrigger className="w-full sm:w-44">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {KEY_ENCODINGS.map((k) => (
+                <SelectItem key={k.value} value={k.value}>
+                  {k.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="flex flex-col gap-1.5">
+          <Label className="mb-1">Output Format</Label>
+          <Select
+            value={outputFormat}
+            onValueChange={(v) => setOutputFormat(v as OutputFormat)}
+          >
+            <SelectTrigger className="w-full sm:w-32">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {OUTPUT_FORMATS.map((f) => (
+                <SelectItem key={f.value} value={f.value}>
+                  {f.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="flex min-w-[200px] flex-1 flex-col gap-1.5">
+          <Label className="mb-1" htmlFor="secret-key">
+            Secret Key
+          </Label>
+          <div className="relative">
+            <Input
+              id="secret-key"
+              type={showKey ? "text" : "password"}
+              value={secretKey}
+              onChange={(e) => setSecretKey(e.target.value)}
+              placeholder="your-secret-key"
+              className="pr-10 font-mono"
+              autoComplete="off"
+              spellCheck={false}
+            />
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute top-1/2 right-1 size-7 -translate-y-1/2 text-muted-foreground"
+              onClick={() => setShowKey(!showKey)}
+              type="button"
             >
-              <SelectTrigger className="w-44">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {ALGORITHMS.map((a) => (
-                  <SelectItem key={a.value} value={a.value}>
-                    {a.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="flex flex-col gap-1.5">
-            <Label className="mb-1">Key Encoding</Label>
-            <Select
-              value={keyEncoding}
-              onValueChange={(v) => setKeyEncoding(v as KeyEncoding)}
-            >
-              <SelectTrigger className="w-44">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {KEY_ENCODINGS.map((k) => (
-                  <SelectItem key={k.value} value={k.value}>
-                    {k.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="flex flex-col gap-1.5">
-            <Label className="mb-1">Output Format</Label>
-            <Select
-              value={outputFormat}
-              onValueChange={(v) => setOutputFormat(v as OutputFormat)}
-            >
-              <SelectTrigger className="w-32">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {OUTPUT_FORMATS.map((f) => (
-                  <SelectItem key={f.value} value={f.value}>
-                    {f.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+              {showKey ? (
+                <EyeOff className="size-3.5" />
+              ) : (
+                <Eye className="size-3.5" />
+              )}
+            </Button>
           </div>
         </div>
-        <Button size="sm" variant="ghost" onClick={clear} className="text-xs">
+        <Button size="lg" onClick={clear} className="w-full sm:w-auto">
           {t.clear}
         </Button>
-      </div>
-
-      {/* Secret Key */}
-      <div className="flex shrink-0 flex-col gap-1.5">
-        <Label className="mb-1" htmlFor="secret-key">
-          Secret Key
-        </Label>
-        <div className="relative">
-          <Input
-            id="secret-key"
-            type={showKey ? "text" : "password"}
-            value={secretKey}
-            onChange={(e) => setSecretKey(e.target.value)}
-            placeholder="your-secret-key"
-            className="pr-10 font-mono"
-            autoComplete="off"
-            spellCheck={false}
-          />
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute top-1/2 right-1 size-7 -translate-y-1/2 text-muted-foreground"
-            onClick={() => setShowKey(!showKey)}
-            type="button"
-          >
-            {showKey ? (
-              <EyeOff className="size-3.5" />
-            ) : (
-              <Eye className="size-3.5" />
-            )}
-          </Button>
-        </div>
       </div>
 
       {/* Message + Signature */}

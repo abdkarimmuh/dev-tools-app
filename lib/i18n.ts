@@ -195,7 +195,122 @@ export const translations = {
     notFoundGoHome: "Go to Home",
 
     // Converter nav group
-    converterGroup: "Converter"
+    converterGroup: "Converter",
+
+    // XML/GraphQL/YAML/TOML Formatter
+    xmlParseError: "XML parse error",
+
+    // JSON ↔ CSV
+    jsonCsvArrayError: "Input must be a JSON array",
+    jsonCsvHeaderError: "CSV must have a header row and at least one data row",
+
+    // JSON Path
+    jsonPathExprLabel: "JSONPath Expression",
+    jsonPathDocLabel: "JSON Document",
+    jsonPathResultsLabel: "Results",
+    jsonPathMatch: "match",
+    jsonPathMatches: "matches",
+    jsonPathResultsPlaceholder: "Results will appear here...",
+    jsonPathExampleAllBooks: "All books",
+    jsonPathExampleFirstBook: "First book",
+    jsonPathExampleAllTitles: "All titles",
+    jsonPathExampleStoreName: "Store name",
+    jsonPathExampleAllPrices: "All prices",
+
+    // Word Counter
+    wordCounterWords: "Words",
+    wordCounterCharacters: "Characters",
+    wordCounterNoSpaces: "No Spaces",
+    wordCounterSentences: "Sentences",
+    wordCounterParagraphs: "Paragraphs",
+    wordCounterLines: "Lines",
+    wordCounterReadingTime: "Reading Time",
+    wordCounterMinUnit: "min",
+    wordCounterPlaceholder: "Start typing or paste your text here...",
+
+    // Number Base Converter
+    numberBaseIntro:
+      "Enter a number in any base — the rest update automatically.",
+    numberBaseBinary: "Binary",
+    numberBaseOctal: "Octal",
+    numberBaseDecimal: "Decimal",
+    numberBaseHexadecimal: "Hexadecimal",
+    numberBaseLabel: "base",
+    numberBaseDecimalValue: "Decimal value:",
+    numberBaseInvalid: "Invalid value for base",
+
+    // Unix Timestamp Converter
+    unixCurrentLabel: "Current Unix timestamp:",
+    unixToDateLabel: "Unix Timestamp → Date",
+    unixTsPlaceholder: "e.g. 1704067200",
+    unixInvalidTimestamp: "Invalid timestamp",
+    unixUtcLabel: "UTC",
+    unixLocalLabel: "Local",
+    unixIso8601Label: "ISO 8601:",
+    unixDateToTsLabel: "Date → Unix Timestamp",
+    unixInvalidDate: "Invalid date format",
+    unixSecondsLabel: "Seconds:",
+    unixMillisecondsLabel: "Milliseconds:",
+
+    // Fake Data Generator
+    fakeDataTypeLabel: "Type",
+    fakeDataCountLabel: "Count",
+    fakeDataEmptyState: "Click Generate to create fake data",
+    fakeDataPerson: "Person",
+    fakeDataAddress: "Address",
+    fakeDataInternet: "Internet",
+    fakeDataProduct: "Product",
+    fakeDataLorem: "Lorem Ipsum",
+
+    // Cron Generator
+    cronExpressionLabel: "Cron Expression",
+    cronPresetsLabel: "Presets",
+    cronEveryMinute: "Every minute",
+    cronRunsAt: "Runs at",
+    cronInvalidExpr: "Invalid cron expression",
+    cronUnitMinute: "minute",
+    cronUnitHour: "hour",
+    cronUnitDay: "day",
+    cronUnitMonth: "month",
+    cronUnitWeekday: "weekday",
+    cronEveryUnit: "every",
+    cronFieldMinute: "Minute",
+    cronFieldHour: "Hour",
+    cronFieldDayOfMonth: "Day of Month",
+    cronFieldMonth: "Month",
+    cronFieldDayOfWeek: "Day of Week",
+    cronPresetEveryMinute: "Every minute",
+    cronPresetEveryHour: "Every hour",
+    cronPresetDailyMidnight: "Every day at midnight",
+    cronPresetDailyNoon: "Every day at noon",
+    cronPresetWeeklySunday: "Every Sunday at midnight",
+    cronPresetMondayNine: "Every Monday at 9am",
+    cronPresetFirstOfMonth: "First day of month",
+    cronPreset15Min: "Every 15 minutes",
+    cronPreset6Hours: "Every 6 hours",
+    cronPresetWeekdaysNine: "Weekdays at 9am",
+
+    // Box Shadow Generator
+    boxShadowLabel: "Shadows",
+    boxShadowAdd: "Add",
+    boxShadowItem: "Shadow",
+    boxShadowXOffset: "X Offset",
+    boxShadowYOffset: "Y Offset",
+    boxShadowBlur: "Blur",
+    boxShadowSpread: "Spread",
+    boxShadowColorLabel: "Color",
+    boxShadowInsetLabel: "Inset",
+    boxShadowOn: "On",
+    boxShadowOff: "Off",
+
+    // Gradient Generator
+    gradientTypeLabel: "Type",
+    gradientAngleLabel: "Angle",
+    gradientLinear: "Linear",
+    gradientRadial: "Radial",
+    gradientConic: "Conic",
+    gradientColorStops: "Color Stops",
+    gradientAddStop: "Add Stop"
   },
   id: {
     // Navigation
@@ -393,7 +508,123 @@ export const translations = {
     notFoundGoHome: "Kembali ke Beranda",
 
     // Converter nav group
-    converterGroup: "Converter"
+    converterGroup: "Converter",
+
+    // XML/GraphQL/YAML/TOML Formatter
+    xmlParseError: "Kesalahan parsing XML",
+
+    // JSON ↔ CSV
+    jsonCsvArrayError: "Input harus berupa array JSON",
+    jsonCsvHeaderError:
+      "CSV harus memiliki baris header dan minimal satu baris data",
+
+    // JSON Path
+    jsonPathExprLabel: "Ekspresi JSONPath",
+    jsonPathDocLabel: "Dokumen JSON",
+    jsonPathResultsLabel: "Hasil",
+    jsonPathMatch: "hasil",
+    jsonPathMatches: "hasil",
+    jsonPathResultsPlaceholder: "Hasil akan muncul di sini...",
+    jsonPathExampleAllBooks: "Semua buku",
+    jsonPathExampleFirstBook: "Buku pertama",
+    jsonPathExampleAllTitles: "Semua judul",
+    jsonPathExampleStoreName: "Nama toko",
+    jsonPathExampleAllPrices: "Semua harga",
+
+    // Word Counter
+    wordCounterWords: "Kata",
+    wordCounterCharacters: "Karakter",
+    wordCounterNoSpaces: "Tanpa Spasi",
+    wordCounterSentences: "Kalimat",
+    wordCounterParagraphs: "Paragraf",
+    wordCounterLines: "Baris",
+    wordCounterReadingTime: "Waktu Baca",
+    wordCounterMinUnit: "menit",
+    wordCounterPlaceholder: "Mulai mengetik atau tempel teks Anda di sini...",
+
+    // Number Base Converter
+    numberBaseIntro:
+      "Masukkan angka dalam basis apa pun — sisanya akan otomatis diperbarui.",
+    numberBaseBinary: "Biner",
+    numberBaseOctal: "Oktal",
+    numberBaseDecimal: "Desimal",
+    numberBaseHexadecimal: "Heksadesimal",
+    numberBaseLabel: "basis",
+    numberBaseDecimalValue: "Nilai desimal:",
+    numberBaseInvalid: "Nilai tidak valid untuk basis",
+
+    // Unix Timestamp Converter
+    unixCurrentLabel: "Timestamp Unix saat ini:",
+    unixToDateLabel: "Unix Timestamp → Tanggal",
+    unixTsPlaceholder: "mis. 1704067200",
+    unixInvalidTimestamp: "Timestamp tidak valid",
+    unixUtcLabel: "UTC",
+    unixLocalLabel: "Lokal",
+    unixIso8601Label: "ISO 8601:",
+    unixDateToTsLabel: "Tanggal → Unix Timestamp",
+    unixInvalidDate: "Format tanggal tidak valid",
+    unixSecondsLabel: "Detik:",
+    unixMillisecondsLabel: "Milidetik:",
+
+    // Fake Data Generator
+    fakeDataTypeLabel: "Tipe",
+    fakeDataCountLabel: "Jumlah",
+    fakeDataEmptyState: "Klik Generate untuk membuat data palsu",
+    fakeDataPerson: "Orang",
+    fakeDataAddress: "Alamat",
+    fakeDataInternet: "Internet",
+    fakeDataProduct: "Produk",
+    fakeDataLorem: "Lorem Ipsum",
+
+    // Cron Generator
+    cronExpressionLabel: "Ekspresi Cron",
+    cronPresetsLabel: "Preset",
+    cronEveryMinute: "Setiap menit",
+    cronRunsAt: "Berjalan pada",
+    cronInvalidExpr: "Ekspresi cron tidak valid",
+    cronUnitMinute: "menit",
+    cronUnitHour: "jam",
+    cronUnitDay: "hari",
+    cronUnitMonth: "bulan",
+    cronUnitWeekday: "hari dalam minggu",
+    cronEveryUnit: "setiap",
+    cronFieldMinute: "Menit",
+    cronFieldHour: "Jam",
+    cronFieldDayOfMonth: "Hari dalam Bulan",
+    cronFieldMonth: "Bulan",
+    cronFieldDayOfWeek: "Hari dalam Minggu",
+    cronPresetEveryMinute: "Setiap menit",
+    cronPresetEveryHour: "Setiap jam",
+    cronPresetDailyMidnight: "Setiap hari pukul 00:00",
+    cronPresetDailyNoon: "Setiap hari pukul 12:00",
+    cronPresetWeeklySunday: "Setiap Minggu pukul 00:00",
+    cronPresetMondayNine: "Setiap Senin pukul 9 pagi",
+    cronPresetFirstOfMonth: "Hari pertama tiap bulan",
+    cronPreset15Min: "Setiap 15 menit",
+    cronPreset6Hours: "Setiap 6 jam",
+    cronPresetWeekdaysNine: "Hari kerja pukul 9 pagi",
+
+    // Box Shadow Generator
+    boxShadowLabel: "Shadow",
+    boxShadowAdd: "Tambah",
+    boxShadowItem: "Shadow",
+    boxShadowXOffset: "Offset X",
+    boxShadowYOffset: "Offset Y",
+    boxShadowBlur: "Blur",
+    boxShadowSpread: "Spread",
+    boxShadowColorLabel: "Warna",
+    boxShadowInsetLabel: "Inset",
+    boxShadowOn: "Aktif",
+    boxShadowOff: "Nonaktif",
+
+    // Gradient Generator
+    gradientTypeLabel: "Tipe",
+    gradientAngleLabel: "Sudut",
+    gradientLinear: "Linear",
+    gradientRadial: "Radial",
+    gradientConic: "Conic",
+    gradientColorStops: "Color Stops",
+    gradientAddStop: "Tambah Stop"
   }
 };
 

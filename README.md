@@ -9,8 +9,7 @@ Kumpulan tools berbasis web untuk membantu produktivitas pengembang sehari-hari 
 | Tool                            | Deskripsi                                                                                                      |
 | ------------------------------- | -------------------------------------------------------------------------------------------------------------- |
 | **JSON Formatter**              | Format (pretty-print), minify, dan validasi JSON. Menampilkan pesan error yang jelas jika JSON tidak valid.    |
-| **JavaScript Formatter**        | Format dan minify kode JavaScript menggunakan Prettier.                                                        |
-| **TypeScript Formatter**        | Format dan minify kode TypeScript menggunakan Prettier.                                                        |
+| **JS / TS Formatter**           | Format dan minify kode JavaScript atau TypeScript menggunakan Prettier. Pilih sintaks via dropdown Select.     |
 | **HTML Formatter**              | Format, minify, dan validasi kode HTML menggunakan Prettier.                                                   |
 | **CSS / SCSS / SASS Formatter** | Format dan minify kode CSS, SCSS, atau SASS menggunakan Prettier. Pilih sintaks via dropdown Select.           |
 | **SQL Formatter**               | Format dan minify query SQL. Pilih dialek (SQL, MySQL, PostgreSQL, T-SQL, SQLite, PL/SQL) via dropdown Select. |
@@ -60,7 +59,7 @@ Kumpulan tools berbasis web untuk membantu produktivitas pengembang sehari-hari 
 | **QR Generator**        | Generate QR code dari teks atau URL. Mendukung pilihan level koreksi error (L/M/Q/H) dan ukuran output. Download sebagai PNG.                             |
 | **Barcode Generator**   | Generate barcode dalam berbagai format (CODE128, EAN-13, EAN-8, UPC, CODE39, ITF-14, MSI, Pharmacode). Download sebagai SVG.                              |
 | **CRON Generator**      | Builder visual ekspresi CRON dengan field editor (minute/hour/day/month/weekday), preset umum, dan deskripsi human-readable.                              |
-| **Fake Data Generator** | Generate data palsu untuk testing: Person, Address, Internet, Product, dan Lorem Ipsum. Output dalam format JSON, hingga 100 item.                        |
+| **Fake Data Generator** | Generate data palsu untuk testing: Person (termasuk nationalId), Address, Internet, Product, dan Lorem Ipsum. Output dalam format JSON, hingga 100 item.  |
 
 ### Cryptography
 
@@ -81,7 +80,6 @@ Kumpulan tools berbasis web untuk membantu produktivitas pengembang sehari-hari 
 | **PX → REM**               | Konversi nilai PX ke REM dan sebaliknya dengan base font size yang bisa dikustomisasi (default 16px). Tersedia tabel referensi untuk nilai-nilai umum. |
 | **CSS Gradient Generator** | Builder visual untuk CSS gradient (linear, radial, conic). Tambah/hapus color stops, atur sudut, dan salin CSS langsung dari preview.                  |
 | **Box Shadow Generator**   | Builder visual box-shadow dengan slider offset XY, blur, spread, color picker, dan toggle inset. Mendukung multiple shadows.                           |
-| **Tailwind Cheatsheet**    | Referensi kelas Tailwind CSS yang bisa dicari (flexbox, grid, spacing, sizing, typography, borders, position, animasi). Klik kelas untuk menyalin.     |
 
 ## Tech Stack
 
@@ -146,8 +144,7 @@ dev-tools-app/
 │   └── tools/
 │       ├── (formater)/
 │       │   ├── json-formatter/
-│       │   ├── js-formatter/
-│       │   ├── ts-formatter/
+│       │   ├── js-formatter/     # JS / TS (pilih via Select)
 │       │   ├── html-formatter/
 │       │   ├── css-formatter/    # CSS / SCSS / SASS (pilih via Select)
 │       │   ├── sql-formatter/    # SQL dialek (pilih via Select)

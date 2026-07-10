@@ -1,9 +1,10 @@
 "use client";
 
 import { ArrowLeftRight, Check, Copy } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/contexts/language-context";
 import { useToolState } from "@/hooks/use-tool-state";
 import { handleTextareaTab } from "@/lib/utils";
 
@@ -46,6 +47,7 @@ function xmlNodeToJson(node: Element): unknown {
 }
 
 export default function JsonXmlPage() {
+  const { t } = useLanguage();
   const [input, setInput] = useToolState("json-xml", "input", "");
   const [direction, setDirection] = useToolState<Direction>(
     "json-xml",
@@ -57,42 +59,47 @@ export default function JsonXmlPage() {
   const [copied, setCopied] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const convert = (src: string, dir: Direction) => {
-    if (!src) {
-      setOutput("");
-      setError(null);
-      return;
-    }
-    try {
-      if (dir === "json-to-xml") {
-        const parsed = JSON.parse(src);
-        setOutput(
-          '<?xml version="1.0" encoding="UTF-8"?>\n' + jsonToXml(parsed)
-        );
-      } else {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(src, "text/xml");
-        const err = doc.querySelector("parsererror");
-        if (err)
-          throw new Error(
-            err.textContent?.split("\n")[1]?.trim() ?? "XML parse error"
-          );
-        setOutput(
-          JSON.stringify(
-            {
-              [doc.documentElement.tagName]: xmlNodeToJson(doc.documentElement)
-            },
-            null,
-            2
-          )
-        );
+  const convert = useCallback(
+    (src: string, dir: Direction) => {
+      if (!src) {
+        setOutput("");
+        setError(null);
+        return;
       }
-      setError(null);
-    } catch (e) {
-      setError((e as Error).message);
-      setOutput("");
-    }
-  };
+      try {
+        if (dir === "json-to-xml") {
+          const parsed = JSON.parse(src);
+          setOutput(
+            '<?xml version="1.0" encoding="UTF-8"?>\n' + jsonToXml(parsed)
+          );
+        } else {
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(src, "text/xml");
+          const err = doc.querySelector("parsererror");
+          if (err)
+            throw new Error(
+              err.textContent?.split("\n")[1]?.trim() ?? t.xmlParseError
+            );
+          setOutput(
+            JSON.stringify(
+              {
+                [doc.documentElement.tagName]: xmlNodeToJson(
+                  doc.documentElement
+                )
+              },
+              null,
+              2
+            )
+          );
+        }
+        setError(null);
+      } catch (e) {
+        setError((e as Error).message);
+        setOutput("");
+      }
+    },
+    [t.xmlParseError]
+  );
 
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
@@ -100,7 +107,7 @@ export default function JsonXmlPage() {
     return () => {
       if (debounceRef.current) clearTimeout(debounceRef.current);
     };
-  }, [input, direction]);
+  }, [input, direction, convert]);
 
   const swap = () => {
     const next: Direction =
@@ -117,14 +124,7 @@ export default function JsonXmlPage() {
 
   return (
     <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
-      <div className="flex shrink-0 justify-end gap-2">
-        <Button size="lg" variant="outline" onClick={swap} className="gap-2">
-          <ArrowLeftRight className="size-4" />
-          {direction === "json-to-xml" ? "JSON → XML" : "XML → JSON"}
-        </Button>
-      </div>
-
-      <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 lg:grid-cols-2">
+      <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 lg:grid-cols-[1fr_auto_1fr]">
         <div className="flex min-h-0 flex-col gap-2">
           <div className="flex shrink-0 items-center justify-between">
             <span className="text-sm font-medium">
@@ -140,7 +140,7 @@ export default function JsonXmlPage() {
               }}
               className="text-xs"
             >
-              Clear
+              {t.clear}
             </Button>
           </div>
           <textarea
@@ -155,6 +155,18 @@ export default function JsonXmlPage() {
             onKeyDown={(e) => handleTextareaTab(e, input, setInput)}
             spellCheck={false}
           />
+        </div>
+
+        <div className="flex shrink-0 items-center justify-center lg:h-full">
+          <Button
+            size="icon"
+            variant="outline"
+            onClick={swap}
+            className="rounded-full"
+            title={direction === "json-to-xml" ? "JSON → XML" : "XML → JSON"}
+          >
+            <ArrowLeftRight className="size-4" />
+          </Button>
         </div>
 
         <div className="flex min-h-0 flex-col gap-2">
@@ -174,7 +186,7 @@ export default function JsonXmlPage() {
               ) : (
                 <Copy className="size-3" />
               )}
-              {copied ? "Copied!" : "Copy"}
+              {copied ? t.copied : t.copy}
             </Button>
           </div>
           {error ? (
@@ -186,7 +198,7 @@ export default function JsonXmlPage() {
               readOnly
               className="min-h-0 w-full flex-1 resize-none rounded-md border bg-muted p-3 font-mono text-sm outline-none"
               value={output}
-              placeholder="Output will appear here..."
+              placeholder={t.outputPlaceholder}
               spellCheck={false}
             />
           )}
