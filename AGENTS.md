@@ -53,8 +53,8 @@ When making changes, link to these files in your PR description so reviewers can
 ### Converter (5 tools)
 `json-yaml`, `json-csv`, `json-xml`, `number-base`, `unix-timestamp`
 
-### Encoding (5 tools)
-`base-encoder`, `url-encode`, `html-entities`, `jwt-decoder`, `hash-generator`
+### Encoding (4 tools)
+`base-encoder`, `ascii-cheatsheet`, `jwt-decoder`, `hash-generator`
 
 ### Text (6 tools)
 `diff-checker`, `case-converter`, `regex-tester`, `markdown-preview`, `word-counter`, `json-path`
@@ -65,8 +65,8 @@ When making changes, link to these files in your PR description so reviewers can
 ### Cryptography (6 tools)
 `aes-cipher`, `des-cipher`, `rc4-cipher`, `rsa`, `ecdsa`, `api-signature`
 
-### Frontend / CSS (4 tools)
-`color-converter`, `px-rem`, `gradient-generator`, `box-shadow-generator`
+### Frontend / CSS (5 tools)
+`color-converter`, `px-rem`, `gradient-generator`, `box-shadow-generator`, `html-entities-cheatsheet`
 
 ## Conventions & patterns
 

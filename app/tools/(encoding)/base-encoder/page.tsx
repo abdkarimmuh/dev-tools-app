@@ -222,9 +222,6 @@ export default function BaseEncoderPage() {
               ))}
             </SelectContent>
           </Select>
-        </div>
-
-        <div className="flex gap-4">
           <Button size="lg" onClick={runEncode} disabled={!input}>
             {t.encode}
           </Button>

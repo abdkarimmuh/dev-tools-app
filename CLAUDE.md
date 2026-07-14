@@ -41,6 +41,7 @@ Tool input/output state must survive navigation away and back. Use `useToolState
 ### UI conventions
 
 - Two-panel input/output layout (input left, output right) is standard for formatter/converter tools.
+- Reference/cheatsheet tools (e.g. `ascii-cheatsheet`, `html-entities-cheatsheet`) use a different pattern: a live search `Input` filtering a static list of `{ title, entries }` sections (defined in `constants/<category>/<tool-name>.ts`), rendered as click-to-copy rows.
 - Tool variants (e.g. JS vs TS, CSS vs SCSS, SQL dialect) are chosen via a `Select` dropdown within a single tool page rather than separate routes.
 - `components/ui/` holds shadcn/ui primitives; prefer these over ad-hoc markup.
 - `components/layouts/` holds `app-sidebar.tsx`, `site-header.tsx`, and `tool-search.tsx` (the Cmd/Ctrl+K command palette, built on `cmdk`).
@@ -59,8 +60,11 @@ Tool input/output state must survive navigation away and back. Use `useToolState
 | Web Crypto API | RSA, ECDSA, HMAC, SHA hashing |
 | `marked` | Markdown → HTML |
 | `qrcode` / `jsbarcode` | QR / barcode generation |
+| `xlsx` | XLSX export (Fake Data Generator) |
 
 XML tools and JSON↔XML conversion use the browser-native `DOMParser`/`XMLSerializer` — no external XML package. Prettier runs client-side via its standalone browser build for the JS/TS/HTML/CSS formatters.
+
+`xlsx` (SheetJS) is installed from `cdn.sheetjs.com`, not the npm registry — the npm-published `xlsx` package is frozen at a version with an unpatched high-severity prototype-pollution/ReDoS advisory; SheetJS ships current fixes only via their own CDN tarball. See the `xlsx` entry in `package.json` for the exact pinned URL. Don't `npm install xlsx` to "fix" or update it without checking this first.
 
 ## Code style
 

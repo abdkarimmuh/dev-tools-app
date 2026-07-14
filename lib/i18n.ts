@@ -50,15 +50,13 @@ export const translations = {
     base58EncodeError: "Failed to encode text.",
     base58DecodeError: "Input is not valid Base58.",
 
-    // URL Encode
-    urlEncodeInputPlaceholder: "Enter text or URL encoded string...",
-    urlEncodeError: "Failed to encode URL.",
-    urlDecodeError: "Input is not valid URL encoded.",
-
-    // HTML Entities
-    htmlEntitiesEncodeExample: "Encode example",
-    htmlEntitiesDecodeExample: "Decode example",
-    htmlEntitiesDecodeError: "Failed to decode HTML entities.",
+    // Cheatsheets
+    cheatsheetEntries: "entries",
+    cheatsheetNoResults: "No results found for",
+    asciiCheatsheetSearchPlaceholder:
+      "Search by character, decimal, hex, or name...",
+    htmlEntitiesCheatsheetSearchPlaceholder:
+      "Search by entity name, character, or description...",
 
     // JWT
     jwtInvalidError:
@@ -394,15 +392,13 @@ export const translations = {
     base58EncodeError: "Gagal mengencoding teks.",
     base58DecodeError: "Input bukan Base58 yang valid.",
 
-    // URL Encode
-    urlEncodeInputPlaceholder: "Masukkan teks atau URL encoded string...",
-    urlEncodeError: "Gagal mengencoding URL.",
-    urlDecodeError: "Input bukan URL encoded yang valid.",
-
-    // HTML Entities
-    htmlEntitiesEncodeExample: "Contoh encode",
-    htmlEntitiesDecodeExample: "Contoh decode",
-    htmlEntitiesDecodeError: "Gagal mendecode HTML entities.",
+    // Cheatsheets
+    cheatsheetEntries: "entri",
+    cheatsheetNoResults: "Tidak ada hasil untuk",
+    asciiCheatsheetSearchPlaceholder:
+      "Cari berdasarkan karakter, desimal, hex, atau nama...",
+    htmlEntitiesCheatsheetSearchPlaceholder:
+      "Cari berdasarkan nama entity, karakter, atau deskripsi...",
 
     // JWT
     jwtInvalidError:

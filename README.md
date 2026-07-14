@@ -33,8 +33,7 @@ Kumpulan tools berbasis web untuk membantu produktivitas pengembang sehari-hari 
 | Tool                  | Deskripsi                                                                                                                                                                               |
 | --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Base Encoder**      | Encode dan decode teks dalam empat format sekaligus: Base64, Base32, Base58, dan Hex (Base16). Pilih format via dropdown Select. Dilengkapi tombol Swap untuk membalik output ke input. |
-| **URL Encode/Decode** | Encode dan decode string menggunakan `encodeURIComponent` / `decodeURIComponent`.                                                                                                       |
-| **HTML Entities**     | Encode karakter khusus HTML (`<`, `>`, `&`, dll.) dan decode kembali ke teks biasa.                                                                                                     |
+| **ASCII Cheatsheet**  | Referensi tabel ASCII lengkap (kontrol & printable, 0–127) dengan kode desimal, hex, dan karakter. Pencarian live, klik untuk salin.                                                    |
 | **JWT Decoder**       | Decode token JWT menjadi Header dan Payload yang terbaca. Timestamp `exp`, `iat`, `nbf` otomatis dikonversi ke tanggal, serta badge status expired.                                     |
 | **Hash Generator**    | Generate hash menggunakan algoritma SHA-1, SHA-256, SHA-384, dan SHA-512 via Web Crypto API.                                                                                            |
 
@@ -80,6 +79,7 @@ Kumpulan tools berbasis web untuk membantu produktivitas pengembang sehari-hari 
 | **PX → REM**               | Konversi nilai PX ke REM dan sebaliknya dengan base font size yang bisa dikustomisasi (default 16px). Tersedia tabel referensi untuk nilai-nilai umum. |
 | **CSS Gradient Generator** | Builder visual untuk CSS gradient (linear, radial, conic). Tambah/hapus color stops, atur sudut, dan salin CSS langsung dari preview.                  |
 | **Box Shadow Generator**   | Builder visual box-shadow dengan slider offset XY, blur, spread, color picker, dan toggle inset. Mendukung multiple shadows.                           |
+| **HTML Entities Cheatsheet** | Referensi HTML character entities (reserved characters, currency, typography, symbols, arrows, Greek letters, dll.) dengan named & numeric entity. Pencarian live, klik untuk salin. |
 
 ## Tech Stack
 
@@ -160,8 +160,7 @@ dev-tools-app/
 │       │   └── unix-timestamp/
 │       ├── (encoding)/
 │       │   ├── base-encoder/     # Base64 / Base32 / Base58 / Hex (pilih via Select)
-│       │   ├── url-encode/
-│       │   ├── html-entities/
+│       │   ├── ascii-cheatsheet/
 │       │   ├── jwt-decoder/
 │       │   └── hash-generator/
 │       ├── (text)/
@@ -190,7 +189,8 @@ dev-tools-app/
 │           ├── color-converter/
 │           ├── px-rem/
 │           ├── gradient-generator/
-│           └── box-shadow-generator/
+│           ├── box-shadow-generator/
+│           └── html-entities-cheatsheet/
 ├── components/
 │   ├── layouts/
 │   │   ├── app-sidebar.tsx       # Sidebar navigasi

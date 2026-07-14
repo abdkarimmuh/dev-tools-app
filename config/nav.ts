@@ -1,6 +1,7 @@
 import type { LucideIcon } from "lucide-react";
 import {
   AlignLeft,
+  Ampersand,
   ArrowLeftRight,
   Asterisk,
   Barcode,
@@ -18,7 +19,6 @@ import {
   Key,
   KeyRound,
   Layers,
-  Link,
   Lock,
   Paintbrush,
   Palette,
@@ -31,6 +31,7 @@ import {
   Sparkles,
   SunMedium,
   Table,
+  Table2,
   TableProperties,
   Type,
   Webhook
@@ -92,8 +93,11 @@ export const navMenus: NavGroup[] = [
     label: "Encoding",
     items: [
       { title: "Base Encoder", url: "/tools/base-encoder", icon: KeyRound },
-      { title: "URL Encode/Decode", url: "/tools/url-encode", icon: Link },
-      { title: "HTML Entities", url: "/tools/html-entities", icon: Code },
+      {
+        title: "ASCII Cheatsheet",
+        url: "/tools/ascii-cheatsheet",
+        icon: Table2
+      },
       { title: "JWT Decoder", url: "/tools/jwt-decoder", icon: Lock },
       { title: "Hash Generator", url: "/tools/hash-generator", icon: Shield }
     ]
@@ -178,6 +182,11 @@ export const navMenus: NavGroup[] = [
         title: "Box Shadow Generator",
         url: "/tools/box-shadow-generator",
         icon: Sliders
+      },
+      {
+        title: "HTML Entities Cheatsheet",
+        url: "/tools/html-entities-cheatsheet",
+        icon: Ampersand
       }
     ]
   }
