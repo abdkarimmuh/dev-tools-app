@@ -1,7 +1,9 @@
 <!-- BEGIN:nextjs-agent-rules -->
+
 # This is NOT the Next.js you know
 
 This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
+
 <!-- END:nextjs-agent-rules -->
 
 ## Purpose
@@ -45,27 +47,34 @@ npm run format     # Prettier (formats .ts/.tsx)
 
 When making changes, link to these files in your PR description so reviewers can follow context.
 
-## Current tool inventory (42 tools across 7 categories)
+## Current tool inventory (43 tools across 7 categories)
 
 ### Format & Validasi (9 tools)
+
 `json-formatter`, `js-formatter` (JS/TS via Select), `html-formatter`, `css-formatter`, `sql-formatter`, `xml-formatter`, `yaml-formatter`, `toml-formatter`, `graphql-formatter`
 
 ### Converter (5 tools)
+
 `json-yaml`, `json-csv`, `json-xml`, `number-base`, `unix-timestamp`
 
 ### Encoding (4 tools)
+
 `base-encoder`, `ascii-cheatsheet`, `jwt-decoder`, `hash-generator`
 
 ### Text (6 tools)
+
 `diff-checker`, `case-converter`, `regex-tester`, `markdown-preview`, `word-counter`, `json-path`
 
-### Generator (7 tools)
-`uuid-generator`, `lorem-ipsum`, `password-generator`, `qr-generator`, `barcode-generator`, `cron-generator`, `fake-data`
+### Generator (8 tools)
+
+`uuid-generator`, `lorem-ipsum`, `password-generator`, `qr-generator`, `barcode-generator`, `cron-generator`, `fake-data`, `tree-generator`
 
 ### Cryptography (6 tools)
+
 `aes-cipher`, `des-cipher`, `rc4-cipher`, `rsa`, `ecdsa`, `api-signature`
 
 ### Frontend / CSS (5 tools)
+
 `color-converter`, `px-rem`, `gradient-generator`, `box-shadow-generator`, `html-entities-cheatsheet`
 
 ## Conventions & patterns
@@ -83,18 +92,21 @@ When making changes, link to these files in your PR description so reviewers can
 
 ## Key dependencies
 
-| Package | Purpose |
-|---|---|
-| `js-yaml` | YAML parse/dump (yaml-formatter, json-yaml) |
-| `smol-toml` | TOML parse/stringify (toml-formatter) |
-| `graphql` | GraphQL parse/print (graphql-formatter) |
-| `sql-formatter` | SQL formatting (sql-formatter) |
-| `crypto-js` | AES/DES/RC4 symmetric encryption |
-| `marked` | Markdown → HTML (markdown-preview) |
-| `qrcode` | QR code generation |
-| `jsbarcode` | Barcode generation |
+| Package         | Purpose                                     |
+| --------------- | ------------------------------------------- |
+| `js-yaml`       | YAML parse/dump (yaml-formatter, json-yaml) |
+| `smol-toml`     | TOML parse/stringify (toml-formatter)       |
+| `graphql`       | GraphQL parse/print (graphql-formatter)     |
+| `sql-formatter` | SQL formatting (sql-formatter)              |
+| `crypto-js`     | AES/DES/RC4 symmetric encryption            |
+| `marked`        | Markdown → HTML (markdown-preview)          |
+| `qrcode`        | QR code generation                          |
+| `jsbarcode`     | Barcode generation                          |
+| `xlsx`          | XLSX export (fake-data)                     |
 
 XML and JSON↔XML use browser-native `DOMParser` / `XMLSerializer` — no external package.
+
+`xlsx` is installed from `cdn.sheetjs.com`, not the npm registry (see the pinned URL in `package.json`) — the npm-published `xlsx` package is frozen at a version with an unpatched high-severity prototype-pollution/ReDoS advisory. Don't `npm install xlsx` to "fix" or update it without checking this first.
 
 ## How to add a new tool (minimal example)
 
@@ -111,13 +123,13 @@ Example snippet:
 
 ```ts
 // page.tsx skeleton
-"use client"
-import { useToolState } from "@/hooks/use-tool-state"
-import { useLanguage } from "@/contexts/language-context"
+"use client";
+import { useToolState } from "@/hooks/use-tool-state";
+import { useLanguage } from "@/contexts/language-context";
 
 export default function MyToolPage() {
-  const { t } = useLanguage()
-  const [input, setInput] = useToolState("my-tool", "input", "")
+  const { t } = useLanguage();
+  const [input, setInput] = useToolState("my-tool", "input", "");
   // ...
 }
 ```

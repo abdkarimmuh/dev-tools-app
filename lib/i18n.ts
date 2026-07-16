@@ -58,6 +58,32 @@ export const translations = {
     htmlEntitiesCheatsheetSearchPlaceholder:
       "Search by entity name, character, or description...",
 
+    // Base Encoder (file mode)
+    baseModeText: "Text",
+    baseModeFile: "File",
+    baseDirectionEncode: "File → Text",
+    baseDirectionDecode: "Text → File",
+    baseChooseFile: "Choose File",
+    baseDropOrChoose: "Drag & drop a file here, or",
+    baseRemoveFile: "Remove",
+    baseDataUri: "Data URI",
+    baseFileName: "File name",
+    baseMimeType: "MIME type",
+    baseDownload: "Download",
+    baseFileTooLarge: "File is too large. Maximum size is 10 MB.",
+    baseBase58TooLarge:
+      "Base58 is too slow for files this large. Use Base64 or Hex, or a file under 1 MB.",
+
+    // URL Encode
+    urlEncodeInputPlaceholder: "Enter text or URL encoded string...",
+    urlEncodeError: "Failed to encode URL.",
+    urlDecodeError: "Input is not valid URL encoded.",
+
+    // HTML Entities
+    htmlEntitiesEncodeExample: "Encode example",
+    htmlEntitiesDecodeExample: "Decode example",
+    htmlEntitiesDecodeError: "Failed to decode HTML entities.",
+
     // JWT
     jwtInvalidError:
       "Invalid JWT token. Must have 3 parts (header.payload.signature).",
@@ -341,7 +367,17 @@ export const translations = {
     gradientRadial: "Radial",
     gradientConic: "Conic",
     gradientColorStops: "Color Stops",
-    gradientAddStop: "Add Stop"
+    gradientAddStop: "Add Stop",
+
+    // Tree Generator
+    treeCharsetLabel: "Character Set",
+    treeCharsetUnicode: "Unicode (├──)",
+    treeCharsetAscii: "ASCII (|--)",
+    treeTrailingSlash: "Trailing slash on folders",
+    treeInputLabel: "Input",
+    treeOutputLabel: "Tree",
+    treeInputPlaceholder:
+      "Type an indented list, e.g.\nproject\n  src\n    index.js\n  README.md"
   },
   id: {
     // Navigation
@@ -399,6 +435,32 @@ export const translations = {
       "Cari berdasarkan karakter, desimal, hex, atau nama...",
     htmlEntitiesCheatsheetSearchPlaceholder:
       "Cari berdasarkan nama entity, karakter, atau deskripsi...",
+
+    // Base Encoder (file mode)
+    baseModeText: "Teks",
+    baseModeFile: "File",
+    baseDirectionEncode: "File → Teks",
+    baseDirectionDecode: "Teks → File",
+    baseChooseFile: "Pilih File",
+    baseDropOrChoose: "Seret & lepas file di sini, atau",
+    baseRemoveFile: "Hapus",
+    baseDataUri: "Data URI",
+    baseFileName: "Nama file",
+    baseMimeType: "Tipe MIME",
+    baseDownload: "Unduh",
+    baseFileTooLarge: "File terlalu besar. Ukuran maksimum adalah 10 MB.",
+    baseBase58TooLarge:
+      "Base58 terlalu lambat untuk file sebesar ini. Gunakan Base64 atau Hex, atau file di bawah 1 MB.",
+
+    // URL Encode
+    urlEncodeInputPlaceholder: "Masukkan teks atau URL encoded string...",
+    urlEncodeError: "Gagal mengencoding URL.",
+    urlDecodeError: "Input bukan URL encoded yang valid.",
+
+    // HTML Entities
+    htmlEntitiesEncodeExample: "Contoh encode",
+    htmlEntitiesDecodeExample: "Contoh decode",
+    htmlEntitiesDecodeError: "Gagal mendecode HTML entities.",
 
     // JWT
     jwtInvalidError:
@@ -687,7 +749,17 @@ export const translations = {
     gradientRadial: "Radial",
     gradientConic: "Conic",
     gradientColorStops: "Color Stops",
-    gradientAddStop: "Tambah Stop"
+    gradientAddStop: "Tambah Stop",
+
+    // Tree Generator
+    treeCharsetLabel: "Set Karakter",
+    treeCharsetUnicode: "Unicode (├──)",
+    treeCharsetAscii: "ASCII (|--)",
+    treeTrailingSlash: "Garis miring pada folder",
+    treeInputLabel: "Input",
+    treeOutputLabel: "Tree",
+    treeInputPlaceholder:
+      "Ketik daftar berindentasi, mis.\nproject\n  src\n    index.js\n  README.md"
   }
 };
 

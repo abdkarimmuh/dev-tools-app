@@ -33,6 +33,7 @@ import {
   Table,
   Table2,
   TableProperties,
+  TreePine,
   Type,
   Webhook
 } from "lucide-react";
@@ -142,7 +143,12 @@ export const navMenus: NavGroup[] = [
         icon: Barcode
       },
       { title: "CRON Generator", url: "/tools/cron-generator", icon: Clock },
-      { title: "Fake Data Generator", url: "/tools/fake-data", icon: Sparkles }
+      {
+        title: "Fake Data Generator",
+        url: "/tools/fake-data",
+        icon: Sparkles
+      },
+      { title: "Tree Generator", url: "/tools/tree-generator", icon: TreePine }
     ]
   },
   {

@@ -30,12 +30,12 @@ Kumpulan tools berbasis web untuk membantu produktivitas pengembang sehari-hari 
 
 ### Encoding
 
-| Tool                  | Deskripsi                                                                                                                                                                               |
-| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Base Encoder**      | Encode dan decode teks dalam empat format sekaligus: Base64, Base32, Base58, dan Hex (Base16). Pilih format via dropdown Select. Dilengkapi tombol Swap untuk membalik output ke input. |
-| **ASCII Cheatsheet**  | Referensi tabel ASCII lengkap (kontrol & printable, 0–127) dengan kode desimal, hex, dan karakter. Pencarian live, klik untuk salin.                                                    |
-| **JWT Decoder**       | Decode token JWT menjadi Header dan Payload yang terbaca. Timestamp `exp`, `iat`, `nbf` otomatis dikonversi ke tanggal, serta badge status expired.                                     |
-| **Hash Generator**    | Generate hash menggunakan algoritma SHA-1, SHA-256, SHA-384, dan SHA-512 via Web Crypto API.                                                                                            |
+| Tool                 | Deskripsi                                                                                                                                                                                                                                                                                   |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Base Encoder**     | Encode dan decode teks maupun file (gambar, dokumen, dll., maks 10 MB) dalam empat format sekaligus: Base64, Base32, Base58, dan Hex (Base16). Mode File mendukung Data URI, preview gambar, dan download hasil decode. Dilengkapi tombol Swap untuk membalik output ke input di mode teks. |
+| **ASCII Cheatsheet** | Referensi tabel ASCII lengkap (kontrol & printable, 0–127) dengan kode desimal, hex, dan karakter. Pencarian live, klik untuk salin.                                                                                                                                                        |
+| **JWT Decoder**      | Decode token JWT menjadi Header dan Payload yang terbaca. Timestamp `exp`, `iat`, `nbf` otomatis dikonversi ke tanggal, serta badge status expired.                                                                                                                                         |
+| **Hash Generator**   | Generate hash menggunakan algoritma SHA-1, SHA-256, SHA-384, dan SHA-512 via Web Crypto API.                                                                                                                                                                                                |
 
 ### Text
 
@@ -50,15 +50,16 @@ Kumpulan tools berbasis web untuk membantu produktivitas pengembang sehari-hari 
 
 ### Generator
 
-| Tool                    | Deskripsi                                                                                                                                                 |
-| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **UUID Generator**      | Generate UUID versi v1 (time-based), v4 (random), atau v7 (time-ordered) secara bulk hingga 100 UUID sekaligus. Salin satu per satu atau semua sekaligus. |
-| **Lorem Ipsum**         | Generate placeholder text dalam satuan kata, kalimat, atau paragraf dengan jumlah yang bisa dikustomisasi.                                                |
-| **Password Generator**  | Generate password aman dengan opsi panjang (4–128 karakter), pilihan charset (huruf besar, huruf kecil, angka, simbol), dan indikator kekuatan password.  |
-| **QR Generator**        | Generate QR code dari teks atau URL. Mendukung pilihan level koreksi error (L/M/Q/H) dan ukuran output. Download sebagai PNG.                             |
-| **Barcode Generator**   | Generate barcode dalam berbagai format (CODE128, EAN-13, EAN-8, UPC, CODE39, ITF-14, MSI, Pharmacode). Download sebagai SVG.                              |
-| **CRON Generator**      | Builder visual ekspresi CRON dengan field editor (minute/hour/day/month/weekday), preset umum, dan deskripsi human-readable.                              |
-| **Fake Data Generator** | Generate data palsu untuk testing: Person (termasuk nationalId), Address, Internet, Product, dan Lorem Ipsum. Output dalam format JSON, hingga 100 item.  |
+| Tool                    | Deskripsi                                                                                                                                                                         |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **UUID Generator**      | Generate UUID versi v1 (time-based), v4 (random), atau v7 (time-ordered) secara bulk hingga 100 UUID sekaligus. Salin satu per satu atau semua sekaligus.                         |
+| **Lorem Ipsum**         | Generate placeholder text dalam satuan kata, kalimat, atau paragraf dengan jumlah yang bisa dikustomisasi.                                                                        |
+| **Password Generator**  | Generate password aman dengan opsi panjang (4–128 karakter), pilihan charset (huruf besar, huruf kecil, angka, simbol), dan indikator kekuatan password.                          |
+| **QR Generator**        | Generate QR code dari teks atau URL. Mendukung pilihan level koreksi error (L/M/Q/H) dan ukuran output. Download sebagai PNG.                                                     |
+| **Barcode Generator**   | Generate barcode dalam berbagai format (CODE128, EAN-13, EAN-8, UPC, CODE39, ITF-14, MSI, Pharmacode). Download sebagai SVG.                                                      |
+| **CRON Generator**      | Builder visual ekspresi CRON dengan field editor (minute/hour/day/month/weekday), preset umum, dan deskripsi human-readable.                                                      |
+| **Fake Data Generator** | Generate data palsu untuk testing: Person (termasuk nationalId), Address, Internet, Product, dan Lorem Ipsum. Output dalam format JSON, hingga 100 item.                          |
+| **Tree Generator**      | Buat diagram tree ASCII/Unicode dari teks berindentasi (mirip `tree.nathanfriend.com`). Pilih karakter Unicode/ASCII, opsi trailing slash untuk folder, dan salin hasil langsung. |
 
 ### Cryptography
 
@@ -73,12 +74,12 @@ Kumpulan tools berbasis web untuk membantu produktivitas pengembang sehari-hari 
 
 ### Frontend / CSS
 
-| Tool                       | Deskripsi                                                                                                                                              |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Color Converter**        | Konversi warna antar format HEX, RGB, dan HSL secara dua arah. Dilengkapi color picker native dan preview warna.                                       |
-| **PX → REM**               | Konversi nilai PX ke REM dan sebaliknya dengan base font size yang bisa dikustomisasi (default 16px). Tersedia tabel referensi untuk nilai-nilai umum. |
-| **CSS Gradient Generator** | Builder visual untuk CSS gradient (linear, radial, conic). Tambah/hapus color stops, atur sudut, dan salin CSS langsung dari preview.                  |
-| **Box Shadow Generator**   | Builder visual box-shadow dengan slider offset XY, blur, spread, color picker, dan toggle inset. Mendukung multiple shadows.                           |
+| Tool                         | Deskripsi                                                                                                                                                                            |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Color Converter**          | Konversi warna antar format HEX, RGB, dan HSL secara dua arah. Dilengkapi color picker native dan preview warna.                                                                     |
+| **PX → REM**                 | Konversi nilai PX ke REM dan sebaliknya dengan base font size yang bisa dikustomisasi (default 16px). Tersedia tabel referensi untuk nilai-nilai umum.                               |
+| **CSS Gradient Generator**   | Builder visual untuk CSS gradient (linear, radial, conic). Tambah/hapus color stops, atur sudut, dan salin CSS langsung dari preview.                                                |
+| **Box Shadow Generator**     | Builder visual box-shadow dengan slider offset XY, blur, spread, color picker, dan toggle inset. Mendukung multiple shadows.                                                         |
 | **HTML Entities Cheatsheet** | Referensi HTML character entities (reserved characters, currency, typography, symbols, arrows, Greek letters, dll.) dengan named & numeric entity. Pencarian live, klik untuk salin. |
 
 ## Tech Stack
@@ -177,7 +178,8 @@ dev-tools-app/
 │       │   ├── qr-generator/
 │       │   ├── barcode-generator/
 │       │   ├── cron-generator/
-│       │   └── fake-data/
+│       │   ├── fake-data/
+│       │   └── tree-generator/
 │       ├── (cryptography)/
 │       │   ├── aes-cipher/
 │       │   ├── des-cipher/       # DES / 3DES (pilih via Select)
