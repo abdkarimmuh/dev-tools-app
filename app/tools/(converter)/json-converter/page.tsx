@@ -332,7 +332,7 @@ export default function JsonConverterPage() {
           ) : (
             <CodeEditor
               readOnly
-              className="bg-muted min-h-0 flex-1"
+              className="min-h-0 flex-1"
               language={outputLanguage}
               value={output}
               placeholder={t.outputPlaceholder}

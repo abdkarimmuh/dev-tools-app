@@ -1,5 +1,6 @@
 "use client";
 
+import type { EditorView } from "@uiw/react-codemirror";
 import type { LucideIcon } from "lucide-react";
 import {
   Bold,
@@ -17,6 +18,7 @@ import {
   Strikethrough
 } from "lucide-react";
 import { marked } from "marked";
+import dynamic from "next/dynamic";
 import { useMemo, useRef } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -28,7 +30,11 @@ import {
 } from "@/components/ui/tooltip";
 import { useLanguage } from "@/contexts/language-context";
 import { useToolState } from "@/hooks/use-tool-state";
-import { handleTextareaTab } from "@/lib/utils";
+
+const CodeEditor = dynamic(
+  () => import("@/components/code-editor").then((m) => m.CodeEditor),
+  { ssr: false }
+);
 
 marked.use({ gfm: true, breaks: true });
 
@@ -36,87 +42,86 @@ type ToolbarItem =
   | {
       label: string;
       icon: LucideIcon;
-      action: (
-        ta: HTMLTextAreaElement,
-        val: string
-      ) => { value: string; start: number; end: number };
+      action: (view: EditorView) => void;
     }
   | "separator";
 
 function wrap(before: string, after: string, placeholder: string) {
-  return (ta: HTMLTextAreaElement, val: string) => {
-    const s = ta.selectionStart;
-    const e = ta.selectionEnd;
-    const selected = val.substring(s, e) || placeholder;
-    const value =
-      val.substring(0, s) + before + selected + after + val.substring(e);
-    return {
-      value,
-      start: s + before.length,
-      end: s + before.length + selected.length
-    };
+  return (view: EditorView) => {
+    const { from, to } = view.state.selection.main;
+    const selected = view.state.sliceDoc(from, to) || placeholder;
+    view.dispatch({
+      changes: { from, to, insert: before + selected + after },
+      selection: {
+        anchor: from + before.length,
+        head: from + before.length + selected.length
+      }
+    });
+    view.focus();
   };
 }
 
 function linePrefix(prefix: string) {
-  return (ta: HTMLTextAreaElement, val: string) => {
-    const s = ta.selectionStart;
-    const e = ta.selectionEnd;
+  return (view: EditorView) => {
+    const { from, to } = view.state.selection.main;
+    const lineStart = view.state.doc.lineAt(from).from;
+    const lineEnd = view.state.doc.lineAt(to).to;
 
-    const lineStart = val.lastIndexOf("\n", s - 1) + 1;
-    const lineEnd =
-      val.indexOf("\n", e) === -1 ? val.length : val.indexOf("\n", e);
-
-    const lines = val.substring(lineStart, lineEnd).split("\n");
+    const lines = view.state.sliceDoc(lineStart, lineEnd).split("\n");
     const allHavePrefix = lines.every((l) => l.startsWith(prefix));
 
     const newLines = allHavePrefix
       ? lines.map((l) => l.slice(prefix.length))
       : lines.map((l) => prefix + l);
-    const newBlock = newLines.join("\n");
-
-    const value =
-      val.substring(0, lineStart) + newBlock + val.substring(lineEnd);
     const offset = allHavePrefix ? -prefix.length : prefix.length;
-    return {
-      value,
-      start: Math.max(lineStart, s + offset),
-      end: Math.max(lineStart, e + offset * lines.length)
-    };
+
+    view.dispatch({
+      changes: { from: lineStart, to: lineEnd, insert: newLines.join("\n") },
+      selection: {
+        anchor: Math.max(lineStart, from + offset),
+        head: Math.max(lineStart, to + offset * lines.length)
+      }
+    });
+    view.focus();
   };
 }
 
 function codeBlock() {
-  return (ta: HTMLTextAreaElement, val: string) => {
-    const s = ta.selectionStart;
-    const e = ta.selectionEnd;
-    const selected = val.substring(s, e) || "code";
-    const inserted = "```\n" + selected + "\n```";
-    const value = val.substring(0, s) + inserted + val.substring(e);
-    return { value, start: s + 4, end: s + 4 + selected.length };
+  return (view: EditorView) => {
+    const { from, to } = view.state.selection.main;
+    const selected = view.state.sliceDoc(from, to) || "code";
+    view.dispatch({
+      changes: { from, to, insert: "```\n" + selected + "\n```" },
+      selection: { anchor: from + 4, head: from + 4 + selected.length }
+    });
+    view.focus();
   };
 }
 
 function linkAction() {
-  return (ta: HTMLTextAreaElement, val: string) => {
-    const s = ta.selectionStart;
-    const e = ta.selectionEnd;
-    const selected = val.substring(s, e);
-    const inserted = selected ? `[${selected}](url)` : "[link text](url)";
-    const value = val.substring(0, s) + inserted + val.substring(e);
-    const urlStart = s + inserted.indexOf("(") + 1;
-    const urlEnd = urlStart + 3;
-    return { value, start: urlStart, end: urlEnd };
+  return (view: EditorView) => {
+    const { from, to } = view.state.selection.main;
+    const selected = view.state.sliceDoc(from, to);
+    const insert = selected ? `[${selected}](url)` : "[link text](url)";
+    const urlStart = from + insert.indexOf("(") + 1;
+    view.dispatch({
+      changes: { from, to, insert },
+      selection: { anchor: urlStart, head: urlStart + 3 }
+    });
+    view.focus();
   };
 }
 
 function hrAction() {
-  return (ta: HTMLTextAreaElement, val: string) => {
-    const s = ta.selectionStart;
-    const nl = val[s - 1] === "\n" ? "" : "\n";
-    const inserted = nl + "---\n";
-    const value = val.substring(0, s) + inserted + val.substring(s);
-    return { value, start: s + inserted.length, end: s + inserted.length };
+  return (view: EditorView) => {
+    const { from } = view.state.selection.main;
+    const prevChar = from > 0 ? view.state.sliceDoc(from - 1, from) : "\n";
+    const insert = (prevChar === "\n" ? "" : "\n") + "---\n";
+    view.dispatch({
+      changes: { from, to: from, insert },
+      selection: { anchor: from + insert.length, head: from + insert.length }
+    });
+    view.focus();
   };
 }
 
@@ -147,7 +152,7 @@ const TOOLBAR: ToolbarItem[] = [
 export default function MarkdownPreviewPage() {
   const { t } = useLanguage();
   const [input, setInput] = useToolState("markdown-preview", "input", "");
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const viewRef = useRef<EditorView | null>(null);
 
   const html = useMemo(() => {
     if (!input.trim()) return "";
@@ -156,16 +161,9 @@ export default function MarkdownPreviewPage() {
 
   const applyAction = (action: ToolbarItem) => {
     if (action === "separator") return;
-    const ta = textareaRef.current;
-    if (!ta) return;
-
-    const { value, start, end } = action.action(ta, input);
-    setInput(value);
-
-    requestAnimationFrame(() => {
-      ta.focus();
-      ta.setSelectionRange(start, end);
-    });
+    const view = viewRef.current;
+    if (!view) return;
+    action.action(view);
   };
 
   const clear = () => setInput("");
@@ -212,16 +210,17 @@ export default function MarkdownPreviewPage() {
               {t.clear}
             </Button>
           </div>
-          <textarea
-            ref={textareaRef}
-            className="bg-background focus-visible:ring-ring min-h-0 w-full flex-1 resize-none rounded-md border p-3 font-mono text-sm outline-none focus-visible:ring-2"
+          <CodeEditor
+            className="min-h-0 flex-1"
+            language="markdown"
             placeholder={
               "# Hello\n\nStart writing **markdown** here...\n\n- Item 1\n- Item 2\n\n> Blockquote\n\n```js\nconsole.log('hello')\n```"
             }
             value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => handleTextareaTab(e, input, setInput)}
-            spellCheck={false}
+            onChange={setInput}
+            onCreateEditor={(view) => {
+              viewRef.current = view;
+            }}
           />
         </div>
 

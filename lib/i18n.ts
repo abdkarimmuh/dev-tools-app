@@ -233,6 +233,12 @@ export const translations = {
     csvArrayError: "Input must be a JSON array",
     csvHeaderError: "CSV must have a header row and at least one data row",
 
+    // Struct Converter
+    structConverterFormatLabel: "Format",
+    structConverterJsonObjectError: "Input must be a JSON object",
+    structConverterGoParseError: "No `type X struct {...}` block found",
+    structConverterTsParseError: "No `interface X {...}` block found",
+
     // JSON Path
     jsonPathExprLabel: "JSONPath Expression",
     jsonPathDocLabel: "JSON Document",
@@ -614,6 +620,12 @@ export const translations = {
     csvArrayError: "Input harus berupa array JSON",
     csvHeaderError:
       "CSV harus memiliki baris header dan minimal satu baris data",
+
+    // Struct Converter
+    structConverterFormatLabel: "Format",
+    structConverterJsonObjectError: "Input harus berupa objek JSON",
+    structConverterGoParseError: "Tidak ditemukan blok `type X struct {...}`",
+    structConverterTsParseError: "Tidak ditemukan blok `interface X {...}`",
 
     // JSON Path
     jsonPathExprLabel: "Ekspresi JSONPath",

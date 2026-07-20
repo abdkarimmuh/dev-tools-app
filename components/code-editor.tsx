@@ -4,6 +4,7 @@ import { css } from "@codemirror/lang-css";
 import { html } from "@codemirror/lang-html";
 import { javascript } from "@codemirror/lang-javascript";
 import { json } from "@codemirror/lang-json";
+import { markdown } from "@codemirror/lang-markdown";
 import {
   MSSQL,
   MySQL,
@@ -17,11 +18,13 @@ import {
 import { xml } from "@codemirror/lang-xml";
 import { yaml } from "@codemirror/lang-yaml";
 import { foldService, StreamLanguage } from "@codemirror/language";
+import { go } from "@codemirror/legacy-modes/mode/go";
 import { toml } from "@codemirror/legacy-modes/mode/toml";
 import CodeMirror, {
   type EditorState,
   EditorView,
-  type Extension
+  type Extension,
+  type ReactCodeMirrorProps
 } from "@uiw/react-codemirror";
 import { graphqlLanguageSupport } from "cm6-graphql";
 import { useTheme } from "next-themes";
@@ -41,6 +44,8 @@ export type CodeEditorLanguage =
   | "typescript"
   | "toml"
   | "graphql"
+  | "go"
+  | "markdown"
   | "text";
 
 const SQL_DIALECTS: Record<Dialect, SQLDialect> = {
@@ -53,6 +58,7 @@ const SQL_DIALECTS: Record<Dialect, SQLDialect> = {
 };
 
 const tomlLanguage = StreamLanguage.define(toml);
+const goLanguage = StreamLanguage.define(go);
 
 // @codemirror/legacy-modes ports StreamLanguage parsers, which don't build a
 // syntax tree — so they don't get automatic fold ranges the way lang-json,
@@ -108,6 +114,10 @@ function languageExtension(
       return javascript({ typescript: true });
     case "toml":
       return [tomlLanguage, indentFoldService];
+    case "go":
+      return [goLanguage, indentFoldService];
+    case "markdown":
+      return markdown();
     case "graphql":
       return graphqlLanguageSupport();
     case "text":
@@ -123,6 +133,7 @@ interface CodeEditorProps {
   placeholder?: string;
   className?: string;
   readOnly?: boolean;
+  onCreateEditor?: ReactCodeMirrorProps["onCreateEditor"];
 }
 
 export function CodeEditor({
@@ -132,7 +143,8 @@ export function CodeEditor({
   sqlDialect,
   placeholder,
   className,
-  readOnly
+  readOnly,
+  onCreateEditor
 }: CodeEditorProps) {
   const { resolvedTheme } = useTheme();
   const extensions = useMemo(
@@ -156,6 +168,7 @@ export function CodeEditor({
         placeholder={placeholder}
         basicSetup={{ tabSize: 2 }}
         readOnly={readOnly}
+        onCreateEditor={onCreateEditor}
       />
     </div>
   );

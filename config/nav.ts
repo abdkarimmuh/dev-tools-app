@@ -10,6 +10,7 @@ import {
   CaseSensitive,
   Clock,
   Code,
+  Component,
   Database,
   FileCode,
   FileCode2,
@@ -81,6 +82,11 @@ export const navMenus: NavGroup[] = [
         title: "JSON Converter",
         url: "/tools/json-converter",
         icon: RefreshCw
+      },
+      {
+        title: "Struct Converter",
+        url: "/tools/struct-converter",
+        icon: Component
       },
       {
         title: "Number Base Converter",

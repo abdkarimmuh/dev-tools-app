@@ -20,11 +20,12 @@ Kumpulan tools berbasis web untuk membantu produktivitas pengembang sehari-hari 
 
 ### Converter
 
-| Tool                      | Deskripsi                                                                                                                                        |
-| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **JSON Converter**        | Konversi dua arah antara JSON dan CSV, XML, atau YAML (dipilih via dropdown Format). Tombol swap membalik arah konversi dan mengisi ulang input. |
-| **Number Base Converter** | Konversi angka antar basis bilangan (binary, octal, decimal, hexadecimal) secara live-sync dua arah.                                             |
-| **Unix Timestamp**        | Konversi Unix timestamp ke tanggal (UTC & local timezone) dan sebaliknya. Menampilkan detik dan milidetik.                                       |
+| Tool                      | Deskripsi                                                                                                                                                           |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **JSON Converter**        | Konversi dua arah antara JSON dan CSV, XML, atau YAML (dipilih via dropdown Format). Tombol swap membalik arah konversi dan mengisi ulang input.                    |
+| **Struct Converter**      | Konversi dua arah antara JSON dan Go struct atau TypeScript interface (dipilih via dropdown Format). Arah type→JSON menghasilkan dummy data berdasarkan tipe field. |
+| **Number Base Converter** | Konversi angka antar basis bilangan (binary, octal, decimal, hexadecimal) secara live-sync dua arah.                                                                |
+| **Unix Timestamp**        | Konversi Unix timestamp ke tanggal (UTC & local timezone) dan sebaliknya. Menampilkan detik dan milidetik.                                                          |
 
 ### Encoding
 
@@ -88,6 +89,7 @@ Kumpulan tools berbasis web untuk membantu produktivitas pengembang sehari-hari 
 - **Icons** — [Lucide React](https://lucide.dev)
 - **State Management** — [Zustand](https://zustand-demo.pmnd.rs) (in-memory, per-tool state)
 - **Code Formatter** — [Prettier](https://prettier.io) (dijalankan di browser via standalone build)
+- **Code Editor** — [CodeMirror 6](https://codemirror.net) via [@uiw/react-codemirror](https://uiwjs.github.io/react-codemirror/) (syntax highlighting & code folding di semua tool Format & Validasi)
 - **SQL Formatter** — [sql-formatter](https://github.com/sql-formatter-org/sql-formatter)
 - **YAML** — [js-yaml](https://github.com/nodeca/js-yaml)
 - **TOML** — [smol-toml](https://github.com/nicolo-ribaudo/smol-toml)
@@ -153,6 +155,7 @@ dev-tools-app/
 │       │   └── graphql-formatter/
 │       ├── (converter)/          # Kategori baru
 │       │   ├── json-converter/   # JSON ↔ CSV/XML/YAML (pilih via Select)
+│       │   ├── struct-converter/ # JSON ↔ Go struct/TS interface (pilih via Select)
 │       │   ├── number-base/
 │       │   └── unix-timestamp/
 │       ├── (encoding)/

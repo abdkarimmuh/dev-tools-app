@@ -3,13 +3,13 @@
 import { Check, Copy } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
+import { CodeEditor } from "@/components/code-editor";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useLanguage } from "@/contexts/language-context";
 import { useToolState } from "@/hooks/use-tool-state";
-import { handleTextareaTab } from "@/lib/utils";
 
 function queryPath(obj: unknown, path: string): unknown[] {
   if (!path || path === "$") return [obj];
@@ -227,12 +227,11 @@ export default function JsonPathPage() {
               </Button>
             </div>
           </div>
-          <textarea
-            className="bg-background focus-visible:ring-ring min-h-0 w-full flex-1 resize-none rounded-md border p-3 font-mono text-sm outline-none focus-visible:ring-2"
+          <CodeEditor
+            className="min-h-0 flex-1"
+            language="json"
             value={json}
-            onChange={(e) => setJson(e.target.value)}
-            onKeyDown={(e) => handleTextareaTab(e, json, setJson)}
-            spellCheck={false}
+            onChange={(value) => setJson(value)}
           />
         </div>
 

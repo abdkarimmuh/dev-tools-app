@@ -26,7 +26,7 @@ There is no test runner configured in this repo. Verification is via `typecheck`
 
 ## What this is
 
-DevTools: a single Next.js (App Router) app hosting ~41 independent, client-side developer utilities (formatters, converters, encoders, generators, crypto tools, CSS helpers) grouped into 7 sidebar categories. Every tool runs entirely in the browser — no API routes, no server-side processing, no backend. Look for `app/api/` before assuming otherwise; as of now none exists.
+DevTools: a single Next.js (App Router) app hosting ~42 independent, client-side developer utilities (formatters, converters, encoders, generators, crypto tools, CSS helpers) grouped into 7 sidebar categories. Every tool runs entirely in the browser — no API routes, no server-side processing, no backend. Look for `app/api/` before assuming otherwise; as of now none exists.
 
 ## Architecture
 
@@ -54,19 +54,21 @@ Separately, `useStorage(key, defaultValue, "local" | "session")` (`hooks/use-sto
 
 ## Key dependencies (don't reach for a new package if one of these covers it)
 
-| Package         | Purpose                                              |
-| --------------- | ---------------------------------------------------- |
-| `js-yaml`       | YAML parse/dump (`yaml-formatter`, `json-converter`) |
-| `smol-toml`     | TOML parse/stringify (`toml-formatter`)              |
-| `graphql`       | GraphQL parse/print (`graphql-formatter`)            |
-| `sql-formatter` | SQL formatting                                       |
-| `crypto-js`     | AES/DES/RC4 symmetric encryption                     |
-| `marked`        | Markdown → HTML (`markdown-preview`)                 |
-| `qrcode`        | QR code generation                                   |
-| `jsbarcode`     | Barcode generation                                   |
-| `zustand`       | In-memory per-tool state store                       |
-| `radix-ui`      | Headless primitives behind `components/ui/`          |
-| `xlsx`          | XLSX export (`fake-data`)                            |
+| Package                                   | Purpose                                                                                                                                                                                                                           |
+| ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `js-yaml`                                 | YAML parse/dump (`yaml-formatter`, `json-converter`)                                                                                                                                                                              |
+| `smol-toml`                               | TOML parse/stringify (`toml-formatter`)                                                                                                                                                                                           |
+| `graphql`                                 | GraphQL parse/print (`graphql-formatter`)                                                                                                                                                                                         |
+| `sql-formatter`                           | SQL formatting                                                                                                                                                                                                                    |
+| `crypto-js`                               | AES/DES/RC4 symmetric encryption                                                                                                                                                                                                  |
+| `marked`                                  | Markdown → HTML (`markdown-preview`)                                                                                                                                                                                              |
+| `qrcode`                                  | QR code generation                                                                                                                                                                                                                |
+| `jsbarcode`                               | Barcode generation                                                                                                                                                                                                                |
+| `zustand`                                 | In-memory per-tool state store                                                                                                                                                                                                    |
+| `radix-ui`                                | Headless primitives behind `components/ui/`                                                                                                                                                                                       |
+| `xlsx`                                    | XLSX export (`fake-data`)                                                                                                                                                                                                         |
+| `@uiw/react-codemirror` + `@codemirror/*` | Code editor with syntax highlighting/folding — shared via `components/code-editor.tsx` (dynamically imported with `ssr: false`), used by every Format & Validasi tool plus `json-converter`/`struct-converter`/`markdown-preview` |
+| `cm6-graphql`                             | GraphQL language support for the code editor                                                                                                                                                                                      |
 
 XML and JSON↔XML use browser-native `DOMParser`/`XMLSerializer` — no package. RSA/ECDSA/HMAC use the browser-native Web Crypto API, not `crypto-js`.
 
