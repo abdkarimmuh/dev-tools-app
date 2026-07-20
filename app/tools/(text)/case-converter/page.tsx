@@ -114,7 +114,7 @@ export default function CaseConverterPage() {
       <div className="flex flex-col gap-2">
         <span className="text-sm font-medium">Input</span>
         <textarea
-          className="h-24 w-full resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="bg-background focus-visible:ring-ring h-24 w-full resize-none rounded-md border p-3 font-mono text-sm outline-none focus-visible:ring-2"
           placeholder="hello world example text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
@@ -130,10 +130,10 @@ export default function CaseConverterPage() {
             return (
               <div
                 key={label}
-                className="flex items-center justify-between gap-2 rounded-md border bg-muted px-3 py-2"
+                className="bg-muted flex items-center justify-between gap-2 rounded-md border px-3 py-2"
               >
                 <div className="flex min-w-0 flex-col gap-0.5">
-                  <span className="text-xs text-muted-foreground">{label}</span>
+                  <span className="text-muted-foreground text-xs">{label}</span>
                   <span className="truncate font-mono text-sm">{result}</span>
                 </div>
                 <CopyButton
@@ -146,7 +146,7 @@ export default function CaseConverterPage() {
           })}
         </div>
       ) : (
-        <div className="flex h-40 items-center justify-center rounded-md border border-dashed text-sm text-muted-foreground">
+        <div className="text-muted-foreground flex h-40 items-center justify-center rounded-md border border-dashed text-sm">
           {t.caseEmptyState}
         </div>
       )}

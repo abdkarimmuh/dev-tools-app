@@ -20,13 +20,11 @@ Kumpulan tools berbasis web untuk membantu produktivitas pengembang sehari-hari 
 
 ### Converter
 
-| Tool                      | Deskripsi                                                                                                    |
-| ------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| **JSON ↔ YAML**           | Konversi dua arah antara JSON dan YAML. Tombol swap membalik arah konversi dan mengisi ulang input.          |
-| **JSON ↔ CSV**            | Konversi JSON array ke CSV dan sebaliknya. Menangani quoting, escaping karakter khusus, dan header otomatis. |
-| **JSON ↔ XML**            | Konversi JSON ke XML terformat dan XML ke JSON. Menggunakan DOMParser/XMLSerializer browser-native.          |
-| **Number Base Converter** | Konversi angka antar basis bilangan (binary, octal, decimal, hexadecimal) secara live-sync dua arah.         |
-| **Unix Timestamp**        | Konversi Unix timestamp ke tanggal (UTC & local timezone) dan sebaliknya. Menampilkan detik dan milidetik.   |
+| Tool                      | Deskripsi                                                                                                                                        |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **JSON Converter**        | Konversi dua arah antara JSON dan CSV, XML, atau YAML (dipilih via dropdown Format). Tombol swap membalik arah konversi dan mengisi ulang input. |
+| **Number Base Converter** | Konversi angka antar basis bilangan (binary, octal, decimal, hexadecimal) secara live-sync dua arah.                                             |
+| **Unix Timestamp**        | Konversi Unix timestamp ke tanggal (UTC & local timezone) dan sebaliknya. Menampilkan detik dan milidetik.                                       |
 
 ### Encoding
 
@@ -154,9 +152,7 @@ dev-tools-app/
 │       │   ├── toml-formatter/
 │       │   └── graphql-formatter/
 │       ├── (converter)/          # Kategori baru
-│       │   ├── json-yaml/
-│       │   ├── json-csv/
-│       │   ├── json-xml/
+│       │   ├── json-converter/   # JSON ↔ CSV/XML/YAML (pilih via Select)
 │       │   ├── number-base/
 │       │   └── unix-timestamp/
 │       ├── (encoding)/

@@ -89,7 +89,7 @@ export default function GradientGeneratorPage() {
         style={{ background: gradient }}
       />
 
-      <div className="flex items-center gap-2 rounded-md border bg-muted px-3 py-2">
+      <div className="bg-muted flex items-center gap-2 rounded-md border px-3 py-2">
         <code className="flex-1 font-mono text-sm break-all">{css}</code>
         <Button
           size="sm"
@@ -130,7 +130,7 @@ export default function GradientGeneratorPage() {
               max={360}
               value={angle}
               onChange={(e) => setAngle(Number(e.target.value))}
-              className="w-full accent-primary"
+              className="accent-primary w-full"
             />
           </div>
         )}
@@ -173,9 +173,9 @@ export default function GradientGeneratorPage() {
                   onChange={(e) =>
                     updateStop(stop.id, "position", Number(e.target.value))
                   }
-                  className="flex-1 accent-primary"
+                  className="accent-primary flex-1"
                 />
-                <span className="w-10 text-right font-mono text-xs text-muted-foreground">
+                <span className="text-muted-foreground w-10 text-right font-mono text-xs">
                   {stop.position}%
                 </span>
               </div>
@@ -184,7 +184,7 @@ export default function GradientGeneratorPage() {
                 variant="ghost"
                 onClick={() => removeStop(stop.id)}
                 disabled={stops.length <= 2}
-                className="h-8 w-8 p-0 text-muted-foreground hover:text-destructive"
+                className="text-muted-foreground hover:text-destructive h-8 w-8 p-0"
               >
                 <Trash2 className="size-3" />
               </Button>

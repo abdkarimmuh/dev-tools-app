@@ -296,7 +296,7 @@ export default function DiffCheckerPage() {
       {rows && (
         <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-md border">
           {/* Headers */}
-          <div className="grid grid-cols-2 border-b bg-muted/50 text-xs font-medium text-muted-foreground">
+          <div className="bg-muted/50 text-muted-foreground grid grid-cols-2 border-b text-xs font-medium">
             <div className="border-r px-3 py-2">Original</div>
             <div className="px-3 py-2">Changed</div>
           </div>
@@ -428,7 +428,7 @@ export default function DiffCheckerPage() {
         <label className="ml-1 flex cursor-pointer items-center gap-2 text-sm select-none">
           <input
             type="checkbox"
-            className="h-4 w-4 rounded accent-primary"
+            className="accent-primary h-4 w-4 rounded"
             checked={ignoreWhitespace}
             onChange={(e) => {
               setIgnoreWhitespace(e.target.checked);
@@ -454,11 +454,11 @@ export default function DiffCheckerPage() {
       <div className="flex h-64 w-full overflow-hidden rounded-md border">
         {/* Left pane */}
         <div className="flex flex-1 flex-col">
-          <div className="border-b bg-muted/50 px-3 py-1.5 text-xs font-medium text-muted-foreground">
+          <div className="bg-muted/50 text-muted-foreground border-b px-3 py-1.5 text-xs font-medium">
             Original
           </div>
           <textarea
-            className="h-full w-full resize-none bg-background p-3 font-mono text-sm outline-none"
+            className="bg-background h-full w-full resize-none p-3 font-mono text-sm outline-none"
             placeholder={t.diffFirstPlaceholder}
             value={textA}
             onChange={(e) => {
@@ -470,9 +470,9 @@ export default function DiffCheckerPage() {
         </div>
 
         {/* Fixed divider with swap button */}
-        <div className="relative flex w-px flex-shrink-0 items-center justify-center bg-border">
+        <div className="bg-border relative flex w-px flex-shrink-0 items-center justify-center">
           <button
-            className="absolute z-10 flex h-8 w-8 items-center justify-center rounded-full border bg-background shadow-md transition-all hover:scale-110 hover:bg-muted active:scale-95"
+            className="bg-background hover:bg-muted absolute z-10 flex h-8 w-8 items-center justify-center rounded-full border shadow-md transition-all hover:scale-110 active:scale-95"
             onClick={swapTexts}
             title="Swap sides"
           >
@@ -482,11 +482,11 @@ export default function DiffCheckerPage() {
 
         {/* Right pane */}
         <div className="flex flex-1 flex-col">
-          <div className="border-b bg-muted/50 px-3 py-1.5 text-xs font-medium text-muted-foreground">
+          <div className="bg-muted/50 text-muted-foreground border-b px-3 py-1.5 text-xs font-medium">
             Changed
           </div>
           <textarea
-            className="h-full w-full resize-none bg-background p-3 font-mono text-sm outline-none"
+            className="bg-background h-full w-full resize-none p-3 font-mono text-sm outline-none"
             placeholder={t.diffSecondPlaceholder}
             value={textB}
             onChange={(e) => {

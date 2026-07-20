@@ -22,24 +22,24 @@ function AsciiRow({ entry }: { entry: AsciiEntry }) {
   return (
     <button
       onClick={copy}
-      className="group flex w-full items-center gap-3 rounded px-2 py-1.5 text-left hover:bg-muted/50"
+      className="group hover:bg-muted/50 flex w-full items-center gap-3 rounded px-2 py-1.5 text-left"
     >
-      <span className="w-10 shrink-0 font-mono text-sm text-muted-foreground">
+      <span className="text-muted-foreground w-10 shrink-0 font-mono text-sm">
         {entry.dec}
       </span>
-      <span className="w-10 shrink-0 font-mono text-sm text-muted-foreground">
+      <span className="text-muted-foreground w-10 shrink-0 font-mono text-sm">
         0x{entry.hex}
       </span>
-      <span className="flex w-8 shrink-0 items-center justify-center rounded border bg-background font-mono text-sm font-medium text-primary">
+      <span className="bg-background text-primary flex w-8 shrink-0 items-center justify-center rounded border font-mono text-sm font-medium">
         {entry.char || "—"}
       </span>
-      <span className="flex-1 truncate font-mono text-xs text-muted-foreground">
+      <span className="text-muted-foreground flex-1 truncate font-mono text-xs">
         {entry.description}
       </span>
       {copied ? (
         <Check className="size-3 shrink-0 text-green-500" />
       ) : (
-        <Copy className="size-3 shrink-0 text-muted-foreground opacity-0 group-hover:opacity-100" />
+        <Copy className="text-muted-foreground size-3 shrink-0 opacity-0 group-hover:opacity-100" />
       )}
     </button>
   );
@@ -73,7 +73,7 @@ export default function AsciiCheatsheetPage() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <span className="shrink-0 text-xs text-muted-foreground">
+        <span className="text-muted-foreground shrink-0 text-xs">
           {query
             ? `${filtered.reduce((n, s) => n + s.entries.length, 0)} / ${totalEntries}`
             : `${totalEntries} ${t.cheatsheetEntries}`}
@@ -84,7 +84,7 @@ export default function AsciiCheatsheetPage() {
         <div className="flex flex-col gap-6 pb-4">
           {filtered.map((section) => (
             <div key={section.title}>
-              <h3 className="mb-2 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
+              <h3 className="text-muted-foreground mb-2 text-xs font-semibold tracking-wide uppercase">
                 {section.title}
               </h3>
               <div className="divide-y rounded-md border">
@@ -95,7 +95,7 @@ export default function AsciiCheatsheetPage() {
             </div>
           ))}
           {filtered.length === 0 && (
-            <div className="flex h-40 items-center justify-center text-sm text-muted-foreground">
+            <div className="text-muted-foreground flex h-40 items-center justify-center text-sm">
               {t.cheatsheetNoResults} &quot;{search}&quot;
             </div>
           )}

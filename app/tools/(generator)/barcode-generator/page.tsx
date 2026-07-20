@@ -100,7 +100,7 @@ export default function BarcodeGeneratorPage() {
         <div className="flex flex-col gap-1.5">
           <Label className="mb-1">
             {t.barcodeValue}
-            <span className="ml-2 text-xs text-muted-foreground">
+            <span className="text-muted-foreground ml-2 text-xs">
               ({currentFormat.hint})
             </span>
           </Label>
@@ -123,7 +123,7 @@ export default function BarcodeGeneratorPage() {
       </div>
 
       {error && (
-        <div className="max-w-xl rounded-md border border-destructive bg-destructive/10 p-3 text-sm text-destructive">
+        <div className="border-destructive bg-destructive/10 text-destructive max-w-xl rounded-md border p-3 text-sm">
           {error}
         </div>
       )}

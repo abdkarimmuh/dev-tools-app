@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { FLAG_OPTIONS } from "@/constants/text/regex-tester";
 import { useLanguage } from "@/contexts/language-context";
 import { useToolState } from "@/hooks/use-tool-state";
 import { cn, handleTextareaTab } from "@/lib/utils";
@@ -78,8 +79,6 @@ function HighlightedText({
   return <>{parts}</>;
 }
 
-import { FLAG_OPTIONS } from "@/constants/text/regex-tester";
-
 export default function RegexTesterPage() {
   const { t } = useLanguage();
   const [pattern, setPattern] = useToolState("regex-tester", "pattern", "");
@@ -123,16 +122,16 @@ export default function RegexTesterPage() {
             spellCheck={false}
           />
           <span className="text-muted-foreground">/</span>
-          <span className="font-mono text-muted-foreground">
+          <span className="text-muted-foreground font-mono">
             {flags || " "}
           </span>
         </div>
         {isInvalidRegex && (
-          <p className="text-xs text-destructive">{t.regexInvalid}</p>
+          <p className="text-destructive text-xs">{t.regexInvalid}</p>
         )}
 
         <div className="mt-1 flex items-center gap-2">
-          <span className="text-xs text-muted-foreground">Flags:</span>
+          <span className="text-muted-foreground text-xs">Flags:</span>
           {FLAG_OPTIONS.map(({ flag, label, title }) => (
             <Button
               key={flag}
@@ -151,7 +150,7 @@ export default function RegexTesterPage() {
       <div className="flex flex-col gap-2">
         <Label>Test String</Label>
         <textarea
-          className="h-40 w-full resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="bg-background focus-visible:ring-ring h-40 w-full resize-none rounded-md border p-3 font-mono text-sm outline-none focus-visible:ring-2"
           placeholder={t.regexTestPlaceholder}
           value={testStr}
           onChange={(e) => setTestStr(e.target.value)}
@@ -170,7 +169,7 @@ export default function RegexTesterPage() {
 
           <div className="flex flex-col gap-2">
             <Label>Preview</Label>
-            <div className="min-h-12 rounded-md border bg-muted p-3 font-mono text-sm break-all whitespace-pre-wrap">
+            <div className="bg-muted min-h-12 rounded-md border p-3 font-mono text-sm break-all whitespace-pre-wrap">
               <HighlightedText text={testStr} matches={matches} />
             </div>
           </div>
@@ -182,16 +181,16 @@ export default function RegexTesterPage() {
                 {matches.map((m, i) => (
                   <div
                     key={i}
-                    className="rounded-md border bg-muted px-3 py-2 font-mono text-sm"
+                    className="bg-muted rounded-md border px-3 py-2 font-mono text-sm"
                   >
                     <div className="flex items-center gap-3">
-                      <span className="text-xs text-muted-foreground">
+                      <span className="text-muted-foreground text-xs">
                         #{i + 1}
                       </span>
                       <span className="font-medium">
                         {JSON.stringify(m.value)}
                       </span>
-                      <span className="text-xs text-muted-foreground">
+                      <span className="text-muted-foreground text-xs">
                         index: {m.index}
                       </span>
                     </div>
@@ -200,7 +199,7 @@ export default function RegexTesterPage() {
                         {m.groups.map((g, gi) => (
                           <span
                             key={gi}
-                            className="rounded bg-background px-1.5 py-0.5 text-xs"
+                            className="bg-background rounded px-1.5 py-0.5 text-xs"
                           >
                             group {gi + 1}: {JSON.stringify(g)}
                           </span>

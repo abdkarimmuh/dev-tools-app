@@ -30,21 +30,21 @@ export function ToolSearch() {
   return (
     <button
       onClick={() => setOpen(true)}
-      className="flex w-54 items-center justify-between gap-2 rounded-md bg-muted px-3 py-1 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+      className="bg-muted text-muted-foreground hover:bg-muted hover:text-foreground flex w-54 items-center justify-between gap-2 rounded-md px-3 py-1 text-sm transition-colors"
     >
       <span className="hidden sm:inline">{t.searchPlaceholder}</span>
 
       {isMac ? (
         <kbd
           suppressHydrationWarning
-          className="hidden items-center gap-0.5 rounded bg-background px-1.5 py-0.5 font-mono text-xs sm:flex"
+          className="bg-background hidden items-center gap-0.5 rounded px-1.5 py-0.5 font-mono text-xs sm:flex"
         >
           <span className="text-sm">⌘</span> K
         </kbd>
       ) : (
         <kbd
           suppressHydrationWarning
-          className="hidden items-center gap-0.5 rounded bg-background px-1.5 py-0.5 font-mono text-xs sm:flex"
+          className="bg-background hidden items-center gap-0.5 rounded px-1.5 py-0.5 font-mono text-xs sm:flex"
         >
           Ctrl K
         </kbd>

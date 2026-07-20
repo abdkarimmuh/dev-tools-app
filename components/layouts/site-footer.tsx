@@ -8,7 +8,7 @@ export function SiteFooter() {
         href="https://abdkarim.com"
         target="_blank"
         rel="noopener noreferrer"
-        className="font-bold underline-offset-4 hover:text-foreground hover:underline"
+        className="hover:text-foreground font-bold underline-offset-4 hover:underline"
       >
         Muhammad Abdul Karim
       </a>

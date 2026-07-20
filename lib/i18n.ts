@@ -19,7 +19,7 @@ export const translations = {
     validate: "Validate",
     encode: "Encode",
     decode: "Decode",
-    swap: "Swap ↕",
+    swap: "Swap",
     generate: "Generate",
     formatting: "Formatting...",
     outputPlaceholder: "Output will appear here...",
@@ -228,9 +228,10 @@ export const translations = {
     // XML/GraphQL/YAML/TOML Formatter
     xmlParseError: "XML parse error",
 
-    // JSON ↔ CSV
-    jsonCsvArrayError: "Input must be a JSON array",
-    jsonCsvHeaderError: "CSV must have a header row and at least one data row",
+    // JSON Converter
+    jsonConverterFormatLabel: "Format",
+    csvArrayError: "Input must be a JSON array",
+    csvHeaderError: "CSV must have a header row and at least one data row",
 
     // JSON Path
     jsonPathExprLabel: "JSONPath Expression",
@@ -397,7 +398,7 @@ export const translations = {
     validate: "Validasi",
     encode: "Enkode",
     decode: "Dekode",
-    swap: "Tukar ↕",
+    swap: "Tukar",
     generate: "Buat",
     formatting: "Memformat...",
     outputPlaceholder: "Output akan muncul di sini...",
@@ -608,9 +609,10 @@ export const translations = {
     // XML/GraphQL/YAML/TOML Formatter
     xmlParseError: "Kesalahan parsing XML",
 
-    // JSON ↔ CSV
-    jsonCsvArrayError: "Input harus berupa array JSON",
-    jsonCsvHeaderError:
+    // JSON Converter
+    jsonConverterFormatLabel: "Format",
+    csvArrayError: "Input harus berupa array JSON",
+    csvHeaderError:
       "CSV harus memiliki baris header dan minimal satu baris data",
 
     // JSON Path

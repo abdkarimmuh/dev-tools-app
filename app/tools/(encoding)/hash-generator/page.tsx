@@ -66,7 +66,7 @@ export default function HashGeneratorPage() {
         <div className="flex min-h-0 flex-col gap-2">
           <Label>Input</Label>
           <textarea
-            className="min-h-0 w-full flex-1 resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="bg-background focus-visible:ring-ring min-h-0 w-full flex-1 resize-none rounded-md border p-3 font-mono text-sm outline-none focus-visible:ring-2"
             placeholder={t.hashInputPlaceholder}
             value={input}
             onChange={(e) => {
@@ -125,10 +125,10 @@ export default function HashGeneratorPage() {
                   {copied ? t.copied : t.copy}
                 </Button>
               </div>
-              <div className="rounded-md border bg-muted p-3 font-mono text-sm break-all">
+              <div className="bg-muted rounded-md border p-3 font-mono text-sm break-all">
                 {output}
               </div>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-muted-foreground text-xs">
                 {output.length / 2} bytes ({output.length * 4} bits)
               </p>
             </div>

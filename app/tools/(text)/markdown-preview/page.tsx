@@ -214,7 +214,7 @@ export default function MarkdownPreviewPage() {
           </div>
           <textarea
             ref={textareaRef}
-            className="min-h-0 w-full flex-1 resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="bg-background focus-visible:ring-ring min-h-0 w-full flex-1 resize-none rounded-md border p-3 font-mono text-sm outline-none focus-visible:ring-2"
             placeholder={
               "# Hello\n\nStart writing **markdown** here...\n\n- Item 1\n- Item 2\n\n> Blockquote\n\n```js\nconsole.log('hello')\n```"
             }
@@ -230,14 +230,14 @@ export default function MarkdownPreviewPage() {
           <div className="flex shrink-0 items-center justify-between">
             <span className="py-1.5 text-sm font-medium">Preview</span>
           </div>
-          <div className="min-h-0 flex-1 overflow-y-auto rounded-md border bg-muted p-4">
+          <div className="bg-muted min-h-0 flex-1 overflow-y-auto rounded-md border p-4">
             {html ? (
               <div
-                className="prose prose-sm max-w-none prose-neutral dark:prose-invert"
+                className="prose prose-sm prose-neutral dark:prose-invert max-w-none"
                 dangerouslySetInnerHTML={{ __html: html }}
               />
             ) : (
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 {t.outputPlaceholder}
               </p>
             )}

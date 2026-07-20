@@ -109,7 +109,7 @@ export default function LoremIpsumPage() {
       {output ? (
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
-            <span className="text-sm text-muted-foreground">
+            <span className="text-muted-foreground text-sm">
               {output.split(/\s+/).filter(Boolean).length}{" "}
               {t.loremWordCountUnit}
             </span>
@@ -127,12 +127,12 @@ export default function LoremIpsumPage() {
               {copied ? t.copied : t.copy}
             </Button>
           </div>
-          <div className="min-h-64 rounded-md border bg-muted p-4 text-sm leading-relaxed whitespace-pre-wrap">
+          <div className="bg-muted min-h-64 rounded-md border p-4 text-sm leading-relaxed whitespace-pre-wrap">
             {output}
           </div>
         </div>
       ) : (
-        <div className="flex h-40 items-center justify-center rounded-md border border-dashed text-sm text-muted-foreground">
+        <div className="text-muted-foreground flex h-40 items-center justify-center rounded-md border border-dashed text-sm">
           {t.loremEmptyState}
         </div>
       )}

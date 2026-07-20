@@ -127,11 +127,11 @@ export default function TreeGeneratorPage() {
               {copied ? t.copied : t.copy}
             </Button>
           </div>
-          <div className="min-h-0 flex-1 overflow-auto rounded-md border bg-muted p-4">
+          <div className="bg-muted min-h-0 flex-1 overflow-auto rounded-md border p-4">
             {output ? (
               <pre className="font-mono text-sm whitespace-pre">{output}</pre>
             ) : (
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 {t.outputPlaceholder}
               </p>
             )}

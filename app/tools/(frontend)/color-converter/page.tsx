@@ -227,7 +227,7 @@ export default function ColorConverterPage() {
         <div className="flex items-center gap-2">
           {(["r", "g", "b"] as const).map((ch) => (
             <div key={ch} className="flex flex-1 flex-col gap-1">
-              <span className="text-center text-xs text-muted-foreground uppercase">
+              <span className="text-muted-foreground text-center text-xs uppercase">
                 {ch}
               </span>
               <Input
@@ -249,7 +249,7 @@ export default function ColorConverterPage() {
           )}
         </div>
         {color && (
-          <p className="font-mono text-xs text-muted-foreground">
+          <p className="text-muted-foreground font-mono text-xs">
             rgb({color.r}, {color.g}, {color.b})
           </p>
         )}
@@ -266,7 +266,7 @@ export default function ColorConverterPage() {
             ] as const
           ).map(({ key, label, max }) => (
             <div key={key} className="flex flex-1 flex-col gap-1">
-              <span className="text-center text-xs text-muted-foreground">
+              <span className="text-muted-foreground text-center text-xs">
                 {label}
               </span>
               <Input
@@ -288,7 +288,7 @@ export default function ColorConverterPage() {
           )}
         </div>
         {color && (
-          <p className="font-mono text-xs text-muted-foreground">
+          <p className="text-muted-foreground font-mono text-xs">
             hsl({color.h}, {color.s}%, {color.l}%)
           </p>
         )}
@@ -318,7 +318,7 @@ export default function ColorConverterPage() {
           }}
           className="h-9 w-16 cursor-pointer rounded-md border bg-transparent p-1"
         />
-        <span className="text-xs text-muted-foreground">
+        <span className="text-muted-foreground text-xs">
           {t.colorPickerHint}
         </span>
       </div>

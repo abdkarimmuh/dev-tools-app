@@ -159,13 +159,13 @@ export default function UuidGeneratorPage() {
 
       {uuids.length > 0 && (
         <div className="flex flex-col gap-2">
-          <p className="text-xs text-muted-foreground">
+          <p className="text-muted-foreground text-xs">
             {VERSION_LABELS[version]}
           </p>
           {uuids.map((uuid, i) => (
             <div
               key={i}
-              className="flex items-center justify-between rounded-md border bg-muted px-3 py-2"
+              className="bg-muted flex items-center justify-between rounded-md border px-3 py-2"
             >
               <span className="font-mono text-sm">{uuid}</span>
               <Button
@@ -187,7 +187,7 @@ export default function UuidGeneratorPage() {
       )}
 
       {uuids.length === 0 && (
-        <div className="flex h-40 items-center justify-center rounded-md border border-dashed text-sm text-muted-foreground">
+        <div className="text-muted-foreground flex h-40 items-center justify-center rounded-md border border-dashed text-sm">
           {t.uuidEmptyState}
         </div>
       )}

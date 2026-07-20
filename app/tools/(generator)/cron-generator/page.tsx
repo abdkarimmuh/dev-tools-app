@@ -205,7 +205,7 @@ export default function CronGeneratorPage() {
             {copied ? t.copied : t.copy}
           </Button>
         </div>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-muted-foreground text-sm">
           {describeCron(expr, cronUnits)}
         </p>
       </div>
@@ -221,7 +221,7 @@ export default function CronGeneratorPage() {
               placeholder="*"
               spellCheck={false}
             />
-            <p className="text-center text-xs text-muted-foreground">
+            <p className="text-muted-foreground text-center text-xs">
               {min}–{max}
             </p>
           </div>
@@ -245,8 +245,8 @@ export default function CronGeneratorPage() {
         </div>
       </div>
 
-      <div className="rounded-md border bg-muted p-4">
-        <p className="mb-2 text-xs text-muted-foreground">{t.format}</p>
+      <div className="bg-muted rounded-md border p-4">
+        <p className="text-muted-foreground mb-2 text-xs">{t.format}</p>
         <div className="grid grid-cols-5 gap-1 text-center font-mono text-xs">
           {(
             ["minute", "hour", "day", "month", "weekday"] as CronField["key"][]

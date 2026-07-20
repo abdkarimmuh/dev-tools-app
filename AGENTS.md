@@ -47,15 +47,15 @@ npm run format     # Prettier (formats .ts/.tsx)
 
 When making changes, link to these files in your PR description so reviewers can follow context.
 
-## Current tool inventory (43 tools across 7 categories)
+## Current tool inventory (41 tools across 7 categories)
 
 ### Format & Validasi (9 tools)
 
 `json-formatter`, `js-formatter` (JS/TS via Select), `html-formatter`, `css-formatter`, `sql-formatter`, `xml-formatter`, `yaml-formatter`, `toml-formatter`, `graphql-formatter`
 
-### Converter (5 tools)
+### Converter (3 tools)
 
-`json-yaml`, `json-csv`, `json-xml`, `number-base`, `unix-timestamp`
+`json-converter` (JSON ↔ CSV/XML/YAML via Select), `number-base`, `unix-timestamp`
 
 ### Encoding (4 tools)
 
@@ -92,17 +92,17 @@ When making changes, link to these files in your PR description so reviewers can
 
 ## Key dependencies
 
-| Package         | Purpose                                     |
-| --------------- | ------------------------------------------- |
-| `js-yaml`       | YAML parse/dump (yaml-formatter, json-yaml) |
-| `smol-toml`     | TOML parse/stringify (toml-formatter)       |
-| `graphql`       | GraphQL parse/print (graphql-formatter)     |
-| `sql-formatter` | SQL formatting (sql-formatter)              |
-| `crypto-js`     | AES/DES/RC4 symmetric encryption            |
-| `marked`        | Markdown → HTML (markdown-preview)          |
-| `qrcode`        | QR code generation                          |
-| `jsbarcode`     | Barcode generation                          |
-| `xlsx`          | XLSX export (fake-data)                     |
+| Package         | Purpose                                          |
+| --------------- | ------------------------------------------------ |
+| `js-yaml`       | YAML parse/dump (yaml-formatter, json-converter) |
+| `smol-toml`     | TOML parse/stringify (toml-formatter)            |
+| `graphql`       | GraphQL parse/print (graphql-formatter)          |
+| `sql-formatter` | SQL formatting (sql-formatter)                   |
+| `crypto-js`     | AES/DES/RC4 symmetric encryption                 |
+| `marked`        | Markdown → HTML (markdown-preview)               |
+| `qrcode`        | QR code generation                               |
+| `jsbarcode`     | Barcode generation                               |
+| `xlsx`          | XLSX export (fake-data)                          |
 
 XML and JSON↔XML use browser-native `DOMParser` / `XMLSerializer` — no external package.
 

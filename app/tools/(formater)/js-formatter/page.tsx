@@ -1,6 +1,7 @@
 "use client";
 
 import { Check, Copy } from "lucide-react";
+import dynamic from "next/dynamic";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -14,7 +15,11 @@ import {
 } from "@/components/ui/select";
 import { useLanguage } from "@/contexts/language-context";
 import { useToolState } from "@/hooks/use-tool-state";
-import { handleTextareaTab } from "@/lib/utils";
+
+const CodeEditor = dynamic(
+  () => import("@/components/code-editor").then((m) => m.CodeEditor),
+  { ssr: false }
+);
 
 type Syntax = "js" | "ts";
 
@@ -160,21 +165,20 @@ export default function JsFormatterPage() {
       </div>
 
       {error && (
-        <div className="shrink-0 rounded-md border border-destructive bg-destructive/10 p-3 font-mono text-sm whitespace-pre-wrap text-destructive">
+        <div className="border-destructive bg-destructive/10 text-destructive shrink-0 rounded-md border p-3 font-mono text-sm whitespace-pre-wrap">
           {error}
         </div>
       )}
 
-      <textarea
-        className="min-h-0 w-full flex-1 resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      <CodeEditor
+        className="min-h-0 flex-1"
+        language={syntax === "ts" ? "typescript" : "javascript"}
         placeholder={t[PLACEHOLDERS[syntax]]}
         value={value}
-        onChange={(e) => {
-          setValue(e.target.value);
+        onChange={(v) => {
+          setValue(v);
           setError(null);
         }}
-        onKeyDown={(e) => handleTextareaTab(e, value, setValue)}
-        spellCheck={false}
       />
     </div>
   );

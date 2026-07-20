@@ -528,7 +528,7 @@ export default function BaseEncoderPage() {
 
           {showTextarea ? (
             <textarea
-              className="min-h-0 w-full flex-1 resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="bg-background focus-visible:ring-ring min-h-0 w-full flex-1 resize-none rounded-md border p-3 font-mono text-sm outline-none focus-visible:ring-2"
               placeholder={PLACEHOLDERS[encoding]}
               value={input}
               onChange={(e) => {
@@ -555,7 +555,7 @@ export default function BaseEncoderPage() {
                       className="max-h-40 rounded-md border object-contain"
                     />
                   ) : (
-                    <FileIcon className="size-10 text-muted-foreground" />
+                    <FileIcon className="text-muted-foreground size-10" />
                   )}
                   <div className="text-sm">
                     <p className="font-medium">{sourceFile.name}</p>
@@ -570,8 +570,8 @@ export default function BaseEncoderPage() {
                 </>
               ) : (
                 <>
-                  <Upload className="size-8 text-muted-foreground" />
-                  <p className="text-sm text-muted-foreground">
+                  <Upload className="text-muted-foreground size-8" />
+                  <p className="text-muted-foreground text-sm">
                     {t.baseDropOrChoose}
                   </p>
                   <Button
@@ -595,12 +595,12 @@ export default function BaseEncoderPage() {
 
         <div className="flex min-h-0 flex-col gap-2">
           <div className="flex shrink-0 items-center justify-between">
-            <span className="text-sm font-medium py-1.5">Output</span>
+            <span className="py-1.5 text-sm font-medium">Output</span>
             <div className="flex items-center gap-3">
               {mode === "file" &&
                 direction === "encode" &&
                 encoding === "base64" && (
-                  <label className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <label className="text-muted-foreground flex items-center gap-1.5 text-xs">
                     <Checkbox
                       checked={dataUri}
                       onCheckedChange={(c) => setDataUri(c === true)}
@@ -638,12 +638,12 @@ export default function BaseEncoderPage() {
           </div>
 
           {error ? (
-            <div className="min-h-0 flex-1 overflow-auto rounded-md border border-destructive bg-destructive/10 p-3 font-mono text-sm text-destructive">
+            <div className="border-destructive bg-destructive/10 text-destructive min-h-0 flex-1 overflow-auto rounded-md border p-3 font-mono text-sm">
               {error}
             </div>
           ) : showFileResult ? (
             decodedFile ? (
-              <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-auto rounded-md border bg-muted p-4">
+              <div className="bg-muted flex min-h-0 flex-1 flex-col gap-3 overflow-auto rounded-md border p-4">
                 {decodedFile.previewUrl && (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
@@ -668,7 +668,7 @@ export default function BaseEncoderPage() {
                     className="font-mono text-sm"
                   />
                 </div>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-muted-foreground text-xs">
                   {formatBytes(decodedFile.bytes.length)}
                 </p>
                 <Button onClick={downloadDecoded} className="w-fit gap-2">
@@ -677,14 +677,14 @@ export default function BaseEncoderPage() {
                 </Button>
               </div>
             ) : (
-              <div className="flex min-h-0 flex-1 items-center justify-center rounded-md border border-dashed text-sm text-muted-foreground">
+              <div className="text-muted-foreground flex min-h-0 flex-1 items-center justify-center rounded-md border border-dashed text-sm">
                 {t.outputPlaceholder}
               </div>
             )
           ) : (
             <textarea
               readOnly
-              className="min-h-0 w-full flex-1 resize-none rounded-md border bg-muted p-3 font-mono text-sm outline-none"
+              className="bg-muted min-h-0 w-full flex-1 resize-none rounded-md border p-3 font-mono text-sm outline-none"
               value={output}
               placeholder={t.outputPlaceholder}
               spellCheck={false}

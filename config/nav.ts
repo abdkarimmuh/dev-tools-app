@@ -30,9 +30,7 @@ import {
   Sliders,
   Sparkles,
   SunMedium,
-  Table,
   Table2,
-  TableProperties,
   TreePine,
   Type,
   Webhook
@@ -79,9 +77,11 @@ export const navMenus: NavGroup[] = [
   {
     label: "Converter",
     items: [
-      { title: "JSON ↔ YAML", url: "/tools/json-yaml", icon: RefreshCw },
-      { title: "JSON ↔ CSV", url: "/tools/json-csv", icon: Table },
-      { title: "JSON ↔ XML", url: "/tools/json-xml", icon: TableProperties },
+      {
+        title: "JSON Converter",
+        url: "/tools/json-converter",
+        icon: RefreshCw
+      },
       {
         title: "Number Base Converter",
         url: "/tools/number-base",

@@ -76,7 +76,7 @@ export default function AesCipherPage() {
             <button
               type="button"
               onClick={() => setShowKey((v) => !v)}
-              className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              className="text-muted-foreground hover:text-foreground absolute top-1/2 right-3 -translate-y-1/2"
             >
               {showKey ? (
                 <EyeOff className="size-4" />
@@ -115,7 +115,7 @@ export default function AesCipherPage() {
             </Button>
           </div>
           <textarea
-            className="min-h-0 w-full flex-1 resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="bg-background focus-visible:ring-ring min-h-0 w-full flex-1 resize-none rounded-md border p-3 font-mono text-sm outline-none focus-visible:ring-2"
             placeholder={t.aesInputPlaceholder}
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -143,13 +143,13 @@ export default function AesCipherPage() {
             </Button>
           </div>
           {error ? (
-            <div className="min-h-0 flex-1 overflow-auto rounded-md border border-destructive bg-destructive/10 p-3 font-mono text-sm text-destructive">
+            <div className="border-destructive bg-destructive/10 text-destructive min-h-0 flex-1 overflow-auto rounded-md border p-3 font-mono text-sm">
               {error}
             </div>
           ) : (
             <textarea
               readOnly
-              className="min-h-0 w-full flex-1 resize-none rounded-md border bg-muted p-3 font-mono text-sm outline-none"
+              className="bg-muted min-h-0 w-full flex-1 resize-none rounded-md border p-3 font-mono text-sm outline-none"
               value={output}
               placeholder={t.outputPlaceholder}
               spellCheck={false}

@@ -146,7 +146,7 @@ export default function QrGeneratorPage() {
       </div>
 
       {error && (
-        <div className="max-w-xl rounded-md border border-destructive bg-destructive/10 p-3 text-sm text-destructive">
+        <div className="border-destructive bg-destructive/10 text-destructive max-w-xl rounded-md border p-3 text-sm">
           {error}
         </div>
       )}

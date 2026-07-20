@@ -25,7 +25,7 @@ export default function HomePage() {
                 {navGroupLabels[language][group.label] ?? group.label}
               </h3>
               {navGroupDescriptions[language][group.label] && (
-                <p className="mt-1 text-sm text-muted-foreground">
+                <p className="text-muted-foreground mt-1 text-sm">
                   {navGroupDescriptions[language][group.label]}
                 </p>
               )}
@@ -33,9 +33,9 @@ export default function HomePage() {
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {group.items.map((item) => (
                 <Link key={item.url} href={item.url} className="group">
-                  <Card className="h-full transition-colors hover:bg-accent">
+                  <Card className="hover:bg-accent h-full transition-colors">
                     <div className="flex items-center gap-2 px-5">
-                      <div className="flex size-8 shrink-0 items-center justify-center rounded-md border bg-background">
+                      <div className="bg-background flex size-8 shrink-0 items-center justify-center rounded-md border">
                         <item.icon className="size-4" />
                       </div>
                       <CardTitle className="text-sm font-medium">

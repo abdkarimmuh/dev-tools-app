@@ -191,7 +191,7 @@ export default function JsonPathPage() {
             <button
               key={ex.path}
               onClick={() => setPath(ex.path)}
-              className="rounded border px-2 py-0.5 font-mono text-xs hover:bg-muted"
+              className="hover:bg-muted rounded border px-2 py-0.5 font-mono text-xs"
             >
               {ex.label}
             </button>
@@ -228,7 +228,7 @@ export default function JsonPathPage() {
             </div>
           </div>
           <textarea
-            className="min-h-0 w-full flex-1 resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="bg-background focus-visible:ring-ring min-h-0 w-full flex-1 resize-none rounded-md border p-3 font-mono text-sm outline-none focus-visible:ring-2"
             value={json}
             onChange={(e) => setJson(e.target.value)}
             onKeyDown={(e) => handleTextareaTab(e, json, setJson)}
@@ -265,13 +265,13 @@ export default function JsonPathPage() {
             </Button>
           </div>
           {error ? (
-            <div className="min-h-0 flex-1 overflow-auto rounded-md border border-destructive bg-destructive/10 p-3 font-mono text-sm text-destructive">
+            <div className="border-destructive bg-destructive/10 text-destructive min-h-0 flex-1 overflow-auto rounded-md border p-3 font-mono text-sm">
               {error}
             </div>
           ) : (
             <textarea
               readOnly
-              className="min-h-0 w-full flex-1 resize-none rounded-md border bg-muted p-3 font-mono text-sm outline-none"
+              className="bg-muted min-h-0 w-full flex-1 resize-none rounded-md border p-3 font-mono text-sm outline-none"
               value={output}
               placeholder={t.jsonPathResultsPlaceholder}
               spellCheck={false}

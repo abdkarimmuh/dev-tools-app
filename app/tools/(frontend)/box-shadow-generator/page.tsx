@@ -48,7 +48,7 @@ function SliderField({
         max={max}
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full accent-primary"
+        className="accent-primary w-full"
       />
     </div>
   );
@@ -118,14 +118,14 @@ export default function BoxShadowGeneratorPage() {
 
   return (
     <div className="flex max-w-xl flex-col gap-6 px-4 lg:px-6">
-      <div className="flex h-40 items-center justify-center rounded-md border bg-muted">
+      <div className="bg-muted flex h-40 items-center justify-center rounded-md border">
         <div
-          className="h-20 w-32 rounded-md bg-background"
+          className="bg-background h-20 w-32 rounded-md"
           style={{ boxShadow: cssValue || "none" }}
         />
       </div>
 
-      <div className="flex items-center gap-2 rounded-md border bg-muted px-3 py-2">
+      <div className="bg-muted flex items-center gap-2 rounded-md border px-3 py-2">
         <code className="flex-1 font-mono text-sm break-all">{css}</code>
         <Button
           size="sm"
@@ -167,7 +167,7 @@ export default function BoxShadowGeneratorPage() {
                   size="sm"
                   variant="ghost"
                   onClick={() => removeShadow(s.id)}
-                  className="h-7 w-7 p-0 text-muted-foreground hover:text-destructive"
+                  className="text-muted-foreground hover:text-destructive h-7 w-7 p-0"
                 >
                   <Trash2 className="size-3" />
                 </Button>

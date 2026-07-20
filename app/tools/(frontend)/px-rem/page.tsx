@@ -79,7 +79,7 @@ export default function PxRemPage() {
             className="w-28"
           />
         </div>
-        <p className="mb-2 text-sm text-muted-foreground">1rem = {base}px</p>
+        <p className="text-muted-foreground mb-2 text-sm">1rem = {base}px</p>
       </div>
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -93,7 +93,7 @@ export default function PxRemPage() {
               onChange={(e) => handlePxChange(e.target.value)}
               className="font-mono"
             />
-            <span className="flex items-center text-sm text-muted-foreground">
+            <span className="text-muted-foreground flex items-center text-sm">
               px
             </span>
           </div>
@@ -108,7 +108,7 @@ export default function PxRemPage() {
               onChange={(e) => handleRemChange(e.target.value)}
               className="font-mono"
             />
-            <span className="flex items-center text-sm text-muted-foreground">
+            <span className="text-muted-foreground flex items-center text-sm">
               rem
             </span>
           </div>
@@ -122,7 +122,7 @@ export default function PxRemPage() {
         <div className="overflow-hidden rounded-md border">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b bg-muted/50 text-left text-xs text-muted-foreground">
+              <tr className="bg-muted/50 text-muted-foreground border-b text-left text-xs">
                 <th className="px-4 py-2">PX</th>
                 <th className="px-4 py-2">REM</th>
                 <th className="w-10 px-4 py-2"></th>
@@ -135,7 +135,7 @@ export default function PxRemPage() {
                 return (
                   <tr
                     key={px}
-                    className="border-b last:border-b-0 hover:bg-muted/30"
+                    className="hover:bg-muted/30 border-b last:border-b-0"
                   >
                     <td className="px-4 py-2 font-mono">{px}px</td>
                     <td className="px-4 py-2 font-mono">{remStr}</td>

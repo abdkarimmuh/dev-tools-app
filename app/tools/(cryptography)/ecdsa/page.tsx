@@ -259,7 +259,7 @@ export default function EcdsaPage() {
               </div>
             </div>
             <textarea
-              className="min-h-0 w-full flex-1 resize-none rounded-md border bg-muted p-3 font-mono text-xs outline-none"
+              className="bg-muted min-h-0 w-full flex-1 resize-none rounded-md border p-3 font-mono text-xs outline-none"
               value={publicKeyPem}
               onChange={(e) => setPublicKeyPem(e.target.value)}
               onKeyDown={(e) =>
@@ -278,7 +278,7 @@ export default function EcdsaPage() {
               </div>
             </div>
             <textarea
-              className="min-h-0 w-full flex-1 resize-none rounded-md border bg-muted p-3 font-mono text-xs outline-none"
+              className="bg-muted min-h-0 w-full flex-1 resize-none rounded-md border p-3 font-mono text-xs outline-none"
               value={privateKeyPem}
               onChange={(e) => setPrivateKeyPem(e.target.value)}
               onKeyDown={(e) =>
@@ -304,7 +304,7 @@ export default function EcdsaPage() {
               )}
             </div>
             <textarea
-              className="h-24 w-full resize-none rounded-md border bg-muted p-3 font-mono text-xs outline-none"
+              className="bg-muted h-24 w-full resize-none rounded-md border p-3 font-mono text-xs outline-none"
               value={privateKeyPem}
               onChange={(e) => setPrivateKeyPem(e.target.value)}
               onKeyDown={(e) =>
@@ -320,7 +320,7 @@ export default function EcdsaPage() {
                 {t.ecdsaMessage}
               </span>
               <textarea
-                className="min-h-0 w-full flex-1 resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="bg-background focus-visible:ring-ring min-h-0 w-full flex-1 resize-none rounded-md border p-3 font-mono text-sm outline-none focus-visible:ring-2"
                 placeholder={t.ecdsaMessagePlaceholder}
                 value={signMessage}
                 onChange={(e) => setSignMessage(e.target.value)}
@@ -336,13 +336,13 @@ export default function EcdsaPage() {
                 <CopyBtn text={signature} />
               </div>
               {signError ? (
-                <div className="min-h-0 flex-1 overflow-auto rounded-md border border-destructive bg-destructive/10 p-3 font-mono text-sm text-destructive">
+                <div className="border-destructive bg-destructive/10 text-destructive min-h-0 flex-1 overflow-auto rounded-md border p-3 font-mono text-sm">
                   {signError}
                 </div>
               ) : (
                 <textarea
                   readOnly
-                  className="min-h-0 w-full flex-1 resize-none rounded-md border bg-muted p-3 font-mono text-sm outline-none"
+                  className="bg-muted min-h-0 w-full flex-1 resize-none rounded-md border p-3 font-mono text-sm outline-none"
                   value={signature}
                   placeholder={t.outputPlaceholder}
                   spellCheck={false}
@@ -366,7 +366,7 @@ export default function EcdsaPage() {
               )}
             </div>
             <textarea
-              className="h-24 w-full resize-none rounded-md border bg-muted p-3 font-mono text-xs outline-none"
+              className="bg-muted h-24 w-full resize-none rounded-md border p-3 font-mono text-xs outline-none"
               value={publicKeyPem}
               onChange={(e) => setPublicKeyPem(e.target.value)}
               onKeyDown={(e) =>
@@ -386,7 +386,7 @@ export default function EcdsaPage() {
             </Badge>
           )}
           {verifyError && (
-            <div className="shrink-0 rounded-md border border-destructive bg-destructive/10 p-3 font-mono text-sm text-destructive">
+            <div className="border-destructive bg-destructive/10 text-destructive shrink-0 rounded-md border p-3 font-mono text-sm">
               {verifyError}
             </div>
           )}
@@ -395,7 +395,7 @@ export default function EcdsaPage() {
             <div className="flex min-h-0 flex-col gap-2">
               <Label>{t.ecdsaMessage}</Label>
               <textarea
-                className="min-h-0 w-full flex-1 resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="bg-background focus-visible:ring-ring min-h-0 w-full flex-1 resize-none rounded-md border p-3 font-mono text-sm outline-none focus-visible:ring-2"
                 placeholder={t.ecdsaMessagePlaceholder}
                 value={verifyMessage}
                 onChange={(e) => {
@@ -411,7 +411,7 @@ export default function EcdsaPage() {
             <div className="flex min-h-0 flex-col gap-2">
               <Label>{t.ecdsaSignature}</Label>
               <textarea
-                className="min-h-0 w-full flex-1 resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="bg-background focus-visible:ring-ring min-h-0 w-full flex-1 resize-none rounded-md border p-3 font-mono text-sm outline-none focus-visible:ring-2"
                 placeholder={t.ecdsaSignaturePlaceholder}
                 value={verifySig}
                 onChange={(e) => {

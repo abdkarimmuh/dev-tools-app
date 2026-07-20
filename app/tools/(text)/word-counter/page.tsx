@@ -36,9 +36,9 @@ interface StatCardProps {
 
 function StatCard({ label, value }: StatCardProps) {
   return (
-    <div className="rounded-md border bg-muted px-4 py-3">
+    <div className="bg-muted rounded-md border px-4 py-3">
       <p className="font-mono text-2xl font-bold">{value}</p>
-      <p className="mt-0.5 text-xs text-muted-foreground">{label}</p>
+      <p className="text-muted-foreground mt-0.5 text-xs">{label}</p>
     </div>
   );
 }
@@ -78,7 +78,7 @@ export default function WordCounterPage() {
       </div>
 
       <textarea
-        className="min-h-0 flex-1 resize-none rounded-md border bg-background p-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        className="bg-background focus-visible:ring-ring min-h-0 flex-1 resize-none rounded-md border p-3 text-sm outline-none focus-visible:ring-2"
         placeholder={t.wordCounterPlaceholder}
         value={text}
         onChange={(e) => setText(e.target.value)}

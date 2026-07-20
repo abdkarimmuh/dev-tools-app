@@ -106,7 +106,7 @@ export default function NumberBasePage() {
 
   return (
     <div className="flex max-w-lg flex-col gap-6 px-4 lg:px-6">
-      <p className="text-sm text-muted-foreground">{t.numberBaseIntro}</p>
+      <p className="text-muted-foreground text-sm">{t.numberBaseIntro}</p>
 
       {BASES.map(({ base, labelKey, prefix, placeholder }) => {
         const isActive = base === activeBase;
@@ -115,13 +115,13 @@ export default function NumberBasePage() {
           <div key={base} className="flex flex-col gap-1.5">
             <Label className="mb-1 flex items-center gap-2">
               {t[labelKey]}
-              <span className="text-xs font-normal text-muted-foreground">
+              <span className="text-muted-foreground text-xs font-normal">
                 {t.numberBaseLabel} {base}
               </span>
             </Label>
             <div className="flex items-center gap-2">
               {prefix && (
-                <span className="font-mono text-sm text-muted-foreground">
+                <span className="text-muted-foreground font-mono text-sm">
                   {prefix}
                 </span>
               )}
@@ -139,7 +139,7 @@ export default function NumberBasePage() {
       })}
 
       {decimal !== null && (
-        <div className="rounded-md border bg-muted px-4 py-3 text-sm">
+        <div className="bg-muted rounded-md border px-4 py-3 text-sm">
           <span className="text-muted-foreground">
             {t.numberBaseDecimalValue}{" "}
           </span>
@@ -150,7 +150,7 @@ export default function NumberBasePage() {
       )}
 
       {input && decimal === null && (
-        <p className="text-sm text-destructive">
+        <p className="text-destructive text-sm">
           {t.numberBaseInvalid} {activeBase}
         </p>
       )}

@@ -91,7 +91,7 @@ function JsonBlock({
         </div>
         <CopyButton text={json} copy={copyLabel} copied={copiedLabel} />
       </div>
-      <pre className="overflow-auto rounded-md border bg-muted p-3 font-mono text-sm">
+      <pre className="bg-muted overflow-auto rounded-md border p-3 font-mono text-sm">
         {json}
       </pre>
     </div>
@@ -137,7 +137,7 @@ export default function JwtDecoderPage() {
         <div className="flex min-h-0 flex-col gap-2">
           <Label className="mb-1">JWT Token</Label>
           <textarea
-            className="min-h-0 w-full flex-1 resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="bg-background focus-visible:ring-ring min-h-0 w-full flex-1 resize-none rounded-md border p-3 font-mono text-sm outline-none focus-visible:ring-2"
             placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
             value={token}
             onChange={(e) => {
@@ -164,7 +164,7 @@ export default function JwtDecoderPage() {
           <Label>Decoded</Label>
           <div className="min-h-0 flex-1 overflow-auto">
             {error && (
-              <div className="rounded-md border border-destructive bg-destructive/10 p-3 font-mono text-sm text-destructive">
+              <div className="border-destructive bg-destructive/10 text-destructive rounded-md border p-3 font-mono text-sm">
                 {error}
               </div>
             )}
@@ -197,7 +197,7 @@ export default function JwtDecoderPage() {
                       copied={t.copied}
                     />
                   </div>
-                  <div className="overflow-auto rounded-md border bg-muted p-3 font-mono text-sm break-all">
+                  <div className="bg-muted overflow-auto rounded-md border p-3 font-mono text-sm break-all">
                     {decoded.signature}
                   </div>
                 </div>
@@ -205,7 +205,7 @@ export default function JwtDecoderPage() {
             )}
 
             {!decoded && !error && (
-              <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
+              <div className="text-muted-foreground flex h-full items-center justify-center text-sm">
                 {t.outputPlaceholder}
               </div>
             )}

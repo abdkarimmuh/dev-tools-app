@@ -100,9 +100,9 @@ export default function PasswordGeneratorPage() {
             max={128}
             value={length}
             onChange={(e) => setLength(parseInt(e.target.value))}
-            className="w-full accent-primary"
+            className="accent-primary w-full"
           />
-          <div className="flex justify-between text-xs text-muted-foreground">
+          <div className="text-muted-foreground flex justify-between text-xs">
             <span>4</span>
             <span>128</span>
           </div>
@@ -129,7 +129,7 @@ export default function PasswordGeneratorPage() {
         </div>
 
         {noneSelected && (
-          <p className="text-xs text-destructive">{t.passwordSelectMin}</p>
+          <p className="text-destructive text-xs">{t.passwordSelectMin}</p>
         )}
 
         <Button onClick={generate} disabled={noneSelected} className="gap-2">
@@ -140,7 +140,7 @@ export default function PasswordGeneratorPage() {
 
       {password && (
         <div className="flex flex-col gap-3">
-          <div className="flex items-center gap-2 rounded-md border bg-muted px-3 py-3">
+          <div className="bg-muted flex items-center gap-2 rounded-md border px-3 py-3">
             <span className="flex-1 font-mono text-sm break-all">
               {password}
             </span>
@@ -166,7 +166,7 @@ export default function PasswordGeneratorPage() {
               </span>
               <span className="font-medium">{strength.label}</span>
             </div>
-            <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
+            <div className="bg-muted h-1.5 w-full overflow-hidden rounded-full">
               <div
                 className={`h-full rounded-full transition-all duration-300 ${strength.color}`}
                 style={{ width: strength.width }}

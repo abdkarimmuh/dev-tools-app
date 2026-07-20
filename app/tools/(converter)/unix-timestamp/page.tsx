@@ -76,8 +76,8 @@ export default function UnixTimestampPage() {
 
   return (
     <div className="flex max-w-xl flex-col gap-8 px-4 lg:px-6">
-      <div className="flex items-center gap-3 rounded-md border bg-muted px-4 py-3">
-        <span className="text-sm text-muted-foreground">
+      <div className="bg-muted flex items-center gap-3 rounded-md border px-4 py-3">
+        <span className="text-muted-foreground text-sm">
           {t.unixCurrentLabel}
         </span>
         <span className="font-mono text-sm font-medium">{now}</span>
@@ -101,11 +101,11 @@ export default function UnixTimestampPage() {
             value={tsInput}
             onChange={(e) => setTsInput(e.target.value)}
           />
-          {tsError && <p className="text-xs text-destructive">{tsError}</p>}
+          {tsError && <p className="text-destructive text-xs">{tsError}</p>}
         </div>
 
         {tsDate && (
-          <div className="flex flex-col gap-2 rounded-md border bg-muted p-4">
+          <div className="bg-muted flex flex-col gap-2 rounded-md border p-4">
             {[
               { label: t.unixUtcLabel, tz: "UTC" },
               { label: t.unixLocalLabel, tz: localTz }
@@ -117,7 +117,7 @@ export default function UnixTimestampPage() {
                   className="flex items-center justify-between gap-2"
                 >
                   <div>
-                    <span className="text-xs text-muted-foreground">
+                    <span className="text-muted-foreground text-xs">
                       {label}:{" "}
                     </span>
                     <span className="font-mono text-sm">{str}</span>
@@ -128,7 +128,7 @@ export default function UnixTimestampPage() {
             })}
             <div className="flex items-center justify-between gap-2">
               <div>
-                <span className="text-xs text-muted-foreground">
+                <span className="text-muted-foreground text-xs">
                   {t.unixIso8601Label}{" "}
                 </span>
                 <span className="font-mono text-sm">
@@ -150,14 +150,14 @@ export default function UnixTimestampPage() {
             value={dateInput}
             onChange={(e) => setDateInput(e.target.value)}
           />
-          {dateError && <p className="text-xs text-destructive">{dateError}</p>}
+          {dateError && <p className="text-destructive text-xs">{dateError}</p>}
         </div>
 
         {dateTs !== null && (
-          <div className="flex flex-col gap-2 rounded-md border bg-muted p-4">
+          <div className="bg-muted flex flex-col gap-2 rounded-md border p-4">
             <div className="flex items-center justify-between gap-2">
               <div>
-                <span className="text-xs text-muted-foreground">
+                <span className="text-muted-foreground text-xs">
                   {t.unixSecondsLabel}{" "}
                 </span>
                 <span className="font-mono text-sm">{dateTs}</span>
@@ -166,7 +166,7 @@ export default function UnixTimestampPage() {
             </div>
             <div className="flex items-center justify-between gap-2">
               <div>
-                <span className="text-xs text-muted-foreground">
+                <span className="text-muted-foreground text-xs">
                   {t.unixMillisecondsLabel}{" "}
                 </span>
                 <span className="font-mono text-sm">{dateTs * 1000}</span>

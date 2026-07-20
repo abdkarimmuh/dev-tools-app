@@ -596,7 +596,7 @@ export default function FakeDataPage() {
           </div>
 
           {customFields.length === 0 ? (
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               {t.fakeDataNoFieldsState}
             </p>
           ) : (
@@ -604,7 +604,7 @@ export default function FakeDataPage() {
               {customFields.map((field) => (
                 <div
                   key={field.id}
-                  className="flex flex-wrap items-center gap-2 rounded-md border bg-muted/40 p-2"
+                  className="bg-muted/40 flex flex-wrap items-center gap-2 rounded-md border p-2"
                 >
                   <Input
                     value={field.key}
@@ -700,12 +700,12 @@ export default function FakeDataPage() {
       {output ? (
         <textarea
           readOnly
-          className="min-h-0 flex-1 resize-none rounded-md border bg-muted p-3 font-mono text-sm outline-none"
+          className="bg-muted min-h-0 flex-1 resize-none rounded-md border p-3 font-mono text-sm outline-none"
           value={output}
           spellCheck={false}
         />
       ) : (
-        <div className="flex h-40 items-center justify-center rounded-md border border-dashed text-sm text-muted-foreground">
+        <div className="text-muted-foreground flex h-40 items-center justify-center rounded-md border border-dashed text-sm">
           {t.fakeDataEmptyState}
         </div>
       )}

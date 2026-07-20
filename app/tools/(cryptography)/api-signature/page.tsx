@@ -243,7 +243,7 @@ export default function ApiSignaturePage() {
             <Button
               variant="ghost"
               size="icon"
-              className="absolute top-1/2 right-1 size-7 -translate-y-1/2 text-muted-foreground"
+              className="text-muted-foreground absolute top-1/2 right-1 size-7 -translate-y-1/2"
               onClick={() => setShowKey(!showKey)}
               type="button"
             >
@@ -267,7 +267,7 @@ export default function ApiSignaturePage() {
             Message / Payload
           </span>
           <textarea
-            className="min-h-0 w-full flex-1 resize-none rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="bg-background focus-visible:ring-ring min-h-0 w-full flex-1 resize-none rounded-md border p-3 font-mono text-sm outline-none focus-visible:ring-2"
             placeholder={'{\n  "user_id": 123,\n  "timestamp": 1700000000\n}'}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
@@ -294,13 +294,13 @@ export default function ApiSignaturePage() {
             </Button>
           </div>
           {error ? (
-            <div className="min-h-0 flex-1 overflow-auto rounded-md border border-destructive bg-destructive/10 p-3 font-mono text-sm text-destructive">
+            <div className="border-destructive bg-destructive/10 text-destructive min-h-0 flex-1 overflow-auto rounded-md border p-3 font-mono text-sm">
               {error}
             </div>
           ) : (
             <textarea
               readOnly
-              className="min-h-0 w-full flex-1 resize-none rounded-md border bg-muted p-3 font-mono text-sm break-all outline-none"
+              className="bg-muted min-h-0 w-full flex-1 resize-none rounded-md border p-3 font-mono text-sm break-all outline-none"
               value={signature}
               placeholder="Signature akan muncul otomatis setelah key dan message diisi..."
               spellCheck={false}
@@ -310,13 +310,13 @@ export default function ApiSignaturePage() {
       </div>
 
       {signature && (
-        <div className="shrink-0 rounded-md border bg-muted/40 p-3 text-xs text-muted-foreground">
-          <span className="font-medium text-foreground">Header:</span>{" "}
+        <div className="bg-muted/40 text-muted-foreground shrink-0 rounded-md border p-3 text-xs">
+          <span className="text-foreground font-medium">Header:</span>{" "}
           <code className="font-mono">
             X-Signature: {algorithm.replace("-", "").toLowerCase()}=
             {signature.substring(0, 20)}…
           </code>
-          <span className="ml-4 font-medium text-foreground">
+          <span className="text-foreground ml-4 font-medium">
             GitHub style:
           </span>{" "}
           <code className="font-mono">
