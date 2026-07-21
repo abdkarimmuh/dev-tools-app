@@ -89,7 +89,7 @@ Kumpulan tools berbasis web untuk membantu produktivitas pengembang sehari-hari 
 - **Icons** — [Lucide React](https://lucide.dev)
 - **State Management** — [Zustand](https://zustand-demo.pmnd.rs) (in-memory, per-tool state)
 - **Code Formatter** — [Prettier](https://prettier.io) (dijalankan di browser via standalone build)
-- **Code Editor** — [CodeMirror 6](https://codemirror.net) via [@uiw/react-codemirror](https://uiwjs.github.io/react-codemirror/) (syntax highlighting & code folding di semua tool Format & Validasi)
+- **Code Editor** — [CodeMirror 6](https://codemirror.net) via [@uiw/react-codemirror](https://uiwjs.github.io/react-codemirror/) (syntax highlighting, code folding, dan toggle word-wrap di semua tool berbasis code editor)
 - **SQL Formatter** — [sql-formatter](https://github.com/sql-formatter-org/sql-formatter)
 - **YAML** — [js-yaml](https://github.com/nodeca/js-yaml)
 - **TOML** — [smol-toml](https://github.com/nicolo-ribaudo/smol-toml)

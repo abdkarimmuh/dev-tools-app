@@ -1,6 +1,7 @@
 "use client";
 
 import { Check, Copy } from "lucide-react";
+import dynamic from "next/dynamic";
 import { useMemo, useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -13,13 +14,19 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
 import {
   DEFAULT_TREE_INPUT,
   generateTree
 } from "@/constants/generators/tree-generator";
 import { useLanguage } from "@/contexts/language-context";
+import { useStorage } from "@/hooks/use-storage";
 import { useToolState } from "@/hooks/use-tool-state";
+import { cn } from "@/lib/utils";
+
+const CodeEditor = dynamic(
+  () => import("@/components/code-editor").then((m) => m.CodeEditor),
+  { ssr: false }
+);
 
 type Charset = "unicode" | "ascii";
 
@@ -41,6 +48,11 @@ export default function TreeGeneratorPage() {
     false
   );
   const [copied, setCopied] = useState(false);
+  const [wordWrap, setWordWrap] = useStorage(
+    "code-editor-word-wrap",
+    false,
+    "local"
+  );
 
   const output = useMemo(
     () => generateTree(input, { charset, trailingSlash }),
@@ -83,6 +95,19 @@ export default function TreeGeneratorPage() {
             {t.treeTrailingSlash}
           </Label>
         </div>
+        <div className="flex items-center gap-2 pb-2">
+          <Checkbox
+            id="tree-generator-word-wrap"
+            checked={wordWrap}
+            onCheckedChange={(c) => setWordWrap(c === true)}
+          />
+          <Label
+            htmlFor="tree-generator-word-wrap"
+            className="text-sm font-normal"
+          >
+            {t.wrapLines}
+          </Label>
+        </div>
       </div>
 
       <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 lg:grid-cols-2">
@@ -98,12 +123,13 @@ export default function TreeGeneratorPage() {
               {t.clear}
             </Button>
           </div>
-          <Textarea
-            className="min-h-0 flex-1 resize-none font-mono text-sm"
+          <CodeEditor
+            className="min-h-0 flex-1"
+            language="text"
             value={input}
-            onChange={(e) => setInput(e.target.value)}
+            onChange={setInput}
             placeholder={t.treeInputPlaceholder}
-            spellCheck={false}
+            wordWrap={wordWrap}
           />
         </div>
 
@@ -129,7 +155,14 @@ export default function TreeGeneratorPage() {
           </div>
           <div className="bg-muted min-h-0 flex-1 overflow-auto rounded-md border p-4">
             {output ? (
-              <pre className="font-mono text-sm whitespace-pre">{output}</pre>
+              <pre
+                className={cn(
+                  "font-mono text-sm",
+                  wordWrap ? "whitespace-pre-wrap" : "whitespace-pre"
+                )}
+              >
+                {output}
+              </pre>
             ) : (
               <p className="text-muted-foreground text-sm">
                 {t.outputPlaceholder}

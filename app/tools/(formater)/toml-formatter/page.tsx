@@ -6,7 +6,10 @@ import { useState } from "react";
 import * as TOML from "smol-toml";
 
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import { useLanguage } from "@/contexts/language-context";
+import { useStorage } from "@/hooks/use-storage";
 import { useToolState } from "@/hooks/use-tool-state";
 
 const CodeEditor = dynamic(
@@ -19,6 +22,11 @@ export default function TomlFormatterPage() {
   const [value, setValue] = useToolState("toml-formatter", "input", "");
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [wordWrap, setWordWrap] = useStorage(
+    "code-editor-word-wrap",
+    false,
+    "local"
+  );
 
   const format = () => {
     try {
@@ -47,7 +55,20 @@ export default function TomlFormatterPage() {
         <Button size="lg" onClick={format} disabled={!value}>
           {t.format}
         </Button>
-        <div className="flex">
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <Checkbox
+              id="toml-formatter-word-wrap"
+              checked={wordWrap}
+              onCheckedChange={(c) => setWordWrap(c === true)}
+            />
+            <Label
+              htmlFor="toml-formatter-word-wrap"
+              className="text-xs font-normal"
+            >
+              {t.wrapLines}
+            </Label>
+          </div>
           <Button
             size="sm"
             variant="ghost"
@@ -81,6 +102,7 @@ export default function TomlFormatterPage() {
           '[package]\nname = "my-app"\nversion = "1.0.0"\n\n[dependencies]\nreact = "^18.0.0"'
         }
         value={value}
+        wordWrap={wordWrap}
         onChange={(v) => {
           setValue(v);
           setError(null);

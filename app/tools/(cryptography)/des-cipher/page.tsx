@@ -14,6 +14,7 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { useLanguage } from "@/contexts/language-context";
 import { useToolState } from "@/hooks/use-tool-state";
 import { handleTextareaTab } from "@/lib/utils";
@@ -159,8 +160,8 @@ export default function DesCipherPage() {
               {t.clear}
             </Button>
           </div>
-          <textarea
-            className="bg-background focus-visible:ring-ring min-h-0 w-full flex-1 resize-none rounded-md border p-3 font-mono text-sm outline-none focus-visible:ring-2"
+          <Textarea
+            className="min-h-0 w-full flex-1 resize-none font-mono text-sm"
             placeholder={t.desInputPlaceholder}
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -192,9 +193,9 @@ export default function DesCipherPage() {
               {error}
             </div>
           ) : (
-            <textarea
+            <Textarea
               readOnly
-              className="bg-muted min-h-0 w-full flex-1 resize-none rounded-md border p-3 font-mono text-sm outline-none"
+              className="bg-muted min-h-0 w-full flex-1 resize-none font-mono text-sm"
               value={output}
               placeholder={t.outputPlaceholder}
               spellCheck={false}

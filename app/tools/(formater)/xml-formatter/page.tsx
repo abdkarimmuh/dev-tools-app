@@ -5,7 +5,10 @@ import dynamic from "next/dynamic";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import { useLanguage } from "@/contexts/language-context";
+import { useStorage } from "@/hooks/use-storage";
 import { useToolState } from "@/hooks/use-tool-state";
 
 const CodeEditor = dynamic(
@@ -93,6 +96,11 @@ export default function XmlFormatterPage() {
   const [value, setValue] = useToolState("xml-formatter", "input", "");
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [wordWrap, setWordWrap] = useStorage(
+    "code-editor-word-wrap",
+    false,
+    "local"
+  );
 
   const format = () => {
     try {
@@ -139,7 +147,20 @@ export default function XmlFormatterPage() {
             {t.minify}
           </Button>
         </div>
-        <div className="flex">
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <Checkbox
+              id="xml-formatter-word-wrap"
+              checked={wordWrap}
+              onCheckedChange={(c) => setWordWrap(c === true)}
+            />
+            <Label
+              htmlFor="xml-formatter-word-wrap"
+              className="text-xs font-normal"
+            >
+              {t.wrapLines}
+            </Label>
+          </div>
           <Button
             size="sm"
             variant="ghost"
@@ -171,6 +192,7 @@ export default function XmlFormatterPage() {
         language="xml"
         placeholder="<root><item>value</item></root>"
         value={value}
+        wordWrap={wordWrap}
         onChange={(v) => {
           setValue(v);
           setError(null);

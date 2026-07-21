@@ -13,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { useLanguage } from "@/contexts/language-context";
 import { useToolState } from "@/hooks/use-tool-state";
 import { handleTextareaTab } from "@/lib/utils";
@@ -258,8 +259,8 @@ export default function RsaPage() {
                 <CopyBtn text={publicKeyPem} />
               </div>
             </div>
-            <textarea
-              className="bg-muted min-h-0 w-full flex-1 resize-none rounded-md border p-3 font-mono text-xs outline-none"
+            <Textarea
+              className="bg-muted min-h-0 w-full flex-1 resize-none font-mono text-xs"
               value={publicKeyPem}
               onChange={(e) => setPublicKeyPem(e.target.value)}
               onKeyDown={(e) =>
@@ -277,8 +278,8 @@ export default function RsaPage() {
                 <CopyBtn text={privateKeyPem} />
               </div>
             </div>
-            <textarea
-              className="bg-muted min-h-0 w-full flex-1 resize-none rounded-md border p-3 font-mono text-xs outline-none"
+            <Textarea
+              className="bg-muted min-h-0 w-full flex-1 resize-none font-mono text-xs"
               value={privateKeyPem}
               onChange={(e) => setPrivateKeyPem(e.target.value)}
               onKeyDown={(e) =>
@@ -303,8 +304,8 @@ export default function RsaPage() {
                 </Badge>
               )}
             </div>
-            <textarea
-              className="bg-muted h-24 w-full resize-none rounded-md border p-3 font-mono text-xs outline-none"
+            <Textarea
+              className="bg-muted h-24 w-full resize-none font-mono text-xs"
               value={publicKeyPem}
               onChange={(e) => setPublicKeyPem(e.target.value)}
               onKeyDown={(e) =>
@@ -319,8 +320,8 @@ export default function RsaPage() {
               <span className="shrink-0 py-1.5 text-sm font-medium">
                 Plaintext
               </span>
-              <textarea
-                className="bg-background focus-visible:ring-ring min-h-0 w-full flex-1 resize-none rounded-md border p-3 font-mono text-sm outline-none focus-visible:ring-2"
+              <Textarea
+                className="min-h-0 w-full flex-1 resize-none font-mono text-sm"
                 placeholder={t.rsaPlaintextPlaceholder}
                 value={encInput}
                 onChange={(e) => setEncInput(e.target.value)}
@@ -338,9 +339,9 @@ export default function RsaPage() {
                   {encError}
                 </div>
               ) : (
-                <textarea
+                <Textarea
                   readOnly
-                  className="bg-muted min-h-0 w-full flex-1 resize-none rounded-md border p-3 font-mono text-sm outline-none"
+                  className="bg-muted min-h-0 w-full flex-1 resize-none font-mono text-sm"
                   value={encOutput}
                   placeholder={t.outputPlaceholder}
                   spellCheck={false}
@@ -363,8 +364,8 @@ export default function RsaPage() {
                 </Badge>
               )}
             </div>
-            <textarea
-              className="bg-muted h-24 w-full resize-none rounded-md border p-3 font-mono text-xs outline-none"
+            <Textarea
+              className="bg-muted h-24 w-full resize-none font-mono text-xs"
               value={privateKeyPem}
               onChange={(e) => setPrivateKeyPem(e.target.value)}
               onKeyDown={(e) =>
@@ -379,8 +380,8 @@ export default function RsaPage() {
               <span className="shrink-0 py-1.5 text-sm font-medium">
                 Ciphertext (Base64)
               </span>
-              <textarea
-                className="bg-background focus-visible:ring-ring min-h-0 w-full flex-1 resize-none rounded-md border p-3 font-mono text-sm outline-none focus-visible:ring-2"
+              <Textarea
+                className="min-h-0 w-full flex-1 resize-none font-mono text-sm"
                 placeholder={t.rsaCiphertextPlaceholder}
                 value={decInput}
                 onChange={(e) => setDecInput(e.target.value)}
@@ -398,9 +399,9 @@ export default function RsaPage() {
                   {decError}
                 </div>
               ) : (
-                <textarea
+                <Textarea
                   readOnly
-                  className="bg-muted min-h-0 w-full flex-1 resize-none rounded-md border p-3 font-mono text-sm outline-none"
+                  className="bg-muted min-h-0 w-full flex-1 resize-none font-mono text-sm"
                   value={decOutput}
                   placeholder={t.outputPlaceholder}
                   spellCheck={false}

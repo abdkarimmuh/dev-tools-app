@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { FLAG_OPTIONS } from "@/constants/text/regex-tester";
 import { useLanguage } from "@/contexts/language-context";
 import { useToolState } from "@/hooks/use-tool-state";
@@ -149,8 +150,8 @@ export default function RegexTesterPage() {
 
       <div className="flex flex-col gap-2">
         <Label>Test String</Label>
-        <textarea
-          className="bg-background focus-visible:ring-ring h-40 w-full resize-none rounded-md border p-3 font-mono text-sm outline-none focus-visible:ring-2"
+        <Textarea
+          className="h-40 w-full resize-none font-mono text-sm"
           placeholder={t.regexTestPlaceholder}
           value={testStr}
           onChange={(e) => setTestStr(e.target.value)}

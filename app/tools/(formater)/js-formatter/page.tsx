@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -14,6 +15,7 @@ import {
   SelectValue
 } from "@/components/ui/select";
 import { useLanguage } from "@/contexts/language-context";
+import { useStorage } from "@/hooks/use-storage";
 import { useToolState } from "@/hooks/use-tool-state";
 
 const CodeEditor = dynamic(
@@ -76,6 +78,11 @@ export default function JsFormatterPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [wordWrap, setWordWrap] = useStorage(
+    "code-editor-word-wrap",
+    false,
+    "local"
+  );
 
   const format = async () => {
     setLoading(true);
@@ -143,7 +150,20 @@ export default function JsFormatterPage() {
             {t.minify}
           </Button>
         </div>
-        <div className="flex">
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <Checkbox
+              id="js-formatter-word-wrap"
+              checked={wordWrap}
+              onCheckedChange={(c) => setWordWrap(c === true)}
+            />
+            <Label
+              htmlFor="js-formatter-word-wrap"
+              className="text-xs font-normal"
+            >
+              {t.wrapLines}
+            </Label>
+          </div>
           <Button
             size="sm"
             variant="ghost"
@@ -175,6 +195,7 @@ export default function JsFormatterPage() {
         language={syntax === "ts" ? "typescript" : "javascript"}
         placeholder={t[PLACEHOLDERS[syntax]]}
         value={value}
+        wordWrap={wordWrap}
         onChange={(v) => {
           setValue(v);
           setError(null);

@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { useLanguage } from "@/contexts/language-context";
 import { useToolState } from "@/hooks/use-tool-state";
 import { handleTextareaTab } from "@/lib/utils";
@@ -136,8 +137,8 @@ export default function JwtDecoderPage() {
         {/* Input */}
         <div className="flex min-h-0 flex-col gap-2">
           <Label className="mb-1">JWT Token</Label>
-          <textarea
-            className="bg-background focus-visible:ring-ring min-h-0 w-full flex-1 resize-none rounded-md border p-3 font-mono text-sm outline-none focus-visible:ring-2"
+          <Textarea
+            className="min-h-0 w-full flex-1 resize-none font-mono text-sm"
             placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
             value={token}
             onChange={(e) => {

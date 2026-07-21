@@ -89,6 +89,9 @@ When making changes, link to these files in your PR description so reviewers can
 - Use `sonner` for toast feedback where appropriate (see `components/ui/sonner.tsx`).
 - All tool pages are `"use client"` components.
 - Two-panel input/output layout (left=input, right=output) is the standard for formatter and converter tools.
+- Plain text fields use `<Textarea>` from `components/ui/textarea` (only layout classes in `className` — border/background/padding/ring already come from the component); structured/code content uses the shared `CodeEditor` (`components/code-editor.tsx`) instead. `diff-checker` is the only tool still on a raw `<textarea>`.
+- `CodeEditor` tools include a "Wrap lines" checkbox backed by `useStorage("code-editor-word-wrap", false, "local")` — one hook call per page (even for multi-panel tools) so all panels toggle together.
+- `useStorage` (`hooks/use-storage.ts`) is built on `useSyncExternalStore`, not a `useState` initializer, so it never hydration-mismatches when a value was already persisted.
 
 ## Key dependencies
 
@@ -100,6 +103,7 @@ When making changes, link to these files in your PR description so reviewers can
 | `sql-formatter`                           | SQL formatting (sql-formatter)                                                                                                                                      |
 | `crypto-js`                               | AES/DES/RC4 symmetric encryption                                                                                                                                    |
 | `marked`                                  | Markdown → HTML (markdown-preview)                                                                                                                                  |
+| `dompurify`                               | Sanitizes `marked` output before `dangerouslySetInnerHTML` (markdown-preview)                                                                                       |
 | `qrcode`                                  | QR code generation                                                                                                                                                  |
 | `jsbarcode`                               | Barcode generation                                                                                                                                                  |
 | `xlsx`                                    | XLSX export (fake-data)                                                                                                                                             |

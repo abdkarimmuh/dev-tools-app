@@ -13,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { useLanguage } from "@/contexts/language-context";
 import { useToolState } from "@/hooks/use-tool-state";
 import { handleTextareaTab } from "@/lib/utils";
@@ -266,8 +267,8 @@ export default function ApiSignaturePage() {
           <span className="shrink-0 py-1.5 text-sm font-medium">
             Message / Payload
           </span>
-          <textarea
-            className="bg-background focus-visible:ring-ring min-h-0 w-full flex-1 resize-none rounded-md border p-3 font-mono text-sm outline-none focus-visible:ring-2"
+          <Textarea
+            className="min-h-0 w-full flex-1 resize-none font-mono text-sm"
             placeholder={'{\n  "user_id": 123,\n  "timestamp": 1700000000\n}'}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
@@ -298,9 +299,9 @@ export default function ApiSignaturePage() {
               {error}
             </div>
           ) : (
-            <textarea
+            <Textarea
               readOnly
-              className="bg-muted min-h-0 w-full flex-1 resize-none rounded-md border p-3 font-mono text-sm break-all outline-none"
+              className="bg-muted min-h-0 w-full flex-1 resize-none font-mono text-sm break-all"
               value={signature}
               placeholder="Signature akan muncul otomatis setelah key dan message diisi..."
               spellCheck={false}

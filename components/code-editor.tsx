@@ -121,7 +121,7 @@ function languageExtension(
     case "graphql":
       return graphqlLanguageSupport();
     case "text":
-      return [];
+      return [indentFoldService];
   }
 }
 
@@ -133,6 +133,7 @@ interface CodeEditorProps {
   placeholder?: string;
   className?: string;
   readOnly?: boolean;
+  wordWrap?: boolean;
   onCreateEditor?: ReactCodeMirrorProps["onCreateEditor"];
 }
 
@@ -144,12 +145,17 @@ export function CodeEditor({
   placeholder,
   className,
   readOnly,
+  wordWrap,
   onCreateEditor
 }: CodeEditorProps) {
   const { resolvedTheme } = useTheme();
   const extensions = useMemo(
-    () => [languageExtension(language, sqlDialect), editorTheme],
-    [language, sqlDialect]
+    () => [
+      languageExtension(language, sqlDialect),
+      editorTheme,
+      ...(wordWrap ? [EditorView.lineWrapping] : [])
+    ],
+    [language, sqlDialect, wordWrap]
   );
 
   return (

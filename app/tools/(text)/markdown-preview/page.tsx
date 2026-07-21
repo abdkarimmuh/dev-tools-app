@@ -1,6 +1,7 @@
 "use client";
 
 import type { EditorView } from "@uiw/react-codemirror";
+import DOMPurify from "dompurify";
 import type { LucideIcon } from "lucide-react";
 import {
   Bold,
@@ -22,6 +23,8 @@ import dynamic from "next/dynamic";
 import { useMemo, useRef } from "react";
 
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import {
   Tooltip,
@@ -29,6 +32,7 @@ import {
   TooltipTrigger
 } from "@/components/ui/tooltip";
 import { useLanguage } from "@/contexts/language-context";
+import { useStorage } from "@/hooks/use-storage";
 import { useToolState } from "@/hooks/use-tool-state";
 
 const CodeEditor = dynamic(
@@ -152,11 +156,18 @@ const TOOLBAR: ToolbarItem[] = [
 export default function MarkdownPreviewPage() {
   const { t } = useLanguage();
   const [input, setInput] = useToolState("markdown-preview", "input", "");
+  const [wordWrap, setWordWrap] = useStorage(
+    "code-editor-word-wrap",
+    false,
+    "local"
+  );
   const viewRef = useRef<EditorView | null>(null);
 
   const html = useMemo(() => {
     if (!input.trim()) return "";
-    return String(marked.parse(input));
+    if (typeof window === "undefined") return "";
+    const raw = String(marked.parse(input));
+    return DOMPurify.sanitize(raw);
   }, [input]);
 
   const applyAction = (action: ToolbarItem) => {
@@ -201,22 +212,36 @@ export default function MarkdownPreviewPage() {
         <div className="flex min-h-0 flex-col gap-2">
           <div className="flex shrink-0 items-center justify-between">
             <span className="text-sm font-medium">Write</span>
-            <Button
-              size="sm"
-              variant="ghost"
-              onClick={clear}
-              className="text-xs"
-            >
-              {t.clear}
-            </Button>
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
+                <Checkbox
+                  id="markdown-preview-word-wrap"
+                  checked={wordWrap}
+                  onCheckedChange={(c) => setWordWrap(c === true)}
+                />
+                <Label
+                  htmlFor="markdown-preview-word-wrap"
+                  className="text-xs font-normal"
+                >
+                  {t.wrapLines}
+                </Label>
+              </div>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={clear}
+                className="text-xs"
+              >
+                {t.clear}
+              </Button>
+            </div>
           </div>
           <CodeEditor
             className="min-h-0 flex-1"
             language="markdown"
-            placeholder={
-              "# Hello\n\nStart writing **markdown** here...\n\n- Item 1\n- Item 2\n\n> Blockquote\n\n```js\nconsole.log('hello')\n```"
-            }
+            placeholder={"# Hello"}
             value={input}
+            wordWrap={wordWrap}
             onChange={setInput}
             onCreateEditor={(view) => {
               viewRef.current = view;

@@ -6,6 +6,7 @@ import { useState } from "react";
 import { format } from "sql-formatter";
 
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -16,6 +17,7 @@ import {
 } from "@/components/ui/select";
 import { type Dialect, DIALECTS } from "@/constants/formatters/sql-formatter";
 import { useLanguage } from "@/contexts/language-context";
+import { useStorage } from "@/hooks/use-storage";
 import { useToolState } from "@/hooks/use-tool-state";
 
 const CodeEditor = dynamic(
@@ -41,6 +43,11 @@ export default function SqlFormatterPage() {
   const [value, setValue] = useToolState("sql-formatter", "input", "");
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [wordWrap, setWordWrap] = useStorage(
+    "code-editor-word-wrap",
+    false,
+    "local"
+  );
 
   const formatSql = () => {
     try {
@@ -103,7 +110,20 @@ export default function SqlFormatterPage() {
             {t.minify}
           </Button>
         </div>
-        <div className="flex">
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <Checkbox
+              id="sql-formatter-word-wrap"
+              checked={wordWrap}
+              onCheckedChange={(c) => setWordWrap(c === true)}
+            />
+            <Label
+              htmlFor="sql-formatter-word-wrap"
+              className="text-xs font-normal"
+            >
+              {t.wrapLines}
+            </Label>
+          </div>
           <Button
             size="sm"
             variant="ghost"
@@ -136,6 +156,7 @@ export default function SqlFormatterPage() {
         sqlDialect={dialect}
         placeholder={t.sqlInputPlaceholder}
         value={value}
+        wordWrap={wordWrap}
         onChange={(v) => {
           setValue(v);
           setError(null);

@@ -1,15 +1,22 @@
 "use client";
 
 import { Check, Copy } from "lucide-react";
+import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 
-import { CodeEditor } from "@/components/code-editor";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useLanguage } from "@/contexts/language-context";
+import { useStorage } from "@/hooks/use-storage";
 import { useToolState } from "@/hooks/use-tool-state";
+
+const CodeEditor = dynamic(
+  () => import("@/components/code-editor").then((m) => m.CodeEditor),
+  { ssr: false }
+);
 
 function queryPath(obj: unknown, path: string): unknown[] {
   if (!path || path === "$") return [obj];
@@ -132,6 +139,11 @@ export default function JsonPathPage() {
   const [results, setResults] = useState<unknown[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [wordWrap, setWordWrap] = useStorage(
+    "code-editor-word-wrap",
+    false,
+    "local"
+  );
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -186,7 +198,7 @@ export default function JsonPathPage() {
           onChange={(e) => setPath(e.target.value)}
           spellCheck={false}
         />
-        <div className="flex flex-wrap gap-1.5">
+        <div className="flex flex-wrap items-center gap-1.5">
           {EXAMPLES.map((ex) => (
             <button
               key={ex.path}
@@ -204,6 +216,16 @@ export default function JsonPathPage() {
           <div className="flex shrink-0 items-center justify-between">
             <span className="text-sm font-medium">{t.jsonPathDocLabel}</span>
             <div className="flex gap-2">
+              <div className="flex items-center gap-2 px-2">
+                <Checkbox
+                  id="json-path-word-wrap"
+                  checked={wordWrap}
+                  onCheckedChange={(c) => setWordWrap(c === true)}
+                />
+                <Label htmlFor="json-path-word-wrap" className="text-xs">
+                  {t.wrapLines}
+                </Label>
+              </div>
               <Button
                 size="sm"
                 variant="ghost"
@@ -231,6 +253,7 @@ export default function JsonPathPage() {
             className="min-h-0 flex-1"
             language="json"
             value={json}
+            wordWrap={wordWrap}
             onChange={(value) => setJson(value)}
           />
         </div>
@@ -268,12 +291,13 @@ export default function JsonPathPage() {
               {error}
             </div>
           ) : (
-            <textarea
+            <CodeEditor
               readOnly
-              className="bg-muted min-h-0 w-full flex-1 resize-none rounded-md border p-3 font-mono text-sm outline-none"
+              className="bg-muted min-h-0 flex-1"
+              language="json"
               value={output}
               placeholder={t.jsonPathResultsPlaceholder}
-              spellCheck={false}
+              wordWrap={wordWrap}
             />
           )}
         </div>

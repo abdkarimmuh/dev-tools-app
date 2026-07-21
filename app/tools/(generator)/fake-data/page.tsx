@@ -1,6 +1,7 @@
 "use client";
 
 import { Check, Copy, Download, Plus, RefreshCw, X } from "lucide-react";
+import dynamic from "next/dynamic";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -31,7 +32,13 @@ import {
   STREETS
 } from "@/constants/generators/fake-data";
 import { useLanguage } from "@/contexts/language-context";
+import { useStorage } from "@/hooks/use-storage";
 import { useToolState } from "@/hooks/use-tool-state";
+
+const CodeEditor = dynamic(
+  () => import("@/components/code-editor").then((m) => m.CodeEditor),
+  { ssr: false }
+);
 
 const COUNTRIES = ["US", "ID", "UK", "AU", "CA", "DE", "FR"];
 
@@ -417,6 +424,11 @@ export default function FakeDataPage() {
   const [output, setOutput] = useState("");
   const [resultData, setResultData] = useState<unknown>(null);
   const [copied, setCopied] = useState(false);
+  const [wordWrap, setWordWrap] = useStorage(
+    "code-editor-word-wrap",
+    false,
+    "local"
+  );
 
   const isCustomObject = dataType === "custom" && outputShape === "object";
 
@@ -523,45 +535,60 @@ export default function FakeDataPage() {
             />
           </div>
         )}
-        <Button
-          onClick={generate}
-          className="gap-2"
-          disabled={dataType === "custom" && customFields.length === 0}
-        >
-          <RefreshCw className="size-4" />
-          {t.generate}
-        </Button>
-        {output && (
-          <>
-            <Button variant="outline" onClick={copy} className="gap-2">
-              {copied ? (
-                <Check className="size-4" />
-              ) : (
-                <Copy className="size-4" />
-              )}
-              {copied ? t.copied : t.copy}
-            </Button>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="gap-2">
-                  <Download className="size-4" />
-                  {t.export}
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={exportJson}>
-                  {t.exportJson}
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={exportCsv}>
-                  {t.exportCsv}
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={exportXlsx}>
-                  {t.exportXlsx}
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </>
-        )}
+        <div className="flex items-center gap-3">
+          <Button
+            onClick={generate}
+            className="gap-2"
+            disabled={dataType === "custom" && customFields.length === 0}
+          >
+            <RefreshCw className="size-4" />
+            {t.generate}
+          </Button>
+          {output && (
+            <>
+              <Button variant="outline" onClick={copy} className="gap-2">
+                {copied ? (
+                  <Check className="size-4" />
+                ) : (
+                  <Copy className="size-4" />
+                )}
+                {copied ? t.copied : t.copy}
+              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="gap-2">
+                    <Download className="size-4" />
+                    {t.export}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={exportJson}>
+                    {t.exportJson}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={exportCsv}>
+                    {t.exportCsv}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={exportXlsx}>
+                    {t.exportXlsx}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </>
+          )}
+          <div className="flex items-center gap-2">
+            <Checkbox
+              id="fake-data-word-wrap"
+              checked={wordWrap}
+              onCheckedChange={(c) => setWordWrap(c === true)}
+            />
+            <Label
+              htmlFor="fake-data-word-wrap"
+              className="text-sm font-normal"
+            >
+              {t.wrapLines}
+            </Label>
+          </div>
+        </div>
       </div>
 
       {dataType === "custom" && (
@@ -698,11 +725,12 @@ export default function FakeDataPage() {
       )}
 
       {output ? (
-        <textarea
+        <CodeEditor
           readOnly
-          className="bg-muted min-h-0 flex-1 resize-none rounded-md border p-3 font-mono text-sm outline-none"
+          className="bg-muted min-h-0 flex-1"
+          language="json"
           value={output}
-          spellCheck={false}
+          wordWrap={wordWrap}
         />
       ) : (
         <div className="text-muted-foreground flex h-40 items-center justify-center rounded-md border border-dashed text-sm">

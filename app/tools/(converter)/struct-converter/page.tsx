@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -14,6 +15,7 @@ import {
   SelectValue
 } from "@/components/ui/select";
 import { useLanguage } from "@/contexts/language-context";
+import { useStorage } from "@/hooks/use-storage";
 import { useToolState } from "@/hooks/use-tool-state";
 
 const CodeEditor = dynamic(
@@ -354,6 +356,11 @@ export default function StructConverterPage() {
   const [output, setOutput] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [wordWrap, setWordWrap] = useStorage(
+    "code-editor-word-wrap",
+    false,
+    "local"
+  );
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const convert = useCallback(
@@ -444,6 +451,19 @@ export default function StructConverterPage() {
         <Button size="lg" onClick={swap}>
           {t.swap}
         </Button>
+        <div className="flex items-center gap-2">
+          <Checkbox
+            id="struct-converter-word-wrap"
+            checked={wordWrap}
+            onCheckedChange={(c) => setWordWrap(c === true)}
+          />
+          <Label
+            htmlFor="struct-converter-word-wrap"
+            className="text-xs font-normal"
+          >
+            {t.wrapLines}
+          </Label>
+        </div>
       </div>
 
       <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 lg:grid-cols-2">
@@ -468,6 +488,7 @@ export default function StructConverterPage() {
             language={inputLanguage}
             placeholder={inputPlaceholder}
             value={input}
+            wordWrap={wordWrap}
             onChange={setInput}
           />
         </div>
@@ -501,6 +522,7 @@ export default function StructConverterPage() {
               language={outputLanguage}
               value={output}
               placeholder={t.outputPlaceholder}
+              wordWrap={wordWrap}
             />
           )}
         </div>

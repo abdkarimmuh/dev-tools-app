@@ -14,6 +14,7 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useLanguage } from "@/contexts/language-context";
 import { useToolState } from "@/hooks/use-tool-state";
@@ -527,8 +528,8 @@ export default function BaseEncoderPage() {
           </div>
 
           {showTextarea ? (
-            <textarea
-              className="bg-background focus-visible:ring-ring min-h-0 w-full flex-1 resize-none rounded-md border p-3 font-mono text-sm outline-none focus-visible:ring-2"
+            <Textarea
+              className="min-h-0 w-full flex-1 resize-none font-mono text-sm"
               placeholder={PLACEHOLDERS[encoding]}
               value={input}
               onChange={(e) => {
@@ -682,9 +683,9 @@ export default function BaseEncoderPage() {
               </div>
             )
           ) : (
-            <textarea
+            <Textarea
               readOnly
-              className="bg-muted min-h-0 w-full flex-1 resize-none rounded-md border p-3 font-mono text-sm outline-none"
+              className="bg-muted min-h-0 w-full flex-1 resize-none font-mono text-sm"
               value={output}
               placeholder={t.outputPlaceholder}
               spellCheck={false}

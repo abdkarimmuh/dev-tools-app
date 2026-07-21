@@ -28,6 +28,7 @@ export const translations = {
     exportJson: "Export JSON",
     exportCsv: "Export CSV",
     exportXlsx: "Export XLSX",
+    wrapLines: "Wrap lines",
 
     // Base64
     base64InputPlaceholder: "Enter text or Base64 string...",
@@ -413,6 +414,7 @@ export const translations = {
     exportJson: "Ekspor JSON",
     exportCsv: "Ekspor CSV",
     exportXlsx: "Ekspor XLSX",
+    wrapLines: "Lipat baris",
 
     // Base64
     base64InputPlaceholder: "Masukkan teks atau string Base64...",

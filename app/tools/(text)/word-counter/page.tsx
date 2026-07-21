@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 
+import { Textarea } from "@/components/ui/textarea";
 import { useLanguage } from "@/contexts/language-context";
 import { useToolState } from "@/hooks/use-tool-state";
 import { handleTextareaTab } from "@/lib/utils";
@@ -77,8 +78,8 @@ export default function WordCounterPage() {
         <StatCard label={t.wordCounterReadingTime} value={stats.readingTime} />
       </div>
 
-      <textarea
-        className="bg-background focus-visible:ring-ring min-h-0 flex-1 resize-none rounded-md border p-3 text-sm outline-none focus-visible:ring-2"
+      <Textarea
+        className="min-h-0 flex-1 resize-none text-sm"
         placeholder={t.wordCounterPlaceholder}
         value={text}
         onChange={(e) => setText(e.target.value)}

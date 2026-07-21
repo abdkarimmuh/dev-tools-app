@@ -4,6 +4,7 @@ import { Check, Copy } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import { useLanguage } from "@/contexts/language-context";
 import { useToolState } from "@/hooks/use-tool-state";
 import { handleTextareaTab } from "@/lib/utils";
@@ -113,8 +114,8 @@ export default function CaseConverterPage() {
     <div className="flex max-w-3xl flex-col gap-6 px-4 lg:px-6">
       <div className="flex flex-col gap-2">
         <span className="text-sm font-medium">Input</span>
-        <textarea
-          className="bg-background focus-visible:ring-ring h-24 w-full resize-none rounded-md border p-3 font-mono text-sm outline-none focus-visible:ring-2"
+        <Textarea
+          className="h-24 w-full resize-none font-mono text-sm"
           placeholder="hello world example text"
           value={input}
           onChange={(e) => setInput(e.target.value)}

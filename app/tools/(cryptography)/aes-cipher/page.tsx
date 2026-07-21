@@ -7,6 +7,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { useLanguage } from "@/contexts/language-context";
 import { useToolState } from "@/hooks/use-tool-state";
 import { handleTextareaTab } from "@/lib/utils";
@@ -114,8 +115,8 @@ export default function AesCipherPage() {
               {t.clear}
             </Button>
           </div>
-          <textarea
-            className="bg-background focus-visible:ring-ring min-h-0 w-full flex-1 resize-none rounded-md border p-3 font-mono text-sm outline-none focus-visible:ring-2"
+          <Textarea
+            className="min-h-0 w-full flex-1 resize-none font-mono text-sm"
             placeholder={t.aesInputPlaceholder}
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -147,9 +148,9 @@ export default function AesCipherPage() {
               {error}
             </div>
           ) : (
-            <textarea
+            <Textarea
               readOnly
-              className="bg-muted min-h-0 w-full flex-1 resize-none rounded-md border p-3 font-mono text-sm outline-none"
+              className="bg-muted min-h-0 w-full flex-1 resize-none font-mono text-sm"
               value={output}
               placeholder={t.outputPlaceholder}
               spellCheck={false}
