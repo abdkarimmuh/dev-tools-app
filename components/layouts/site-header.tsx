@@ -37,16 +37,18 @@ export function SiteHeader() {
           </div>
           <div className="hidden pl-2 md:block">
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="gap-1.5 text-xs font-semibold"
-                >
-                  <Globe className="size-3.5" />
-                  {language.toUpperCase()}
-                </Button>
-              </DropdownMenuTrigger>
+              <DropdownMenuTrigger
+                render={
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="gap-1.5 text-xs font-semibold"
+                  >
+                    <Globe className="size-3.5" />
+                    {language.toUpperCase()}
+                  </Button>
+                }
+              />
               <DropdownMenuContent align="end">
                 <DropdownMenuItem
                   onClick={() => setLanguage("id")}

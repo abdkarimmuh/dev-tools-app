@@ -3,6 +3,26 @@
 @import "shadcn/tailwind.css";
 @plugin "@tailwindcss/typography";
 
+/* tw-animate-css's accordion-down/up keyframes don't include Base UI's
+   --accordion-panel-height in their height fallback chain, so without this
+   override the accordion panel snaps to height:auto instead of animating. */
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--accordion-panel-height, auto);
+  }
+}
+@keyframes accordion-up {
+  from {
+    height: var(--accordion-panel-height, auto);
+  }
+  to {
+    height: 0;
+  }
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {

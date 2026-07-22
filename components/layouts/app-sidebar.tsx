@@ -43,21 +43,21 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
-              asChild
               className="data-[slot=sidebar-menu-button]:p-1.5!"
-            >
-              <Link href="/" onClick={() => setOpenMobile(false)}>
-                <Image
-                  src={
-                    resolvedTheme === "dark" ? "/logo-white.png" : "/logo.png"
-                  }
-                  alt="DevTools"
-                  width={20}
-                  height={20}
-                />
-                <span className="text-base font-semibold">DevTools</span>
-              </Link>
-            </SidebarMenuButton>
+              render={
+                <Link href="/" onClick={() => setOpenMobile(false)}>
+                  <Image
+                    src={
+                      resolvedTheme === "dark" ? "/logo-white.png" : "/logo.png"
+                    }
+                    alt="DevTools"
+                    width={20}
+                    height={20}
+                  />
+                  <span className="text-base font-semibold">DevTools</span>
+                </Link>
+              }
+            />
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
@@ -73,7 +73,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 return (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton
-                      asChild
                       isActive={isActive}
                       tooltip={item.title}
                       className={
@@ -81,15 +80,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                           ? "bg-sidebar-primary! text-sidebar-primary-foreground! [&_svg]:text-sidebar-primary-foreground!"
                           : ""
                       }
-                    >
-                      <Link
-                        href={item.url}
-                        onClick={() => setOpenMobile(false)}
-                      >
-                        <item.icon />
-                        <span>{item.title}</span>
-                      </Link>
-                    </SidebarMenuButton>
+                      render={
+                        <Link
+                          href={item.url}
+                          onClick={() => setOpenMobile(false)}
+                        >
+                          <item.icon />
+                          <span>{item.title}</span>
+                        </Link>
+                      }
+                    />
                   </SidebarMenuItem>
                 );
               })}
@@ -104,16 +104,18 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <ToolSearch />
           </div>
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="shrink-0 gap-1.5 px-2 text-xs font-semibold"
-              >
-                <Globe className="size-3.5" />
-                {language.toUpperCase()}
-              </Button>
-            </DropdownMenuTrigger>
+            <DropdownMenuTrigger
+              render={
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="shrink-0 gap-1.5 px-2 text-xs font-semibold"
+                >
+                  <Globe className="size-3.5" />
+                  {language.toUpperCase()}
+                </Button>
+              }
+            />
             <DropdownMenuContent align="end" side="top">
               <DropdownMenuItem
                 onClick={() => setLanguage("id")}

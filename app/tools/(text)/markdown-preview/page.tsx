@@ -188,18 +188,20 @@ export default function MarkdownPreviewPage() {
             <Separator key={i} orientation="vertical" className="mx-1 h-5" />
           ) : (
             <Tooltip key={item.label}>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="size-7 shrink-0"
-                  onClick={() => applyAction(item)}
-                  type="button"
-                >
-                  <item.icon className="size-3.5" />
-                  <span className="sr-only">{item.label}</span>
-                </Button>
-              </TooltipTrigger>
+              <TooltipTrigger
+                render={
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="size-7 shrink-0"
+                    onClick={() => applyAction(item)}
+                    type="button"
+                  >
+                    <item.icon className="size-3.5" />
+                    <span className="sr-only">{item.label}</span>
+                  </Button>
+                }
+              />
               <TooltipContent side="bottom">{item.label}</TooltipContent>
             </Tooltip>
           )

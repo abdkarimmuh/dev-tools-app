@@ -453,11 +453,10 @@ export default function BaseEncoderPage() {
           </Select>
 
           <ToggleGroup
-            type="single"
             variant="outline"
             size="sm"
-            value={mode}
-            onValueChange={(v) => v && switchMode(v as Mode)}
+            value={[mode]}
+            onValueChange={(v) => v[0] && switchMode(v[0] as Mode)}
           >
             <ToggleGroupItem value="text">{t.baseModeText}</ToggleGroupItem>
             <ToggleGroupItem value="file">{t.baseModeFile}</ToggleGroupItem>
@@ -465,11 +464,12 @@ export default function BaseEncoderPage() {
 
           {mode === "file" && (
             <ToggleGroup
-              type="single"
               variant="outline"
               size="sm"
-              value={direction}
-              onValueChange={(v) => v && switchDirection(v as FileDirection)}
+              value={[direction]}
+              onValueChange={(v) =>
+                v[0] && switchDirection(v[0] as FileDirection)
+              }
             >
               <ToggleGroupItem value="encode">
                 {t.baseDirectionEncode}

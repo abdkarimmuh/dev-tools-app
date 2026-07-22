@@ -555,12 +555,14 @@ export default function FakeDataPage() {
                 {copied ? t.copied : t.copy}
               </Button>
               <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="gap-2">
-                    <Download className="size-4" />
-                    {t.export}
-                  </Button>
-                </DropdownMenuTrigger>
+                <DropdownMenuTrigger
+                  render={
+                    <Button variant="outline" className="gap-2">
+                      <Download className="size-4" />
+                      {t.export}
+                    </Button>
+                  }
+                />
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem onClick={exportJson}>
                     {t.exportJson}

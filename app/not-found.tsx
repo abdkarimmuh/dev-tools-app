@@ -30,14 +30,14 @@ export default function NotFound() {
       <EmptyContent className="flex-row justify-center gap-2">
         <Button
           variant="link"
-          asChild
           className="text-muted-foreground"
           size="sm"
-        >
-          <Link href="/">
-            {t.notFoundGoHome} <ArrowUpRightIcon />
-          </Link>
-        </Button>
+          render={
+            <Link href="/">
+              {t.notFoundGoHome} <ArrowUpRightIcon />
+            </Link>
+          }
+        />
       </EmptyContent>
     </Empty>
   );
