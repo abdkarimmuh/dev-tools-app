@@ -18,7 +18,7 @@ import { useLanguage } from "@/contexts/language-context";
 import { useSearch } from "@/contexts/search-context";
 import { navGroupLabels } from "@/lib/i18n";
 
-export function ToolSearch() {
+export function Search() {
   const { t } = useLanguage();
   const { setOpen } = useSearch();
   const isMac = useSyncExternalStore(
@@ -30,7 +30,7 @@ export function ToolSearch() {
   return (
     <button
       onClick={() => setOpen(true)}
-      className="bg-muted text-muted-foreground hover:bg-muted hover:text-foreground flex w-54 items-center justify-between gap-2 rounded-md px-3 py-1 text-sm transition-colors"
+      className="bg-muted text-muted-foreground hover:bg-muted hover:text-foreground flex w-54 items-center justify-between gap-2 rounded-md px-3 py-2 text-sm transition-colors"
     >
       <span className="hidden sm:inline">{t.searchPlaceholder}</span>
 

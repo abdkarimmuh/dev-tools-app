@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 import * as React from "react";
 
-import { ToolSearch } from "@/components/layouts/tool-search";
+import { Search } from "@/components/layouts/search";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -101,7 +101,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarFooter className="border-t md:hidden">
         <div className="flex items-center gap-2 py-1">
           <div className="flex-1 [&>button]:w-full [&>button>kbd]:hidden [&>button>span]:inline!">
-            <ToolSearch />
+            <Search />
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger

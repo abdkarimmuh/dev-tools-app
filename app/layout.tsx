@@ -4,10 +4,10 @@ import { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import React from "react";
 
-import { AppSidebar } from "@/components/layouts/app-sidebar";
-import { SiteFooter } from "@/components/layouts/site-footer";
-import { SiteHeader } from "@/components/layouts/site-header";
-import { ToolSearchDialog } from "@/components/layouts/tool-search";
+import { Footer } from "@/components/layouts/footer";
+import { Header } from "@/components/layouts/header";
+import { ToolSearchDialog } from "@/components/layouts/search";
+import { AppSidebar } from "@/components/layouts/sidebar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -53,14 +53,14 @@ export default function RootLayout({
                   <ToolSearchDialog />
                   <AppSidebar variant="inset" />
                   <SidebarInset>
-                    <SiteHeader />
+                    <Header />
                     <div className="flex flex-1 flex-col">
                       <div className="@container/main flex flex-1 flex-col gap-2">
                         <div className="flex flex-1 flex-col gap-4 py-4 md:gap-6 md:py-6">
                           {children}
                         </div>
                       </div>
-                      <SiteFooter />
+                      <Footer />
                     </div>
                   </SidebarInset>
                 </SidebarProvider>

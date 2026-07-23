@@ -4,7 +4,7 @@ import { Globe, Moon, Sun } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 
-import { ToolSearch } from "@/components/layouts/tool-search";
+import { Search } from "@/components/layouts/search";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -17,7 +17,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { navTitleMap } from "@/config/nav";
 import { useLanguage } from "@/contexts/language-context";
 
-export function SiteHeader() {
+export function Header() {
   const pathname = usePathname();
   const { resolvedTheme, setTheme } = useTheme();
   const { language, setLanguage, t } = useLanguage();
@@ -33,7 +33,7 @@ export function SiteHeader() {
         <h1 className="text-base font-medium">{title}</h1>
         <div className="ml-auto flex items-center gap-2">
           <div className="hidden md:block">
-            <ToolSearch />
+            <Search />
           </div>
           <div className="hidden pl-2 md:block">
             <DropdownMenu>

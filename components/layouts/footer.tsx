@@ -1,4 +1,4 @@
-export function SiteFooter() {
+export function Footer() {
   return (
     <footer className="mt-auto border-t px-6 py-4 text-center text-xs">
       <span className="text-muted-foreground">

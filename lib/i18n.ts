@@ -289,15 +289,8 @@ export const translations = {
     unixMillisecondsLabel: "Milliseconds:",
 
     // Fake Data Generator
-    fakeDataTypeLabel: "Type",
     fakeDataCountLabel: "Count",
     fakeDataEmptyState: "Click Generate to create fake data",
-    fakeDataPerson: "Person",
-    fakeDataAddress: "Address",
-    fakeDataInternet: "Internet",
-    fakeDataProduct: "Product",
-    fakeDataLorem: "Lorem Ipsum",
-    fakeDataCustom: "Custom",
     fakeDataShapeLabel: "Shape",
     fakeDataShapeArray: "Array",
     fakeDataShapeObject: "Object",
@@ -678,15 +671,8 @@ export const translations = {
     unixMillisecondsLabel: "Milidetik:",
 
     // Fake Data Generator
-    fakeDataTypeLabel: "Tipe",
     fakeDataCountLabel: "Jumlah",
     fakeDataEmptyState: "Klik Generate untuk membuat data palsu",
-    fakeDataPerson: "Orang",
-    fakeDataAddress: "Alamat",
-    fakeDataInternet: "Internet",
-    fakeDataProduct: "Produk",
-    fakeDataLorem: "Lorem Ipsum",
-    fakeDataCustom: "Kustom",
     fakeDataShapeLabel: "Bentuk",
     fakeDataShapeArray: "Array",
     fakeDataShapeObject: "Object",

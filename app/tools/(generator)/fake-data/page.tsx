@@ -48,85 +48,6 @@ function rand<T>(arr: T[]): T {
 function randInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-function randDigits(length: number): string {
-  return Array.from({ length }, () => randInt(0, 9)).join("");
-}
-
-function generatePerson() {
-  const first = rand(FIRST_NAMES);
-  const last = rand(LAST_NAMES);
-  const email = `${first.toLowerCase()}.${last.toLowerCase()}${randInt(1, 99)}@${rand(DOMAINS)}`;
-  const phone = `+1${randInt(200, 999)}${randInt(100, 999)}${randInt(1000, 9999)}`;
-  return {
-    name: `${first} ${last}`,
-    email,
-    phone,
-    nationalId: randDigits(16),
-    age: randInt(18, 65),
-    company: rand(COMPANIES),
-    job: rand(JOBS)
-  };
-}
-
-function generateAddress() {
-  return {
-    street: `${randInt(1, 999)} ${rand(STREETS)}`,
-    city: rand(CITIES),
-    zip: String(randInt(10000, 99999)),
-    country: rand(COUNTRIES)
-  };
-}
-
-function generateInternet() {
-  const first = rand(FIRST_NAMES);
-  const last = rand(LAST_NAMES);
-  const username = `${first.toLowerCase()}${last.toLowerCase()}${randInt(1, 999)}`;
-  return {
-    username,
-    email: `${username}@${rand(DOMAINS)}`,
-    url: `https://${username.replace(/\d+/, "")}.${rand(["com", "dev", "io", "net", "org"])}`,
-    avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}`,
-    ip: `${randInt(1, 254)}.${randInt(0, 254)}.${randInt(0, 254)}.${randInt(1, 254)}`
-  };
-}
-
-function generateProduct() {
-  const adjectives = [
-    "Premium",
-    "Classic",
-    "Pro",
-    "Lite",
-    "Ultra",
-    "Smart",
-    "Eco",
-    "Digital"
-  ];
-  const nouns = [
-    "Widget",
-    "Gadget",
-    "Toolkit",
-    "Bundle",
-    "Suite",
-    "Package",
-    "Set",
-    "Kit"
-  ];
-  return {
-    name: `${rand(adjectives)} ${rand(nouns)}`,
-    price: `$${(randInt(99, 9999) / 100).toFixed(2)}`,
-    sku: `SKU-${randInt(100000, 999999)}`,
-    category: rand([
-      "Electronics",
-      "Clothing",
-      "Books",
-      "Home",
-      "Sports",
-      "Beauty",
-      "Toys"
-    ]),
-    stock: randInt(0, 500)
-  };
-}
 
 function generateSentence(): string {
   const wordCount = randInt(8, 20);
@@ -207,22 +128,6 @@ function formatDate(date: Date, format: DateFormat): string {
       return `${yyyy}-${mm}-${dd}`;
   }
 }
-
-type DataType =
-  | "person"
-  | "address"
-  | "internet"
-  | "product"
-  | "lorem"
-  | "custom";
-
-const generators: Record<Exclude<DataType, "custom">, () => unknown> = {
-  person: generatePerson,
-  address: generateAddress,
-  internet: generateInternet,
-  product: generateProduct,
-  lorem: generateLoremParagraph
-};
 
 type FieldType =
   | "fullName"
@@ -359,14 +264,6 @@ function toCsv(data: unknown): string {
 
 export default function FakeDataPage() {
   const { t } = useLanguage();
-  const DATA_TYPES: { value: DataType; label: string }[] = [
-    { value: "person", label: t.fakeDataPerson },
-    { value: "address", label: t.fakeDataAddress },
-    { value: "internet", label: t.fakeDataInternet },
-    { value: "product", label: t.fakeDataProduct },
-    { value: "lorem", label: t.fakeDataLorem },
-    { value: "custom", label: t.fakeDataCustom }
-  ];
   const FIELD_TYPES: { value: FieldType; label: string }[] = [
     { value: "fullName", label: t.fakeDataFieldFullName },
     { value: "firstName", label: t.fakeDataFieldFirstName },
@@ -396,11 +293,6 @@ export default function FakeDataPage() {
     { value: "longDate", label: t.fakeDataDateFormatLong }
   ];
 
-  const [dataType, setDataType] = useToolState<DataType>(
-    "fake-data",
-    "dataType",
-    "person"
-  );
   const [count, setCount] = useToolState("fake-data", "count", 5);
   const [outputShape, setOutputShape] = useToolState<OutputShape>(
     "fake-data",
@@ -430,18 +322,13 @@ export default function FakeDataPage() {
     "local"
   );
 
-  const isCustomObject = dataType === "custom" && outputShape === "object";
+  const isCustomObject = outputShape === "object";
 
   const generate = () => {
-    let result: unknown;
-    if (dataType === "custom") {
-      if (customFields.length === 0) return;
-      result = isCustomObject
-        ? generateCustomItem(customFields)
-        : Array.from({ length: count }, () => generateCustomItem(customFields));
-    } else {
-      result = Array.from({ length: count }, generators[dataType]);
-    }
+    if (customFields.length === 0) return;
+    const result = isCustomObject
+      ? generateCustomItem(customFields)
+      : Array.from({ length: count }, () => generateCustomItem(customFields));
     setResultData(result);
     setOutput(JSON.stringify(result, null, 2));
   };
@@ -500,24 +387,6 @@ export default function FakeDataPage() {
   return (
     <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
       <div className="flex flex-wrap items-end gap-3">
-        <div className="flex flex-col gap-1.5">
-          <Label className="mb-1">{t.fakeDataTypeLabel}</Label>
-          <Select
-            value={dataType}
-            onValueChange={(v) => setDataType(v as DataType)}
-          >
-            <SelectTrigger className="w-40">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {DATA_TYPES.map(({ value, label }) => (
-                <SelectItem key={value} value={value}>
-                  {label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
         {!isCustomObject && (
           <div className="flex flex-col gap-1.5">
             <Label className="mb-1">{t.fakeDataCountLabel}</Label>
@@ -539,7 +408,7 @@ export default function FakeDataPage() {
           <Button
             onClick={generate}
             className="gap-2"
-            disabled={dataType === "custom" && customFields.length === 0}
+            disabled={customFields.length === 0}
           >
             <RefreshCw className="size-4" />
             {t.generate}
@@ -593,138 +462,134 @@ export default function FakeDataPage() {
         </div>
       </div>
 
-      {dataType === "custom" && (
-        <div className="flex shrink-0 flex-col gap-3 rounded-md border p-3">
-          <div className="flex flex-wrap items-end justify-between gap-3">
-            <div className="flex flex-col gap-1.5">
-              <Label className="mb-1">{t.fakeDataShapeLabel}</Label>
-              <Select
-                value={outputShape}
-                onValueChange={(v) => setOutputShape(v as OutputShape)}
-              >
-                <SelectTrigger className="w-36">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="array">{t.fakeDataShapeArray}</SelectItem>
-                  <SelectItem value="object">
-                    {t.fakeDataShapeObject}
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={addField}
-              className="gap-1.5"
+      <div className="flex shrink-0 flex-col gap-3 rounded-md border p-3">
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <div className="flex flex-col gap-1.5">
+            <Label className="mb-1">{t.fakeDataShapeLabel}</Label>
+            <Select
+              value={outputShape}
+              onValueChange={(v) => setOutputShape(v as OutputShape)}
             >
-              <Plus className="size-3.5" />
-              {t.fakeDataAddField}
-            </Button>
+              <SelectTrigger className="w-36">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="array">{t.fakeDataShapeArray}</SelectItem>
+                <SelectItem value="object">{t.fakeDataShapeObject}</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={addField}
+            className="gap-1.5"
+          >
+            <Plus className="size-3.5" />
+            {t.fakeDataAddField}
+          </Button>
+        </div>
 
-          {customFields.length === 0 ? (
-            <p className="text-muted-foreground text-sm">
-              {t.fakeDataNoFieldsState}
-            </p>
-          ) : (
-            <div className="flex flex-col gap-2">
-              {customFields.map((field) => (
-                <div
-                  key={field.id}
-                  className="bg-muted/40 flex flex-wrap items-center gap-2 rounded-md border p-2"
+        {customFields.length === 0 ? (
+          <p className="text-muted-foreground text-sm">
+            {t.fakeDataNoFieldsState}
+          </p>
+        ) : (
+          <div className="flex flex-col gap-2">
+            {customFields.map((field) => (
+              <div
+                key={field.id}
+                className="bg-muted/40 flex flex-wrap items-center gap-2 rounded-md border p-2"
+              >
+                <Input
+                  value={field.key}
+                  onChange={(e) =>
+                    updateField(field.id, { key: e.target.value })
+                  }
+                  placeholder={t.fakeDataFieldNamePlaceholder}
+                  className="w-36"
+                />
+                <Select
+                  value={field.type}
+                  onValueChange={(v) =>
+                    updateField(field.id, { type: v as FieldType })
+                  }
                 >
-                  <Input
-                    value={field.key}
-                    onChange={(e) =>
-                      updateField(field.id, { key: e.target.value })
-                    }
-                    placeholder={t.fakeDataFieldNamePlaceholder}
-                    className="w-36"
-                  />
+                  <SelectTrigger className="w-40">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {FIELD_TYPES.map(({ value, label }) => (
+                      <SelectItem key={value} value={value}>
+                        {label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {field.type === "date" && (
                   <Select
-                    value={field.type}
+                    value={field.dateFormat}
                     onValueChange={(v) =>
-                      updateField(field.id, { type: v as FieldType })
+                      updateField(field.id, { dateFormat: v as DateFormat })
                     }
                   >
                     <SelectTrigger className="w-40">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {FIELD_TYPES.map(({ value, label }) => (
+                      {DATE_FORMATS.map(({ value, label }) => (
                         <SelectItem key={value} value={value}>
                           {label}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
-                  {field.type === "date" && (
-                    <Select
-                      value={field.dateFormat}
-                      onValueChange={(v) =>
-                        updateField(field.id, { dateFormat: v as DateFormat })
-                      }
-                    >
-                      <SelectTrigger className="w-40">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {DATE_FORMATS.map(({ value, label }) => (
-                          <SelectItem key={value} value={value}>
-                            {label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  )}
-                  <div className="flex items-center gap-1.5">
-                    <Checkbox
-                      id={`array-${field.id}`}
-                      checked={field.isArray}
-                      onCheckedChange={(checked) =>
-                        updateField(field.id, { isArray: !!checked })
-                      }
-                    />
-                    <Label
-                      htmlFor={`array-${field.id}`}
-                      className="cursor-pointer text-sm font-normal"
-                    >
-                      {t.fakeDataArrayLabel}
-                    </Label>
-                  </div>
-                  {field.isArray && (
-                    <Input
-                      type="number"
-                      min={1}
-                      max={20}
-                      value={field.arrayLength}
-                      onChange={(e) =>
-                        updateField(field.id, {
-                          arrayLength: Math.min(
-                            20,
-                            Math.max(1, parseInt(e.target.value) || 1)
-                          )
-                        })
-                      }
-                      className="w-20"
-                    />
-                  )}
-                  <Button
-                    size="icon"
-                    variant="ghost"
-                    onClick={() => removeField(field.id)}
-                    className="ml-auto size-8 shrink-0"
+                )}
+                <div className="flex items-center gap-1.5">
+                  <Checkbox
+                    id={`array-${field.id}`}
+                    checked={field.isArray}
+                    onCheckedChange={(checked) =>
+                      updateField(field.id, { isArray: !!checked })
+                    }
+                  />
+                  <Label
+                    htmlFor={`array-${field.id}`}
+                    className="cursor-pointer text-sm font-normal"
                   >
-                    <X className="size-4" />
-                  </Button>
+                    {t.fakeDataArrayLabel}
+                  </Label>
                 </div>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
+                {field.isArray && (
+                  <Input
+                    type="number"
+                    min={1}
+                    max={20}
+                    value={field.arrayLength}
+                    onChange={(e) =>
+                      updateField(field.id, {
+                        arrayLength: Math.min(
+                          20,
+                          Math.max(1, parseInt(e.target.value) || 1)
+                        )
+                      })
+                    }
+                    className="w-20"
+                  />
+                )}
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  onClick={() => removeField(field.id)}
+                  className="ml-auto size-8 shrink-0"
+                >
+                  <X className="size-4" />
+                </Button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
 
       {output ? (
         <CodeEditor
