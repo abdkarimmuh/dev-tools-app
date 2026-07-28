@@ -179,6 +179,7 @@ export const translations = {
     // RSA
     rsaKeys: "Keys",
     rsaKeySize: "Key Size",
+    rsaPkcsFormat: "PKCS Format",
     rsaGenerate: "Generate Key Pair",
     rsaGenerating: "Generating...",
     rsaPublicKey: "Public Key",
@@ -559,6 +560,7 @@ export const translations = {
     // RSA
     rsaKeys: "Kunci",
     rsaKeySize: "Ukuran Kunci",
+    rsaPkcsFormat: "Format PKCS",
     rsaGenerate: "Buat Pasangan Kunci",
     rsaGenerating: "Membuat...",
     rsaPublicKey: "Kunci Publik",

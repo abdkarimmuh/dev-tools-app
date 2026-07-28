@@ -68,7 +68,7 @@ function jsonToGo(value: unknown, objectError: string): string {
   const blocks: string[] = [];
 
   function fieldType(v: unknown, fieldKey: string): string {
-    if (v === null || v === undefined) return "interface{}";
+    if (v === null || v === undefined) return "any";
     if (typeof v === "string") return "string";
     if (typeof v === "boolean") return "bool";
     if (typeof v === "number") return Number.isInteger(v) ? "int" : "float64";
