@@ -66,14 +66,14 @@ function buildEntry(dec: number): AsciiEntry {
 
 export const SECTIONS: AsciiSection[] = [
   {
-    title: "Control Characters (0–31, 127)",
+    title: "Control Characters (0-31, 127)",
     entries: [
       ...Array.from({ length: 32 }, (_, i) => buildEntry(i)),
       buildEntry(127)
     ]
   },
   {
-    title: "Printable Characters (32–126)",
+    title: "Printable Characters (32-126)",
     entries: Array.from({ length: 126 - 32 + 1 }, (_, i) => buildEntry(32 + i))
   }
 ];

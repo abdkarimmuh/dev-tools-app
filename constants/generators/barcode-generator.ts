@@ -17,5 +17,5 @@ export const FORMATS: { value: BarcodeFormat; label: string; hint: string }[] =
     { value: "CODE39", label: "CODE39", hint: "0-9 A-Z - . $ / + %" },
     { value: "ITF14", label: "ITF-14", hint: "13 digits" },
     { value: "MSI", label: "MSI", hint: "Numbers only" },
-    { value: "pharmacode", label: "Pharmacode", hint: "3–131070" }
+    { value: "pharmacode", label: "Pharmacode", hint: "3-131070" }
   ];

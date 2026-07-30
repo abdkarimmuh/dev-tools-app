@@ -43,7 +43,7 @@ function describeCron(expr: string, u: CronUnits): string {
       const [a, b] = val.split("-");
       const na = names ? (names[Number(a)] ?? a) : a;
       const nb = names ? (names[Number(b)] ?? b) : b;
-      return `${unit} ${na}–${nb}`;
+      return `${unit} ${na}-${nb}`;
     }
     if (val.includes(",")) {
       const parts = val
@@ -222,7 +222,7 @@ export default function CronGeneratorPage() {
               spellCheck={false}
             />
             <p className="text-muted-foreground text-center text-xs">
-              {min}–{max}
+              {min}-{max}
             </p>
           </div>
         ))}

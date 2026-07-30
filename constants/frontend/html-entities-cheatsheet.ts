@@ -49,7 +49,7 @@ export const SECTIONS: HtmlEntitySection[] = [
     entries: [
       entry("hellip", 8230, "…", "Horizontal ellipsis"),
       entry("mdash", 8212, "—", "Em dash"),
-      entry("ndash", 8211, "–", "En dash"),
+      entry("ndash", 8211, "-", "En dash"),
       entry("lsquo", 8216, "‘", "Left single quotation mark"),
       entry("rsquo", 8217, "’", "Right single quotation mark"),
       entry("ldquo", 8220, "“", "Left double quotation mark"),

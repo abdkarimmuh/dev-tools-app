@@ -80,7 +80,12 @@ export default function UnixTimestampPage() {
         <span className="text-muted-foreground text-sm">
           {t.unixCurrentLabel}
         </span>
-        <span className="font-mono text-sm font-medium">{now}</span>
+        <span
+          className="font-mono text-sm font-medium"
+          suppressHydrationWarning
+        >
+          {now}
+        </span>
         <Button
           size="sm"
           variant="ghost"
