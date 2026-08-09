@@ -47,6 +47,25 @@ export default function JsonFormatterPage() {
     }
   };
 
+  const stringify = () => {
+    setValue(JSON.stringify(value));
+    setError(null);
+  };
+
+  const unstringify = () => {
+    try {
+      const parsed = JSON.parse(value);
+      if (typeof parsed !== "string") {
+        setError(t.unstringifyInvalid);
+        return;
+      }
+      setValue(parsed);
+      setError(null);
+    } catch (e) {
+      setError((e as Error).message);
+    }
+  };
+
   const clear = () => {
     setValue("");
     setError(null);
@@ -72,6 +91,22 @@ export default function JsonFormatterPage() {
             variant="secondary"
           >
             {t.minify}
+          </Button>
+          <Button
+            size="lg"
+            onClick={stringify}
+            disabled={!value}
+            variant="secondary"
+          >
+            {t.stringify}
+          </Button>
+          <Button
+            size="lg"
+            onClick={unstringify}
+            disabled={!value}
+            variant="secondary"
+          >
+            {t.unstringify}
           </Button>
         </div>
         <div className="flex items-center gap-3">

@@ -86,7 +86,7 @@ const editorTheme = EditorView.theme({
   "&": { fontSize: "0.875rem", height: "100%" },
   ".cm-content, .cm-gutters": { fontFamily: "var(--font-mono)" },
   ".cm-content": { padding: "0.75rem 0" },
-  ".cm-gutters": { backgroundColor: "transparent", border: "none" },
+  ".cm-gutters": { border: "none" },
   "&.cm-focused": { outline: "none" },
   ".cm-scroller": { overflow: "auto" }
 });
