@@ -1,10 +1,11 @@
 "use client";
 
-import { Coffee, Globe, Moon, Sun } from "lucide-react";
+import { Globe, Moon, Sun } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 
 import { Search } from "@/components/layouts/search";
+import { Support } from "@/components/layouts/support";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -15,7 +16,6 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { navTitleMap } from "@/config/nav";
-import { SAWERIA_LINK } from "@/constants";
 import { useLanguage } from "@/contexts/language-context";
 
 export function Header() {
@@ -33,16 +33,7 @@ export function Header() {
         <Separator orientation="vertical" className="mx-2 items-center" />
         <h1 className="text-base font-medium">{title}</h1>
         <div className="ml-auto flex items-center gap-2">
-          <Button
-            className="gap-1.5"
-            nativeButton={false}
-            render={
-              <a href={SAWERIA_LINK} target="_blank" rel="noopener noreferrer">
-                <Coffee className="size-3.5" />
-                <span className="hidden sm:inline">{t.supportButton}</span>
-              </a>
-            }
-          />
+          <Support />
           <div className="hidden md:block">
             <Search />
           </div>
