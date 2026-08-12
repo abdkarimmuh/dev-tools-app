@@ -35,6 +35,7 @@ export function Header() {
         <div className="ml-auto flex items-center gap-2">
           <Button
             className="gap-1.5"
+            nativeButton={false}
             render={
               <a href={SAWERIA_LINK} target="_blank" rel="noopener noreferrer">
                 <Coffee className="size-3.5" />
