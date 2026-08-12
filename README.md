@@ -132,6 +132,7 @@ npm run build      # Build untuk production
 npm run start      # Jalankan production build
 npm run typecheck  # Type checking TypeScript
 npm run lint       # Linting
+npm run lint:fix   # Linting dengan --fix
 npm run format     # Format kode dengan Prettier
 ```
 
@@ -194,15 +195,21 @@ dev-tools-app/
 │           └── html-entities-cheatsheet/
 ├── components/
 │   ├── layouts/
-│   │   ├── app-sidebar.tsx       # Sidebar navigasi
-│   │   ├── site-header.tsx       # Header dengan judul halaman & toggle theme
-│   │   └── tool-search.tsx       # Command palette search (Cmd+K / Ctrl+K)
+│   │   ├── sidebar.tsx           # Sidebar navigasi
+│   │   ├── header.tsx            # Header dengan judul halaman & toggle theme
+│   │   ├── footer.tsx            # Footer
+│   │   └── search.tsx            # Command palette search (Cmd+K / Ctrl+K)
 │   └── ui/                       # shadcn/ui components
 ├── config/
 │   └── nav.ts                    # Sumber data navigasi (nav groups + title map)
+├── constants/                    # Data/algoritma tool yang terlalu besar untuk page.tsx
+│   ├── generators/                   # mis. fake-data, password-generator, tree-generator
+│   ├── formatters/sql-formatter.ts
+│   ├── text/regex-tester.ts
+│   └── frontend/px-rem.ts
 ├── hooks/
-│   ├── use-tool-state.ts         # Hook state per-tool (wrapper Zustand)
-│   └── use-storage.ts            # Legacy storage hook
+│   ├── use-tool-state.ts         # Hook state per-tool (wrapper Zustand, in-memory)
+│   └── use-storage.ts            # localStorage/sessionStorage hook (theme, bahasa, word-wrap)
 ├── stores/
 │   └── tool-states.ts            # Zustand store untuk semua tool state
 └── lib/
@@ -212,10 +219,11 @@ dev-tools-app/
 
 ## Menambah Tool Baru
 
-Cukup dua langkah:
+Tiga langkah:
 
-1. Buat folder dan `page.tsx` di `app/tools/<nama-tool>/`
-2. Tambahkan entry di `config/nav.ts` — sidebar, header, dan home page otomatis terupdate
+1. Buat folder dan `page.tsx` (default-export client component) di `app/tools/<kategori>/<nama-tool>/`
+2. Tambahkan entry di `config/nav.ts` — sidebar, command-palette search, dan home page otomatis terupdate
+3. Tambahkan setiap string yang tampil ke pengguna ke **kedua** blok bahasa (`en` dan `id`) di `lib/i18n.ts` — melewatkan satu bahasa akan menyebabkan error TypeScript (`Translations` mewajibkan key yang sama di kedua blok)
 
 ```ts
 // config/nav.ts

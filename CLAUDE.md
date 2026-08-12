@@ -24,6 +24,8 @@ npm run format     # Prettier --write across **/*.{ts,tsx}
 
 There is no test runner configured in this repo. Verification is via `typecheck` + `lint` + manual exercise of the tool in the browser (`npm run dev`).
 
+Both `package-lock.json` and `yarn.lock` are committed. Use `npm` (the scripts above, and `package.json`'s scripts themselves, are npm-shaped) — don't run `yarn` commands or regenerate `yarn.lock` unless asked.
+
 ## What this is
 
 DevTools: a single Next.js (App Router) app hosting ~42 independent, client-side developer utilities (formatters, converters, encoders, generators, crypto tools, CSS helpers) grouped into 7 sidebar categories. Every tool runs entirely in the browser — no API routes, no server-side processing, no backend. Look for `app/api/` before assuming otherwise; as of now none exists.

@@ -39,7 +39,7 @@ npm run format     # Prettier (formats .ts/.tsx)
 - [app/layout.tsx](app/layout.tsx) — root layout (sidebar + header)
 - [app/page.tsx](app/page.tsx) — home / tools index
 - [app/tools/](app/tools/) — each tool lives here; add new tools as folders
-- [components/layouts/](components/layouts/) — `app-sidebar.tsx`, `site-header.tsx`, `tool-search.tsx`
+- [components/layouts/](components/layouts/) — `sidebar.tsx`, `header.tsx`, `footer.tsx`, `search.tsx`
 - [components/ui/](components/ui/) — UI primitives following shadcn patterns
 - [config/nav.ts](config/nav.ts) — central navigation (update to expose new tools)
 - [lib/i18n.ts](lib/i18n.ts) — all UI strings in EN + ID; add keys here for new tools
@@ -86,7 +86,7 @@ When making changes, link to these files in your PR description so reviewers can
 - `lib/i18n.ts` contains all UI text strings in English and Indonesian. Add new keys to **both** language blocks, then add the new group key to `navGroupLabels` if adding a new category.
 - Use `useToolState(toolId, key, defaultValue)` for all persistent input/output state — this prevents state loss on navigation.
 - Use `useLanguage()` from `contexts/language-context.tsx` to access translated strings via `t.keyName`.
-- Use `sonner` for toast feedback where appropriate (see `components/ui/sonner.tsx`).
+- `sonner` is installed (`components/ui/sonner.tsx`) but not currently wired up anywhere — no `<Toaster>` is mounted and no `toast()` calls exist in the app. Don't assume toast feedback works without adding the `<Toaster>` yourself first.
 - All tool pages are `"use client"` components.
 - Two-panel input/output layout (left=input, right=output) is the standard for formatter and converter tools.
 - Plain text fields use `<Textarea>` from `components/ui/textarea` (only layout classes in `className` — border/background/padding/ring already come from the component); structured/code content uses the shared `CodeEditor` (`components/code-editor.tsx`) instead. `diff-checker` is the only tool still on a raw `<textarea>`.
