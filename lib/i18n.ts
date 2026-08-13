@@ -4,7 +4,6 @@ export const translations = {
   en: {
     // Navigation
     navHome: "Home",
-    supportButton: "Support",
 
     // Home page
     homeTitle: "All Tools",
@@ -388,7 +387,6 @@ export const translations = {
   id: {
     // Navigation
     navHome: "Beranda",
-    supportButton: "Traktir",
 
     // Home page
     homeTitle: "Semua Tools",
