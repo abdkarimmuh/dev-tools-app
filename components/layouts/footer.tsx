@@ -12,6 +12,15 @@ export function Footer() {
       >
         Muhammad Abdul Karim
       </a>
+      <span className="text-muted-foreground"> powered by </span>
+       <a
+        href="https://kotakkode.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="hover:text-foreground font-bold underline-offset-4 hover:underline"
+      >
+        Kotakkode
+      </a>
     </footer>
   );
 }
