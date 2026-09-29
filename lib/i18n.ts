@@ -77,6 +77,12 @@ export const translations = {
     baseFileTooLarge: "File is too large. Maximum size is 10 MB.",
     baseBase58TooLarge:
       "Base58 is too slow for files this large. Use Base64 or Hex, or a file under 1 MB.",
+    baseModeImage: "Text → Image",
+    baseImagePlaceholder:
+      "Paste an encoded image or a data URI (e.g. data:image/png;base64,iVBORw0...)...",
+    baseNotImage:
+      "Decoded data is not a recognized image (PNG, JPEG, GIF, WebP, BMP, ICO, AVIF or SVG).",
+    baseImageDimensions: "Dimensions",
 
     // URL Encode
     urlEncodeInputPlaceholder: "Enter text or URL encoded string...",
@@ -460,6 +466,12 @@ export const translations = {
     baseFileTooLarge: "File terlalu besar. Ukuran maksimum adalah 10 MB.",
     baseBase58TooLarge:
       "Base58 terlalu lambat untuk file sebesar ini. Gunakan Base64 atau Hex, atau file di bawah 1 MB.",
+    baseModeImage: "Teks → Gambar",
+    baseImagePlaceholder:
+      "Tempel gambar yang sudah di-encode atau data URI (mis. data:image/png;base64,iVBORw0...)...",
+    baseNotImage:
+      "Data hasil decode bukan gambar yang dikenali (PNG, JPEG, GIF, WebP, BMP, ICO, AVIF, atau SVG).",
+    baseImageDimensions: "Dimensi",
 
     // URL Encode
     urlEncodeInputPlaceholder: "Masukkan teks atau URL encoded string...",

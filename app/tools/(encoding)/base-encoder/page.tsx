@@ -21,7 +21,7 @@ import { useToolState } from "@/hooks/use-tool-state";
 import { handleTextareaTab } from "@/lib/utils";
 
 type Encoding = "base64" | "base32" | "base58" | "base16";
-type Mode = "text" | "file";
+type Mode = "text" | "file" | "image";
 type FileDirection = "encode" | "decode";
 
 const ENCODINGS: { value: Encoding; label: string }[] = [
@@ -41,6 +41,9 @@ const MIME_EXTENSIONS: Record<string, string> = {
   "image/gif": "gif",
   "image/webp": "webp",
   "image/svg+xml": "svg",
+  "image/bmp": "bmp",
+  "image/x-icon": "ico",
+  "image/avif": "avif",
   "application/pdf": "pdf",
   "text/plain": "txt",
   "application/json": "json",
@@ -49,6 +52,42 @@ const MIME_EXTENSIONS: Record<string, string> = {
 
 function guessFileName(mime: string): string {
   return `decoded-file.${MIME_EXTENSIONS[mime] ?? "bin"}`;
+}
+
+function startsWith(bytes: Uint8Array, sig: number[], offset = 0): boolean {
+  return sig.every((b, i) => bytes[offset + i] === b);
+}
+
+const ascii = (s: string) => Array.from(s, (c) => c.charCodeAt(0));
+
+// Detects the MIME type from magic bytes, for input pasted without a data URI prefix
+function sniffMime(bytes: Uint8Array): string | null {
+  if (startsWith(bytes, [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]))
+    return "image/png";
+  if (startsWith(bytes, [0xff, 0xd8, 0xff])) return "image/jpeg";
+  if (startsWith(bytes, ascii("GIF87a")) || startsWith(bytes, ascii("GIF89a")))
+    return "image/gif";
+  if (startsWith(bytes, ascii("RIFF")) && startsWith(bytes, ascii("WEBP"), 8))
+    return "image/webp";
+  if (startsWith(bytes, ascii("BM"))) return "image/bmp";
+  if (startsWith(bytes, [0x00, 0x00, 0x01, 0x00])) return "image/x-icon";
+  if (
+    startsWith(bytes, ascii("ftyp"), 4) &&
+    (startsWith(bytes, ascii("avif"), 8) || startsWith(bytes, ascii("avis"), 8))
+  )
+    return "image/avif";
+  if (startsWith(bytes, ascii("%PDF"))) return "application/pdf";
+  if (startsWith(bytes, [0x50, 0x4b, 0x03, 0x04])) return "application/zip";
+  const head = new TextDecoder()
+    .decode(bytes.subarray(0, 512))
+    .trimStart()
+    .toLowerCase();
+  if (
+    head.startsWith("<svg") ||
+    (head.startsWith("<?xml") && head.includes("<svg"))
+  )
+    return "image/svg+xml";
+  return null;
 }
 
 function bytesToBlob(bytes: Uint8Array, type: string): Blob {
@@ -238,6 +277,9 @@ export default function BaseEncoderPage() {
   const [decodedFile, setDecodedFile] = useState<DecodedFile | null>(null);
   const [downloadName, setDownloadName] = useState("");
   const [downloadMime, setDownloadMime] = useState("");
+  const [imageSize, setImageSize] = useState<{ w: number; h: number } | null>(
+    null
+  );
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const sourceFileRef = useRef(sourceFile);
@@ -345,17 +387,27 @@ export default function BaseEncoderPage() {
     }
     try {
       const match = raw.match(DATA_URI_RE);
-      const mime = match ? match[1] : "application/octet-stream";
       const body = match ? match[2] : raw;
       const bytes = DECODE_BYTES[encoding](body);
+      const mime = match
+        ? match[1]
+        : (sniffMime(bytes) ?? "application/octet-stream");
       if (decodedFile?.previewUrl) URL.revokeObjectURL(decodedFile.previewUrl);
+      setImageSize(null);
+      if (mode === "image" && !mime.startsWith("image/")) {
+        setError(t.baseNotImage);
+        setDecodedFile(null);
+        return;
+      }
       const blob = bytesToBlob(bytes, mime);
       const previewUrl = mime.startsWith("image/")
         ? URL.createObjectURL(blob)
         : null;
       setDecodedFile({ bytes, type: mime, previewUrl });
       setDownloadMime(mime);
-      setDownloadName((prev) => prev || guessFileName(mime));
+      setDownloadName((prev) =>
+        !prev || prev.startsWith("decoded-file.") ? guessFileName(mime) : prev
+      );
       setError(null);
     } catch (e) {
       setError((e as Error).message);
@@ -399,13 +451,10 @@ export default function BaseEncoderPage() {
     setInput("");
     setOutput("");
     setError(null);
-    if (mode === "file") {
-      if (direction === "encode") removeFile();
-      else {
-        if (decodedFile?.previewUrl)
-          URL.revokeObjectURL(decodedFile.previewUrl);
-        setDecodedFile(null);
-      }
+    if (mode === "file" && direction === "encode") removeFile();
+    else if (mode !== "text") {
+      if (decodedFile?.previewUrl) URL.revokeObjectURL(decodedFile.previewUrl);
+      setDecodedFile(null);
     }
   };
 
@@ -421,8 +470,9 @@ export default function BaseEncoderPage() {
     setTimeout(() => setCopied(false), 1500);
   };
 
-  const showTextarea = mode === "text" || direction === "decode";
-  const showFileResult = mode === "file" && direction === "decode";
+  const showTextarea = mode !== "file" || direction === "decode";
+  const showFileResult =
+    mode === "image" || (mode === "file" && direction === "decode");
 
   return (
     <div className="flex h-full flex-col gap-4 px-4 lg:px-6">
@@ -460,6 +510,7 @@ export default function BaseEncoderPage() {
           >
             <ToggleGroupItem value="text">{t.baseModeText}</ToggleGroupItem>
             <ToggleGroupItem value="file">{t.baseModeFile}</ToggleGroupItem>
+            <ToggleGroupItem value="image">{t.baseModeImage}</ToggleGroupItem>
           </ToggleGroup>
 
           {mode === "file" && (
@@ -496,7 +547,7 @@ export default function BaseEncoderPage() {
                 {t.decode}
               </Button>
             </>
-          ) : direction === "encode" ? (
+          ) : mode === "file" && direction === "encode" ? (
             <Button size="lg" onClick={runFileEncode} disabled={!sourceFile}>
               {t.encode}
             </Button>
@@ -530,7 +581,11 @@ export default function BaseEncoderPage() {
           {showTextarea ? (
             <Textarea
               className="min-h-0 w-full flex-1 resize-none font-mono text-sm"
-              placeholder={PLACEHOLDERS[encoding]}
+              placeholder={
+                mode === "image"
+                  ? t.baseImagePlaceholder
+                  : PLACEHOLDERS[encoding]
+              }
               value={input}
               onChange={(e) => {
                 setInput(e.target.value);
@@ -650,7 +705,15 @@ export default function BaseEncoderPage() {
                   <img
                     src={decodedFile.previewUrl}
                     alt={downloadName}
-                    className="max-h-40 self-center rounded-md border object-contain"
+                    onLoad={(e) =>
+                      setImageSize({
+                        w: e.currentTarget.naturalWidth,
+                        h: e.currentTarget.naturalHeight
+                      })
+                    }
+                    className={`${
+                      mode === "image" ? "max-h-[50vh]" : "max-h-40"
+                    } self-center rounded-md border bg-[repeating-conic-gradient(#8882_0%_25%,transparent_0%_50%)] bg-[length:16px_16px] object-contain`}
                   />
                 )}
                 <div className="flex flex-col gap-1.5">
@@ -671,6 +734,8 @@ export default function BaseEncoderPage() {
                 </div>
                 <p className="text-muted-foreground text-xs">
                   {formatBytes(decodedFile.bytes.length)}
+                  {imageSize &&
+                    ` · ${t.baseImageDimensions}: ${imageSize.w} × ${imageSize.h} px`}
                 </p>
                 <Button onClick={downloadDecoded} className="w-fit gap-2">
                   <Download className="size-4" />
