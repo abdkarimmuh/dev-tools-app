@@ -24,10 +24,15 @@ function countParagraphs(text: string): number {
         .filter(Boolean).length;
 }
 
-function readingTime(words: number, minUnit: string): string {
-  const minutes = words / 200;
-  if (minutes < 1) return `< 1 ${minUnit}`;
-  return `~${Math.ceil(minutes)} ${minUnit}`;
+const WORDS_PER_MINUTE = 200;
+
+function readingTime(words: number, minUnit: string, secUnit: string): string {
+  const totalSeconds = Math.round((words / WORDS_PER_MINUTE) * 60);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  if (minutes === 0) return `${seconds} ${secUnit}`;
+  if (seconds === 0) return `${minutes} ${minUnit}`;
+  return `${minutes} ${minUnit} ${seconds} ${secUnit}`;
 }
 
 interface StatCardProps {
@@ -62,9 +67,13 @@ export default function WordCounterPage() {
       sentences,
       paragraphs,
       lines,
-      readingTime: readingTime(words, t.wordCounterMinUnit)
+      readingTime: readingTime(
+        words,
+        t.wordCounterMinUnit,
+        t.wordCounterSecUnit
+      )
     };
-  }, [text, t.wordCounterMinUnit]);
+  }, [text, t.wordCounterMinUnit, t.wordCounterSecUnit]);
 
   return (
     <div className="flex h-full flex-col gap-4 px-4 lg:px-6">

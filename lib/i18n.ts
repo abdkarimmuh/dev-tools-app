@@ -272,6 +272,7 @@ export const translations = {
     wordCounterLines: "Lines",
     wordCounterReadingTime: "Reading Time",
     wordCounterMinUnit: "min",
+    wordCounterSecUnit: "sec",
     wordCounterPlaceholder: "Start typing or paste your text here...",
 
     // Number Base Converter
@@ -294,7 +295,10 @@ export const translations = {
     unixLocalLabel: "Local",
     unixIso8601Label: "ISO 8601:",
     unixDateToTsLabel: "Date → Unix Timestamp",
-    unixInvalidDate: "Invalid date format",
+    unixInvalidDate: "Invalid date format. Use YYYY-MM-DD HH:mm:ss",
+    unixDatePlaceholder: "YYYY-MM-DD HH:mm:ss",
+    unixPickDate: "Pick date & time",
+    unixNow: "Now",
     unixSecondsLabel: "Seconds:",
     unixMillisecondsLabel: "Milliseconds:",
 
@@ -664,6 +668,7 @@ export const translations = {
     wordCounterLines: "Baris",
     wordCounterReadingTime: "Waktu Baca",
     wordCounterMinUnit: "menit",
+    wordCounterSecUnit: "detik",
     wordCounterPlaceholder: "Mulai mengetik atau tempel teks Anda di sini...",
 
     // Number Base Converter
@@ -686,7 +691,10 @@ export const translations = {
     unixLocalLabel: "Lokal",
     unixIso8601Label: "ISO 8601:",
     unixDateToTsLabel: "Tanggal → Unix Timestamp",
-    unixInvalidDate: "Format tanggal tidak valid",
+    unixInvalidDate: "Format tanggal tidak valid. Gunakan YYYY-MM-DD HH:mm:ss",
+    unixDatePlaceholder: "YYYY-MM-DD HH:mm:ss",
+    unixPickDate: "Pilih tanggal & waktu",
+    unixNow: "Sekarang",
     unixSecondsLabel: "Detik:",
     unixMillisecondsLabel: "Milidetik:",
 
