@@ -19,29 +19,31 @@ function formatDate(d: Date, tz: string): string {
       hour: "2-digit",
       minute: "2-digit",
       second: "2-digit",
+      fractionalSecondDigits: 3,
       hourCycle: "h23"
     })
       .formatToParts(d)
       .map((p) => [p.type, p.value])
   );
-  return `${parts.year}-${parts.month}-${parts.day} ${parts.hour}:${parts.minute}:${parts.second} (${tz})`;
+  return `${parts.year}-${parts.month}-${parts.day} ${parts.hour}:${parts.minute}:${parts.second}.${parts.fractionalSecond} (${tz})`;
 }
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
-// Locale-independent "YYYY-MM-DD HH:mm:ss" in local time
+// Locale-independent "YYYY-MM-DD HH:mm:ss.SSS" in local time
 function toLocalIso(d: Date): string {
   return (
     `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ` +
-    `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`
+    `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}` +
+    `.${String(d.getMilliseconds()).padStart(3, "0")}`
   );
 }
 
 const LOCAL_DATE_RE =
-  /^(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{2}):(\d{2})(?::(\d{2}))?)?$/;
+  /^(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{2}):(\d{2})(?::(\d{2})(?:\.(\d{1,3}))?)?)?$/;
 
-// Parses "YYYY-MM-DD[ HH:mm[:ss]]" as local time; falls back to Date parsing
-// for full ISO 8601 strings with an offset (e.g. "2024-01-01T00:00:00Z")
+// Parses "YYYY-MM-DD[ HH:mm[:ss[.SSS]]]" as local time; falls back to Date
+// parsing for full ISO 8601 strings with an offset (e.g. "2024-01-01T00:00:00Z")
 function parseLocalDate(input: string): Date | null {
   const m = input.trim().match(LOCAL_DATE_RE);
   if (!m) {
@@ -50,8 +52,10 @@ function parseLocalDate(input: string): Date | null {
     const d = new Date(input.trim());
     return isNaN(d.getTime()) ? null : d;
   }
-  const [y, mo, da, h, mi, s] = m.slice(1).map((v) => Number(v ?? 0));
-  const d = new Date(y, mo - 1, da, h, mi, s);
+  // ".5" means 500 ms, not 5 ms
+  const ms = Number((m[7] ?? "0").padEnd(3, "0"));
+  const [y, mo, da, h, mi, s] = m.slice(1, 7).map((v) => Number(v ?? 0));
+  const d = new Date(y, mo - 1, da, h, mi, s, ms);
   const roundTrips =
     d.getFullYear() === y &&
     d.getMonth() === mo - 1 &&
@@ -96,15 +100,17 @@ export default function UnixTimestampPage() {
     if (!tsInput) return null;
     const n = Number(tsInput);
     if (isNaN(n)) return null;
-    const ms = tsInput.length >= 13 ? n : n * 1000;
-    const d = new Date(ms);
+    // 13+ integer digits = milliseconds; otherwise seconds (fractions allowed,
+    // e.g. "1704067200.123")
+    const isMs = /^-?\d{13,}$/.test(tsInput.trim());
+    const d = new Date(isMs ? n : Math.round(n * 1000));
     return isNaN(d.getTime()) ? null : d;
   })();
 
-  const dateTs = (() => {
+  const dateMs = (() => {
     if (!dateInput) return null;
     const d = parseLocalDate(dateInput);
-    return d ? Math.floor(d.getTime() / 1000) : null;
+    return d ? d.getTime() : null;
   })();
 
   const pickerRef = useRef<HTMLInputElement>(null);
@@ -121,7 +127,7 @@ export default function UnixTimestampPage() {
   };
 
   const tsError = tsInput && !tsDate ? t.unixInvalidTimestamp : null;
-  const dateError = dateInput && dateTs === null ? t.unixInvalidDate : null;
+  const dateError = dateInput && dateMs === null ? t.unixInvalidDate : null;
 
   const localTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
@@ -228,7 +234,7 @@ export default function UnixTimestampPage() {
             <input
               ref={pickerRef}
               type="datetime-local"
-              step={1}
+              step={0.001}
               tabIndex={-1}
               aria-hidden
               className="pointer-events-none absolute right-0 bottom-0 h-0 w-0 opacity-0"
@@ -241,25 +247,27 @@ export default function UnixTimestampPage() {
           {dateError && <p className="text-destructive text-xs">{dateError}</p>}
         </div>
 
-        {dateTs !== null && (
+        {dateMs !== null && (
           <div className="bg-muted flex flex-col gap-2 rounded-md border p-4">
             <div className="flex items-center justify-between gap-2">
               <div>
                 <span className="text-muted-foreground text-xs">
                   {t.unixSecondsLabel}{" "}
                 </span>
-                <span className="font-mono text-sm">{dateTs}</span>
+                <span className="font-mono text-sm">
+                  {Math.floor(dateMs / 1000)}
+                </span>
               </div>
-              <CopyButton text={String(dateTs)} />
+              <CopyButton text={String(Math.floor(dateMs / 1000))} />
             </div>
             <div className="flex items-center justify-between gap-2">
               <div>
                 <span className="text-muted-foreground text-xs">
                   {t.unixMillisecondsLabel}{" "}
                 </span>
-                <span className="font-mono text-sm">{dateTs * 1000}</span>
+                <span className="font-mono text-sm">{dateMs}</span>
               </div>
-              <CopyButton text={String(dateTs * 1000)} />
+              <CopyButton text={String(dateMs)} />
             </div>
           </div>
         )}
